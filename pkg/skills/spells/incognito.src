@@ -1,0 +1,12 @@
+use uo;
+use os;
+use util;
+use cfgfile;
+
+include "include/spellRestrictions";
+include "include/attributes";
+
+program cast_incognito(parms)
+  Sendsysmessage(caster, "magia desabilitada para melhor reconhecimento de players" ,9,89);
+return;
+endprogram

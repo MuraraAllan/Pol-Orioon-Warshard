@@ -1,0 +1,48 @@
+use uo;
+
+include "include/listex";
+include "include/attributes";
+include "include/spellRestrictions";
+
+program reveal_hider ( parms )
+  var circle := 6;
+  var delivery := "indirect";
+  var noto := "neutral";
+  var result := maincast(parms, delivery, circle, noto, 48);
+  if(result == 0)
+    return;
+  endif
+  var caster := result[1];
+  var cast_on := result[2];
+  var range := 6;
+  if (range < 1)
+	range := 1;
+  endif
+  var hiders := ListMobilesNearLocationEx( caster.x, caster.y, caster.z, range, LIST_HIDDEN );
+  var numfound := 0;
+  PlaySoundEffect(caster, SFX_1FE);
+  if(len(hiders) > 0)
+	foreach mobile in hiders
+	  if( Found( caster,  mobile) )
+		numfound := 1;
+		mobile.hidden := 0;
+	    Sendsysmessage( mobile, "Voce foi revelado pelo seu inimigo!" ,3,98);
+		 Sendsysmessage( caster, "OBA! Encontrei meu inimigo!" ,3,98);
+		PlaySoundEffect(mobile, SFX_1FE);
+	  endif
+	endforeach
+  endif
+  if (!numfound)
+    Sendsysmessage( caster, "Voce falha em encontrar alguem!", 3,98 );
+  endif
+endprogram
+
+function Found( finder, hider )
+  var magic_skill :=  GetEffectiveSkill(hider, SKILLID_HIDING);
+ 
+  if ( magic_skill >= 95 )
+	return 0;
+  else
+	return 1;
+  endif
+endfunction

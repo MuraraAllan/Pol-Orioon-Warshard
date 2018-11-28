@@ -1,0 +1,199 @@
+use uo;
+use cfgfile;
+include "include/skills";
+include "include/spellRestrictions";
+include "include/attributes";
+
+program cast_flamestrike( parms, passparms )
+var circle := 7;	
+
+var prevtime;
+prevtime := ReadGameClock() + 10;
+  var who      := passparms[1];
+  var attacker := passparms[2];
+  var weapon   := passparms[3];
+  var level    := passparms[4];
+  var pfield   := Cint(passparms[5]);
+  var delivery := "direct";
+  var noto := "harmful";
+  var result := maincast(parms, delivery, circle, noto, 51);
+  if(result == 0)
+    return;
+  endif
+  var caster := result[1];
+  var cast_on := result[2];
+
+   var magery := GetEffectiveSkill(caster, SKILLID_MAGERY);
+  var insc   := GetEffectiveSkill(caster, SKILLID_EVALINT);
+  var mod_amount := GetModDuration(magery) / 11 + GetModDuration(insc) / 15 + RandomDiceRoll("1d10");; 
+   SetObjProperty(cast_on, "LastHit", {caster.name,caster.serial, "flame strike" });
+
+SetObjProperty(cast_on, "Lastataque", Readgameclock() + 8);
+   var mr := CInt(GetObjProperty(cast_on, "mr"));
+ var mrr := CInt(GetObjProperty(caster, "mr"));
+var mana := Getmana(caster);
+if(Readgameclock() >=  prevtime)
+    SendSysMessage(caster, "Voce demorou demais e perdeu o focus",9,90);
+PlayStationaryEffect( caster.x, caster.y, caster.z, FX_SMOKE, 0xa, 0xa );     
+ playSoundEffect(caster,0x005d);
+setmana(caster, Mana + 40);
+    return;
+  endif
+//se o mr for maior que o tanto que remove o explo e o mrr for = ou - que 0;
+if((mr >= 70) && (mrr <= 0))
+SetobjProperty(cast_on,"delayreflect", Readgameclock() + 120);
+PlaySoundEffect(cast_on, SFX_SPELL_MAGIC_REFLECTION);
+    PlayObjectCenteredEffect(cast_on, FX_CURSE_EFFECT, 10,10);
+    SendSysMessage(cast_on, "Seu Reflect lhe salvou!",9,89);
+SetobjProperty(cast_on,"mr", GetobjProperty(cast_on,"mr")-100);
+PlayMovingEffect(caster, cast_on, 0x3709, 5, 1);
+  PlaySoundEffect( caster, SFX_SPELL_FLAME_STRIKE );
+sleepms(1000);
+PlayMovingEffect(cast_on, caster, 0x3709, 5, 1);
+  PlaySoundEffect( caster, SFX_SPELL_FLAME_STRIKE );
+cast_on := caster;
+
+
+//se o caster tiver de reflect maior que o cast_on;
+elseif((mr >= 70) && (mrr >= mr))
+//cast_on
+PlaySoundEffect(cast_on, SFX_SPELL_MAGIC_REFLECTION);
+SetobjProperty(cast_on,"delayreflect", Readgameclock() + 120);
+    PlayObjectCenteredEffect(cast_on, FX_CURSE_EFFECT, 10,10);
+    SendSysMessage(cast_on, "Seu Reflect lhe salvou!",9,89);
+SetobjProperty(cast_on,"mr", GetobjProperty(cast_on,"mr")-100);
+PlayMovingEffect(caster, cast_on, 0x3709, 5, 1);
+  PlaySoundEffect( caster, SFX_SPELL_FLAME_STRIKE );
+sleepms(1500);
+//caster
+SetobjProperty(caster,"delayreflect", Readgameclock() + 120);
+PlaySoundEffect(caster, SFX_SPELL_MAGIC_REFLECTION);
+    PlayObjectCenteredEffect(caster, FX_CURSE_EFFECT, 10,10);
+    SendSysMessage(caster, "Seu Reflect lhe salvou!",9,89);
+SetobjProperty(caster,"mr", GetobjProperty(caster,"mr")-100);
+PlayMovingEffect(cast_on, caster, 0x3709, 5, 1);
+  PlaySoundEffect( caster, SFX_SPELL_FLAME_STRIKE );
+sleep(2);
+
+//se o cast_on tiver de reflect maior que o caster;
+elseif((mr >= 70) && (mr >= mrr))
+//cast_on
+PlaySoundEffect(cast_on, SFX_SPELL_MAGIC_REFLECTION);
+    PlayObjectCenteredEffect(cast_on, FX_CURSE_EFFECT, 10,10);
+    SendSysMessage(cast_on, "Seu Reflect lhe salvou!",9,89);
+SetobjProperty(cast_on,"mr", GetobjProperty(cast_on,"mr")-100);
+PlayMovingEffect(caster, cast_on, 0x3709, 5, 1);
+  PlaySoundEffect( caster, SFX_SPELL_FLAME_STRIKE );
+SetobjProperty(cast_on,"delayreflect", Readgameclock() + 120);
+sleep(1);
+//caster
+PlaySoundEffect(caster, SFX_SPELL_MAGIC_REFLECTION);
+    PlayObjectCenteredEffect(caster, FX_CURSE_EFFECT, 10,10);
+    SendSysMessage(caster, "Seu Reflect lhe salvou!",9,89);
+SetobjProperty(caster,"mr", GetobjProperty(caster,"mr")-100);
+PlayMovingEffect(cast_on, caster, 0x3709, 5, 1);
+  PlaySoundEffect( caster, SFX_SPELL_FLAME_STRIKE );
+SetobjProperty(caster,"delayreflect", Readgameclock() + 120);
+sleep(2);
+//caster
+PlaySoundEffect(cast_on, SFX_SPELL_MAGIC_REFLECTION);
+    PlayObjectCenteredEffect(cast_on, FX_CURSE_EFFECT, 10,10);
+    SendSysMessage(cast_on, "Seu Reflect lhe salvou!",9,89);
+PlayMovingEffect(caster, cast_on, 0x3709, 5, 1);
+  PlaySoundEffect( caster, SFX_SPELL_FLAME_STRIKE );
+SetobjProperty(cast_on,"delayreflect", Readgameclock() + 120);
+sleepms(1000);
+PlayMovingEffect(cast_on, caster, 0x3709, 5, 1);
+  PlaySoundEffect( caster, SFX_SPELL_FLAME_STRIKE );
+SetobjProperty(caster,"delayreflect", Readgameclock() + 120);
+cast_on := caster;
+elseif((mr <= 0) && (mrr <= 0))
+cast_on := cast_on;
+endif
+
+
+
+if(caster == cast_on)
+ApplyRawDamage(caster, mod_amount - 10);
+var a := mod_amount - 10;
+PrintTextAbove(caster, " " +  a + " ", FONT_SMALL_LIGHT, 38); 
+PlayMovingEffect(caster, caster, 0x3709, 5, 1);
+  PlaySoundEffect( caster, SFX_SPELL_FLAME_STRIKE );
+SetObjProperty(caster, "Lastataque", Readgameclock() + 5); 
+else
+PlayMovingEffect(caster, cast_on, 0x3709, 5, 1);
+  PlaySoundEffect( caster, SFX_SPELL_FLAME_STRIKE );
+var dmgg  := (Resistfs(circle, caster, cast_on, mod_amount));
+endif
+endprogram
+
+
+
+
+
+function Resistfs(circle, caster, cast_on, amt)
+  var magery := GetEffectiveSkill(caster, SKILLID_MAGERY);
+  var evalint :=GetEffectiveSkill(caster, SKILLID_EVALINT);
+  var resist := GetEffectiveSkill(cast_on, SKILLID_MAGICRESISTANCE);
+   var chk := resist + randomdiceroll(resist) - (((magery - 40 + evalint - 50 - cint(randomdiceroll(magery) + 10)) / 25) + (circle * 4) + randomdiceroll("1d8"));
+
+
+    var  diff := chk;
+if((resist >= 50) && (resist <= 90))
+diff := chk - 15;
+endif
+if((resist > 90) && (resist < 100))
+diff := chk - 8;
+endif
+  if(cast_on.dead)
+    return 0;
+  endif
+
+ if((Randomdiceroll("1d80") + 17) <= diff)
+SetObjProperty(cast_on, "resist", 1);    
+SendSysMessage(cast_on, "Voce sente seu corpo resistindo a magia!",9,89);
+    PlaySoundEffect(cast_on, SFX_SPELL_WEAKEN);
+    PlayObjectCenteredEffect(cast_on, FX_CURSE_EFFECT, 5,5);
+
+
+   var magery := GetEffectiveSkill(caster, SKILLID_MAGERY);
+  var insc   := GetEffectiveSkill(caster, SKILLID_EVALINT);
+var dmg1 := cint(GetModDuration(magery) / 20 + GetModDuration(insc) / 15 + RandomDiceRoll("1d8") - RandomDiceRoll("1d12") - GetModDuration(resist) / 50);
+if((dmg1 <= 10) || (dmg1 >= 21))
+dmg1 := randomdiceroll("1d5") + 12;
+endif
+
+send_attack(cast_on,caster, 43);
+ApplyRawDamage(cast_on,dmg1);
+var evalint :=GetEffectiveSkill(caster, SKILLID_EVALINT) * 10;
+PrintTextAbove(cast_on, " " + dmg1 + " ", FONT_SMALL_LIGHT, 38);
+SetObjProperty(caster, "Lastataque", Readgameclock() + 5); 
+upparrs(cast_on,1000,"MAGICRESISTANCE",850,evalint);
+
+else
+
+
+  var insc   := GetEffectiveSkill(caster, SKILLID_EVALINT);
+if(insc >= 80)
+send_attack(cast_on,caster, 43);
+var dmg :=  cint(GetModDuration(magery) / 20 + GetModDuration(insc) / 20  + RandomDiceRoll("1d12") + 15 - RandomDiceRoll("1d4") - GetModDuration(resist) / 50);
+if(dmg < 10)
+dmg := randomdiceroll("1d5") + 7;
+endif
+ApplyRawDamage(cast_on,dmg);
+PrintTextAbove(cast_on, " " + dmg + " ", FONT_SMALL_LIGHT, 38);
+SetObjProperty(caster, "Lastataque", Readgameclock() + 5); 
+else
+send_attack(cast_on,caster, 43);
+var dmg :=  cint(GetModDuration(magery) / 20 + GetModDuration(insc) / 15  + RandomDiceRoll("1d15") + 5  - RandomDiceRoll("1d12") - GetModDuration(resist) / 50);
+if(dmg < 10)
+dmg := randomdiceroll("1d5") + 7;
+endif
+ApplyRawDamage(cast_on,dmg);
+PrintTextAbove(cast_on, " " + dmg + " ", FONT_SMALL_LIGHT, 38);
+SetObjProperty(caster, "Lastataque", Readgameclock() + 5); 
+endif
+endif
+endfunction
+
+

@@ -1,0 +1,6 @@
+use uo;
+use os;
+
+program open_cofre(who, pedra)
+
+endprogram

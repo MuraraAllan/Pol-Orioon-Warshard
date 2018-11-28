@@ -1,0 +1,34 @@
+var ev; 
+use uo;
+use os;
+
+
+Program AuxScript_IrcConnection(conexao)
+    ///faca aqui gravar uma prop global com o pid, para poder receber
+    ///comunicacoes internas.
+    while(conexao) 
+     ////conexao.transmit("Aqui o que voce quer transmitir");
+        ev := Wait_For_Event(5);
+        conexao.transmit("bcast 4" +ev.+bcastnick+ "1: 12" +ev.+bcastmsg);
+        if(ev)
+	    if(ev.bcast)
+	     ev.+bcast:=0;
+	     conexao.transmit("bcast 4" +ev.+bcastnick+ "1: 12" +ev.+bcastmsg);
+	    endif
+            if(ev.type == "recv")
+                Case(ev.value)
+                    ////valor1: Acao;
+                    ////valor2: Acao;
+                    ////valorN: Acao;
+		    ///conexao.transmit("Aqui o que voce quer transmitir");
+                endcase
+            elseif(ev.type == "Interno")
+                case(ev.value)
+                    ////valor1: Acao;
+                    ////valor2: Acao;
+                    ////valorN: Acao;
+                endcase
+            endif
+        endif
+    endwhile
+endprogram

@@ -1,0 +1,43 @@
+use uo;
+use util;
+
+include "include/spellRestrictions";
+include "include/attributes";
+
+program mana_drain ( parms )
+return;
+  var circle := 4;
+  var delivery := "direct";
+  var noto := "harmful";
+  var result := maincast(parms, delivery, circle, noto, 31);
+  if(result == 0)
+    return;
+  endif
+  var caster := result[1];
+  var cast_on := result[2];
+  SetObjProperty(cast_on, "LastHit", {caster.name,caster.serial, "mana drain" });
+  var mr := CInt(GetObjProperty(cast_on, "mr"));
+  if(mr >= 1)
+    PlaySoundEffect(cast_on, SFX_SPELL_MAGIC_REFLECTION);
+    PlayObjectCenteredEffect(cast_on, FX_CURSE_EFFECT, 10,10);
+    SendSysMessage(cast_on, "Seu Reflect lhe salvou!",9,89);
+SetobjProperty(cast_on,"mr", GetobjProperty(cast_on,"mr")-65);
+cast_on := caster;
+endif
+   var magery := GetEffectiveSkill(caster, SKILLID_MAGERY);
+  var insc   := GetEffectiveSkill(caster, SKILLID_EVALINT);
+   var dmg :=  GetModDuration(magery) / 30 + GetModDuration(insc) / 50 + RandomDiceRoll("1d5");
+  var diff := Resisted(circle, caster, cast_on, dmg); 
+ Sendsysmessage(caster, "Mana Drenada" ,FONT_SMALL_LIGHT, 0x0003);
+  Sendsysmessage(caster, " " + dmg + " ", FONT_SMALL_LIGHT, 38);
+  if(diff)
+    PlaySoundEffect( caster, SFX_SPELL_MANA_DRAIN );
+    PlayObjectCenteredEffect( cast_on, FX_HEAL_EFFECT, 7,0x10 );
+	if(diff > GetMana(cast_on))
+	  SetMana(cast_on, 0);
+	else
+	  SetMana(cast_on, GetMana(cast_on) - diff);
+           SetMana(caster, GetMana(caster) + diff / 5);           
+	endif
+  endif
+endprogram

@@ -1,0 +1,182 @@
+use os;
+use uo;
+use cfgfile;
+use util;
+use basic;
+include "../pkg/foundations/gumps/gumps";
+
+
+
+
+program mandarpara(who, text, cmd)
+var regra;
+var regra1;
+var regra2;
+var regra3;
+var regra4;
+var regra5;
+var regra6;
+var regra7;
+var regra8;
+var regra9;
+var regra10;
+
+
+ 
+text := lower(text); 
+
+  if(text == "valor")
+ 
+ if(who.cmdlevel < 1)
+ Sendsysmessage(who, "Somente staffs podem alterar as regras!", 0,33);
+ return;
+ endif
+
+  var  inscr := SendTextEntryGump( who, "Inscricao: ", 40);
+  SetGlobalProperty("inscr",inscr);
+    
+  
+  elseif(text == "vagas")
+   if(who.cmdlevel < 1)
+   Sendsysmessage(who, "Somente staffs podem alterar as regras!", 0,33);
+   return;
+   endif
+  
+  var vagas := SendTextEntryGump( who, "Vagas: ", 40);
+  SetGlobalProperty("vagas",vagas);
+
+  elseif(text == "evento")
+   if(who.cmdlevel < 1)
+   Sendsysmessage(who, "Somente staffs podem alterar as regras!", 0,33);
+   return;
+   endif
+  
+  var evento := SendTextEntryGump( who, "Evento: ", 40);
+  SetGlobalProperty("evento",evento);
+  
+
+  elseif(text == "alterar")
+
+ if(who.cmdlevel < 1)
+ Sendsysmessage(who, "Somente staffs podem alterar as regras!", 0,33);
+ return;
+ endif
+  
+  regra1 := SendTextEntryGump( who, "Regra 1: ", 40);
+  SetGlobalProperty("regra1",regra1);
+  
+  regra2 := SendTextEntryGump( who, "Regra 2: ", 40);
+  SetGlobalProperty("regra2",regra2); 
+
+  regra3 := SendTextEntryGump( who, "Regra 3: ", 40);
+  SetGlobalProperty("regra3",regra3); 
+
+  regra4 := SendTextEntryGump( who, "Regra 4: ", 40);
+  SetGlobalProperty("regra4",regra4); 
+
+  regra5 := SendTextEntryGump( who, "Regra 5: ", 40);
+  SetGlobalProperty("regra5",regra5); 
+  
+  regra6 := SendTextEntryGump( who, "Regra 6: ", 40);
+  SetGlobalProperty("regra6",regra6);
+  
+  regra7 := SendTextEntryGump( who, "Regra 7: ", 40);
+  SetGlobalProperty("regra7",regra7);  
+
+  regra8 := SendTextEntryGump( who, "Regra 8: ", 40);
+  SetGlobalProperty("regra8",regra8);
+
+  regra9 := SendTextEntryGump( who, "Regra 9: ", 40);
+  SetGlobalProperty("regra9",regra9); 
+
+  regra10 := SendTextEntryGump( who, "Regra 10: ", 40);
+  SetGlobalProperty("regra10",regra10);  
+
+
+
+else 
+
+ if(who.cmdlevel > 1)
+ Sendsysmessage(who, "Para alterar as regras digite .regras alterar", 0,55);
+ Sendsysmessage(who, "Para alterar o valor da inscricao digite .regras valor", 0,55);
+ Sendsysmessage(who, "Para alterar o nome do evento digite .regras evento", 0,55);
+ Sendsysmessage(who, "Para alterar o numero de vagas digite .regras vagas", 0,55);
+ endif
+
+ var regre1 := GetGlobalProperty("regra1");
+ var regre2 := GetGlobalProperty("regra2");
+ var regre3 := GetGlobalProperty("regra3");
+ var regre4 := GetGlobalProperty("regra4");
+ var regre5 := GetGlobalProperty("regra5");
+ var regre6 := GetGlobalProperty("regra6");
+ var regre7 := GetGlobalProperty("regra7");
+ var regre8 := GetGlobalProperty("regra8");
+ var regre9 := GetGlobalProperty("regra9");
+ var regre10 := GetGlobalProperty("regra10");
+ var inscr1 := GetGlobalProperty("inscr");
+ var evento1 := GetGlobalProperty("evento");
+ var vagas1 := GetGlobalProperty("vagas");
+
+  GFInitGump( 250 , 100 );
+  GFNoMove();
+  GFResizePic(50, 5, 5120, 300, 440);
+  GFTextLine( 175 , 15, 1153 , "Regras" );
+  
+  GFTextLine(65, 45,  62, "Evento: " +evento1);
+  GFTextLine(65, 80,  2, "Regra 1: " +regre1); 
+  GFTextLine(65, 110,  33, "Regra 2: " +regre2); 
+  GFTextLine(65, 140, 2, "Regra 3: " +regre3);
+  GFTextLine(65, 170, 33, "Regra 4: " +regre4); 
+  GFTextLine(65, 200, 2, "Regra 5: " +regre5); 
+  GFTextLine(65, 230, 33, "Regra 6: " +regre6);
+  GFTextLine(65, 260, 2, "Regra 7: " +regre7); 
+  GFTextLine(65, 290, 33, "Regra 8: " +regre8); 
+  GFTextLine(65, 320, 2, "Regra 9: " +regre9);
+  GFTextLine(65, 350, 33, "Regra 10: " +regre10);
+  GFTextLine(65, 380, 53, "Valor Inscricao: " +inscr1);
+  GFTextLine(65, 410, 53, "Vagas: " +vagas1);
+
+  GFSendGump(who);
+
+
+
+    
+
+
+//logo// 
+  GFTextLine(155, 190,1153, "#syscows");
+
+
+// Sendsysmessage(who, "Regra 1: " + regre1, 0,2);
+
+// Sendsysmessage(who, "Regra 2: " + regre2, 0,33);
+
+// Sendsysmessage(who, "Regra 3: " + regre3, 0,2);
+
+// Sendsysmessage(who, "Regra 4: " + regre4, 0,33);
+
+// Sendsysmessage(who, "Regra 5: " + regre5, 0,2);
+
+// Sendsysmessage(who, "Regra 6: " + regre6, 0,33);
+
+// Sendsysmessage(who, "Regra 7: " + regre7, 0,2);
+
+// Sendsysmessage(who, "Regra 8: " + regre8, 0,33);
+
+// Sendsysmessage(who, "Regra 9: " + regre1, 0,2);
+
+// Sendsysmessage(who, "Regra 10: " + regre10, 0,33);
+ 
+
+
+
+ 
+
+ 
+ 
+
+
+
+endif
+
+endprogram

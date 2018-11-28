@@ -1,0 +1,26 @@
+use uo;
+use os;
+
+include "include/client";
+include "include/attributes";
+
+
+program kp(who)
+var alvo:=Target(who);
+var kp := GetObjProperty(alvo, "kp");
+var mortes := GetObjProperty(alvo, "mortes");
+var resultado := kp - mortes;
+if(!kp)
+kp := 0;
+endif
+if(!mortes)
+mortes := 0;
+endif
+if(!resultado)
+resultado := 0;
+endif
+SendSysMessage(who, "Kills: " + kp + " ",3,33);
+SendSysMessage(who, "Mortes: " + mortes+ " ",3,33);
+SendSysMessage(who, "Resultados: " + resultado + " ",3,33);
+
+endprogram

@@ -1,0 +1,28 @@
+use http;
+use uo;
+
+var player := QueryParam("login");
+var senha := QueryParam("senha");
+var permissao:=QueryParam("permissao");
+
+
+if(permissao != "syscobot123")
+WriteHtml("NEGADO");
+return;
+endif
+
+var success := FindAccount(player);
+if (success)
+   WriteHtml("LoginExiste");
+   return 0;
+endif
+
+success := CreateAccount(player, senha, 1);
+if (!success)
+   WriteHtml("CriarFalhou");
+   return 0;
+endif
+
+WriteHtml("ContaCriada");
+
+return 1; 

@@ -1,0 +1,164 @@
+C:\pol2\pkg\systems\combat\bladeSpiritHit.src, Line 5
+program macehit(param)
+use os;
+0: get arg 'param'
+var attacker   := param[1];
+1: decl local #1
+2: local #0
+3: 1L
+4: [] 1
+5: :=
+6: #
+var defender   := param[2];
+7: decl local #2
+8: local #0
+9: 2L
+10: [] 1
+11: :=
+12: #
+var armor      := param[4];
+13: decl local #3
+14: local #0
+15: 4L
+16: [] 1
+17: :=
+18: #
+var basedamage := param[5];
+19: decl local #4
+20: local #0
+21: 5L
+22: [] 1
+23: :=
+24: #
+var rawdamage  := param[6];
+25: decl local #5
+26: local #0
+27: 6L
+28: [] 1
+29: :=
+30: #
+if((attacker.dead) || (defender.dead))
+31: local #1
+32: get member 'dead'
+33: local #2
+34: get member 'dead'
+35: ||
+36: if false goto 39
+return;
+37: ""
+38: progend
+var rint := RandomInt(10);
+39: decl local #6
+40: 10L
+41: Func(3,0): RandomInt
+42: :=
+43: #
+if(rint >= 9)
+44: local #6
+45: 9L
+46: >=
+47: if false goto 107
+var newplevel := RandomInt(2)+1;
+48: decl local #0
+49: 2L
+50: Func(3,0): RandomInt
+51: 1L
+52: +
+53: :=
+54: #
+PrintTextAbove(defender, defender.name + " has been poisoned!");
+55: local #2
+56: local #2
+57: get member 'name'
+58: " has been poisoned!"
+59: +
+60: 3L
+61: 1000L
+62: Func(2,0): PrintTextAbove
+63: #
+SendSysMessage(defender, "You have been poisoned by " + attacker.name +"!");
+64: local #2
+65: "You have been poisoned by "
+66: local #1
+67: get member 'name'
+68: +
+69: "!"
+70: +
+71: 3L
+72: 1000L
+73: Func(2,1): SendSysMessage
+74: #
+Detach();
+75: Func(2,2): Detach
+76: #
+var passparms := { defender, attacker, "bladespirit", newplevel };
+77: decl local #1
+78: array
+79: local #2
+80: +=
+81: local #1
+82: +=
+83: "bladespirit"
+84: +=
+85: local #7
+86: +=
+87: :=
+88: #
+start_script(":spells:poisonDamage", passparms);
+89: ":spells:poisonDamage"
+90: local #8
+91: Func(4,0): start_script
+92: #
+SetObjProperty(defender, "LastHit", {attacker.name, attacker.serial, "poisoned 
+93: local #2
+94: "LastHit"
+95: array
+96: local #1
+97: get member 'name'
+98: +=
+99: local #1
+100: get member 'serial'
+101: +=
+102: "poisoned weapon"
+103: +=
+104: Func(2,3): SetObjProperty
+105: #
+106: leave block(2)
+if(armor.hp > 1)
+107: local #3
+108: get member 'hp'
+109: 1L
+110: >
+111: if false goto 119
+armor.hp := armor.hp - 1;
+112: local #3
+113: local #3
+114: get member 'hp'
+115: 1L
+116: -
+117: set member 'hp' #
+118: goto122
+DestroyItem(armor);
+119: local #3
+120: Func(2,4): DestroyItem
+121: #
+if(armor.hp > armor.maxhp)
+122: local #3
+123: get member 'hp'
+124: local #3
+125: get member 'maxhp'
+126: >
+127: if false goto 132
+armor.hp := armor.maxhp;
+128: local #3
+129: local #3
+130: get member 'maxhp'
+131: set member 'hp' #
+SetObjProperty(defender, "TempDamage", rawdamage);
+132: local #2
+133: "TempDamage"
+134: local #5
+135: Func(2,3): SetObjProperty
+136: #
+137: leave block(7)
+138: progend

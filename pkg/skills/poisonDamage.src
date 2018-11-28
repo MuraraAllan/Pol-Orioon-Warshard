@@ -1,0 +1,39 @@
+use uo;
+use os;
+use util;
+
+include "include/client";
+include "include/attributes";
+include ":poisonwatcher:poisons";
+include "include/spellRestrictions";
+
+program poisondamage (passparms)
+  var result := maincast(parms, delivery, circle, noto, 42);
+  if(result == 0)
+    return;
+  endif
+var caster := result[1];
+var cast_on := result[2];
+  var who      := passparms[1];
+  var attacker := passparms[2];
+  var weapon   := passparms[3];
+  var level    := passparms[4];
+  var pfield   := Cint(passparms[5]);
+  if(who.npctemplate)
+    var npccfg := ReadConfigFile("::npcdesc");
+    if(who.npctemplate == "bladespirit")
+      return;
+    endif
+  elseif(who.cmdlevel > 1)
+    return;
+  endif
+  AddPoison(who, "defaultPoison", 120, attacker, level);
+  if(pfield == 1)
+    PrintTextAbovePrivate(who, "Voce foi envenenado!",9,90);;
+    var dmg := Resisted(5, attacker, who, CInt(GetAttribute(attacker, "magery") / 25));
+    ApplyRawDamage(cast_on, dmg);
+    printtextabove(cast_on, "Ouch!",3,70);
+    PrintTextAbove(cast_on, " " + dmg + " ", FONT_SMALL_LIGHT, 38);
+  endif
+endprogram
+

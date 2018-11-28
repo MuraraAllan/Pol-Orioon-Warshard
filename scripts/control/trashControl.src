@@ -1,0 +1,13 @@
+use uo;
+use os;
+
+program trash(item)
+  while(item)
+    foreach trashitem in EnumerateItemsInContainer(item)
+      if(GetObjProperty(trashitem, "#DestroyAt"))
+        DestroyItem(trashitem);
+      endif
+    endforeach
+    sleepms(500);
+  endwhile
+endprogram

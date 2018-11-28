@@ -1,0 +1,220 @@
+C:\pol2\pkg\tools\gmtools\toolTraps.src, Line 9
+program open_trapped_item(character, item)
+const FX_POISON_GAS := 0x113a;
+0: get arg 'character'
+1: get arg 'item'
+var traptype := GetObjProperty(item,"trap_type");
+2: decl local #2
+3: local #1
+4: "trap_type"
+5: Func(2,0): GetObjProperty
+6: :=
+7: #
+var trapstrength := GetObjProperty(item,"trap_strength");
+8: decl local #3
+9: local #1
+10: "trap_strength"
+11: Func(2,0): GetObjProperty
+12: :=
+13: #
+case traptype
+14: local #2
+15: casejmp
+	1: @16
+	2: @72
+	3: @110
+	default: @172
+PlaySoundEffect(character, SFX_224);
+16: local #0
+17: 548L
+18: Func(2,1): PlaySoundEffect
+19: #
+var dmg := (RandomInt(20) + CInt(trapstrength));
+20: decl local #0
+21: 20L
+22: Func(3,0): RandomInt
+23: local #3
+24: Func(0,0): CInt
+25: +
+26: :=
+27: #
+SendSysMessage(character, "You set off a needle trap!");
+28: local #0
+29: "You set off a needle trap!"
+30: 3L
+31: 1000L
+32: Func(2,2): SendSysMessage
+33: #
+ApplyDamage(character, dmg);
+34: local #0
+35: local #4
+36: Func(2,3): ApplyDamage
+37: #
+var scr := GetObjProperty(item,"usescript");
+38: decl local #1
+39: local #1
+40: "usescript"
+41: Func(2,0): GetObjProperty
+42: :=
+43: #
+if (!scr || scr == error)
+44: local #5
+45: !
+46: local #5
+47: error
+48: ==
+49: ||
+50: if false goto 55
+item.usescript := "";
+51: local #1
+52: ""
+53: set member 'usescript' #
+54: goto58
+item.usescript := scr;
+55: local #1
+56: local #5
+57: set member 'usescript' #
+EraseObjProperty( item, "trap_type" );
+58: local #1
+59: "trap_type"
+60: Func(2,4): EraseObjProperty
+61: #
+EraseObjProperty( item, "trap_strength" );
+62: local #1
+63: "trap_strength"
+64: Func(2,4): EraseObjProperty
+65: #
+EraseObjProperty( item, "usescript" );
+66: local #1
+67: "usescript"
+68: Func(2,4): EraseObjProperty
+69: #
+70: leave block(2)
+71: goto178
+start_script(":traps:poisonTrapTriggered", {character, item, "You set off a poi
+72: ":traps:poisonTrapTriggered"
+73: array
+74: local #0
+75: +=
+76: local #1
+77: +=
+78: "You set off a poison trap!"
+79: +=
+80: local #3
+81: +=
+82: Func(4,0): start_script
+83: #
+var scr := GetObjProperty(item,"usescript");
+84: decl local #0
+85: local #1
+86: "usescript"
+87: Func(2,0): GetObjProperty
+88: :=
+89: #
+if (!scr || scr == error)
+90: local #4
+91: !
+92: local #4
+93: error
+94: ==
+95: ||
+96: if false goto 101
+item.usescript := "";
+97: local #1
+98: ""
+99: set member 'usescript' #
+100: goto104
+item.usescript := scr;
+101: local #1
+102: local #4
+103: set member 'usescript' #
+EraseObjProperty( item, "usescript" );
+104: local #1
+105: "usescript"
+106: Func(2,4): EraseObjProperty
+107: #
+108: leave block(1)
+109: goto178
+PlaySoundEffect(character, SFX_208);
+110: local #0
+111: 520L
+112: Func(2,1): PlaySoundEffect
+113: #
+SendSysMessage(character, "You set off an explosion trap!");
+114: local #0
+115: "You set off an explosion trap!"
+116: 3L
+117: 1000L
+118: Func(2,2): SendSysMessage
+119: #
+PlayObjectCenteredEffect( character, FX_EXPLODE_3, 10,10);
+120: local #0
+121: 14000L
+122: 10L
+123: 10L
+124: Func(2,5): PlayObjectCenteredEffect
+125: #
+var dmg := (RandomInt(20) + CInt(trapstrength));
+126: decl local #0
+127: 20L
+128: Func(3,0): RandomInt
+129: local #3
+130: Func(0,0): CInt
+131: +
+132: :=
+133: #
+ApplyRawDamage(character, dmg);
+134: local #0
+135: local #4
+136: Func(2,6): ApplyRawDamage
+137: #
+var scr := GetObjProperty(item,"usescript");
+138: decl local #1
+139: local #1
+140: "usescript"
+141: Func(2,0): GetObjProperty
+142: :=
+143: #
+if (!scr || scr == error)
+144: local #5
+145: !
+146: local #5
+147: error
+148: ==
+149: ||
+150: if false goto 155
+item.usescript := "";
+151: local #1
+152: ""
+153: set member 'usescript' #
+154: goto158
+item.usescript := scr;
+155: local #1
+156: local #5
+157: set member 'usescript' #
+EraseObjProperty( item, "trap_type" );
+158: local #1
+159: "trap_type"
+160: Func(2,4): EraseObjProperty
+161: #
+EraseObjProperty( item, "trap_strength" );
+162: local #1
+163: "trap_strength"
+164: Func(2,4): EraseObjProperty
+165: #
+EraseObjProperty( item, "usescript" );
+166: local #1
+167: "usescript"
+168: Func(2,4): EraseObjProperty
+169: #
+170: leave block(2)
+171: goto178
+SendSysMessage(character, "You narrowly avoid the trap!");
+172: local #0
+173: "You narrowly avoid the trap!"
+174: 3L
+175: 1000L
+176: Func(2,2): SendSysMessage
+177: #
+178: leave block(4)
+179: progend

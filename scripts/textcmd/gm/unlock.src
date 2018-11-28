@@ -1,0 +1,12 @@
+use uo;
+
+program textcmd_unlock( who )
+
+    SendSysMessage( who, "Que porta voce deseja abrir?",0x9,90 );
+
+    var what := Target( who );
+    if (what)
+        what.locked := 0;
+    endif
+
+endprogram

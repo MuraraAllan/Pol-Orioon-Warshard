@@ -1,0 +1,20 @@
+use os;
+use uo;
+use util;
+use http;
+
+include "\include\\clock";
+/////include "\\include\\accounts";
+
+program display_server_status ()
+var staffs:=0;
+foreach who in EnumerateOnlineCharacters()
+if(who.cmdlevel > 0)
+staffs:= staffs + 1;
+endif
+endforeach
+
+var pon := (EnumerateOnlineCharacters().size() - staffs);
+	WriteHTML (""+pon);
+
+endprogram

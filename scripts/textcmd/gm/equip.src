@@ -1,0 +1,23 @@
+use uo;
+
+program textcmd_equip( speaker )
+    SendSysMessage( speaker, "O que voce deseja equipar?",0x9,90 );
+
+    var what := Target( speaker );
+    if (!what)
+        return;
+    endif
+
+    SendSysMessage( speaker, "Em quem voce deseja equipar?",0x9,90 );
+    var who := Target( speaker );
+    if (!who)
+        return;
+    endif
+
+    var res := EquipItem( who, what );
+    if (res)
+        SendSysMessage( speaker, "Feito!",0x9,90 );
+    else
+        SendSysMessage( speaker, "Nao foi possivel equipar o item",0x9,90 );
+    endif
+endprogram

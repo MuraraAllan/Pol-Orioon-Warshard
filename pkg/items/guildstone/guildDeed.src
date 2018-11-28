@@ -1,0 +1,163 @@
+use uo;
+use os;
+
+include "include/canAccess";
+include "guildData";
+
+program use_guild_deed(who, deed)
+  EraseObjProperty(who, "IsMeditating");
+  EraseObjProperty(who, "HealTimer");
+  if(!can_access(who, deed))
+    return;
+  elseif(!Accessible(who,deed))
+    SendSysMessage(who, "Voce nao tem acesso ao item!");
+    return;
+  elseif(!ReserveItem(deed))
+    return;
+  elseif(GetObjProperty(who, "guild_id"))
+    SendSysMessage(who, "Voce ja e membro de uma guilda.");
+    return;
+  endif
+  var house := who.multi;
+  var owner := GetObjProperty(house, "owneracct");
+  var coowners := GetObjProperty(house, "coownlist");
+  if((owner != who.acctname) and (!(who.serial in coowners)))
+    SendSysMessage(who, "Voce precisa ser dono ou socio da casa para por este item.");
+    return;
+  endif
+  var chk := 0;
+  foreach item in ListItemsNearLocation(who.x, who.y, who.z, 1)
+    if((item.objtype >= 0x0675) && (item.objtype <= 0x06f4))
+      if((((item.x == who.x+1) || (item.x == who.x-1)) && (item.y == who.y)) || (((item.y == who.y+1) || (item.y == who.y-1)) && (item.x == who.x)))
+        chk := 1;
+        break;
+      endif
+    endif
+  endforeach
+  if(chk == 1)
+    SendSysMessage(who, "Isto esta muito perto da porta.");
+    return;
+  endif
+  chk := 0;
+  foreach item in (house.items)
+    if(item.objtype == 0xa390)
+      chk := 1;
+      break;
+    endif
+  endforeach
+  if(chk == 1)
+    SendSysMessage(who, "So pode ser colocada 1 pedra de guilda na casa.");
+    return;
+  else
+    var pos  := GetStandingHeight(who.x, who.y, who.z);
+    var item := CreateItemAtLocation(who.x, who.y, pos.z, 0xa390, 1);
+    if(item)
+      if(setupguild(who, item) == 0)
+        DestroyItem(item);
+        return;
+      endif
+      DestroyItem(deed);
+      SetObjProperty(item, "houseserial", house.serial);
+    endif
+  endif
+endprogram
+
+function setupguild(who, stone)
+  var gname := SendTextEntryGump(who, "Qual o nome da Guilda?", 0, 1, 26, "Escolha o nome.");
+ var titulogs:=gname;
+if(IsNull(gname))
+    SendSysMessage(who, "Nome Invalido!");
+    return 0;
+endif
+if((titulogs == "") || (titulogs == " ") || (titulogs == "  ") || (titulogs == "   ") || (titulogs == "    ") || (titulogs == "     ") || (titulogs == "      ") || (titulogs == "       ") || (titulogs == "        ") || (titulogs == "         ") || (titulogs == "          ") || (titulogs == "           ") || (titulogs == "            ") || (titulogs == "             ") || (titulogs == "              ") || (titulogs == "               ") || (titulogs == "                ") || (titulogs == "                 "))
+    SendSysMessage(who, "Nome Invalido!");
+    return 0;
+  endif
+if(titulogs == "                              ")
+    SendSysMessage(who, "Nome Invalido!");
+    return 0;
+  endif
+if((titulogs == "                  ") || (titulogs == "                   ") || (titulogs == "                    ") || (titulogs == "                      ") || (titulogs == "                       ") || (titulogs == "                        ") || (titulogs == "                         ") || (titulogs == "                          ") || (titulogs == "                           ") || (titulogs == "                            ") || (titulogs == "                             "))
+     SendSysMessage(who, "Nome Invalido!");
+    return 0;
+  endif
+
+
+if(gname == error)
+    return 0;
+  endif
+  if(len(gname) > 30)
+    SendSysMessage(who, "Maximo de 30 letras! Voce pos mais que isso.");
+    return 0;
+  endif
+  if(!stone.Character_Validation(gname))
+    SendSysMessage(who, "Voce usou letras invalidas");
+    return 0;
+  endif
+  if(!stone.Name_Validation(gname))
+    PrintTextAbovePrivate(stone, "Este nome de guilda ja existe.", who);
+    return 0;
+  endif
+  var aname := SendTextEntryGump(who, "Qual a abreviacao da Guilda?", 0, 1, 3, "Escolha a abreviacao");
+  
+if(IsNull(aname))
+    SendSysMessage(who, "Abreviacao Invalido!");
+    return 0;
+endif
+
+  if((aname == "") || (aname == " ") || (aname == "  ") || (aname == "   ") || (aname == "    "))
+    SendSysMessage(who, "Abreviacao Invalida!");
+    return 0;
+  endif
+
+  if(!aname)
+    return 0;
+  elseif(len(aname) > 3)
+    SendSysMessage(who, "Abreviacao maxima de 3 letras! Voce ultrapassou.");
+    return 0;
+  endif
+///  if(!stone.Abreviation_Validation(aname))
+///    PrintTextAbovePrivate(stone, "Esta abreviacao ja existe.", who);
+///    return 0;
+///  else
+  if(!stone.Character_Validation(aname))
+    SendSysMessage(who, "Voce usou letras invalidas.");
+    return 0;
+  else
+    var dupe := {"NONE"};
+    var guild    := CreateGuild();
+    var guild_id := guild.guildid;
+    guild.setprop("guildname", gname);
+    guild.setprop("guildabv",  aname);
+    guild.setprop("gm", who.serial);
+    guild.setprop("gc", dupe);
+    guild.setprop("recruits", dupe);
+    guild.setprop("movetime", ReadGameClock()+ 10);
+    guild.setprop("nametime", ReadGameClock()+ 10);
+    guild.setprop("abrvtime", ReadGameClock() + 10);
+    stone.name := "Guilda: " + gname;
+    SetObjProperty(stone, "guild_id", guild_id);
+    guild.addmember(who);
+    SetObjProperty(who, "guild_id", guild_id);
+    SetObjProperty(who, "fealty", who.serial);
+    who.title_guild := gname;
+    SetObjProperty(who, "abv", "0");
+    SetObjProperty(who, "guildtitle", "Guild Master");
+    var ev := struct;
+    ev.+type := "created";
+    ev.+name := gname;
+    ev.+abbv := aname;
+    var guildmanager := GetProcess(GetGlobalProperty("#GuildManager"));
+    guildmanager.SendEvent(ev);
+    return 1;
+  endif
+endfunction
+
+function IsNull(texto)
+foreach letra in CAscZ( texto )
+if (letra != 32)
+return 0;
+endif
+endforeach
+return 1;
+endfunction

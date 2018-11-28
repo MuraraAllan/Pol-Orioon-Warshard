@@ -1,0 +1,8702 @@
+C:\pol2\pkg\systems\spawnregion\textcmd\gm\../../../../foundations/gumps/gumps.inc, Line 225
+var GFref := struct;		// X- and Y-offsets for gump operations
+0: decl global #0
+1: struct
+2: :=
+3: #
+GFref.+x := 0;
+4: global #0
+5: "x"
+6: .+
+7: 0L
+8: := #
+GFref.+y := 0;
+9: global #0
+10: "y"
+11: .+
+12: 0L
+13: := #
+var GFlayout := array();// Main layout array for entire gump
+14: decl global #1
+15: array
+16: :=
+17: #
+var GFdata := array();	// Storage array for static-text and
+18: decl global #2
+19: array
+20: :=
+21: #
+var GFdtidx;		// ...text in GFdata (index)
+22: decl global #3
+23: #
+var GFtxtid;		// ...TeXT-entry returns (keyid)
+24: decl global #4
+25: #
+var GFbutid;		// ...'action' BUTtons (keyid)
+26: decl global #5
+27: #
+var GFcbxid;		// ...CheckBoXes (keyid)
+28: decl global #6
+29: #
+var GFradid;		// ...RADio buttons (keyid)
+30: decl global #7
+31: #
+XGFReset();
+32: makelocal
+33: jmp userfunc @1569
+34: #
+var aGFTlength := struct;
+35: decl global #8
+36: struct
+37: :=
+38: #
+aGFTlength.+charsf:=   // Space as Filler is not allowed
+39: global #8
+40: "charsf"
+41: .+
+42: "||||||||||||||`',.;:::::::::!!!!!!!!!!!!!!il1[]]]]]]]]]"bcejotî(){}===adfpqrszIÑ~~~~ghnuvyÅ <>----xJ578$?+++++++kCE2369^/*****mwABDFOPéô40%%GLNQSZ@#######HRT&__________KöUYYYYYYYYYYYXXXXXXXXXXXXXXVVVVVVVVVVVVVVMMMMMMMMMMMMMMWWWWWWWWWWWWWW"
+43: := #
+aGFTlength.+width:= array
+44: global #8
+45: "width"
+46: .+
+47: array
+48: 2L
+49: +=
+50: 3L
+51: +=
+52: 4L
+53: +=
+54: 5L
+55: +=
+56: 6L
+57: +=
+58: 7L
+59: +=
+60: 8L
+61: +=
+62: 9L
+63: +=
+64: 10L
+65: +=
+66: 11L
+67: +=
+68: 12L
+69: +=
+70: 13L
+71: +=
+72: 14L
+73: +=
+74: 15L
+75: +=
+76: 16L
+77: +=
+78: 18L
+79: +=
+80: 21L
+81: +=
+82: := #
+C:/pol2/scripts/include/gumpUtil.inc, Line 59
+var c34:=CChr(34);
+83: decl global #9
+84: 34L
+85: Func(0,4): CChr
+86: :=
+87: #
+var length:={ };
+88: decl global #10
+89: array
+90: :=
+91: #
+length.+chars:={
+92: global #10
+93: "chars"
+94: .+
+95: array
+96: ""
+97: +=
+98: "|"
+99: +=
+100: "`',.;:"
+101: +=
+102: global #9
+103: "!"
+104: +
+105: +=
+106: "il1[]"
+107: +=
+108: "bcejotîˆ(){}="
+109: +=
+110: "adfpqrszIÑ‰~"
+111: +=
+112: "ghnuvy?<>-"
+113: +=
+114: "xJ578$?ﬂ+"
+115: +=
+116: "kCE2369^/*"
+117: +=
+118: "mwABDFOPéƒô÷40%"
+119: +=
+120: "GLNQSZ#"
+121: +=
+122: "HRT&_"
+123: +=
+124: "Kö‹UY"
+125: +=
+126: "X"
+127: +=
+128: "V"
+129: +=
+130: "M"
+131: +=
+132: "W"
+133: +=
+134: := #
+length.+charsf:=        // Space as Filler is not allowed
+135: global #10
+136: "charsf"
+137: .+
+138: "|||||||||||||||`',.;::::::::::"
+139: global #9
+140: +
+141: "!!!!!!!!!!!!!!"
+142: +
+143: "il1[]]]]]]]]]]]"
+144: +
+145: "bcejotîˆ(){}==="
+146: +
+147: "adfpqrszIÑ‰~~~~"
+148: +
+149: "ghnuvy?<>----"
+150: +
+151: "xJ578$?ﬂ+++++++"
+152: +
+153: "kCE2369^/******"
+154: +
+155: "mwABDFOPéƒô÷40%"
+156: +
+157: "GLNQSZ#########"
+158: +
+159: "HRT&___________"
+160: +
+161: "Kö‹UYYYYYYYYYYY"
+162: +
+163: "XXXXXXXXXXXXXXX"
+164: +
+165: "VVVVVVVVVVVVVVV"
+166: +
+167: "MMMMMMMMMMMMMMM"
+168: +
+169: "WWWWWWWWWWWWWWW"
+170: +
+171: := #
+length.+width:={
+172: global #10
+173: "width"
+174: .+
+175: array
+176: 2L
+177: +=
+178: 3L
+179: +=
+180: 4L
+181: +=
+182: 5L
+183: +=
+184: 6L
+185: +=
+186: 7L
+187: +=
+188: 8L
+189: +=
+190: 9L
+191: +=
+192: 10L
+193: +=
+194: 11L
+195: +=
+196: 12L
+197: +=
+198: 13L
+199: +=
+200: 14L
+201: +=
+202: 15L
+203: +=
+204: 16L
+205: +=
+206: 18L
+207: +=
+208: 21L
+209: +=
+210: := #
+C:/pol2/scripts/include/datafile.inc, Line 57
+var DF_DEBUG_MODE	:= 1;
+211: decl global #11
+212: 1L
+213: :=
+214: #
+C:\pol2\pkg\systems\spawnregion\textcmd\gm\../../spawnRegion.inc, Line 16
+var npccfg          := ReadConfigFile(":*:npcdesc");
+215: decl global #12
+216: ":*:npcdesc"
+217: Func(4,0): ReadConfigFile
+218: :=
+219: #
+var regcfg          := dictionary;  // Regions config.
+220: decl global #13
+221: dictionary
+222: :=
+223: #
+var grpcfg          := dictionary;  // Groups config.
+224: decl global #14
+225: dictionary
+226: :=
+227: #
+var regidx          := 0;           // Region index for SpawnAllRegions.
+228: decl global #15
+229: 0L
+230: :=
+231: #
+var regionscfg, groupscfg, counter;
+232: decl global #16
+233: #
+234: decl global #17
+235: #
+236: decl global #18
+237: #
+UnloadConfigFile(":spawnregion:spawnregions");
+238: ":spawnregion:spawnregions"
+239: Func(4,3): UnloadConfigFile
+240: #
+UnloadConfigFile(":spawnregion:spawngroups");
+241: ":spawnregion:spawngroups"
+242: Func(4,3): UnloadConfigFile
+243: #
+C:\pol2\pkg\systems\spawnregion\textcmd\gm\regionmanager.src, Line 8
+var alldone := 0;
+244: decl global #19
+245: 0L
+246: :=
+247: #
+var regiondone := 0;
+248: decl global #20
+249: 0L
+250: :=
+251: #
+var currenttotal := 0;
+252: decl global #21
+253: 0L
+254: :=
+255: #
+var maxtotal     := 0;
+256: decl global #22
+257: 0L
+258: :=
+259: #
+var SpawnRegionData := DFOpenDataFile("SpawnRegionData", 1);
+260: decl global #23
+261: "SpawnRegionData"
+262: 1L
+263: 0L
+264: makelocal
+265: jmp userfunc @978
+266: :=
+267: #
+var SpawnRegionFreq := DFOpenDataFile("SpawnRegionFreq", 1);
+268: decl global #24
+269: "SpawnRegionFreq"
+270: 1L
+271: 0L
+272: makelocal
+273: jmp userfunc @978
+274: :=
+275: #
+C:\pol2\pkg\systems\spawnregion\textcmd\gm\regionmanager.src, Line 15
+program textcmd_RegionManager(parms, param)
+276: get arg 'parms'
+277: get arg 'param'
+var who;
+278: decl local #2
+279: #
+if(parms[1] == "Script")
+280: local #0
+281: 1L
+282: [] 1
+283: "Script"
+284: ==
+285: if false goto 295
+who := parms[2];
+286: local #0
+287: 2L
+288: [] 1
+289: local2 := 
+param := parms[3];
+290: local #0
+291: 3L
+292: [] 1
+293: local1 := 
+294: goto297
+who := parms;
+295: local #0
+296: local2 := 
+if(param)
+297: local #1
+298: if false goto 361
+if((param == "start") or (param == "1"))
+299: local #1
+300: "start"
+301: ==
+302: local #1
+303: "1"
+304: ==
+305: ||
+306: if false goto 329
+if (GetGlobalProperty("SpawnRegionOff"))
+307: "SpawnRegionOff"
+308: Func(2,18): GetGlobalProperty
+309: if false goto 320
+EraseGlobalProperty("SpawnRegionOff");
+310: "SpawnRegionOff"
+311: Func(2,24): EraseGlobalProperty
+312: #
+SendSysMessage(who, "SpawnRegionManager enabled.");
+313: local #2
+314: "SpawnRegionManager enabled."
+315: 3L
+316: 1000L
+317: Func(2,25): SendSysMessage
+318: #
+319: goto328
+SendSysMessage(who, "SpawnRegionManager already enabled.");
+320: local #2
+321: "SpawnRegionManager already enabled."
+322: 3L
+323: 1000L
+324: Func(2,25): SendSysMessage
+325: #
+return 0;
+326: 0L
+327: progend
+328: goto359
+elseif((param == "stop") or (param == "0"))
+329: local #1
+330: "stop"
+331: ==
+332: local #1
+333: "0"
+334: ==
+335: ||
+336: if false goto 359
+if (!GetGlobalProperty("SpawnRegionOff"))
+337: "SpawnRegionOff"
+338: Func(2,18): GetGlobalProperty
+339: if true goto 351
+SetGlobalProperty("SpawnRegionOff", 1);
+340: "SpawnRegionOff"
+341: 1L
+342: Func(2,23): SetGlobalProperty
+343: #
+SendSysMessage(who, "SpawnRegionManager disabled.");
+344: local #2
+345: "SpawnRegionManager disabled."
+346: 3L
+347: 1000L
+348: Func(2,25): SendSysMessage
+349: #
+350: goto359
+SendSysMessage(who, "SpawnRegionManager already disabled.");
+351: local #2
+352: "SpawnRegionManager already disabled."
+353: 3L
+354: 1000L
+355: Func(2,25): SendSysMessage
+356: #
+return 0;
+357: 0L
+358: progend
+return;
+359: ""
+360: progend
+regionscfg  := OpenDataFile("SpawnRegions");
+361: "SpawnRegions"
+362: Func(6,0): OpenDataFile
+363: global16 := 
+groupscfg   := OpenDataFile("SpawnGroups");
+364: "SpawnGroups"
+365: Func(6,0): OpenDataFile
+366: global17 := 
+ReadRegions();
+367: makelocal
+368: jmp userfunc @1537
+369: #
+ReadGroups();
+370: makelocal
+371: jmp userfunc @1515
+372: #
+SpawnRegionData := DFOpenDataFile("SpawnRegionData", 1);
+373: "SpawnRegionData"
+374: 1L
+375: 0L
+376: makelocal
+377: jmp userfunc @978
+378: global23 := 
+SpawnRegionFreq := DFOpenDataFile("SpawnRegionFreq", 1);
+379: "SpawnRegionFreq"
+380: 1L
+381: 0L
+382: makelocal
+383: jmp userfunc @978
+384: global24 := 
+ComposeSpawnRegionGump(who);
+385: local #2
+386: makelocal
+387: jmp userfunc @393
+388: #
+389: global #19
+390: if false goto 361
+391: leave block(3)
+392: progend
+C:\pol2\pkg\systems\spawnregion\textcmd\gm\regionmanager.src, Line 64
+function ComposeSpawnRegionGump(who)
+393: pop param 'who'
+GFInitGump(0, 0);
+394: 0L
+395: 0L
+396: makelocal
+397: jmp userfunc @1121
+398: #
+GFPage(0);
+399: 0L
+400: makelocal
+401: jmp userfunc @1151
+402: #
+GFResizePic(  0,   0, 5120, 440, 470);                    //dark menu backgroun
+403: 0L
+404: 0L
+405: 5120L
+406: 440L
+407: 470L
+408: makelocal
+409: jmp userfunc @1169
+410: #
+GFResizePic( 10,  10, 5054, 420, 420);                    //light menu backgrou
+411: 10L
+412: 10L
+413: 5054L
+414: 420L
+415: 420L
+416: makelocal
+417: jmp userfunc @1169
+418: #
+GFTextLine(132, 17, 0, "Spawn Region Manager");
+419: 132L
+420: 17L
+421: 0L
+422: "Spawn Region Manager"
+423: makelocal
+424: jmp userfunc @1247
+425: #
+GFTextLine(130, 15, COLOR_YELLOW, "Spawn Region Manager");
+426: 130L
+427: 15L
+428: 53L
+429: "Spawn Region Manager"
+430: makelocal
+431: jmp userfunc @1247
+432: #
+GFTextLine(30, 30, COLOR_BLUE_LIGHT, "Region Name");
+433: 30L
+434: 30L
+435: 99L
+436: "Region Name"
+437: makelocal
+438: jmp userfunc @1247
+439: #
+GFTextLine(300, 30, COLOR_BLUE_LIGHT, "Status");
+440: 300L
+441: 30L
+442: 99L
+443: "Status"
+444: makelocal
+445: jmp userfunc @1247
+446: #
+GFTextLine(370, 30, COLOR_BLUE_LIGHT, "Go To");
+447: 370L
+448: 30L
+449: 99L
+450: "Go To"
+451: makelocal
+452: jmp userfunc @1247
+453: #
+GFTextLine(140, 400, COLOR_GREEN, "Add Region?");
+454: 140L
+455: 400L
+456: 63L
+457: "Add Region?"
+458: makelocal
+459: jmp userfunc @1247
+460: #
+var addnew := GFButtonID(117, 400, G_STONE_SQUARE, G_STONE_SQUARE_CHECK, 1);
+461: decl local #1
+462: 117L
+463: 400L
+464: 210L
+465: 211L
+466: 1L
+467: 0L
+468: makelocal
+469: jmp userfunc @1037
+470: :=
+471: #
+GFTextLine(270, 400, COLOR_GREEN, "Edit Groups?");
+472: 270L
+473: 400L
+474: 63L
+475: "Edit Groups?"
+476: makelocal
+477: jmp userfunc @1247
+478: #
+GFTextLine( 50, 370, COLOR_RED,   "Despawn All Regions (regions will respawn no
+479: 50L
+480: 370L
+481: 34L
+482: "Despawn All Regions (regions will respawn normally)"
+483: makelocal
+484: jmp userfunc @1247
+485: #
+var respawn := GFButtonID( 15, 370, 4023, 4025, 1);
+486: decl local #2
+487: 15L
+488: 370L
+489: 4023L
+490: 4025L
+491: 1L
+492: 0L
+493: makelocal
+494: jmp userfunc @1037
+495: :=
+496: #
+var groups  := GFButtonID(247, 400, G_STONE_SQUARE, G_STONE_SQUARE_CHECK, 1);
+497: decl local #3
+498: 247L
+499: 400L
+500: 210L
+501: 211L
+502: 1L
+503: 0L
+504: makelocal
+505: jmp userfunc @1037
+506: :=
+507: #
+var cancel  := GFButtonID( 40, 400, G_RED_OVAL_CANCEL_0, G_RED_OVAL_CANCEL_1, 1
+508: decl local #4
+509: 40L
+510: 400L
+511: 2071L
+512: 2072L
+513: 1L
+514: 0L
+515: makelocal
+516: jmp userfunc @1037
+517: :=
+518: #
+var rcfg    := GlobalSpawnRegions();
+519: decl local #5
+520: makelocal
+521: jmp userfunc @1315
+522: :=
+523: #
+var gcfg    := GlobalSpawnGroups();
+524: decl local #6
+525: makelocal
+526: jmp userfunc @1308
+527: :=
+528: #
+var regions := rcfg.keys();
+529: decl local #7
+530: local #5
+531: Call Method keys (0 params)
+532: :=
+533: #
+var numtemp := regions.size();
+534: decl local #8
+535: local #7
+536: Call Method size (0 params)
+537: :=
+538: #
+var numpages := 1;
+539: decl local #9
+540: 1L
+541: :=
+542: #
+while (numtemp > 0)
+543: local #8
+544: 0L
+545: >
+546: if false goto 560
+numtemp := numtemp - TPERPAGE;
+547: local #8
+548: 15L
+549: -
+550: local8 := 
+if (numtemp > 0)
+551: local #8
+552: 0L
+553: >
+554: if false goto 559
+numpages := numpages + 1;
+555: local #9
+556: 1L
+557: +
+558: local9 := 
+559: goto543
+var bt := array;
+560: decl local #10
+561: array
+562: :=
+563: #
+var btgo := array;
+564: decl local #11
+565: array
+566: :=
+567: #
+var pg;
+568: decl local #12
+569: #
+maxtotal := 0;
+570: 0L
+571: global22 := 
+currenttotal := 0;
+572: 0L
+573: global21 := 
+for(pg := 1; pg <= numpages; pg := pg + 1)
+574: local #12
+575: 1L
+576: :=
+577: #
+578: local #12
+579: local #9
+580: <=
+581: if false goto 597
+ComposeRegionsPage(pg, regions, bt, btgo, numpages);
+582: local #12
+583: local #7
+584: local #10
+585: local #11
+586: local #9
+587: makelocal
+588: jmp userfunc @3043
+589: #
+590: local #12
+591: local #12
+592: 1L
+593: +
+594: :=
+595: #
+596: goto578
+GFPage(0);
+597: 0L
+598: makelocal
+599: jmp userfunc @1151
+600: #
+GFTextLine(100, 430, COLOR_YELLOW, "Spawn Region Usage Statistics");
+601: 100L
+602: 430L
+603: 53L
+604: "Spawn Region Usage Statistics"
+605: makelocal
+606: jmp userfunc @1247
+607: #
+GFTextLine(100, 445, COLOR_YELLOW, "Current Status: " + currenttotal + "/" + ma
+608: 100L
+609: 445L
+610: 53L
+611: "Current Status: "
+612: global #21
+613: +
+614: "/"
+615: +
+616: global #22
+617: +
+618: makelocal
+619: jmp userfunc @1247
+620: #
+var retkey := GFSendGump(who);
+621: decl local #13
+622: local #0
+623: makelocal
+624: jmp userfunc @1225
+625: :=
+626: #
+if(retkey[cancel.keyid])
+627: local #13
+628: local #4
+629: get member 'keyid'
+630: [] 1
+631: if false goto 637
+alldone := 1;
+632: 1L
+633: global19 := 
+return 0;
+634: 0L
+635: return
+636: goto690
+elseif(retkey[respawn.keyid])
+637: local #13
+638: local #2
+639: get member 'keyid'
+640: [] 1
+641: if false goto 651
+DespawnAllRegions(who);
+642: local #0
+643: makelocal
+644: jmp userfunc @835
+645: #
+alldone := 0;
+646: 0L
+647: global19 := 
+return 0;
+648: 0L
+649: return
+650: goto690
+elseif(retkey[addnew.keyid])
+651: local #13
+652: local #1
+653: get member 'keyid'
+654: [] 1
+655: if false goto 665
+AddNewRegion(who);
+656: local #0
+657: makelocal
+658: jmp userfunc @1624
+659: #
+alldone := 0;
+660: 0L
+661: global19 := 
+return 0;
+662: 0L
+663: return
+664: goto690
+elseif(retkey[groups.keyid])
+665: local #13
+666: local #3
+667: get member 'keyid'
+668: [] 1
+669: if false goto 690
+var done := ComposeSpawnGroupGump(who);
+670: decl local #0
+671: local #0
+672: makelocal
+673: jmp userfunc @3327
+674: :=
+675: #
+while(done == 1)
+676: local #14
+677: 1L
+678: ==
+679: if false goto 685
+done := ComposeSpawnGroupGump(who);
+680: local #0
+681: makelocal
+682: jmp userfunc @3327
+683: local14 := 
+684: goto676
+alldone := 0;
+685: 0L
+686: global19 := 
+return 0;
+687: 0L
+688: return
+689: leave block(1)
+var num;
+690: decl local #14
+691: #
+for (num := 1; num <= btgo.size(); num := num + 1)
+692: local #14
+693: 1L
+694: :=
+695: #
+696: local #14
+697: local #11
+698: Call Method size (0 params)
+699: <=
+700: if false goto 722
+if (retkey[btgo[num]])
+701: local #13
+702: local #11
+703: local #14
+704: [] 1
+705: [] 1
+706: if false goto 715
+GoToRegion(who, regions[num]);
+707: local #0
+708: local #7
+709: local #14
+710: [] 1
+711: makelocal
+712: jmp userfunc @1322
+713: #
+exit;
+714: exit
+715: local #14
+716: local #14
+717: 1L
+718: +
+719: :=
+720: #
+721: goto696
+var idx;
+722: decl local #15
+723: #
+for (num := 1; num <= bt.size(); num := num + 1)
+724: local #14
+725: 1L
+726: :=
+727: #
+728: local #14
+729: local #10
+730: Call Method size (0 params)
+731: <=
+732: if false goto 751
+if (bt[num] == retkey[0])
+733: local #10
+734: local #14
+735: [] 1
+736: local #13
+737: 0L
+738: [] 1
+739: ==
+740: if false goto 744
+idx := num;
+741: local #14
+742: local15 := 
+break;
+743: goto751
+744: local #14
+745: local #14
+746: 1L
+747: +
+748: :=
+749: #
+750: goto728
+if (!idx)
+751: local #15
+752: if true goto 755
+return 0;
+753: 0L
+754: return
+var holder := rcfg.FindElement(regions[idx]);
+755: decl local #16
+756: local #5
+757: local #7
+758: local #15
+759: [] 1
+760: Call Method findelement (1 params)
+761: :=
+762: #
+var rgelem := holder.PropNames();
+763: decl local #17
+764: local #16
+765: Call Method propnames (0 params)
+766: :=
+767: #
+var reggroups := {};
+768: decl local #18
+769: array
+770: :=
+771: #
+ReadRegions();
+772: makelocal
+773: jmp userfunc @1537
+774: #
+ReadGroups();
+775: makelocal
+776: jmp userfunc @1515
+777: #
+foreach thing in rgelem
+778: local #17
+779: initforeach @790
+if(thing != "rect")
+780: local #19
+781: "rect"
+782: <>
+783: if false goto 790
+reggroups.append(holder.getprop(thing));
+784: local #18
+785: local #16
+786: local #19
+787: Call Method getprop (1 params)
+788: Call Method append (1 params)
+789: #
+790: stepforeach @780
+791: leave block(3)
+if (!reggroups)
+792: local #18
+793: if true goto 804
+SendMsg(who, "Unable to find groups for: " + regions[idx]);
+794: local #0
+795: "Unable to find groups for: "
+796: local #7
+797: local #15
+798: [] 1
+799: +
+800: makelocal
+801: jmp userfunc @1559
+802: #
+exit;
+803: exit
+rgelem := holder.PropNames();
+804: local #16
+805: Call Method propnames (0 params)
+806: local17 := 
+reggroups := {};
+807: array
+808: local18 := 
+foreach thing in rgelem
+809: local #17
+810: initforeach @821
+if(thing != "rect")
+811: local #19
+812: "rect"
+813: <>
+814: if false goto 821
+reggroups.append(holder.getprop(thing));
+815: local #18
+816: local #16
+817: local #19
+818: Call Method getprop (1 params)
+819: Call Method append (1 params)
+820: #
+821: stepforeach @811
+822: leave block(3)
+ComposeRegionGump(who, regions[idx], reggroups);
+823: local #0
+824: local #7
+825: local #15
+826: [] 1
+827: local #18
+828: makelocal
+829: jmp userfunc @2131
+830: #
+831: global #20
+832: if false goto 804
+833: 0L
+834: return
+C:\pol2\pkg\systems\spawnregion\textcmd\gm\regionmanager.src, Line 166
+function DespawnAllRegions(who)
+835: pop param 'who'
+ReadRegions();
+836: makelocal
+837: jmp userfunc @1537
+838: #
+ReadGroups();
+839: makelocal
+840: jmp userfunc @1515
+841: #
+var regions := regionscfg.Keys();
+842: decl local #1
+843: global #16
+844: Call Method keys (0 params)
+845: :=
+846: #
+counter := 0;
+847: 0L
+848: global18 := 
+foreach reg in regions
+849: local #1
+850: initforeach @874
+var ct := counter;
+851: decl local #0
+852: global #18
+853: :=
+854: #
+SetGlobalProperty("#" + reg, 1);
+855: "#"
+856: local #2
+857: +
+858: 1L
+859: Func(2,23): SetGlobalProperty
+860: #
+DespawnRegionRM(reg);
+861: local #2
+862: makelocal
+863: jmp userfunc @888
+864: #
+EraseGlobalProperty("#" + reg);
+865: "#"
+866: local #2
+867: +
+868: Func(2,24): EraseGlobalProperty
+869: #
+sleepms(100);
+870: 100L
+871: Func(3,0): sleepms
+872: #
+873: leave block(1)
+874: stepforeach @851
+875: leave block(3)
+SendSysMessage(who, "Despawned " + counter + " NPCs");
+876: local #0
+877: "Despawned "
+878: global #18
+879: +
+880: " NPCs"
+881: +
+882: 3L
+883: 1000L
+884: Func(2,25): SendSysMessage
+885: #
+886: 0L
+887: return
+C:\pol2\pkg\systems\spawnregion\textcmd\gm\../../spawnRegion.inc, Line 227
+function DespawnRegionRM(region)
+888: pop param 'region'
+var rgroups := DFFindElement(SpawnRegionData, region, 1);
+889: decl local #1
+890: global #23
+891: local #0
+892: 1L
+893: makelocal
+894: jmp userfunc @913
+895: :=
+896: #
+var pnames := rgroups.PropNames();
+897: decl local #2
+898: local #1
+899: Call Method propnames (0 params)
+900: :=
+901: #
+foreach grp in pnames
+902: local #2
+903: initforeach @909
+DespawnGroupRM(region, grp);
+904: local #0
+905: local #3
+906: makelocal
+907: jmp userfunc @3605
+908: #
+909: stepforeach @904
+910: leave block(3)
+911: 0L
+912: return
+C:/pol2/scripts/include/datafile.inc, Line 89
+function DFFindElement(byref file_ref, elem_name, create:=DF_NO_CREATE)
+913: pop param 'create'
+914: pop param 'elem_name'
+915: pop param byref 'file_ref'
+var temp := file_ref.FindElement( cstr(elem_name) );
+916: decl local #3
+917: local #2
+918: local #1
+919: Func(0,1): CStr
+920: Call Method findelement (1 params)
+921: :=
+922: #
+if (!temp && create)
+923: local #3
+924: !
+925: local #0
+926: &&
+927: if false goto 945
+DF_OutPut("Creating elem: " +  cstr(elem_name) );
+928: "Creating elem: "
+929: local #1
+930: Func(0,1): CStr
+931: +
+932: makelocal
+933: jmp userfunc @3630
+934: #
+file_ref.CreateElement( cstr(elem_name) );
+935: local #2
+936: local #1
+937: Func(0,1): CStr
+938: Call Method createelement (1 params)
+939: #
+temp := file_ref.FindElement( cstr(elem_name) );
+940: local #2
+941: local #1
+942: Func(0,1): CStr
+943: Call Method findelement (1 params)
+944: local3 := 
+if ( temp )
+945: local #3
+946: if false goto 950
+return temp;
+947: local #3
+948: return
+949: goto976
+elseif (create)
+950: local #0
+951: if false goto 976
+var errmsg := error;
+952: decl local #0
+953: error
+954: :=
+955: #
+errmsg.+errortext := "Could not open data elem " + elem_name + ":" + temp.error
+956: local #4
+957: "errortext"
+958: .+
+959: "Could not open data elem "
+960: local #1
+961: +
+962: ":"
+963: +
+964: local #3
+965: get member 'errortext'
+966: +
+967: := #
+DF_OutPut(errmsg.errortext);
+968: local #4
+969: get member 'errortext'
+970: makelocal
+971: jmp userfunc @3630
+972: #
+return errmsg;
+973: local #4
+974: return
+975: leave block(1)
+976: 0L
+977: return
+C:/pol2/scripts/include/datafile.inc, Line 59
+function DFOpenDataFile(filename, create:=DF_NO_CREATE, flags:=DF_KEYTYPE_STRIN
+978: pop param 'flags'
+979: pop param 'create'
+980: pop param 'filename'
+var temp := OpenDataFile(filename);
+981: decl local #3
+982: local #2
+983: Func(6,0): OpenDataFile
+984: :=
+985: #
+if ( (!temp) && (create) )
+986: local #3
+987: !
+988: local #1
+989: &&
+990: if false goto 1004
+DF_OutPut("Creating data file: " + filename);
+991: "Creating data file: "
+992: local #2
+993: +
+994: makelocal
+995: jmp userfunc @3630
+996: #
+CreateDataFile(filename, flags);
+997: local #2
+998: local #0
+999: Func(6,1): CreateDataFile
+1000: #
+temp := OpenDataFile(filename);
+1001: local #2
+1002: Func(6,0): OpenDataFile
+1003: local3 := 
+if ( temp )
+1004: local #3
+1005: if false goto 1009
+return temp;
+1006: local #3
+1007: return
+1008: goto1035
+elseif ( create ) 
+1009: local #1
+1010: if false goto 1035
+var errmsg := error;
+1011: decl local #0
+1012: error
+1013: :=
+1014: #
+errmsg.+errortext := "Could not open " + filename + ":" + temp.errortext;
+1015: local #4
+1016: "errortext"
+1017: .+
+1018: "Could not open "
+1019: local #2
+1020: +
+1021: ":"
+1022: +
+1023: local #3
+1024: get member 'errortext'
+1025: +
+1026: := #
+DF_OutPut(errmsg.errortext);
+1027: local #4
+1028: get member 'errortext'
+1029: makelocal
+1030: jmp userfunc @3630
+1031: #
+return errmsg;
+1032: local #4
+1033: return
+1034: leave block(1)
+1035: 0L
+1036: return
+C:\pol2\pkg\systems\spawnregion\textcmd\gm\../../../../foundations/gumps/gumps.inc, Line 543
+function GFButtonID( x, y, release, press, close, id := 0 )
+1037: pop param 'id'
+1038: pop param 'close'
+1039: pop param 'press'
+1040: pop param 'release'
+1041: pop param 'y'
+1042: pop param 'x'
+var line := "button " + CStr(GFref.x + CInt(x)) + " " + CStr(GFref.y + CInt(y))
+1043: decl local #6
+1044: "button "
+1045: global #0
+1046: get member 'x'
+1047: local #5
+1048: Func(0,0): CInt
+1049: +
+1050: Func(0,1): CStr
+1051: +
+1052: " "
+1053: +
+1054: global #0
+1055: get member 'y'
+1056: local #4
+1057: Func(0,0): CInt
+1058: +
+1059: Func(0,1): CStr
+1060: +
+1061: :=
+1062: #
+line := line + " " + CStr(CInt(release)) + " " + CStr(CInt(press)) + " ";
+1063: local #6
+1064: " "
+1065: +
+1066: local #3
+1067: Func(0,0): CInt
+1068: Func(0,1): CStr
+1069: +
+1070: " "
+1071: +
+1072: local #2
+1073: Func(0,0): CInt
+1074: Func(0,1): CStr
+1075: +
+1076: " "
+1077: +
+1078: local6 := 
+if ( close == 0 )
+1079: local #1
+1080: 0L
+1081: ==
+1082: if false goto 1088
+line := line + "0 0 ";
+1083: local #6
+1084: "0 0 "
+1085: +
+1086: local6 := 
+1087: goto1092
+line := line + "1 0 ";
+1088: local #6
+1089: "1 0 "
+1090: +
+1091: local6 := 
+id := CInt(id);		// Ensure it's an integer
+1092: local #0
+1093: Func(0,0): CInt
+1094: local0 := 
+if ( id < 1 )		// Catch errors (0) and invalid (negative) values
+1095: local #0
+1096: 1L
+1097: <
+1098: if false goto 1105
+id := GFbutid;
+1099: global #5
+1100: local0 := 
+GFbutid := GFbutid + 1;		// Update KeyID (butid) (only if used)
+1101: global #5
+1102: 1L
+1103: +
+1104: global5 := 
+line := line + CStr(id);
+1105: local #6
+1106: local #0
+1107: Func(0,1): CStr
+1108: +
+1109: local6 := 
+GFlayout.append( line );
+1110: global #1
+1111: local #6
+1112: Call Method append (1 params)
+1113: #
+return XGFRetVal( GFlayout.size(), -1, id );
+1114: global #1
+1115: Call Method size (0 params)
+1116: -1L
+1117: local #0
+1118: makelocal
+1119: jmp userfunc @1585
+1120: return
+C:\pol2\pkg\systems\spawnregion\textcmd\gm\../../../../foundations/gumps/gumps.inc, Line 279
+function GFInitGump( sx := 0, sy := 0 )
+1121: pop param 'sy'
+1122: pop param 'sx'
+XGFReset();
+1123: makelocal
+1124: jmp userfunc @1569
+1125: #
+GFSetRef( sx, sy );
+1126: local #1
+1127: local #0
+1128: makelocal
+1129: jmp userfunc @1231
+1130: #
+GFPage( 0 );
+1131: 0L
+1132: makelocal
+1133: jmp userfunc @1151
+1134: #
+GFNoDispose();
+1135: makelocal
+1136: jmp userfunc @1140
+1137: #
+1138: 0L
+1139: return
+C:\pol2\pkg\systems\spawnregion\textcmd\gm\../../../../foundations/gumps/gumps.inc, Line 314
+function GFNoDispose()
+GFlayout.append( "nodispose" );
+1140: global #1
+1141: "nodispose"
+1142: Call Method append (1 params)
+1143: #
+return XGFRetVal( GFlayout.size() );
+1144: global #1
+1145: Call Method size (0 params)
+1146: -1L
+1147: -1L
+1148: makelocal
+1149: jmp userfunc @1585
+1150: return
+C:\pol2\pkg\systems\spawnregion\textcmd\gm\../../../../foundations/gumps/gumps.inc, Line 292
+function GFPage( page )
+1151: pop param 'page'
+page := CInt(page);
+1152: local #0
+1153: Func(0,0): CInt
+1154: local0 := 
+GFlayout.append( "page " + CStr(page) );
+1155: global #1
+1156: "page "
+1157: local #0
+1158: Func(0,1): CStr
+1159: +
+1160: Call Method append (1 params)
+1161: #
+return XGFRetVal( GFlayout.size(), -1, page );
+1162: global #1
+1163: Call Method size (0 params)
+1164: -1L
+1165: local #0
+1166: makelocal
+1167: jmp userfunc @1585
+1168: return
+C:\pol2\pkg\systems\spawnregion\textcmd\gm\../../../../foundations/gumps/gumps.inc, Line 370
+function GFResizePic( x, y, gumpid, w, h )
+1169: pop param 'h'
+1170: pop param 'w'
+1171: pop param 'gumpid'
+1172: pop param 'y'
+1173: pop param 'x'
+var line := "resizepic " + CStr(GFref.x + CInt(x)) + " " + CStr(GFref.y + CInt(
+1174: decl local #5
+1175: "resizepic "
+1176: global #0
+1177: get member 'x'
+1178: local #4
+1179: Func(0,0): CInt
+1180: +
+1181: Func(0,1): CStr
+1182: +
+1183: " "
+1184: +
+1185: global #0
+1186: get member 'y'
+1187: local #3
+1188: Func(0,0): CInt
+1189: +
+1190: Func(0,1): CStr
+1191: +
+1192: :=
+1193: #
+line := line + " " + CStr(CInt(gumpid)) + " " + CStr(CInt(w)) + " " + CStr(CInt
+1194: local #5
+1195: " "
+1196: +
+1197: local #2
+1198: Func(0,0): CInt
+1199: Func(0,1): CStr
+1200: +
+1201: " "
+1202: +
+1203: local #1
+1204: Func(0,0): CInt
+1205: Func(0,1): CStr
+1206: +
+1207: " "
+1208: +
+1209: local #0
+1210: Func(0,0): CInt
+1211: Func(0,1): CStr
+1212: +
+1213: local5 := 
+GFlayout.append( line );
+1214: global #1
+1215: local #5
+1216: Call Method append (1 params)
+1217: #
+return XGFRetVal( GFlayout.size() );
+1218: global #1
+1219: Call Method size (0 params)
+1220: -1L
+1221: -1L
+1222: makelocal
+1223: jmp userfunc @1585
+1224: return
+C:\pol2\pkg\systems\spawnregion\textcmd\gm\../../../../foundations/gumps/gumps.inc, Line 808
+function GFSendGump( who )
+1225: pop param 'who'
+return SendDialogGump( who, GFlayout, GFdata );
+1226: local #0
+1227: global #1
+1228: global #2
+1229: Func(2,0): SendDialogGump
+1230: return
+C:\pol2\pkg\systems\spawnregion\textcmd\gm\../../../../foundations/gumps/gumps.inc, Line 259
+function GFSetRef( x := 0, y := 0 )
+1231: pop param 'y'
+1232: pop param 'x'
+var oldref := GFref;
+1233: decl local #2
+1234: global #0
+1235: :=
+1236: #
+GFref.x := CInt(x);
+1237: global #0
+1238: local #1
+1239: Func(0,0): CInt
+1240: set member 'x' #
+GFref.y := CInt(y);
+1241: global #0
+1242: local #0
+1243: Func(0,0): CInt
+1244: set member 'y' #
+return oldref;
+1245: local #2
+1246: return
+C:\pol2\pkg\systems\spawnregion\textcmd\gm\../../../../foundations/gumps/gumps.inc, Line 418
+function GFTextLine(x, y, colour, text)
+1247: pop param 'text'
+1248: pop param 'colour'
+1249: pop param 'y'
+1250: pop param 'x'
+text := CStr(text);
+1251: local #0
+1252: Func(0,1): CStr
+1253: local0 := 
+var line := "text " + CStr(GFref.x + CInt(x)) + " " + CStr(GFref.y + CInt(y));
+1254: decl local #4
+1255: "text "
+1256: global #0
+1257: get member 'x'
+1258: local #3
+1259: Func(0,0): CInt
+1260: +
+1261: Func(0,1): CStr
+1262: +
+1263: " "
+1264: +
+1265: global #0
+1266: get member 'y'
+1267: local #2
+1268: Func(0,0): CInt
+1269: +
+1270: Func(0,1): CStr
+1271: +
+1272: :=
+1273: #
+line := line + " " + CStr(CInt(colour)) + " " + CStr(GFdtidx);
+1274: local #4
+1275: " "
+1276: +
+1277: local #1
+1278: Func(0,0): CInt
+1279: Func(0,1): CStr
+1280: +
+1281: " "
+1282: +
+1283: global #3
+1284: Func(0,1): CStr
+1285: +
+1286: local4 := 
+GFlayout.append( line );
+1287: global #1
+1288: local #4
+1289: Call Method append (1 params)
+1290: #
+GFdtidx := GFdtidx + 1;		// Update index into GFdata[]
+1291: global #3
+1292: 1L
+1293: +
+1294: global3 := 
+GFdata[GFdtidx] := text;	// arrays start at #1... id#0 goes into [1]!!
+1295: global #2
+1296: global #3
+1297: local #0
+1298: [] := (1) #
+return XGFRetVal( GFlayout.size(), GFdtidx - 1 );
+1299: global #1
+1300: Call Method size (0 params)
+1301: global #3
+1302: 1L
+1303: -
+1304: -1L
+1305: makelocal
+1306: jmp userfunc @1585
+1307: return
+C:\pol2\pkg\systems\spawnregion\textcmd\gm\regionmanager.src, Line 55
+function GlobalSpawnGroups()
+var dfile := OpenDataFile("SpawnGroups");
+1308: decl local #0
+1309: "SpawnGroups"
+1310: Func(6,0): OpenDataFile
+1311: :=
+1312: #
+return dfile;
+1313: local #0
+1314: return
+C:\pol2\pkg\systems\spawnregion\textcmd\gm\regionmanager.src, Line 60
+function GlobalSpawnRegions()
+var dfile := OpenDataFile("SpawnRegions");
+1315: decl local #0
+1316: "SpawnRegions"
+1317: Func(6,0): OpenDataFile
+1318: :=
+1319: #
+return dfile;
+1320: local #0
+1321: return
+C:\pol2\pkg\systems\spawnregion\textcmd\gm\regionmanager.src, Line 542
+function GoToRegion(who, region)
+1322: pop param 'region'
+1323: pop param 'who'
+var rcfg := GlobalSpawnRegions();
+1324: decl local #2
+1325: makelocal
+1326: jmp userfunc @1315
+1327: :=
+1328: #
+var rdata := SplitWords(rcfg.FindElement(region).GetProp("rect"));
+1329: decl local #3
+1330: local #2
+1331: local #0
+1332: Call Method findelement (1 params)
+1333: "rect"
+1334: Call Method getprop (1 params)
+1335: Func(0,5): SplitWords
+1336: :=
+1337: #
+var rect := struct;
+1338: decl local #4
+1339: struct
+1340: :=
+1341: #
+rect.+x1 := CInt(rdata[1]);
+1342: local #4
+1343: "x1"
+1344: .+
+1345: local #3
+1346: 1L
+1347: [] 1
+1348: Func(0,0): CInt
+1349: := #
+rect.+y1 := CInt(rdata[2]);
+1350: local #4
+1351: "y1"
+1352: .+
+1353: local #3
+1354: 2L
+1355: [] 1
+1356: Func(0,0): CInt
+1357: := #
+rect.+x2 := CInt(rdata[3]);
+1358: local #4
+1359: "x2"
+1360: .+
+1361: local #3
+1362: 3L
+1363: [] 1
+1364: Func(0,0): CInt
+1365: := #
+rect.+y2 := CInt(rdata[4]);
+1366: local #4
+1367: "y2"
+1368: .+
+1369: local #3
+1370: 4L
+1371: [] 1
+1372: Func(0,0): CInt
+1373: := #
+var x := ((rect.x2 - rect.x1) / 2) + rect.x1;
+1374: decl local #5
+1375: local #4
+1376: get member 'x2'
+1377: local #4
+1378: get member 'x1'
+1379: -
+1380: 2L
+1381: /
+1382: local #4
+1383: get member 'x1'
+1384: +
+1385: :=
+1386: #
+var y := ((rect.y2 - rect.y1) / 2) + rect.y1;
+1387: decl local #6
+1388: local #4
+1389: get member 'y2'
+1390: local #4
+1391: get member 'y1'
+1392: -
+1393: 2L
+1394: /
+1395: local #4
+1396: get member 'y1'
+1397: +
+1398: :=
+1399: #
+var z := 0;
+1400: decl local #7
+1401: 0L
+1402: :=
+1403: #
+var tries := 0;
+1404: decl local #8
+1405: 0L
+1406: :=
+1407: #
+var sh;
+1408: decl local #9
+1409: #
+var info;
+1410: decl local #10
+1411: #
+var success := 0;
+1412: decl local #11
+1413: 0L
+1414: :=
+1415: #
+if (!MoveCharacterToLocation(who, x, y, z, 0))
+1416: local #1
+1417: local #5
+1418: local #6
+1419: local #7
+1420: 0L
+1421: Func(2,26): MoveCharacterToLocation
+1422: if true goto 1494
+SendMsg(who, "Cannot move to centre, trying random location in region: " + regi
+1423: local #1
+1424: "Cannot move to centre, trying random location in region: "
+1425: local #0
+1426: +
+1427: "..."
+1428: +
+1429: makelocal
+1430: jmp userfunc @1559
+1431: #
+x := RandomInt(rect.x2 - rect.x1) + rect.x1;
+1432: local #4
+1433: get member 'x2'
+1434: local #4
+1435: get member 'x1'
+1436: -
+1437: Func(5,0): RandomInt
+1438: local #4
+1439: get member 'x1'
+1440: +
+1441: local5 := 
+y := RandomInt(rect.y2 - rect.y1) + rect.y1;
+1442: local #4
+1443: get member 'y2'
+1444: local #4
+1445: get member 'y1'
+1446: -
+1447: Func(5,0): RandomInt
+1448: local #4
+1449: get member 'y1'
+1450: +
+1451: local6 := 
+z := GetMapInfo(x, y).z;
+1452: local #5
+1453: local #6
+1454: Func(2,19): GetMapInfo
+1455: get member 'z'
+1456: local7 := 
+tries := tries + 1;
+1457: local #8
+1458: 1L
+1459: +
+1460: local8 := 
+sh := GetStandingHeight(x, y, z);
+1461: local #5
+1462: local #6
+1463: local #7
+1464: Func(2,20): GetStandingHeight
+1465: local9 := 
+info := Hex(GetMapInfo(x, y).landtile);
+1466: local #5
+1467: local #6
+1468: Func(2,19): GetMapInfo
+1469: get member 'landtile'
+1470: Func(0,8): Hex
+1471: local10 := 
+if ((info < 0x406) || (info > 0x455))
+1472: local #10
+1473: 1030L
+1474: <
+1475: local #10
+1476: 1109L
+1477: >
+1478: ||
+1479: if false goto 1489
+if (MoveCharacterToLocation(who, x, y, z, 0))
+1480: local #1
+1481: local #5
+1482: local #6
+1483: local #7
+1484: 0L
+1485: Func(2,26): MoveCharacterToLocation
+1486: if false goto 1489
+success :=  1;
+1487: 1L
+1488: local11 := 
+1489: local #8
+1490: 10L
+1491: >
+1492: if false goto 1432
+1493: goto1496
+success := 1;
+1494: 1L
+1495: local11 := 
+if(!success)
+1496: local #11
+1497: if true goto 1508
+SendMsg(who, "Cannot move to region: " + region + ", try again.");
+1498: local #1
+1499: "Cannot move to region: "
+1500: local #0
+1501: +
+1502: ", try again."
+1503: +
+1504: makelocal
+1505: jmp userfunc @1559
+1506: #
+1507: goto1513
+SendMsg(who, "Success.");
+1508: local #1
+1509: "Success."
+1510: makelocal
+1511: jmp userfunc @1559
+1512: #
+1513: 0L
+1514: return
+C:\pol2\pkg\systems\spawnregion\textcmd\gm\../../spawnRegion.inc, Line 37
+function ReadGroups()
+foreach grpname in(groupscfg.Keys())
+1515: global #17
+1516: Call Method keys (0 params)
+1517: initforeach @1533
+var grpelem := groupscfg.FindElement(grpname);
+1518: decl local #0
+1519: global #17
+1520: local #0
+1521: Call Method findelement (1 params)
+1522: :=
+1523: #
+if(!grpelem)
+1524: local #3
+1525: if true goto 1528
+continue;
+1526: leave block(1)
+1527: goto1533
+grpcfg[grpname] := grpelem;
+1528: global #14
+1529: local #0
+1530: local #3
+1531: [] := (1) #
+1532: leave block(1)
+1533: stepforeach @1518
+1534: leave block(3)
+1535: 0L
+1536: return
+C:\pol2\pkg\systems\spawnregion\textcmd\gm\../../spawnRegion.inc, Line 27
+function ReadRegions()
+foreach regname in(regionscfg.Keys())
+1537: global #16
+1538: Call Method keys (0 params)
+1539: initforeach @1555
+var regelem := regionscfg.FindElement(regname);
+1540: decl local #0
+1541: global #16
+1542: local #0
+1543: Call Method findelement (1 params)
+1544: :=
+1545: #
+if(!regelem)
+1546: local #3
+1547: if true goto 1550
+continue;
+1548: leave block(1)
+1549: goto1555
+regcfg[regname] := regelem;
+1550: global #13
+1551: local #0
+1552: local #3
+1553: [] := (1) #
+1554: leave block(1)
+1555: stepforeach @1540
+1556: leave block(3)
+1557: 0L
+1558: return
+C:\pol2\pkg\systems\spawnregion\textcmd\gm\regionmanager.src, Line 1081
+function SendMsg(byref who, msg)
+1559: pop param 'msg'
+1560: pop param byref 'who'
+SendSysMessage(who, msg, FONT_NORMAL, COLOR_BLUE_LIGHT);
+1561: local #1
+1562: local #0
+1563: 3L
+1564: 99L
+1565: Func(2,25): SendSysMessage
+1566: #
+1567: 0L
+1568: return
+C:\pol2\pkg\systems\spawnregion\textcmd\gm\../../../../foundations/gumps/gumps.inc, Line 835
+function XGFReset( )
+GFlayout := array();
+1569: array
+1570: global1 := 
+GFdata := array();
+1571: array
+1572: global2 := 
+GFdtidx := GFINIT_TEXT;
+1573: 0L
+1574: global3 := 
+GFtxtid := GFINIT_TEXTENTRY;
+1575: 513L
+1576: global4 := 
+GFbutid := GFINIT_BUTTON;
+1577: 1025L
+1578: global5 := 
+GFcbxid := GFINIT_CHECKBOX;
+1579: 1537L
+1580: global6 := 
+GFradid := GFINIT_RADIO;
+1581: 2049L
+1582: global7 := 
+1583: 0L
+1584: return
+C:\pol2\pkg\systems\spawnregion\textcmd\gm\../../../../foundations/gumps/gumps.inc, Line 851
+function XGFRetVal( lytidx := -1, dtidx := -1, keyid := -1 )
+1585: pop param 'keyid'
+1586: pop param 'dtidx'
+1587: pop param 'lytidx'
+var rvsl := struct;
+1588: decl local #3
+1589: struct
+1590: :=
+1591: #
+if ( lytidx > -1 )
+1592: local #2
+1593: -1L
+1594: >
+1595: if false goto 1601
+rvsl.+lytidx := lytidx;
+1596: local #3
+1597: "lytidx"
+1598: .+
+1599: local #2
+1600: := #
+if ( dtidx > -1 )
+1601: local #1
+1602: -1L
+1603: >
+1604: if false goto 1610
+rvsl.+dtidx := dtidx;
+1605: local #3
+1606: "dtidx"
+1607: .+
+1608: local #1
+1609: := #
+if ( keyid > -1 )
+1610: local #0
+1611: -1L
+1612: >
+1613: if false goto 1619
+rvsl.+keyid := keyid;
+1614: local #3
+1615: "keyid"
+1616: .+
+1617: local #0
+1618: := #
+sleepms(2);	// Will hopefully stop runaway script problem :/
+1619: 2L
+1620: Func(3,0): sleepms
+1621: #
+return rvsl;
+1622: local #3
+1623: return
+C:\pol2\pkg\systems\spawnregion\textcmd\gm\regionmanager.src, Line 364
+function AddNewRegion(who);
+1624: pop param 'who'
+var dfile := OpenDataFile("SpawnRegions");
+1625: decl local #1
+1626: "SpawnRegions"
+1627: Func(6,0): OpenDataFile
+1628: :=
+1629: #
+var rect := "X1 Y1 X2 Y2";
+1630: decl local #2
+1631: "X1 Y1 X2 Y2"
+1632: :=
+1633: #
+regiondone := 0;
+1634: 0L
+1635: global20 := 
+GFInitGump(0, 0);
+1636: 0L
+1637: 0L
+1638: makelocal
+1639: jmp userfunc @1121
+1640: #
+GFNoDispose();
+1641: makelocal
+1642: jmp userfunc @1140
+1643: #
+GFPage(0);
+1644: 0L
+1645: makelocal
+1646: jmp userfunc @1151
+1647: #
+GFResizePic(  0,   0, 5120, 640, 420);                    //dark menu backgroun
+1648: 0L
+1649: 0L
+1650: 5120L
+1651: 640L
+1652: 420L
+1653: makelocal
+1654: jmp userfunc @1169
+1655: #
+GFResizePic( 10,  10, 5054, 620, 400);                    //light menu backgrou
+1656: 10L
+1657: 10L
+1658: 5054L
+1659: 620L
+1660: 400L
+1661: makelocal
+1662: jmp userfunc @1169
+1663: #
+GFTextLine(232, 17, 0, "Spawn Region Editor");
+1664: 232L
+1665: 17L
+1666: 0L
+1667: "Spawn Region Editor"
+1668: makelocal
+1669: jmp userfunc @1247
+1670: #
+GFTextLine(230, 15, COLOR_YELLOW, "Spawn Region Editor");
+1671: 230L
+1672: 15L
+1673: 53L
+1674: "Spawn Region Editor"
+1675: makelocal
+1676: jmp userfunc @1247
+1677: #
+GFTextLine(200, 40, COLOR_BLUE_LIGHT, "Time:");
+1678: 200L
+1679: 40L
+1680: 99L
+1681: "Time:"
+1682: makelocal
+1683: jmp userfunc @1247
+1684: #
+GFTextLine(245, 40, COLOR_GREEN, GetTimeOfDay());
+1685: 245L
+1686: 40L
+1687: 63L
+1688: makelocal
+1689: jmp userfunc @3767
+1690: makelocal
+1691: jmp userfunc @1247
+1692: #
+GFTextLine(30, 70, COLOR_BLUE_LIGHT, "Group Name");
+1693: 30L
+1694: 70L
+1695: 99L
+1696: "Group Name"
+1697: makelocal
+1698: jmp userfunc @1247
+1699: #
+GFTextLine(340, 70, COLOR_BLUE_LIGHT, "Spawns");
+1700: 340L
+1701: 70L
+1702: 99L
+1703: "Spawns"
+1704: makelocal
+1705: jmp userfunc @1247
+1706: #
+GFTextLine(420, 70, COLOR_BLUE_LIGHT, "Freq");
+1707: 420L
+1708: 70L
+1709: 99L
+1710: "Freq"
+1711: makelocal
+1712: jmp userfunc @1247
+1713: #
+GFTextLine(470, 70, COLOR_BLUE_LIGHT, "HrStart");
+1714: 470L
+1715: 70L
+1716: 99L
+1717: "HrStart"
+1718: makelocal
+1719: jmp userfunc @1247
+1720: #
+GFTextLine(550, 70, COLOR_BLUE_LIGHT, "HrEnd");
+1721: 550L
+1722: 70L
+1723: 99L
+1724: "HrEnd"
+1725: makelocal
+1726: jmp userfunc @1247
+1727: #
+var new := GFTextEntry(20, 40, 200, 20, COLOR_GREEN, "new");
+1728: decl local #3
+1729: 20L
+1730: 40L
+1731: 200L
+1732: 20L
+1733: 63L
+1734: "new"
+1735: makelocal
+1736: jmp userfunc @4069
+1737: :=
+1738: #
+var apply  := GFButtonID(20, 410 - 30, G_YELLOW_OVAL_APPLY_0, G_YELLOW_OVAL_APP
+1739: decl local #4
+1740: 20L
+1741: 380L
+1742: 2122L
+1743: 2123L
+1744: 1L
+1745: 0L
+1746: makelocal
+1747: jmp userfunc @1037
+1748: :=
+1749: #
+var cancel := GFButtonID(145, 410 - 30, G_RED_OVAL_CANCEL_0, G_RED_OVAL_CANCEL_
+1750: decl local #5
+1751: 145L
+1752: 380L
+1753: 2071L
+1754: 2072L
+1755: 1L
+1756: 0L
+1757: makelocal
+1758: jmp userfunc @1037
+1759: :=
+1760: #
+var yTxt := 90;
+1761: decl local #6
+1762: 90L
+1763: :=
+1764: #
+var xTxt := 40;
+1765: decl local #7
+1766: 40L
+1767: :=
+1768: #
+var yshift := 20;
+1769: decl local #8
+1770: 20L
+1771: :=
+1772: #
+var gdata;
+1773: decl local #9
+1774: #
+var holder := {};
+1775: decl local #10
+1776: array
+1777: :=
+1778: #
+var split;
+1779: decl local #11
+1780: #
+var ct := 0;
+1781: decl local #12
+1782: 0L
+1783: :=
+1784: #
+while(ct < 5)
+1785: local #12
+1786: 5L
+1787: <
+1788: if false goto 1853
+GFTextEntry(xTxt-20, yTxt, 200, 30, COLOR_GREEN, "");
+1789: local #7
+1790: 20L
+1791: -
+1792: local #6
+1793: 200L
+1794: 30L
+1795: 63L
+1796: ""
+1797: makelocal
+1798: jmp userfunc @4069
+1799: #
+GFTextEntry(xTxt+310, yTxt, 50, 30, COLOR_GREEN, "");
+1800: local #7
+1801: 310L
+1802: +
+1803: local #6
+1804: 50L
+1805: 30L
+1806: 63L
+1807: ""
+1808: makelocal
+1809: jmp userfunc @4069
+1810: #
+GFTextEntry(xTxt+380, yTxt, 50, 30, COLOR_GREEN, "");
+1811: local #7
+1812: 380L
+1813: +
+1814: local #6
+1815: 50L
+1816: 30L
+1817: 63L
+1818: ""
+1819: makelocal
+1820: jmp userfunc @4069
+1821: #
+GFTextEntry(xTxt+450, yTxt, 50, 30, COLOR_GREEN, "");
+1822: local #7
+1823: 450L
+1824: +
+1825: local #6
+1826: 50L
+1827: 30L
+1828: 63L
+1829: ""
+1830: makelocal
+1831: jmp userfunc @4069
+1832: #
+GFTextEntry(xTxt+525, yTxt, 50, 30, COLOR_GREEN, "");
+1833: local #7
+1834: 525L
+1835: +
+1836: local #6
+1837: 50L
+1838: 30L
+1839: 63L
+1840: ""
+1841: makelocal
+1842: jmp userfunc @4069
+1843: #
+yTxt := ytxt + yshift;
+1844: local #6
+1845: local #8
+1846: +
+1847: local6 := 
+ct := ct + 1;
+1848: local #12
+1849: 1L
+1850: +
+1851: local12 := 
+1852: goto1785
+var rectret := GFTextEntry(400, 40, 200, 20, COLOR_GREEN, rect);
+1853: decl local #13
+1854: 400L
+1855: 40L
+1856: 200L
+1857: 20L
+1858: 63L
+1859: local #2
+1860: makelocal
+1861: jmp userfunc @4069
+1862: :=
+1863: #
+var retkey := GFSendGump(who);
+1864: decl local #14
+1865: local #0
+1866: makelocal
+1867: jmp userfunc @1225
+1868: :=
+1869: #
+if(!retkey[apply.keyid])
+1870: local #14
+1871: local #4
+1872: get member 'keyid'
+1873: [] 1
+1874: if true goto 1884
+SendSysMessage(who, "Cancelled");
+1875: local #0
+1876: "Cancelled"
+1877: 3L
+1878: 1000L
+1879: Func(2,25): SendSysMessage
+1880: #
+return 0;
+1881: 0L
+1882: return
+1883: goto2129
+if(retkey[new.keyid] == "new")
+1884: local #14
+1885: local #3
+1886: get member 'keyid'
+1887: [] 1
+1888: "new"
+1889: ==
+1890: if false goto 1899
+SendSysMessage(who, "Cancelled.");
+1891: local #0
+1892: "Cancelled."
+1893: 3L
+1894: 1000L
+1895: Func(2,25): SendSysMessage
+1896: #
+return 0;
+1897: 0L
+1898: return
+if(retkey[new.keyid] in dfile.Keys())
+1899: local #14
+1900: local #3
+1901: get member 'keyid'
+1902: [] 1
+1903: local #1
+1904: Call Method keys (0 params)
+1905: in
+1906: if false goto 1915
+SendSysMessage(who, "That Region already exists.");
+1907: local #0
+1908: "That Region already exists."
+1909: 3L
+1910: 1000L
+1911: Func(2,25): SendSysMessage
+1912: #
+return 0;
+1913: 0L
+1914: return
+var entry := dfile.CreateElement(SplitWords(retkey[new.keyid])[2]);
+1915: decl local #0
+1916: local #1
+1917: local #14
+1918: local #3
+1919: get member 'keyid'
+1920: [] 1
+1921: Func(0,5): SplitWords
+1922: 2L
+1923: [] 1
+1924: Call Method createelement (1 params)
+1925: :=
+1926: #
+if(!entry)
+1927: local #15
+1928: if true goto 1937
+SendSysMessage(who, "Cancelled");
+1929: local #0
+1930: "Cancelled"
+1931: 3L
+1932: 1000L
+1933: Func(2,25): SendSysMessage
+1934: #
+return 0;
+1935: 0L
+1936: return
+SendSysMessage(who, "Editing");
+1937: local #0
+1938: "Editing"
+1939: 3L
+1940: 1000L
+1941: Func(2,25): SendSysMessage
+1942: #
+var temp;
+1943: decl local #1
+1944: #
+foreach thing in (retkey.keys)
+1945: local #14
+1946: get member 'keys'
+1947: initforeach @1971
+if((thing) && (thing != rectret.keyid) && (thing != new.keyid))
+1948: local #17
+1949: local #17
+1950: local #13
+1951: get member 'keyid'
+1952: <>
+1953: &&
+1954: local #17
+1955: local #3
+1956: get member 'keyid'
+1957: <>
+1958: &&
+1959: if false goto 1971
+temp := SplitWords(retkey[thing]);
+1960: local #14
+1961: local #17
+1962: [] 1
+1963: Func(0,5): SplitWords
+1964: local16 := 
+holder.append(temp[2]);
+1965: local #10
+1966: local #16
+1967: 2L
+1968: [] 1
+1969: Call Method append (1 params)
+1970: #
+1971: stepforeach @1948
+1972: leave block(3)
+var num := 1;
+1973: decl local #2
+1974: 1L
+1975: :=
+1976: #
+var turn := 1;
+1977: decl local #3
+1978: 1L
+1979: :=
+1980: #
+temp := "";
+1981: ""
+1982: local16 := 
+foreach thing in (entry.PropNames())
+1983: local #15
+1984: Call Method propnames (0 params)
+1985: initforeach @1990
+entry.EraseProp(thing);
+1986: local #15
+1987: local #19
+1988: Call Method eraseprop (1 params)
+1989: #
+1990: stepforeach @1986
+1991: leave block(3)
+split := SplitWords(retkey[rectret.keyid]);
+1992: local #14
+1993: local #13
+1994: get member 'keyid'
+1995: [] 1
+1996: Func(0,5): SplitWords
+1997: local11 := 
+entry.SetProp("rect", split[2]+" "+split[3]+" "+split[4]+" "+split[5]);
+1998: local #15
+1999: "rect"
+2000: local #11
+2001: 2L
+2002: [] 1
+2003: " "
+2004: +
+2005: local #11
+2006: 3L
+2007: [] 1
+2008: +
+2009: " "
+2010: +
+2011: local #11
+2012: 4L
+2013: [] 1
+2014: +
+2015: " "
+2016: +
+2017: local #11
+2018: 5L
+2019: [] 1
+2020: +
+2021: Call Method setprop (2 params)
+2022: #
+foreach thing in holder
+2023: local #10
+2024: initforeach @2093
+if((num == 1) || (num == 2))
+2025: local #17
+2026: 1L
+2027: ==
+2028: local #17
+2029: 2L
+2030: ==
+2031: ||
+2032: if false goto 2054
+if((thing != "0") && (thing) && (thing != "blank"))
+2033: local #19
+2034: "0"
+2035: <>
+2036: local #19
+2037: &&
+2038: local #19
+2039: "blank"
+2040: <>
+2041: &&
+2042: if false goto 2049
+temp := temp+thing+" ";
+2043: local #16
+2044: local #19
+2045: +
+2046: " "
+2047: +
+2048: local16 := 
+num := num + 1;
+2049: local #17
+2050: 1L
+2051: +
+2052: local17 := 
+2053: goto2093
+elseif(num == 3)
+2054: local #17
+2055: 3L
+2056: ==
+2057: if false goto 2093
+if((thing != "0") && (thing) && (thing != "blank"))
+2058: local #19
+2059: "0"
+2060: <>
+2061: local #19
+2062: &&
+2063: local #19
+2064: "blank"
+2065: <>
+2066: &&
+2067: if false goto 2074
+temp := temp+thing+" ";
+2068: local #16
+2069: local #19
+2070: +
+2071: " "
+2072: +
+2073: local16 := 
+if(temp != "")
+2074: local #16
+2075: ""
+2076: <>
+2077: if false goto 2085
+entry.setprop("group"+turn, temp);
+2078: local #15
+2079: "group"
+2080: local #18
+2081: +
+2082: local #16
+2083: Call Method setprop (2 params)
+2084: #
+temp := "";
+2085: ""
+2086: local16 := 
+turn := turn + 1;
+2087: local #18
+2088: 1L
+2089: +
+2090: local18 := 
+num := 1;
+2091: 1L
+2092: local17 := 
+2093: stepforeach @2025
+2094: leave block(3)
+split := SplitWords(retkey[rectret.keyid]);
+2095: local #14
+2096: local #13
+2097: get member 'keyid'
+2098: [] 1
+2099: Func(0,5): SplitWords
+2100: local11 := 
+entry.SetProp("rect", split[2]+" "+split[3]+" "+split[4]+" "+split[5]);
+2101: local #15
+2102: "rect"
+2103: local #11
+2104: 2L
+2105: [] 1
+2106: " "
+2107: +
+2108: local #11
+2109: 3L
+2110: [] 1
+2111: +
+2112: " "
+2113: +
+2114: local #11
+2115: 4L
+2116: [] 1
+2117: +
+2118: " "
+2119: +
+2120: local #11
+2121: 5L
+2122: [] 1
+2123: +
+2124: Call Method setprop (2 params)
+2125: #
+return 1;
+2126: 1L
+2127: return
+2128: leave block(4)
+2129: 0L
+2130: return
+C:\pol2\pkg\systems\spawnregion\textcmd\gm\regionmanager.src, Line 685
+function ComposeRegionGump(who, region, byref reggroups)
+2131: pop param byref 'reggroups'
+2132: pop param 'region'
+2133: pop param 'who'
+var dfile := OpenDataFile("SpawnRegions");
+2134: decl local #3
+2135: "SpawnRegions"
+2136: Func(6,0): OpenDataFile
+2137: :=
+2138: #
+var entry := dfile.FindElement(region);
+2139: decl local #4
+2140: local #3
+2141: local #1
+2142: Call Method findelement (1 params)
+2143: :=
+2144: #
+var rect  := entry.GetProp("rect");
+2145: decl local #5
+2146: local #4
+2147: "rect"
+2148: Call Method getprop (1 params)
+2149: :=
+2150: #
+if(!rect)
+2151: local #5
+2152: if true goto 2155
+rect := "error";
+2153: "error"
+2154: local5 := 
+regiondone := 0;
+2155: 0L
+2156: global20 := 
+GFInitGump(0, 0);
+2157: 0L
+2158: 0L
+2159: makelocal
+2160: jmp userfunc @1121
+2161: #
+GFNoDispose();
+2162: makelocal
+2163: jmp userfunc @1140
+2164: #
+GFPage(0);
+2165: 0L
+2166: makelocal
+2167: jmp userfunc @1151
+2168: #
+GFResizePic(  0,   0, 5120, 640, 420);                    //dark menu backgroun
+2169: 0L
+2170: 0L
+2171: 5120L
+2172: 640L
+2173: 420L
+2174: makelocal
+2175: jmp userfunc @1169
+2176: #
+GFResizePic( 10,  10, 5054, 620, 400);                    //light menu backgrou
+2177: 10L
+2178: 10L
+2179: 5054L
+2180: 620L
+2181: 400L
+2182: makelocal
+2183: jmp userfunc @1169
+2184: #
+GFTextLine(232, 17, 0, "Spawn Region Manager");
+2185: 232L
+2186: 17L
+2187: 0L
+2188: "Spawn Region Manager"
+2189: makelocal
+2190: jmp userfunc @1247
+2191: #
+GFTextLine(230, 15, COLOR_YELLOW, "Spawn Region Manager");
+2192: 230L
+2193: 15L
+2194: 53L
+2195: "Spawn Region Manager"
+2196: makelocal
+2197: jmp userfunc @1247
+2198: #
+GFTextLine(20, 50, COLOR_GREEN, region);
+2199: 20L
+2200: 50L
+2201: 63L
+2202: local #1
+2203: makelocal
+2204: jmp userfunc @1247
+2205: #
+GFTextLine(460, 50, COLOR_GREEN, rect);
+2206: 460L
+2207: 50L
+2208: 63L
+2209: local #5
+2210: makelocal
+2211: jmp userfunc @1247
+2212: #
+GFTextLine(250, 50, COLOR_BLUE_LIGHT, "Time:");
+2213: 250L
+2214: 50L
+2215: 99L
+2216: "Time:"
+2217: makelocal
+2218: jmp userfunc @1247
+2219: #
+GFTextLine(295, 50, COLOR_GREEN, GetTimeOfDay());
+2220: 295L
+2221: 50L
+2222: 63L
+2223: makelocal
+2224: jmp userfunc @3767
+2225: makelocal
+2226: jmp userfunc @1247
+2227: #
+GFTextLine(18, 70, COLOR_BLUE_LIGHT, "S");
+2228: 18L
+2229: 70L
+2230: 99L
+2231: "S"
+2232: makelocal
+2233: jmp userfunc @1247
+2234: #
+GFTextLine(40, 70, COLOR_BLUE_LIGHT, "Group Name");
+2235: 40L
+2236: 70L
+2237: 99L
+2238: "Group Name"
+2239: makelocal
+2240: jmp userfunc @1247
+2241: #
+GFTextLine(180, 70, COLOR_BLUE_LIGHT, "Spawns");
+2242: 180L
+2243: 70L
+2244: 99L
+2245: "Spawns"
+2246: makelocal
+2247: jmp userfunc @1247
+2248: #
+GFTextLine(240, 70, COLOR_BLUE_LIGHT, "Freq");
+2249: 240L
+2250: 70L
+2251: 99L
+2252: "Freq"
+2253: makelocal
+2254: jmp userfunc @1247
+2255: #
+GFTextLine(280, 70, COLOR_BLUE_LIGHT, "HrStart");
+2256: 280L
+2257: 70L
+2258: 99L
+2259: "HrStart"
+2260: makelocal
+2261: jmp userfunc @1247
+2262: #
+GFTextLine(345, 70, COLOR_BLUE_LIGHT, "HrEnd");
+2263: 345L
+2264: 70L
+2265: 99L
+2266: "HrEnd"
+2267: makelocal
+2268: jmp userfunc @1247
+2269: #
+GFTextLine(400, 70, COLOR_BLUE_LIGHT, "Spawn");
+2270: 400L
+2271: 70L
+2272: 99L
+2273: "Spawn"
+2274: makelocal
+2275: jmp userfunc @1247
+2276: #
+GFTextLine(460, 70, COLOR_BLUE_LIGHT, "Despawn");
+2277: 460L
+2278: 70L
+2279: 99L
+2280: "Despawn"
+2281: makelocal
+2282: jmp userfunc @1247
+2283: #
+GFTextLine(530, 70, COLOR_BLUE_LIGHT, "Respawn");
+2284: 530L
+2285: 70L
+2286: 99L
+2287: "Respawn"
+2288: makelocal
+2289: jmp userfunc @1247
+2290: #
+GFTextLine(595, 70, COLOR_BLUE_LIGHT, "Detail");
+2291: 595L
+2292: 70L
+2293: 99L
+2294: "Detail"
+2295: makelocal
+2296: jmp userfunc @1247
+2297: #
+var edit  := GFButtonID(10, 15, 2640, 2641, 1);
+2298: decl local #6
+2299: 10L
+2300: 15L
+2301: 2640L
+2302: 2641L
+2303: 1L
+2304: 0L
+2305: makelocal
+2306: jmp userfunc @1037
+2307: :=
+2308: #
+GFTextLine(50, 20, COLOR_RED, "Edit This Group?");
+2309: 50L
+2310: 20L
+2311: 34L
+2312: "Edit This Group?"
+2313: makelocal
+2314: jmp userfunc @1247
+2315: #
+var erase  := GFButtonID(450, 15, 2640, 2641, 1);
+2316: decl local #7
+2317: 450L
+2318: 15L
+2319: 2640L
+2320: 2641L
+2321: 1L
+2322: 0L
+2323: makelocal
+2324: jmp userfunc @1037
+2325: :=
+2326: #
+GFTextLine(490, 20, COLOR_RED, "Delete This Group?");
+2327: 490L
+2328: 20L
+2329: 34L
+2330: "Delete This Group?"
+2331: makelocal
+2332: jmp userfunc @1247
+2333: #
+var apply  := GFButtonID(20, 380, G_YELLOW_OVAL_APPLY_0, G_YELLOW_OVAL_APPLY_1,
+2334: decl local #8
+2335: 20L
+2336: 380L
+2337: 2122L
+2338: 2123L
+2339: 1L
+2340: 0L
+2341: makelocal
+2342: jmp userfunc @1037
+2343: :=
+2344: #
+var prev := GFButtonID(80, 380, G_RED_OVAL_PREV_0, G_RED_OVAL_PREV_1, 1);
+2345: decl local #9
+2346: 80L
+2347: 380L
+2348: 2322L
+2349: 2323L
+2350: 1L
+2351: 0L
+2352: makelocal
+2353: jmp userfunc @1037
+2354: :=
+2355: #
+var cancel := GFButtonID(145, 380, G_RED_OVAL_CANCEL_0, G_RED_OVAL_CANCEL_1, 1)
+2356: decl local #10
+2357: 145L
+2358: 380L
+2359: 2071L
+2360: 2072L
+2361: 1L
+2362: 0L
+2363: makelocal
+2364: jmp userfunc @1037
+2365: :=
+2366: #
+GFTextLine(220, 390, COLOR_RED, "Red = Disabled");
+2367: 220L
+2368: 390L
+2369: 34L
+2370: "Red = Disabled"
+2371: makelocal
+2372: jmp userfunc @1247
+2373: #
+GFTextLine(340, 390, COLOR_BLUE_LIGHT, "NOTE: Spawn/Respawn forces spawn.");
+2374: 340L
+2375: 390L
+2376: 99L
+2377: "NOTE: Spawn/Respawn forces spawn."
+2378: makelocal
+2379: jmp userfunc @1247
+2380: #
+var yTxt := 90;
+2381: decl local #11
+2382: 90L
+2383: :=
+2384: #
+var xTxt := 40;
+2385: decl local #12
+2386: 40L
+2387: :=
+2388: #
+var yshift := 20;
+2389: decl local #13
+2390: 20L
+2391: :=
+2392: #
+var idx := 1;
+2393: decl local #14
+2394: 1L
+2395: :=
+2396: #
+var gdata, spawns, spawntxt, rdata, ctxt, status, freq, bt, edt := 0;
+2397: decl local #15
+2398: #
+2399: decl local #16
+2400: #
+2401: decl local #17
+2402: #
+2403: decl local #18
+2404: #
+2405: decl local #19
+2406: #
+2407: decl local #20
+2408: #
+2409: decl local #21
+2410: #
+2411: decl local #22
+2412: #
+2413: decl local #23
+2414: 0L
+2415: :=
+2416: #
+var btstatus := array;
+2417: decl local #24
+2418: array
+2419: :=
+2420: #
+var btspawn := array;
+2421: decl local #25
+2422: array
+2423: :=
+2424: #
+var btdespawn := array;
+2425: decl local #26
+2426: array
+2427: :=
+2428: #
+var btrespawn := array;
+2429: decl local #27
+2430: array
+2431: :=
+2432: #
+var btdetail := array;
+2433: decl local #28
+2434: array
+2435: :=
+2436: #
+var holder := {};
+2437: decl local #29
+2438: array
+2439: :=
+2440: #
+foreach grp in reggroups
+2441: local #0
+2442: initforeach @2665
+gdata := SplitWords(grp);
+2443: local #30
+2444: Func(0,5): SplitWords
+2445: local15 := 
+ctxt := COLOR_GREEN;
+2446: 63L
+2447: local19 := 
+status := 1;
+2448: 1L
+2449: local20 := 
+freq := GetGroupFreq(region, gdata[1]);
+2450: local #1
+2451: local #15
+2452: 1L
+2453: [] 1
+2454: makelocal
+2455: jmp userfunc @3671
+2456: local21 := 
+if (freq == -1)
+2457: local #21
+2458: -1L
+2459: ==
+2460: if false goto 2465
+ctxt := COLOR_RED_LIGHT;
+2461: 35L
+2462: local19 := 
+status := 0;
+2463: 0L
+2464: local20 := 
+bt := GFCheckBox(16, yTxt, G_STONE_SQUARE, G_STONE_SQUARE_CHECK, status);
+2465: 16L
+2466: local #11
+2467: 210L
+2468: 211L
+2469: local #20
+2470: 0L
+2471: makelocal
+2472: jmp userfunc @3897
+2473: local22 := 
+btstatus.append(bt.keyid);
+2474: local #24
+2475: local #22
+2476: get member 'keyid'
+2477: Call Method append (1 params)
+2478: #
+GFTextLine(xTxt, yTxt, ctxt, gdata[1]);
+2479: local #12
+2480: local #11
+2481: local #19
+2482: local #15
+2483: 1L
+2484: [] 1
+2485: makelocal
+2486: jmp userfunc @1247
+2487: #
+spawns := GetGroupSpawns(region, gdata[1]);
+2488: local #1
+2489: local #15
+2490: 1L
+2491: [] 1
+2492: makelocal
+2493: jmp userfunc @3692
+2494: local16 := 
+foreach thing in spawns
+2495: local #16
+2496: initforeach @2509
+if(!SystemFindObjectBySerial(thing))
+2497: local #33
+2498: 0L
+2499: Func(2,21): SystemFindObjectBySerial
+2500: if true goto 2509
+RemoveSerialFromGroup(region, gdata[1], thing);
+2501: local #1
+2502: local #15
+2503: 1L
+2504: [] 1
+2505: local #33
+2506: makelocal
+2507: jmp userfunc @4164
+2508: #
+2509: stepforeach @2497
+2510: leave block(3)
+spawns := GetGroupSpawns(region, gdata[1]);
+2511: local #1
+2512: local #15
+2513: 1L
+2514: [] 1
+2515: makelocal
+2516: jmp userfunc @3692
+2517: local16 := 
+rdata := gdata;
+2518: local #15
+2519: local18 := 
+spawntxt := spawns.size() + "/" + rdata[2];
+2520: local #16
+2521: Call Method size (0 params)
+2522: "/"
+2523: +
+2524: local #18
+2525: 2L
+2526: [] 1
+2527: +
+2528: local17 := 
+GFTextLine(180, yTxt, ctxt, spawntxt);
+2529: 180L
+2530: local #11
+2531: local #19
+2532: local #17
+2533: makelocal
+2534: jmp userfunc @1247
+2535: #
+if (!rdata[3])
+2536: local #18
+2537: 3L
+2538: [] 1
+2539: if true goto 2544
+rdata[3] := DEFAULT_GRP_FREQUENCY;
+2540: local #18
+2541: 3L
+2542: 5L
+2543: [] := (1) #
+GFTextLine(xTxt+215, yTxt, ctxt, rdata[3]);
+2544: local #12
+2545: 215L
+2546: +
+2547: local #11
+2548: local #19
+2549: local #18
+2550: 3L
+2551: [] 1
+2552: makelocal
+2553: jmp userfunc @1247
+2554: #
+if(!rdata[4])
+2555: local #18
+2556: 4L
+2557: [] 1
+2558: if true goto 2563
+rdata[4] := "";
+2559: local #18
+2560: 4L
+2561: ""
+2562: [] := (1) #
+if(!rdata[5])
+2563: local #18
+2564: 5L
+2565: [] 1
+2566: if true goto 2571
+rdata[5] := "";
+2567: local #18
+2568: 5L
+2569: ""
+2570: [] := (1) #
+GFTextLine(xTxt+270, yTxt, ctxt, rdata[4]);
+2571: local #12
+2572: 270L
+2573: +
+2574: local #11
+2575: local #19
+2576: local #18
+2577: 4L
+2578: [] 1
+2579: makelocal
+2580: jmp userfunc @1247
+2581: #
+GFTextLine(xTxt+330, yTxt, ctxt, rdata[5]);
+2582: local #12
+2583: 330L
+2584: +
+2585: local #11
+2586: local #19
+2587: local #18
+2588: 5L
+2589: [] 1
+2590: makelocal
+2591: jmp userfunc @1247
+2592: #
+bt := GFCheckBox(xTxt+380, yTxt, G_STONE_SQUARE, G_STONE_SQUARE_CHECK, 0);
+2593: local #12
+2594: 380L
+2595: +
+2596: local #11
+2597: 210L
+2598: 211L
+2599: 0L
+2600: 0L
+2601: makelocal
+2602: jmp userfunc @3897
+2603: local22 := 
+btspawn.append(bt.keyid);
+2604: local #25
+2605: local #22
+2606: get member 'keyid'
+2607: Call Method append (1 params)
+2608: #
+bt := GFCheckBox(xTxt+445, yTxt, G_STONE_SQUARE, G_STONE_SQUARE_CHECK, 0);
+2609: local #12
+2610: 445L
+2611: +
+2612: local #11
+2613: 210L
+2614: 211L
+2615: 0L
+2616: 0L
+2617: makelocal
+2618: jmp userfunc @3897
+2619: local22 := 
+btdespawn.append(bt.keyid);
+2620: local #26
+2621: local #22
+2622: get member 'keyid'
+2623: Call Method append (1 params)
+2624: #
+bt := GFCheckBox(xTxt+515, yTxt, G_STONE_SQUARE, G_STONE_SQUARE_CHECK, 0);
+2625: local #12
+2626: 515L
+2627: +
+2628: local #11
+2629: 210L
+2630: 211L
+2631: 0L
+2632: 0L
+2633: makelocal
+2634: jmp userfunc @3897
+2635: local22 := 
+btrespawn.append(bt.keyid);
+2636: local #27
+2637: local #22
+2638: get member 'keyid'
+2639: Call Method append (1 params)
+2640: #
+bt := GFButtonID(xTxt+570, yTxt, G_STONE_RIGHT, G_STONE_RIGHT, 1);
+2641: local #12
+2642: 570L
+2643: +
+2644: local #11
+2645: 5224L
+2646: 5224L
+2647: 1L
+2648: 0L
+2649: makelocal
+2650: jmp userfunc @1037
+2651: local22 := 
+btdetail.append(bt.keyid);
+2652: local #28
+2653: local #22
+2654: get member 'keyid'
+2655: Call Method append (1 params)
+2656: #
+idx := idx + 1;
+2657: local #14
+2658: 1L
+2659: +
+2660: local14 := 
+ytxt := ytxt + yshift;
+2661: local #11
+2662: local #13
+2663: +
+2664: local11 := 
+2665: stepforeach @2443
+2666: leave block(3)
+var retkey := GFSendGump(who);
+2667: decl local #30
+2668: local #2
+2669: makelocal
+2670: jmp userfunc @1225
+2671: :=
+2672: #
+var num, rgelem;
+2673: decl local #31
+2674: #
+2675: decl local #32
+2676: #
+for(num := 1; num <= btdetail.size(); num := num + 1)
+2677: local #31
+2678: 1L
+2679: :=
+2680: #
+2681: local #31
+2682: local #28
+2683: Call Method size (0 params)
+2684: <=
+2685: if false goto 2734
+if(retkey[btdetail[num]])
+2686: local #30
+2687: local #28
+2688: local #31
+2689: [] 1
+2690: [] 1
+2691: if false goto 2727
+edt := ComposeGroupDetailGump(who, region, SplitWords(reggroups[num])[1]);
+2692: local #2
+2693: local #1
+2694: local #0
+2695: local #31
+2696: [] 1
+2697: Func(0,5): SplitWords
+2698: 1L
+2699: [] 1
+2700: makelocal
+2701: jmp userfunc @4946
+2702: local23 := 
+while(edt == 1)
+2703: local #23
+2704: 1L
+2705: ==
+2706: if false goto 2725
+SendSysMessage(who, "Composing Group Details");
+2707: local #2
+2708: "Composing Group Details"
+2709: 3L
+2710: 1000L
+2711: Func(2,25): SendSysMessage
+2712: #
+edt := ComposeGroupDetailGump(who, region, SplitWords(reggroups[num])[1]);
+2713: local #2
+2714: local #1
+2715: local #0
+2716: local #31
+2717: [] 1
+2718: Func(0,5): SplitWords
+2719: 1L
+2720: [] 1
+2721: makelocal
+2722: jmp userfunc @4946
+2723: local23 := 
+2724: goto2703
+return 0;
+2725: 0L
+2726: return
+2727: local #31
+2728: local #31
+2729: 1L
+2730: +
+2731: :=
+2732: #
+2733: goto2681
+if(retkey[cancel.keyid])
+2734: local #30
+2735: local #10
+2736: get member 'keyid'
+2737: [] 1
+2738: if false goto 2740
+exit;
+2739: exit
+if(retkey[prev.keyid])
+2740: local #30
+2741: local #9
+2742: get member 'keyid'
+2743: [] 1
+2744: if false goto 2749
+regiondone := 1;
+2745: 1L
+2746: global20 := 
+return 0;
+2747: 0L
+2748: return
+if(retkey[edit.keyid])
+2749: local #30
+2750: local #6
+2751: get member 'keyid'
+2752: [] 1
+2753: if false goto 2792
+edt := ComposeRegionEditor(who, region, reggroups);
+2754: local #2
+2755: local #1
+2756: local #0
+2757: makelocal
+2758: jmp userfunc @5723
+2759: local23 := 
+while(edt == 1)
+2760: local #23
+2761: 1L
+2762: ==
+2763: if false goto 2790
+rgelem := entry.PropNames();
+2764: local #4
+2765: Call Method propnames (0 params)
+2766: local32 := 
+reggroups := {};
+2767: array
+2768: local0 := 
+foreach thing in rgelem
+2769: local #32
+2770: initforeach @2781
+if(thing != "rect")
+2771: local #33
+2772: "rect"
+2773: <>
+2774: if false goto 2781
+reggroups.append(entry.getprop(thing));
+2775: local #0
+2776: local #4
+2777: local #33
+2778: Call Method getprop (1 params)
+2779: Call Method append (1 params)
+2780: #
+2781: stepforeach @2771
+2782: leave block(3)
+edt := ComposeRegionEditor(who, region, reggroups);
+2783: local #2
+2784: local #1
+2785: local #0
+2786: makelocal
+2787: jmp userfunc @5723
+2788: local23 := 
+2789: goto2760
+return 0;
+2790: 0L
+2791: return
+if(retkey[erase.keyid])
+2792: local #30
+2793: local #7
+2794: get member 'keyid'
+2795: [] 1
+2796: if false goto 2821
+if(YesNo(who, "Are You Sure?"))
+2797: local #2
+2798: "Are You Sure?"
+2799: makelocal
+2800: jmp userfunc @4580
+2801: if false goto 2817
+dfile.DeleteElement(region);
+2802: local #3
+2803: local #1
+2804: Call Method deleteelement (1 params)
+2805: #
+SendSysMessage(who, "Region Deleted.");
+2806: local #2
+2807: "Region Deleted."
+2808: 3L
+2809: 1000L
+2810: Func(2,25): SendSysMessage
+2811: #
+regiondone := 1;
+2812: 1L
+2813: global20 := 
+return 0;
+2814: 0L
+2815: return
+2816: goto2821
+regiondone := 0;
+2817: 0L
+2818: global20 := 
+return 0;
+2819: 0L
+2820: return
+regionscfg  := OpenDataFile("SpawnRegions");
+2821: "SpawnRegions"
+2822: Func(6,0): OpenDataFile
+2823: global16 := 
+groupscfg   := OpenDataFile("SpawnGroups");
+2824: "SpawnGroups"
+2825: Func(6,0): OpenDataFile
+2826: global17 := 
+for(num := 1; num <= btstatus.size(); num := num + 1)
+2827: local #31
+2828: 1L
+2829: :=
+2830: #
+2831: local #31
+2832: local #24
+2833: Call Method size (0 params)
+2834: <=
+2835: if false goto 3041
+gdata := SplitWords(reggroups[num]);
+2836: local #0
+2837: local #31
+2838: [] 1
+2839: Func(0,5): SplitWords
+2840: local15 := 
+if (retkey[btstatus[num]])
+2841: local #30
+2842: local #24
+2843: local #31
+2844: [] 1
+2845: [] 1
+2846: if false goto 2855
+EnableGroup(region, gdata[1]);
+2847: local #1
+2848: local #15
+2849: 1L
+2850: [] 1
+2851: makelocal
+2852: jmp userfunc @3648
+2853: #
+2854: goto2870
+DisableGroup(region, gdata[1]);
+2855: local #1
+2856: local #15
+2857: 1L
+2858: [] 1
+2859: makelocal
+2860: jmp userfunc @3638
+2861: #
+DespawnGroup(region, gdata[1]);
+2862: local #1
+2863: local #15
+2864: 1L
+2865: [] 1
+2866: makelocal
+2867: jmp userfunc @3586
+2868: #
+continue;
+2869: goto3034
+if (retkey[btrespawn[num]])
+2870: local #30
+2871: local #27
+2872: local #31
+2873: [] 1
+2874: [] 1
+2875: if false goto 2942
+SendMsg(who, "Respawning: " + region + " - " + gdata[1]);
+2876: local #2
+2877: "Respawning: "
+2878: local #1
+2879: +
+2880: " - "
+2881: +
+2882: local #15
+2883: 1L
+2884: [] 1
+2885: +
+2886: makelocal
+2887: jmp userfunc @1559
+2888: #
+DisableGroup(region, gdata[1]); // This resets the freq counter.
+2889: local #1
+2890: local #15
+2891: 1L
+2892: [] 1
+2893: makelocal
+2894: jmp userfunc @3638
+2895: #
+EnableGroup(region, gdata[1]);
+2896: local #1
+2897: local #15
+2898: 1L
+2899: [] 1
+2900: makelocal
+2901: jmp userfunc @3648
+2902: #
+DespawnGroup(region, gdata[1]);
+2903: local #1
+2904: local #15
+2905: 1L
+2906: [] 1
+2907: makelocal
+2908: jmp userfunc @3586
+2909: #
+sleep(2);
+2910: 2L
+2911: Func(3,4): sleep
+2912: #
+SpawnGroup(region, gdata[1], CInt(gdata[2]), CInt(gdata[3]), CInt(gdata[4]), CI
+2913: local #1
+2914: local #15
+2915: 1L
+2916: [] 1
+2917: local #15
+2918: 2L
+2919: [] 1
+2920: Func(0,0): CInt
+2921: local #15
+2922: 3L
+2923: [] 1
+2924: Func(0,0): CInt
+2925: local #15
+2926: 4L
+2927: [] 1
+2928: Func(0,0): CInt
+2929: local #15
+2930: 5L
+2931: [] 1
+2932: Func(0,0): CInt
+2933: makelocal
+2934: jmp userfunc @4252
+2935: #
+SendMsg(who, "done.");
+2936: local #2
+2937: "done."
+2938: makelocal
+2939: jmp userfunc @1559
+2940: #
+continue;
+2941: goto3034
+if (retkey[btspawn[num]])
+2942: local #30
+2943: local #25
+2944: local #31
+2945: [] 1
+2946: [] 1
+2947: if false goto 3003
+SendMsg(who, "Spawning: " + region + " - " + gdata[1]);
+2948: local #2
+2949: "Spawning: "
+2950: local #1
+2951: +
+2952: " - "
+2953: +
+2954: local #15
+2955: 1L
+2956: [] 1
+2957: +
+2958: makelocal
+2959: jmp userfunc @1559
+2960: #
+DisableGroup(region, gdata[1]); // This resets the freq counter.
+2961: local #1
+2962: local #15
+2963: 1L
+2964: [] 1
+2965: makelocal
+2966: jmp userfunc @3638
+2967: #
+EnableGroup(region, gdata[1]);
+2968: local #1
+2969: local #15
+2970: 1L
+2971: [] 1
+2972: makelocal
+2973: jmp userfunc @3648
+2974: #
+SpawnGroup(region, gdata[1], CInt(gdata[2]), CInt(gdata[3]), CInt(gdata[4]), CI
+2975: local #1
+2976: local #15
+2977: 1L
+2978: [] 1
+2979: local #15
+2980: 2L
+2981: [] 1
+2982: Func(0,0): CInt
+2983: local #15
+2984: 3L
+2985: [] 1
+2986: Func(0,0): CInt
+2987: local #15
+2988: 4L
+2989: [] 1
+2990: Func(0,0): CInt
+2991: local #15
+2992: 5L
+2993: [] 1
+2994: Func(0,0): CInt
+2995: makelocal
+2996: jmp userfunc @4252
+2997: #
+SendMsg(who, "done.");
+2998: local #2
+2999: "done."
+3000: makelocal
+3001: jmp userfunc @1559
+3002: #
+if (retkey[btdespawn[num]])
+3003: local #30
+3004: local #26
+3005: local #31
+3006: [] 1
+3007: [] 1
+3008: if false goto 3034
+SendMsg(who, "Despawning: " + region + " - " + gdata[1]);
+3009: local #2
+3010: "Despawning: "
+3011: local #1
+3012: +
+3013: " - "
+3014: +
+3015: local #15
+3016: 1L
+3017: [] 1
+3018: +
+3019: makelocal
+3020: jmp userfunc @1559
+3021: #
+DespawnGroup(region, gdata[1]);
+3022: local #1
+3023: local #15
+3024: 1L
+3025: [] 1
+3026: makelocal
+3027: jmp userfunc @3586
+3028: #
+SendMsg(who, "done.");
+3029: local #2
+3030: "done."
+3031: makelocal
+3032: jmp userfunc @1559
+3033: #
+3034: local #31
+3035: local #31
+3036: 1L
+3037: +
+3038: :=
+3039: #
+3040: goto2831
+3041: 0L
+3042: return
+C:\pol2\pkg\systems\spawnregion\textcmd\gm\regionmanager.src, Line 489
+function ComposeRegionsPage(page, byref reglist, byref buttons, byref btgo, max
+3043: pop param 'maxpages'
+3044: pop param byref 'btgo'
+3045: pop param byref 'buttons'
+3046: pop param byref 'reglist'
+3047: pop param 'page'
+var bX := 15;
+3048: decl local #5
+3049: 15L
+3050: :=
+3051: #
+var y := 60;
+3052: decl local #6
+3053: 60L
+3054: :=
+3055: #
+var tx := 35;
+3056: decl local #7
+3057: 35L
+3058: :=
+3059: #
+var yshift := 20;
+3060: decl local #8
+3061: 20L
+3062: :=
+3063: #
+var numtemp := TPERPAGE * page;
+3064: decl local #9
+3065: 15L
+3066: local #4
+3067: *
+3068: :=
+3069: #
+var starttemp := TPERPAGE * (page - 1) + 1;
+3070: decl local #10
+3071: 15L
+3072: local #4
+3073: 1L
+3074: -
+3075: *
+3076: 1L
+3077: +
+3078: :=
+3079: #
+GFPage(page);
+3080: local #4
+3081: makelocal
+3082: jmp userfunc @1151
+3083: #
+if(page == 1 && page != maxpages)
+3084: local #4
+3085: 1L
+3086: ==
+3087: local #4
+3088: local #0
+3089: <>
+3090: &&
+3091: if false goto 3103
+GFButtonPage(400, 400, 4005, 4007, page + 1);
+3092: 400L
+3093: 400L
+3094: 4005L
+3095: 4007L
+3096: local #4
+3097: 1L
+3098: +
+3099: makelocal
+3100: jmp userfunc @3839
+3101: #
+3102: goto3150
+elseif (page == maxpages && page != 1)
+3103: local #4
+3104: local #0
+3105: ==
+3106: local #4
+3107: 1L
+3108: <>
+3109: &&
+3110: if false goto 3122
+GFButtonPage(370, 400, 4014, 4016, page - 1);
+3111: 370L
+3112: 400L
+3113: 4014L
+3114: 4016L
+3115: local #4
+3116: 1L
+3117: -
+3118: makelocal
+3119: jmp userfunc @3839
+3120: #
+3121: goto3150
+elseif (page > 1 && page < maxpages)
+3122: local #4
+3123: 1L
+3124: >
+3125: local #4
+3126: local #0
+3127: <
+3128: &&
+3129: if false goto 3150
+GFButtonPage(370, 400, 4014, 4016, page - 1);
+3130: 370L
+3131: 400L
+3132: 4014L
+3133: 4016L
+3134: local #4
+3135: 1L
+3136: -
+3137: makelocal
+3138: jmp userfunc @3839
+3139: #
+GFButtonPage(400, 400, 4005, 4007, page + 1);
+3140: 400L
+3141: 400L
+3142: 4005L
+3143: 4007L
+3144: local #4
+3145: 1L
+3146: +
+3147: makelocal
+3148: jmp userfunc @3839
+3149: #
+var tn := starttemp;
+3150: decl local #11
+3151: local #10
+3152: :=
+3153: #
+while(tn <= numtemp)
+3154: local #11
+3155: local #9
+3156: <=
+3157: if false goto 3325
+var reg := reglist[tn];
+3158: decl local #0
+3159: local #3
+3160: local #11
+3161: [] 1
+3162: :=
+3163: #
+if(reg)
+3164: local #12
+3165: if false goto 3319
+var bt := GFButtonID(bX, y, 208, 209, 1);
+3166: decl local #0
+3167: local #5
+3168: local #6
+3169: 208L
+3170: 209L
+3171: 1L
+3172: 0L
+3173: makelocal
+3174: jmp userfunc @1037
+3175: :=
+3176: #
+buttons.append(bt.keyid);
+3177: local #2
+3178: local #13
+3179: get member 'keyid'
+3180: Call Method append (1 params)
+3181: #
+var total := 0;
+3182: decl local #1
+3183: 0L
+3184: :=
+3185: #
+var ct := 0;
+3186: decl local #2
+3187: 0L
+3188: :=
+3189: #
+foreach thing in(regcfg[reg].propnames())
+3190: global #13
+3191: local #12
+3192: [] 1
+3193: Call Method propnames (0 params)
+3194: initforeach @3234
+if(thing != "rect")
+3195: local #16
+3196: "rect"
+3197: <>
+3198: if false goto 3234
+var grpdata := SplitWords(regcfg[reg].GetProp(thing));
+3199: decl local #0
+3200: global #13
+3201: local #12
+3202: [] 1
+3203: local #16
+3204: Call Method getprop (1 params)
+3205: Func(0,5): SplitWords
+3206: :=
+3207: #
+var current := GetGroupSpawnsRM(reg, grpdata[1]);
+3208: decl local #1
+3209: local #12
+3210: local #19
+3211: 1L
+3212: [] 1
+3213: makelocal
+3214: jmp userfunc @3722
+3215: :=
+3216: #
+if(current != -1)
+3217: local #20
+3218: -1L
+3219: <>
+3220: if false goto 3233
+total := total + CInt(grpdata[2]);
+3221: local #14
+3222: local #19
+3223: 2L
+3224: [] 1
+3225: Func(0,0): CInt
+3226: +
+3227: local14 := 
+ct := ct + Len(current);
+3228: local #15
+3229: local #20
+3230: Func(0,2): len
+3231: +
+3232: local15 := 
+3233: leave block(2)
+3234: stepforeach @3195
+3235: leave block(3)
+if((ct == 0) and (total == 0))
+3236: local #15
+3237: 0L
+3238: ==
+3239: local #14
+3240: 0L
+3241: ==
+3242: &&
+3243: if false goto 3263
+GFTextCrop(tx, y - 3, 320, 20, COLOR_RED, reg);
+3244: local #7
+3245: local #6
+3246: 3L
+3247: -
+3248: 320L
+3249: 20L
+3250: 34L
+3251: local #12
+3252: makelocal
+3253: jmp userfunc @3992
+3254: #
+GFTextLine(      300,   y,     COLOR_RED, "Disabled");
+3255: 300L
+3256: local #6
+3257: 34L
+3258: "Disabled"
+3259: makelocal
+3260: jmp userfunc @1247
+3261: #
+3262: goto3293
+GFTextCrop(tx, y - 3, 320, 20, COLOR_GREEN, reg);
+3263: local #7
+3264: local #6
+3265: 3L
+3266: -
+3267: 320L
+3268: 20L
+3269: 63L
+3270: local #12
+3271: makelocal
+3272: jmp userfunc @3992
+3273: #
+GFTextLine(300, y, COLOR_BLUE, ct + "/" + total);
+3274: 300L
+3275: local #6
+3276: 98L
+3277: local #15
+3278: "/"
+3279: +
+3280: local #14
+3281: +
+3282: makelocal
+3283: jmp userfunc @1247
+3284: #
+maxtotal := maxtotal + total;
+3285: global #22
+3286: local #14
+3287: +
+3288: global22 := 
+currenttotal := currenttotal + ct;
+3289: global #21
+3290: local #15
+3291: +
+3292: global21 := 
+bt := GFButtonID(bX + 370, y, 210, 211, 1);
+3293: local #5
+3294: 370L
+3295: +
+3296: local #6
+3297: 210L
+3298: 211L
+3299: 1L
+3300: 0L
+3301: makelocal
+3302: jmp userfunc @1037
+3303: local13 := 
+btgo.append(bt.keyid);
+3304: local #1
+3305: local #13
+3306: get member 'keyid'
+3307: Call Method append (1 params)
+3308: #
+y := y + yshift;
+3309: local #6
+3310: local #8
+3311: +
+3312: local6 := 
+tn := tn + 1;
+3313: local #11
+3314: 1L
+3315: +
+3316: local11 := 
+3317: leave block(3)
+3318: goto3323
+tn := numtemp + 1;
+3319: local #9
+3320: 1L
+3321: +
+3322: local11 := 
+3323: leave block(1)
+3324: goto3154
+3325: 0L
+3326: return
+C:\pol2\pkg\systems\spawnregion\textcmd\gm\regionmanager.src, Line 181
+function ComposeSpawnGroupGump(who)
+3327: pop param 'who'
+GFInitGump(0, 0);
+3328: 0L
+3329: 0L
+3330: makelocal
+3331: jmp userfunc @1121
+3332: #
+GFNoDispose();
+3333: makelocal
+3334: jmp userfunc @1140
+3335: #
+GFNoClose();
+3336: makelocal
+3337: jmp userfunc @3981
+3338: #
+GFPage(0);
+3339: 0L
+3340: makelocal
+3341: jmp userfunc @1151
+3342: #
+GFResizePic(  0,   0, 5120, 440, 440);                    //dark menu backgroun
+3343: 0L
+3344: 0L
+3345: 5120L
+3346: 440L
+3347: 440L
+3348: makelocal
+3349: jmp userfunc @1169
+3350: #
+GFResizePic( 10,  10, 5054, 420, 420);                    //light menu backgrou
+3351: 10L
+3352: 10L
+3353: 5054L
+3354: 420L
+3355: 420L
+3356: makelocal
+3357: jmp userfunc @1169
+3358: #
+GFTextLine(132, 17, 0, "Spawn Group Editor");
+3359: 132L
+3360: 17L
+3361: 0L
+3362: "Spawn Group Editor"
+3363: makelocal
+3364: jmp userfunc @1247
+3365: #
+GFTextLine(130, 15, COLOR_YELLOW, "Spawn Group Editor");
+3366: 130L
+3367: 15L
+3368: 53L
+3369: "Spawn Group Editor"
+3370: makelocal
+3371: jmp userfunc @1247
+3372: #
+GFTextLine(30, 30, COLOR_BLUE_LIGHT, "group Name");
+3373: 30L
+3374: 30L
+3375: 99L
+3376: "group Name"
+3377: makelocal
+3378: jmp userfunc @1247
+3379: #
+GFTextLine(380, 30, COLOR_BLUE_LIGHT, "Edit");
+3380: 380L
+3381: 30L
+3382: 99L
+3383: "Edit"
+3384: makelocal
+3385: jmp userfunc @1247
+3386: #
+GFTextLine(140, 400, COLOR_GREEN, "Add Group?");
+3387: 140L
+3388: 400L
+3389: 63L
+3390: "Add Group?"
+3391: makelocal
+3392: jmp userfunc @1247
+3393: #
+var addnew := GFButtonID(247, 400, G_STONE_SQUARE, G_STONE_SQUARE_CHECK, 1);
+3394: decl local #1
+3395: 247L
+3396: 400L
+3397: 210L
+3398: 211L
+3399: 1L
+3400: 0L
+3401: makelocal
+3402: jmp userfunc @1037
+3403: :=
+3404: #
+var cancel := GFButtonID(40, 400, G_RED_OVAL_CANCEL_0, G_RED_OVAL_CANCEL_1, 1);
+3405: decl local #2
+3406: 40L
+3407: 400L
+3408: 2071L
+3409: 2072L
+3410: 1L
+3411: 0L
+3412: makelocal
+3413: jmp userfunc @1037
+3414: :=
+3415: #
+var gcfg := GlobalSpawnGroups();
+3416: decl local #3
+3417: makelocal
+3418: jmp userfunc @1308
+3419: :=
+3420: #
+if(!gcfg)
+3421: local #3
+3422: if true goto 3428
+syslog("Could not read groups file");
+3423: "Could not read groups file"
+3424: Func(3,1): syslog
+3425: #
+return 0;
+3426: 0L
+3427: return
+var groups := gcfg.keys();
+3428: decl local #4
+3429: local #3
+3430: Call Method keys (0 params)
+3431: :=
+3432: #
+var numtemp := groups.size();
+3433: decl local #5
+3434: local #4
+3435: Call Method size (0 params)
+3436: :=
+3437: #
+var numpages := 1;
+3438: decl local #6
+3439: 1L
+3440: :=
+3441: #
+while (numtemp > 0)
+3442: local #5
+3443: 0L
+3444: >
+3445: if false goto 3459
+numtemp := numtemp - TPERPAGE;
+3446: local #5
+3447: 15L
+3448: -
+3449: local5 := 
+if (numtemp > 0)
+3450: local #5
+3451: 0L
+3452: >
+3453: if false goto 3458
+numpages := numpages + 1;
+3454: local #6
+3455: 1L
+3456: +
+3457: local6 := 
+3458: goto3442
+var bt := array;
+3459: decl local #7
+3460: array
+3461: :=
+3462: #
+var btgo := array;
+3463: decl local #8
+3464: array
+3465: :=
+3466: #
+var pg;
+3467: decl local #9
+3468: #
+for(pg := 1; pg <= numpages; pg := pg + 1)
+3469: local #9
+3470: 1L
+3471: :=
+3472: #
+3473: local #9
+3474: local #6
+3475: <=
+3476: if false goto 3491
+ComposeGroupsPage(pg, groups, bt, numpages);
+3477: local #9
+3478: local #4
+3479: local #7
+3480: local #6
+3481: makelocal
+3482: jmp userfunc @5555
+3483: #
+3484: local #9
+3485: local #9
+3486: 1L
+3487: +
+3488: :=
+3489: #
+3490: goto3473
+var retkey := GFSendGump(who);
+3491: decl local #10
+3492: local #0
+3493: makelocal
+3494: jmp userfunc @1225
+3495: :=
+3496: #
+var num;
+3497: decl local #11
+3498: #
+if(retkey[cancel.keyid])
+3499: local #10
+3500: local #2
+3501: get member 'keyid'
+3502: [] 1
+3503: if false goto 3506
+return 0;
+3504: 0L
+3505: return
+if(retkey[addnew.keyid])
+3506: local #10
+3507: local #1
+3508: get member 'keyid'
+3509: [] 1
+3510: if false goto 3517
+alldone := AddNewGroup(who);
+3511: local #0
+3512: makelocal
+3513: jmp userfunc @4620
+3514: global19 := 
+return 1;
+3515: 1L
+3516: return
+var idx;
+3517: decl local #12
+3518: #
+for (num := 1; num <= bt.size(); num := num + 1)
+3519: local #11
+3520: 1L
+3521: :=
+3522: #
+3523: local #11
+3524: local #7
+3525: Call Method size (0 params)
+3526: <=
+3527: if false goto 3546
+if (bt[num] == retkey[0])
+3528: local #7
+3529: local #11
+3530: [] 1
+3531: local #10
+3532: 0L
+3533: [] 1
+3534: ==
+3535: if false goto 3539
+idx := num;
+3536: local #11
+3537: local12 := 
+break;
+3538: goto3546
+3539: local #11
+3540: local #11
+3541: 1L
+3542: +
+3543: :=
+3544: #
+3545: goto3523
+if (!idx)
+3546: local #12
+3547: if true goto 3550
+return 0;
+3548: 0L
+3549: return
+var holder := gcfg.FindElement(groups[idx]);
+3550: decl local #13
+3551: local #3
+3552: local #4
+3553: local #12
+3554: [] 1
+3555: Call Method findelement (1 params)
+3556: :=
+3557: #
+var reggroups := holder.GetProp("npc");
+3558: decl local #14
+3559: local #13
+3560: "npc"
+3561: Call Method getprop (1 params)
+3562: :=
+3563: #
+holder := gcfg.FindElement(groups[idx]);
+3564: local #3
+3565: local #4
+3566: local #12
+3567: [] 1
+3568: Call Method findelement (1 params)
+3569: local13 := 
+reggroups := holder.GetProp("npc");
+3570: local #13
+3571: "npc"
+3572: Call Method getprop (1 params)
+3573: local14 := 
+ComposeGroupGump(who, groups[idx], reggroups);
+3574: local #0
+3575: local #4
+3576: local #12
+3577: [] 1
+3578: local #14
+3579: makelocal
+3580: jmp userfunc @5253
+3581: #
+3582: global #20
+3583: if false goto 3564
+return 1;
+3584: 1L
+3585: return
+C:\pol2\pkg\systems\spawnregion\textcmd\gm\../../spawnRegion.inc, Line 235
+function DespawnGroup(region, group)
+3586: pop param 'group'
+3587: pop param 'region'
+var spawns := GetGroupSpawns(region, group);
+3588: decl local #2
+3589: local #1
+3590: local #0
+3591: makelocal
+3592: jmp userfunc @3692
+3593: :=
+3594: #
+foreach spawn in spawns
+3595: local #2
+3596: initforeach @3601
+Despawn(spawn);
+3597: local #3
+3598: makelocal
+3599: jmp userfunc @6668
+3600: #
+3601: stepforeach @3597
+3602: leave block(3)
+3603: 0L
+3604: return
+C:\pol2\pkg\systems\spawnregion\textcmd\gm\../../spawnRegion.inc, Line 242
+function DespawnGroupRM(region, group)
+3605: pop param 'group'
+3606: pop param 'region'
+var spawns := GetGroupSpawns(region, group);
+3607: decl local #2
+3608: local #1
+3609: local #0
+3610: makelocal
+3611: jmp userfunc @3692
+3612: :=
+3613: #
+foreach spawn in spawns
+3614: local #2
+3615: initforeach @3620
+Despawn(spawn);
+3616: local #3
+3617: makelocal
+3618: jmp userfunc @6668
+3619: #
+3620: stepforeach @3616
+3621: leave block(3)
+SetGroupFreq(region, group, 0);
+3622: local #1
+3623: local #0
+3624: 0L
+3625: makelocal
+3626: jmp userfunc @4204
+3627: #
+3628: 0L
+3629: return
+C:/pol2/scripts/include/datafile.inc, Line 140
+function DF_OutPut(text)
+3630: pop param 'text'
+if ( DF_DEBUG_MODE )
+3631: global #11
+3632: if false goto 3636
+SysLog(text);
+3633: local #0
+3634: Func(3,1): syslog
+3635: #
+3636: 0L
+3637: return
+C:\pol2\pkg\systems\spawnregion\textcmd\gm\../../spawnRegion.inc, Line 333
+function DisableGroup(region, group)
+3638: pop param 'group'
+3639: pop param 'region'
+SetGroupFreq(region, group, -1);
+3640: local #1
+3641: local #0
+3642: -1L
+3643: makelocal
+3644: jmp userfunc @4204
+3645: #
+3646: 0L
+3647: return
+C:\pol2\pkg\systems\spawnregion\textcmd\gm\../../spawnRegion.inc, Line 325
+function EnableGroup(region, group)
+3648: pop param 'group'
+3649: pop param 'region'
+var freq := GetGroupFreq(region, group);
+3650: decl local #2
+3651: local #1
+3652: local #0
+3653: makelocal
+3654: jmp userfunc @3671
+3655: :=
+3656: #
+if(freq != -1)
+3657: local #2
+3658: -1L
+3659: <>
+3660: if false goto 3663
+return 0;
+3661: 0L
+3662: return
+SetGroupFreq(region, group, "R");
+3663: local #1
+3664: local #0
+3665: "R"
+3666: makelocal
+3667: jmp userfunc @4204
+3668: #
+3669: 0L
+3670: return
+C:\pol2\pkg\systems\spawnregion\textcmd\gm\../../spawnRegion.inc, Line 337
+function GetGroupFreq(region, group)
+3671: pop param 'group'
+3672: pop param 'region'
+var srfreq := DFFindElement(SpawnRegionFreq, region, 1);
+3673: decl local #2
+3674: global #24
+3675: local #1
+3676: 1L
+3677: makelocal
+3678: jmp userfunc @913
+3679: :=
+3680: #
+var freq := DFGetProp(srfreq, group, 1, 0);
+3681: decl local #3
+3682: local #2
+3683: local #0
+3684: 1L
+3685: 0L
+3686: makelocal
+3687: jmp userfunc @6707
+3688: :=
+3689: #
+return freq;
+3690: local #3
+3691: return
+C:\pol2\pkg\systems\spawnregion\textcmd\gm\../../spawnRegion.inc, Line 263
+function GetGroupSpawns(region, group)
+3692: pop param 'group'
+3693: pop param 'region'
+var rgroups := DFFindElement(SpawnRegionData, region, 1);
+3694: decl local #2
+3695: global #23
+3696: local #1
+3697: 1L
+3698: makelocal
+3699: jmp userfunc @913
+3700: :=
+3701: #
+var sp := rgroups.GetProp(group);
+3702: decl local #3
+3703: local #2
+3704: local #0
+3705: Call Method getprop (1 params)
+3706: :=
+3707: #
+if (sp)
+3708: local #3
+3709: if false goto 3713
+return sp;
+3710: local #3
+3711: return
+3712: goto3720
+rgroups.SetProp(group, array);
+3713: local #2
+3714: local #0
+3715: array
+3716: Call Method setprop (2 params)
+3717: #
+return array;
+3718: array
+3719: return
+3720: 0L
+3721: return
+C:\pol2\pkg\systems\spawnregion\textcmd\gm\../../spawnRegion.inc, Line 274
+function GetGroupSpawnsRM(region, group)
+3722: pop param 'group'
+3723: pop param 'region'
+var rgroups := DFFindElement(SpawnRegionData, region, 1);
+3724: decl local #2
+3725: global #23
+3726: local #1
+3727: 1L
+3728: makelocal
+3729: jmp userfunc @913
+3730: :=
+3731: #
+var spawns := rgroups.GetProp(group);
+3732: decl local #3
+3733: local #2
+3734: local #0
+3735: Call Method getprop (1 params)
+3736: :=
+3737: #
+if (spawns)
+3738: local #3
+3739: if false goto 3743
+return spawns;
+3740: local #3
+3741: return
+3742: goto3765
+var freq := GetGroupFreq(region, group);
+3743: decl local #0
+3744: local #1
+3745: local #0
+3746: makelocal
+3747: jmp userfunc @3671
+3748: :=
+3749: #
+rgroups.SetProp(group, array);
+3750: local #2
+3751: local #0
+3752: array
+3753: Call Method setprop (2 params)
+3754: #
+if(freq == -1)
+3755: local #4
+3756: -1L
+3757: ==
+3758: if false goto 3762
+return -1;
+3759: -1L
+3760: return
+3761: goto3764
+return array;
+3762: array
+3763: return
+3764: leave block(1)
+3765: 0L
+3766: return
+C:/pol2/scripts/include/clock.inc, Line 31
+function GetTimeofDay()
+var time_sec := GetTime();
+3767: decl local #0
+3768: makelocal
+3769: jmp userfunc @6853
+3770: :=
+3771: #
+var length := (GetDayLength() * 60) * 1.0;
+3772: decl local #1
+3773: makelocal
+3774: jmp userfunc @6769
+3775: 60L
+3776: *
+3777: 1LF
+3778: *
+3779: :=
+3780: #
+var temp := length / time_sec;
+3781: decl local #2
+3782: local #1
+3783: local #0
+3784: /
+3785: :=
+3786: #
+var raw_time := 24.0 / temp;
+3787: decl local #3
+3788: 24LF
+3789: local #2
+3790: /
+3791: :=
+3792: #
+var hours := CInt(raw_time);
+3793: decl local #4
+3794: local #3
+3795: Func(0,0): CInt
+3796: :=
+3797: #
+var remainder := raw_time - hours;
+3798: decl local #5
+3799: local #3
+3800: local #4
+3801: -
+3802: :=
+3803: #
+var minutes := CInt( remainder * 60 );
+3804: decl local #6
+3805: local #5
+3806: 60L
+3807: *
+3808: Func(0,0): CInt
+3809: :=
+3810: #
+if( len(CStr(minutes)) == 1 )
+3811: local #6
+3812: Func(0,1): CStr
+3813: Func(0,2): len
+3814: 1L
+3815: ==
+3816: if false goto 3822
+minutes := "0" + CStr(minutes);
+3817: "0"
+3818: local #6
+3819: Func(0,1): CStr
+3820: +
+3821: local6 := 
+if( len(CStr(hours)) == 1 )
+3822: local #4
+3823: Func(0,1): CStr
+3824: Func(0,2): len
+3825: 1L
+3826: ==
+3827: if false goto 3833
+hours := "0" + CStr(hours);
+3828: "0"
+3829: local #4
+3830: Func(0,1): CStr
+3831: +
+3832: local4 := 
+return (hours+":"+minutes);
+3833: local #4
+3834: ":"
+3835: +
+3836: local #6
+3837: +
+3838: return
+C:\pol2\pkg\systems\spawnregion\textcmd\gm\../../../../foundations/gumps/gumps.inc, Line 524
+function GFButtonPage( x, y, release, press, page )
+3839: pop param 'page'
+3840: pop param 'press'
+3841: pop param 'release'
+3842: pop param 'y'
+3843: pop param 'x'
+var line := "button " + CStr(GFref.x + CInt(x)) + " " + CStr(GFref.y + CInt(y))
+3844: decl local #5
+3845: "button "
+3846: global #0
+3847: get member 'x'
+3848: local #4
+3849: Func(0,0): CInt
+3850: +
+3851: Func(0,1): CStr
+3852: +
+3853: " "
+3854: +
+3855: global #0
+3856: get member 'y'
+3857: local #3
+3858: Func(0,0): CInt
+3859: +
+3860: Func(0,1): CStr
+3861: +
+3862: :=
+3863: #
+line := line + " " + CStr(CInt(release)) + " " + CStr(CInt(press));
+3864: local #5
+3865: " "
+3866: +
+3867: local #2
+3868: Func(0,0): CInt
+3869: Func(0,1): CStr
+3870: +
+3871: " "
+3872: +
+3873: local #1
+3874: Func(0,0): CInt
+3875: Func(0,1): CStr
+3876: +
+3877: local5 := 
+line := line + " 0 " + CStr(CInt(page));
+3878: local #5
+3879: " 0 "
+3880: +
+3881: local #0
+3882: Func(0,0): CInt
+3883: Func(0,1): CStr
+3884: +
+3885: local5 := 
+GFlayout.append( line );
+3886: global #1
+3887: local #5
+3888: Call Method append (1 params)
+3889: #
+return XGFRetVal( GFlayout.size(), -1, page );
+3890: global #1
+3891: Call Method size (0 params)
+3892: -1L
+3893: local #0
+3894: makelocal
+3895: jmp userfunc @1585
+3896: return
+C:\pol2\pkg\systems\spawnregion\textcmd\gm\../../../../foundations/gumps/gumps.inc, Line 570
+function GFCheckBox( x, y, off, on, state, id := 0)
+3897: pop param 'id'
+3898: pop param 'state'
+3899: pop param 'on'
+3900: pop param 'off'
+3901: pop param 'y'
+3902: pop param 'x'
+var line := "checkbox " + CStr(GFref.x + CInt(x)) + " " + CStr(GFref.y + CInt(y
+3903: decl local #6
+3904: "checkbox "
+3905: global #0
+3906: get member 'x'
+3907: local #5
+3908: Func(0,0): CInt
+3909: +
+3910: Func(0,1): CStr
+3911: +
+3912: " "
+3913: +
+3914: global #0
+3915: get member 'y'
+3916: local #4
+3917: Func(0,0): CInt
+3918: +
+3919: Func(0,1): CStr
+3920: +
+3921: :=
+3922: #
+line := line + " " + CStr(CInt(off)) + " " + CStr(CInt(on)) + " ";
+3923: local #6
+3924: " "
+3925: +
+3926: local #3
+3927: Func(0,0): CInt
+3928: Func(0,1): CStr
+3929: +
+3930: " "
+3931: +
+3932: local #2
+3933: Func(0,0): CInt
+3934: Func(0,1): CStr
+3935: +
+3936: " "
+3937: +
+3938: local6 := 
+if ( state == 0 )
+3939: local #1
+3940: 0L
+3941: ==
+3942: if false goto 3948
+line := line + "0 ";
+3943: local #6
+3944: "0 "
+3945: +
+3946: local6 := 
+3947: goto3952
+line := line + "1 ";
+3948: local #6
+3949: "1 "
+3950: +
+3951: local6 := 
+id := Cint(id);
+3952: local #0
+3953: Func(0,0): CInt
+3954: local0 := 
+if (id < 1)
+3955: local #0
+3956: 1L
+3957: <
+3958: if false goto 3965
+id := GFcbxid;
+3959: global #6
+3960: local0 := 
+GFcbxid := GFcbxid + 1;	
+3961: global #6
+3962: 1L
+3963: +
+3964: global6 := 
+line := line + CStr(id);
+3965: local #6
+3966: local #0
+3967: Func(0,1): CStr
+3968: +
+3969: local6 := 
+GFlayout.append( line );
+3970: global #1
+3971: local #6
+3972: Call Method append (1 params)
+3973: #
+return XGFRetVal( GFlayout.size(), -1, id );
+3974: global #1
+3975: Call Method size (0 params)
+3976: -1L
+3977: local #0
+3978: makelocal
+3979: jmp userfunc @1585
+3980: return
+C:\pol2\pkg\systems\spawnregion\textcmd\gm\../../../../foundations/gumps/gumps.inc, Line 304
+function GFNoClose()
+GFlayout.append( "noclose" );
+3981: global #1
+3982: "noclose"
+3983: Call Method append (1 params)
+3984: #
+return XGFRetVal( GFlayout.size() );
+3985: global #1
+3986: Call Method size (0 params)
+3987: -1L
+3988: -1L
+3989: makelocal
+3990: jmp userfunc @1585
+3991: return
+C:\pol2\pkg\systems\spawnregion\textcmd\gm\../../../../foundations/gumps/gumps.inc, Line 472
+function GFTextCrop( x, y, w, h, colour, text )
+3992: pop param 'text'
+3993: pop param 'colour'
+3994: pop param 'h'
+3995: pop param 'w'
+3996: pop param 'y'
+3997: pop param 'x'
+text := CStr(text);
+3998: local #0
+3999: Func(0,1): CStr
+4000: local0 := 
+var line := "croppedtext " + CStr(GFref.x + CInt(x)) + " " + CStr(GFref.y + CIn
+4001: decl local #6
+4002: "croppedtext "
+4003: global #0
+4004: get member 'x'
+4005: local #5
+4006: Func(0,0): CInt
+4007: +
+4008: Func(0,1): CStr
+4009: +
+4010: " "
+4011: +
+4012: global #0
+4013: get member 'y'
+4014: local #4
+4015: Func(0,0): CInt
+4016: +
+4017: Func(0,1): CStr
+4018: +
+4019: :=
+4020: #
+line := line + " " + CStr(CInt(w)) + " " + CStr(CInt(h)) + " " + CStr(CInt(colo
+4021: local #6
+4022: " "
+4023: +
+4024: local #3
+4025: Func(0,0): CInt
+4026: Func(0,1): CStr
+4027: +
+4028: " "
+4029: +
+4030: local #2
+4031: Func(0,0): CInt
+4032: Func(0,1): CStr
+4033: +
+4034: " "
+4035: +
+4036: local #1
+4037: Func(0,0): CInt
+4038: Func(0,1): CStr
+4039: +
+4040: local6 := 
+line := line + " " + CStr(GFdtidx);
+4041: local #6
+4042: " "
+4043: +
+4044: global #3
+4045: Func(0,1): CStr
+4046: +
+4047: local6 := 
+GFlayout.append( line );
+4048: global #1
+4049: local #6
+4050: Call Method append (1 params)
+4051: #
+GFdtidx := GFdtidx + 1;		// Update index into GFdata[]
+4052: global #3
+4053: 1L
+4054: +
+4055: global3 := 
+GFdata[GFdtidx] := text;	// arrays start at #1... id#0 goes into [1]!!
+4056: global #2
+4057: global #3
+4058: local #0
+4059: [] := (1) #
+return XGFRetVal( GFlayout.size(), GFdtidx - 1 );
+4060: global #1
+4061: Call Method size (0 params)
+4062: global #3
+4063: 1L
+4064: -
+4065: -1L
+4066: makelocal
+4067: jmp userfunc @1585
+4068: return
+C:\pol2\pkg\systems\spawnregion\textcmd\gm\../../../../foundations/gumps/gumps.inc, Line 495
+function GFTextEntry( x, y, w, h, colour, text := "" )
+4069: pop param 'text'
+4070: pop param 'colour'
+4071: pop param 'h'
+4072: pop param 'w'
+4073: pop param 'y'
+4074: pop param 'x'
+if ( text == error )
+4075: local #0
+4076: error
+4077: ==
+4078: if false goto 4082
+text := "";
+4079: ""
+4080: local0 := 
+4081: goto4085
+text := CStr(text);
+4082: local #0
+4083: Func(0,1): CStr
+4084: local0 := 
+var line := "textentry " + CStr(GFref.x + CInt(x)) + " " + CStr(GFref.y + CInt(
+4085: decl local #6
+4086: "textentry "
+4087: global #0
+4088: get member 'x'
+4089: local #5
+4090: Func(0,0): CInt
+4091: +
+4092: Func(0,1): CStr
+4093: +
+4094: " "
+4095: +
+4096: global #0
+4097: get member 'y'
+4098: local #4
+4099: Func(0,0): CInt
+4100: +
+4101: Func(0,1): CStr
+4102: +
+4103: :=
+4104: #
+line := line + " " + CStr(CInt(w)) + " " + CStr(CInt(h)) + " " + CStr(CInt(colo
+4105: local #6
+4106: " "
+4107: +
+4108: local #3
+4109: Func(0,0): CInt
+4110: Func(0,1): CStr
+4111: +
+4112: " "
+4113: +
+4114: local #2
+4115: Func(0,0): CInt
+4116: Func(0,1): CStr
+4117: +
+4118: " "
+4119: +
+4120: local #1
+4121: Func(0,0): CInt
+4122: Func(0,1): CStr
+4123: +
+4124: local6 := 
+line := line + " " + CStr(GFtxtid) + " " + CStr(GFdtidx);
+4125: local #6
+4126: " "
+4127: +
+4128: global #4
+4129: Func(0,1): CStr
+4130: +
+4131: " "
+4132: +
+4133: global #3
+4134: Func(0,1): CStr
+4135: +
+4136: local6 := 
+GFlayout.append( line );
+4137: global #1
+4138: local #6
+4139: Call Method append (1 params)
+4140: #
+GFdtidx := GFdtidx + 1;		// Update index into GFdata[]
+4141: global #3
+4142: 1L
+4143: +
+4144: global3 := 
+GFdata[GFdtidx] := text;	// arrays start at #1... id#0 goes into [1]!!
+4145: global #2
+4146: global #3
+4147: local #0
+4148: [] := (1) #
+GFtxtid := GFtxtid + 1;		// Update KeyID (txtid)
+4149: global #4
+4150: 1L
+4151: +
+4152: global4 := 
+return XGFRetVal( GFlayout.size(), GFdtidx - 1, GFtxtid - 1 );
+4153: global #1
+4154: Call Method size (0 params)
+4155: global #3
+4156: 1L
+4157: -
+4158: global #4
+4159: 1L
+4160: -
+4161: makelocal
+4162: jmp userfunc @1585
+4163: return
+C:\pol2\pkg\systems\spawnregion\textcmd\gm\../../spawnRegion.inc, Line 205
+function RemoveSerialFromGroup(region, group, serial)
+4164: pop param 'serial'
+4165: pop param 'group'
+4166: pop param 'region'
+set_critical(1);
+4167: 1L
+4168: Func(3,2): set_critical
+4169: #
+var spawns := GetGroupSpawns(region, group);
+4170: decl local #3
+4171: local #2
+4172: local #1
+4173: makelocal
+4174: jmp userfunc @3692
+4175: :=
+4176: #
+var holder := array;
+4177: decl local #4
+4178: array
+4179: :=
+4180: #
+foreach thing in spawns
+4181: local #3
+4182: initforeach @4191
+if(thing != serial)
+4183: local #5
+4184: local #0
+4185: <>
+4186: if false goto 4191
+holder.append(thing);
+4187: local #4
+4188: local #5
+4189: Call Method append (1 params)
+4190: #
+4191: stepforeach @4183
+4192: leave block(3)
+SetGroupSpawns(region, group, holder);
+4193: local #2
+4194: local #1
+4195: local #4
+4196: makelocal
+4197: jmp userfunc @4228
+4198: #
+set_critical(0);
+4199: 0L
+4200: Func(3,2): set_critical
+4201: #
+4202: 0L
+4203: return
+C:\pol2\pkg\systems\spawnregion\textcmd\gm\../../spawnRegion.inc, Line 343
+function SetGroupFreq(region, group, freq)
+4204: pop param 'freq'
+4205: pop param 'group'
+4206: pop param 'region'
+set_critical(1);
+4207: 1L
+4208: Func(3,2): set_critical
+4209: #
+var srfreq := DFFindElement(SpawnRegionFreq, region, 1);
+4210: decl local #3
+4211: global #24
+4212: local #2
+4213: 1L
+4214: makelocal
+4215: jmp userfunc @913
+4216: :=
+4217: #
+srfreq.SetProp(group, freq);
+4218: local #3
+4219: local #1
+4220: local #0
+4221: Call Method setprop (2 params)
+4222: #
+set_critical(0);
+4223: 0L
+4224: Func(3,2): set_critical
+4225: #
+4226: 0L
+4227: return
+C:\pol2\pkg\systems\spawnregion\textcmd\gm\../../spawnRegion.inc, Line 291
+function SetGroupSpawns(region, group, byref spawns)
+4228: pop param byref 'spawns'
+4229: pop param 'group'
+4230: pop param 'region'
+set_critical(1);
+4231: 1L
+4232: Func(3,2): set_critical
+4233: #
+var rgroups := DFFindElement(SpawnRegionData, region, 1);
+4234: decl local #3
+4235: global #23
+4236: local #2
+4237: 1L
+4238: makelocal
+4239: jmp userfunc @913
+4240: :=
+4241: #
+rgroups.SetProp(group, spawns);
+4242: local #3
+4243: local #1
+4244: local #0
+4245: Call Method setprop (2 params)
+4246: #
+set_critical(0);
+4247: 0L
+4248: Func(3,2): set_critical
+4249: #
+4250: 0L
+4251: return
+C:\pol2\pkg\systems\spawnregion\textcmd\gm\../../spawnRegion.inc, Line 107
+function SpawnGroup(region, group, max, freq, hrstart, hrend)
+4252: pop param 'hrend'
+4253: pop param 'hrstart'
+4254: pop param 'freq'
+4255: pop param 'max'
+4256: pop param 'group'
+4257: pop param 'region'
+var nextspawn := GetGroupFreq(region, group);
+4258: decl local #6
+4259: local #5
+4260: local #4
+4261: makelocal
+4262: jmp userfunc @3671
+4263: :=
+4264: #
+if(nextspawn == -1)
+4265: local #6
+4266: -1L
+4267: ==
+4268: if false goto 4272
+return 0;
+4269: 0L
+4270: return
+4271: goto4295
+elseif(hrstart and hrend)
+4272: local #1
+4273: local #0
+4274: &&
+4275: if false goto 4295
+var hrnow := GetHourOfDay();
+4276: decl local #0
+4277: makelocal
+4278: jmp userfunc @6788
+4279: :=
+4280: #
+if(!HourWithinRange(hrnow, hrstart, hrend))
+4281: local #7
+4282: local #1
+4283: local #0
+4284: makelocal
+4285: jmp userfunc @6966
+4286: if true goto 4294
+DespawnGroup(region, group);
+4287: local #5
+4288: local #4
+4289: makelocal
+4290: jmp userfunc @3586
+4291: #
+return 0;
+4292: 0L
+4293: return
+4294: leave block(1)
+var spawns := GetGroupSpawns(region, group);
+4295: decl local #7
+4296: local #5
+4297: local #4
+4298: makelocal
+4299: jmp userfunc @3692
+4300: :=
+4301: #
+if(spawns.size() >= CInt(max))
+4302: local #7
+4303: Call Method size (0 params)
+4304: local #3
+4305: Func(0,0): CInt
+4306: >=
+4307: if false goto 4310
+return 0;
+4308: 0L
+4309: return
+if(!freq)
+4310: local #2
+4311: if true goto 4314
+freq := DEFAULT_GRP_FREQUENCY;
+4312: 5L
+4313: local2 := 
+var clock := ReadGameClock();
+4314: decl local #8
+4315: Func(2,17): ReadGameClock
+4316: :=
+4317: #
+if(nextspawn > clock)
+4318: local #6
+4319: local #8
+4320: >
+4321: if false goto 4324
+return 0;
+4322: 0L
+4323: return
+nextspawn := clock +(freq * 60);
+4324: local #8
+4325: local #2
+4326: 60L
+4327: *
+4328: +
+4329: local6 := 
+SetGroupFreq(region, group, nextspawn);
+4330: local #5
+4331: local #4
+4332: local #6
+4333: makelocal
+4334: jmp userfunc @4204
+4335: #
+if(spawns.size() >= max)
+4336: local #7
+4337: Call Method size (0 params)
+4338: local #3
+4339: >=
+4340: if false goto 4343
+return 0;
+4341: 0L
+4342: return
+var npcs := grpcfg[group].GetProp("npc");
+4343: decl local #9
+4344: global #14
+4345: local #4
+4346: [] 1
+4347: "npc"
+4348: Call Method getprop (1 params)
+4349: :=
+4350: #
+if(!npcs)
+4351: local #9
+4352: if true goto 4360
+syslog("Unable to find SpawnGroup: " + group);
+4353: "Unable to find SpawnGroup: "
+4354: local #4
+4355: +
+4356: Func(3,1): syslog
+4357: #
+return 0;
+4358: 0L
+4359: return
+var tospawn := max - spawns.size();
+4360: decl local #10
+4361: local #3
+4362: local #7
+4363: Call Method size (0 params)
+4364: -
+4365: :=
+4366: #
+var sp, template, npc;
+4367: decl local #11
+4368: #
+4369: decl local #12
+4370: #
+4371: decl local #13
+4372: #
+for(sp := 1; sp <= tospawn; sp := sp + 1)
+4373: local #11
+4374: 1L
+4375: :=
+4376: #
+4377: local #11
+4378: local #10
+4379: <=
+4380: if false goto 4409
+template := PickRandomNpc(npcs);
+4381: local #9
+4382: makelocal
+4383: jmp userfunc @7011
+4384: local12 := 
+npc := SpawnNpc(region, group, template);
+4385: local #5
+4386: local #4
+4387: local #12
+4388: makelocal
+4389: jmp userfunc @4417
+4390: local13 := 
+if(!npc)
+4391: local #13
+4392: if true goto 4394
+continue;
+4393: goto4402
+spawns.append(npc.serial);
+4394: local #7
+4395: local #13
+4396: get member 'serial'
+4397: Call Method append (1 params)
+4398: #
+sleepms(1);
+4399: 1L
+4400: Func(3,0): sleepms
+4401: #
+4402: local #11
+4403: local #11
+4404: 1L
+4405: +
+4406: :=
+4407: #
+4408: goto4377
+SetGroupSpawns(region, group, spawns);
+4409: local #5
+4410: local #4
+4411: local #7
+4412: makelocal
+4413: jmp userfunc @4228
+4414: #
+4415: 0L
+4416: return
+C:\pol2\pkg\systems\spawnregion\textcmd\gm\../../spawnRegion.inc, Line 158
+function SpawnNpc(region, group, template)
+4417: pop param 'template'
+4418: pop param 'group'
+4419: pop param 'region'
+var coords := SplitWords(regcfg[region].GetProp("rect"));
+4420: decl local #3
+4421: global #13
+4422: local #2
+4423: [] 1
+4424: "rect"
+4425: Call Method getprop (1 params)
+4426: Func(0,5): SplitWords
+4427: :=
+4428: #
+var x1 := CInt(coords[1]);
+4429: decl local #4
+4430: local #3
+4431: 1L
+4432: [] 1
+4433: Func(0,0): CInt
+4434: :=
+4435: #
+var y1 := CInt(coords[2]);
+4436: decl local #5
+4437: local #3
+4438: 2L
+4439: [] 1
+4440: Func(0,0): CInt
+4441: :=
+4442: #
+var x2 := CInt(coords[3]);
+4443: decl local #6
+4444: local #3
+4445: 3L
+4446: [] 1
+4447: Func(0,0): CInt
+4448: :=
+4449: #
+var y2 := CInt(coords[4]);
+4450: decl local #7
+4451: local #3
+4452: 4L
+4453: [] 1
+4454: Func(0,0): CInt
+4455: :=
+4456: #
+var x, y, z;
+4457: decl local #8
+4458: #
+4459: decl local #9
+4460: #
+4461: decl local #10
+4462: #
+var tries := 0;
+4463: decl local #11
+4464: 0L
+4465: :=
+4466: #
+var sh, info, npc, prop;
+4467: decl local #12
+4468: #
+4469: decl local #13
+4470: #
+4471: decl local #14
+4472: #
+4473: decl local #15
+4474: #
+x := RandomInt(x2-x1)+x1;
+4475: local #6
+4476: local #4
+4477: -
+4478: Func(5,0): RandomInt
+4479: local #4
+4480: +
+4481: local8 := 
+y := RandomInt(y2-y1)+y1;
+4482: local #7
+4483: local #5
+4484: -
+4485: Func(5,0): RandomInt
+4486: local #5
+4487: +
+4488: local9 := 
+z := GetMapInfo(x, y).z;
+4489: local #8
+4490: local #9
+4491: Func(2,19): GetMapInfo
+4492: get member 'z'
+4493: local10 := 
+tries := tries + 1;
+4494: local #11
+4495: 1L
+4496: +
+4497: local11 := 
+sh := GetStandingHeight(x, y, z);
+4498: local #8
+4499: local #9
+4500: local #10
+4501: Func(2,20): GetStandingHeight
+4502: local12 := 
+if(sh.multi || sh.multi.serial)
+4503: local #12
+4504: get member 'multi'
+4505: local #12
+4506: get member 'multi'
+4507: get member 'serial'
+4508: ||
+4509: if false goto 4513
+npc := 0;
+4510: 0L
+4511: local14 := 
+4512: goto4558
+info := Hex(GetMapInfo(x, y).landtile);
+4513: local #8
+4514: local #9
+4515: Func(2,19): GetMapInfo
+4516: get member 'landtile'
+4517: Func(0,8): Hex
+4518: local13 := 
+if((info < 0x406) ||(info > 0x455))
+4519: local #13
+4520: 1030L
+4521: <
+4522: local #13
+4523: 1109L
+4524: >
+4525: ||
+4526: if false goto 4558
+npc := CreateNpc(template, x, y, z);
+4527: local #0
+4528: local #8
+4529: local #9
+4530: local #10
+4531: 0L
+4532: makelocal
+4533: jmp userfunc @6646
+4534: local14 := 
+if(npc)
+4535: local #14
+4536: if false goto 4558
+counter := counter + 1;
+4537: global #18
+4538: 1L
+4539: +
+4540: global18 := 
+prop := array;
+4541: array
+4542: local15 := 
+prop.append(region);
+4543: local #15
+4544: local #2
+4545: Call Method append (1 params)
+4546: #
+prop.append(group);
+4547: local #15
+4548: local #1
+4549: Call Method append (1 params)
+4550: #
+SetObjProperty(npc, "SpawnRegion", prop);
+4551: local #14
+4552: "SpawnRegion"
+4553: local #15
+4554: Func(2,2): SetObjProperty
+4555: #
+return npc;
+4556: local #14
+4557: return
+sleepms(1);
+4558: 1L
+4559: Func(3,0): sleepms
+4560: #
+4561: local #11
+4562: 20L
+4563: >
+4564: if false goto 4475
+if(tries > MAX_SPAWN_TRIES)
+4565: local #11
+4566: 20L
+4567: >
+4568: if false goto 4578
+syslog("Exceeded max tries. Region = " + region + ", npc = " + template);
+4569: "Exceeded max tries. Region = "
+4570: local #2
+4571: +
+4572: ", npc = "
+4573: +
+4574: local #0
+4575: +
+4576: Func(3,1): syslog
+4577: #
+return 0;
+4578: 0L
+4579: return
+C:/pol2/scripts/include/yesNo.inc, Line 5
+function YesNo(me, prompt)
+4580: pop param 'prompt'
+4581: pop param 'me'
+var layout := array(
+4582: decl local #2
+4583: array
+4584: "page 0"
+4585: +=
+4586: "nodispose"
+4587: +=
+4588: "gumppic 0 0 2070"
+4589: +=
+4590: "button 30 75 2130 2129 1 0 1"
+4591: +=
+4592: "button 90 75 2119 2120 1 0 0"
+4593: +=
+4594: "text 40 30 502 0"
+4595: +=
+4596: :=
+4597: #
+var data := array(  prompt  );
+4598: decl local #3
+4599: array
+4600: local #0
+4601: +=
+4602: :=
+4603: #
+var res := SendDialogGump( me, layout, data );
+4604: decl local #4
+4605: local #1
+4606: local #2
+4607: local #3
+4608: Func(2,0): SendDialogGump
+4609: :=
+4610: #
+if (res)
+4611: local #4
+4612: if false goto 4616
+return 1;
+4613: 1L
+4614: return
+4615: goto4618
+return 0;
+4616: 0L
+4617: return
+4618: 0L
+4619: return
+C:\pol2\pkg\systems\spawnregion\textcmd\gm\regionmanager.src, Line 292
+function AddNewGroup(who);
+4620: pop param 'who'
+var dfile := OpenDataFile("SpawnGroups");
+4621: decl local #1
+4622: "SpawnGroups"
+4623: Func(6,0): OpenDataFile
+4624: :=
+4625: #
+regiondone := 0;
+4626: 0L
+4627: global20 := 
+GFInitGump(0, 0);
+4628: 0L
+4629: 0L
+4630: makelocal
+4631: jmp userfunc @1121
+4632: #
+GFNoDispose();
+4633: makelocal
+4634: jmp userfunc @1140
+4635: #
+GFPage(0);
+4636: 0L
+4637: makelocal
+4638: jmp userfunc @1151
+4639: #
+GFResizePic(  0,   0, 5120, 640, 420);                    //dark menu backgroun
+4640: 0L
+4641: 0L
+4642: 5120L
+4643: 640L
+4644: 420L
+4645: makelocal
+4646: jmp userfunc @1169
+4647: #
+GFResizePic( 10,  10, 5054, 620, 400);                    //light menu backgrou
+4648: 10L
+4649: 10L
+4650: 5054L
+4651: 620L
+4652: 400L
+4653: makelocal
+4654: jmp userfunc @1169
+4655: #
+GFTextLine(232, 17, 0, "Spawn Group Editor");
+4656: 232L
+4657: 17L
+4658: 0L
+4659: "Spawn Group Editor"
+4660: makelocal
+4661: jmp userfunc @1247
+4662: #
+GFTextLine(230, 15, COLOR_YELLOW, "Spawn Group Editor");
+4663: 230L
+4664: 15L
+4665: 53L
+4666: "Spawn Group Editor"
+4667: makelocal
+4668: jmp userfunc @1247
+4669: #
+GFTextLine(200, 40, COLOR_BLUE_LIGHT, "Time:");
+4670: 200L
+4671: 40L
+4672: 99L
+4673: "Time:"
+4674: makelocal
+4675: jmp userfunc @1247
+4676: #
+GFTextLine(245, 40, COLOR_GREEN, GetTimeOfDay());
+4677: 245L
+4678: 40L
+4679: 63L
+4680: makelocal
+4681: jmp userfunc @3767
+4682: makelocal
+4683: jmp userfunc @1247
+4684: #
+GFTextLine(30, 70, COLOR_BLUE_LIGHT, "Group Name");
+4685: 30L
+4686: 70L
+4687: 99L
+4688: "Group Name"
+4689: makelocal
+4690: jmp userfunc @1247
+4691: #
+var yTxt := 90;
+4692: decl local #2
+4693: 90L
+4694: :=
+4695: #
+var xTxt := 30;
+4696: decl local #3
+4697: 30L
+4698: :=
+4699: #
+var yshift := 20;
+4700: decl local #4
+4701: 20L
+4702: :=
+4703: #
+var ct := 0;
+4704: decl local #5
+4705: 0L
+4706: :=
+4707: #
+while(ct < 5)
+4708: local #5
+4709: 5L
+4710: <
+4711: if false goto 4732
+GFTextEntry(xTxt-10, yTxt, 200, 30, COLOR_GREEN, "");
+4712: local #3
+4713: 10L
+4714: -
+4715: local #2
+4716: 200L
+4717: 30L
+4718: 63L
+4719: ""
+4720: makelocal
+4721: jmp userfunc @4069
+4722: #
+yTxt := ytxt + yshift;
+4723: local #2
+4724: local #4
+4725: +
+4726: local2 := 
+ct := ct + 1;
+4727: local #5
+4728: 1L
+4729: +
+4730: local5 := 
+4731: goto4708
+var new := GFTextEntry(20, 40, 200, 20, COLOR_GREEN, "new");
+4732: decl local #6
+4733: 20L
+4734: 40L
+4735: 200L
+4736: 20L
+4737: 63L
+4738: "new"
+4739: makelocal
+4740: jmp userfunc @4069
+4741: :=
+4742: #
+var apply  := GFButtonID(10, 370, G_YELLOW_OVAL_APPLY_0, G_YELLOW_OVAL_APPLY_1,
+4743: decl local #7
+4744: 10L
+4745: 370L
+4746: 2122L
+4747: 2123L
+4748: 1L
+4749: 0L
+4750: makelocal
+4751: jmp userfunc @1037
+4752: :=
+4753: #
+var cancel := GFButtonID(135, 370, G_RED_OVAL_CANCEL_0, G_RED_OVAL_CANCEL_1, 1)
+4754: decl local #8
+4755: 135L
+4756: 370L
+4757: 2071L
+4758: 2072L
+4759: 1L
+4760: 0L
+4761: makelocal
+4762: jmp userfunc @1037
+4763: :=
+4764: #
+var gdata;
+4765: decl local #9
+4766: #
+var holder := {};
+4767: decl local #10
+4768: array
+4769: :=
+4770: #
+var split;
+4771: decl local #11
+4772: #
+var retkey := GFSendGump(who);
+4773: decl local #12
+4774: local #0
+4775: makelocal
+4776: jmp userfunc @1225
+4777: :=
+4778: #
+if(!retkey[apply.keyid])
+4779: local #12
+4780: local #7
+4781: get member 'keyid'
+4782: [] 1
+4783: if true goto 4793
+SendSysMessage(who, "Cancelled");
+4784: local #0
+4785: "Cancelled"
+4786: 3L
+4787: 1000L
+4788: Func(2,25): SendSysMessage
+4789: #
+return 0;
+4790: 0L
+4791: return
+4792: goto4944
+if(retkey[new.keyid] == "new")
+4793: local #12
+4794: local #6
+4795: get member 'keyid'
+4796: [] 1
+4797: "new"
+4798: ==
+4799: if false goto 4808
+SendSysMessage(who, "Cancelled.");
+4800: local #0
+4801: "Cancelled."
+4802: 3L
+4803: 1000L
+4804: Func(2,25): SendSysMessage
+4805: #
+return 0;
+4806: 0L
+4807: return
+if(SplitWords(retkey[new.keyid])[2] in dfile.Keys())
+4808: local #12
+4809: local #6
+4810: get member 'keyid'
+4811: [] 1
+4812: Func(0,5): SplitWords
+4813: 2L
+4814: [] 1
+4815: local #1
+4816: Call Method keys (0 params)
+4817: in
+4818: if false goto 4827
+SendSysMessage(who, "That Group already exists.");
+4819: local #0
+4820: "That Group already exists."
+4821: 3L
+4822: 1000L
+4823: Func(2,25): SendSysMessage
+4824: #
+return 0;
+4825: 0L
+4826: return
+var temp;
+4827: decl local #0
+4828: #
+var holder := array;
+4829: decl local #1
+4830: array
+4831: :=
+4832: #
+var entry := dfile.CreateElement(SplitWords(retkey[new.keyid])[2]);
+4833: decl local #2
+4834: local #1
+4835: local #12
+4836: local #6
+4837: get member 'keyid'
+4838: [] 1
+4839: Func(0,5): SplitWords
+4840: 2L
+4841: [] 1
+4842: Call Method createelement (1 params)
+4843: :=
+4844: #
+if(!entry)
+4845: local #15
+4846: if true goto 4855
+SendSysMessage(who, "Cancelled");
+4847: local #0
+4848: "Cancelled"
+4849: 3L
+4850: 1000L
+4851: Func(2,25): SendSysMessage
+4852: #
+return 0;
+4853: 0L
+4854: return
+SendSysMessage(who, "Editing");
+4855: local #0
+4856: "Editing"
+4857: 3L
+4858: 1000L
+4859: Func(2,25): SendSysMessage
+4860: #
+foreach thing in (retkey.keys)
+4861: local #12
+4862: get member 'keys'
+4863: initforeach @4887
+if((thing) && (thing != retkey.keyid) && (thing != new.keyid))
+4864: local #16
+4865: local #16
+4866: local #12
+4867: get member 'keyid'
+4868: <>
+4869: &&
+4870: local #16
+4871: local #6
+4872: get member 'keyid'
+4873: <>
+4874: &&
+4875: if false goto 4887
+temp := SplitWords(retkey[thing]);
+4876: local #12
+4877: local #16
+4878: [] 1
+4879: Func(0,5): SplitWords
+4880: local13 := 
+holder.append(temp[2]);
+4881: local #14
+4882: local #13
+4883: 2L
+4884: [] 1
+4885: Call Method append (1 params)
+4886: #
+4887: stepforeach @4864
+4888: leave block(3)
+var num := 1;
+4889: decl local #3
+4890: 1L
+4891: :=
+4892: #
+var turn := 1;
+4893: decl local #4
+4894: 1L
+4895: :=
+4896: #
+foreach thing in (entry.PropNames())
+4897: local #15
+4898: Call Method propnames (0 params)
+4899: initforeach @4904
+entry.EraseProp(thing);
+4900: local #15
+4901: local #18
+4902: Call Method eraseprop (1 params)
+4903: #
+4904: stepforeach @4900
+4905: leave block(3)
+var tmp := array;
+4906: decl local #5
+4907: array
+4908: :=
+4909: #
+foreach thing in holder
+4910: local #14
+4911: initforeach @4934
+if((thing != "0") && (thing) && (thing != "blank") && (thing != ""))
+4912: local #19
+4913: "0"
+4914: <>
+4915: local #19
+4916: &&
+4917: local #19
+4918: "blank"
+4919: <>
+4920: &&
+4921: local #19
+4922: ""
+4923: <>
+4924: &&
+4925: if false goto 4930
+tmp.append(thing);
+4926: local #18
+4927: local #19
+4928: Call Method append (1 params)
+4929: #
+turn := turn + 1;
+4930: local #17
+4931: 1L
+4932: +
+4933: local17 := 
+4934: stepforeach @4912
+4935: leave block(3)
+entry.SetProp("npc", tmp);
+4936: local #15
+4937: "npc"
+4938: local #18
+4939: Call Method setprop (2 params)
+4940: #
+return 1;
+4941: 1L
+4942: return
+4943: leave block(6)
+4944: 0L
+4945: return
+C:\pol2\pkg\systems\spawnregion\textcmd\gm\regionmanager.src, Line 925
+function ComposeGroupDetailGump(who, region, group)
+4946: pop param 'group'
+4947: pop param 'region'
+4948: pop param 'who'
+GFInitGump(0, 0);
+4949: 0L
+4950: 0L
+4951: makelocal
+4952: jmp userfunc @1121
+4953: #
+GFPage(0);
+4954: 0L
+4955: makelocal
+4956: jmp userfunc @1151
+4957: #
+GFNoDispose();
+4958: makelocal
+4959: jmp userfunc @1140
+4960: #
+GFNoClose();
+4961: makelocal
+4962: jmp userfunc @3981
+4963: #
+GFResizePic(  0,   0, 5120, 640, 420);                    //dark menu backgroun
+4964: 0L
+4965: 0L
+4966: 5120L
+4967: 640L
+4968: 420L
+4969: makelocal
+4970: jmp userfunc @1169
+4971: #
+GFResizePic( 10,  10, 5054, 620, 400);                    //light menu backgrou
+4972: 10L
+4973: 10L
+4974: 5054L
+4975: 620L
+4976: 400L
+4977: makelocal
+4978: jmp userfunc @1169
+4979: #
+GFTextLine( 232, 17, 0, "Spawn Region Manager");
+4980: 232L
+4981: 17L
+4982: 0L
+4983: "Spawn Region Manager"
+4984: makelocal
+4985: jmp userfunc @1247
+4986: #
+GFTextLine( 230, 15, COLOR_YELLOW, "Spawn Region Manager");
+4987: 230L
+4988: 15L
+4989: 53L
+4990: "Spawn Region Manager"
+4991: makelocal
+4992: jmp userfunc @1247
+4993: #
+GFTextLine( 15, 40, COLOR_GREEN, region + " - " + group);
+4994: 15L
+4995: 40L
+4996: 63L
+4997: local #1
+4998: " - "
+4999: +
+5000: local #0
+5001: +
+5002: makelocal
+5003: jmp userfunc @1247
+5004: #
+GFTextLine( 15, 60, COLOR_BLUE_LIGHT, "Kill");
+5005: 15L
+5006: 60L
+5007: 99L
+5008: "Kill"
+5009: makelocal
+5010: jmp userfunc @1247
+5011: #
+GFTextLine( 65, 60, COLOR_BLUE_LIGHT, "Template");
+5012: 65L
+5013: 60L
+5014: 99L
+5015: "Template"
+5016: makelocal
+5017: jmp userfunc @1247
+5018: #
+GFTextLine(160, 60, COLOR_BLUE_LIGHT, "Serial");
+5019: 160L
+5020: 60L
+5021: 99L
+5022: "Serial"
+5023: makelocal
+5024: jmp userfunc @1247
+5025: #
+GFTextLine(260, 60, COLOR_BLUE_LIGHT, "HP");
+5026: 260L
+5027: 60L
+5028: 99L
+5029: "HP"
+5030: makelocal
+5031: jmp userfunc @1247
+5032: #
+GFTextLine(360, 60, COLOR_BLUE_LIGHT, "Mana");
+5033: 360L
+5034: 60L
+5035: 99L
+5036: "Mana"
+5037: makelocal
+5038: jmp userfunc @1247
+5039: #
+GFTextLine(460, 60, COLOR_BLUE_LIGHT, "Stamina");
+5040: 460L
+5041: 60L
+5042: 99L
+5043: "Stamina"
+5044: makelocal
+5045: jmp userfunc @1247
+5046: #
+GFTextLine(550, 60, COLOR_BLUE_LIGHT, "Go To");
+5047: 550L
+5048: 60L
+5049: 99L
+5050: "Go To"
+5051: makelocal
+5052: jmp userfunc @1247
+5053: #
+var kill := GFButtonID(40, 385, G_GREEN_OVAL_OK_0, G_GREEN_OVAL_OK_1, 1);
+5054: decl local #3
+5055: 40L
+5056: 385L
+5057: 2074L
+5058: 2075L
+5059: 1L
+5060: 0L
+5061: makelocal
+5062: jmp userfunc @1037
+5063: :=
+5064: #
+var cancel := GFButtonID(100, 385, G_RED_OVAL_CANCEL_0, G_RED_OVAL_CANCEL_1, 1)
+5065: decl local #4
+5066: 100L
+5067: 385L
+5068: 2071L
+5069: 2072L
+5070: 1L
+5071: 0L
+5072: makelocal
+5073: jmp userfunc @1037
+5074: :=
+5075: #
+var spawns := GetGroupSpawns(region, group);
+5076: decl local #5
+5077: local #1
+5078: local #0
+5079: makelocal
+5080: jmp userfunc @3692
+5081: :=
+5082: #
+var numtemp := spawns.size();
+5083: decl local #6
+5084: local #5
+5085: Call Method size (0 params)
+5086: :=
+5087: #
+var numpages := 1;
+5088: decl local #7
+5089: 1L
+5090: :=
+5091: #
+while (numtemp > 0)
+5092: local #6
+5093: 0L
+5094: >
+5095: if false goto 5109
+numtemp := numtemp - TPERPAGE;
+5096: local #6
+5097: 15L
+5098: -
+5099: local6 := 
+if (numtemp > 0)
+5100: local #6
+5101: 0L
+5102: >
+5103: if false goto 5108
+numpages := numpages + 1;
+5104: local #7
+5105: 1L
+5106: +
+5107: local7 := 
+5108: goto5092
+var bt := array;
+5109: decl local #8
+5110: array
+5111: :=
+5112: #
+var btgo := array;
+5113: decl local #9
+5114: array
+5115: :=
+5116: #
+var pg;
+5117: decl local #10
+5118: #
+for (pg := 1; pg <= numpages; pg := pg + 1)
+5119: local #10
+5120: 1L
+5121: :=
+5122: #
+5123: local #10
+5124: local #7
+5125: <=
+5126: if false goto 5144
+ComposeSpawnsPage(pg, spawns, bt, btgo, numpages, region, group);
+5127: local #10
+5128: local #5
+5129: local #8
+5130: local #9
+5131: local #7
+5132: local #1
+5133: local #0
+5134: makelocal
+5135: jmp userfunc @6262
+5136: #
+5137: local #10
+5138: local #10
+5139: 1L
+5140: +
+5141: :=
+5142: #
+5143: goto5123
+var retkey := GFSendGump(who);
+5144: decl local #11
+5145: local #2
+5146: makelocal
+5147: jmp userfunc @1225
+5148: :=
+5149: #
+var num;
+5150: decl local #12
+5151: #
+for (num := 1; num <= spawns.size(); num := num + 1)
+5152: local #12
+5153: 1L
+5154: :=
+5155: #
+5156: local #12
+5157: local #5
+5158: Call Method size (0 params)
+5159: <=
+5160: if false goto 5216
+if(retkey[btgo[num]])
+5161: local #11
+5162: local #9
+5163: local #12
+5164: [] 1
+5165: [] 1
+5166: if false goto 5209
+var npc := SystemFindObjectBySerial(spawns[num]);
+5167: decl local #0
+5168: local #5
+5169: local #12
+5170: [] 1
+5171: 0L
+5172: Func(2,21): SystemFindObjectBySerial
+5173: :=
+5174: #
+if (!npc)
+5175: local #13
+5176: if true goto 5196
+RemoveSerialFromGroup(region, group, spawns[num]);
+5177: local #1
+5178: local #0
+5179: local #5
+5180: local #12
+5181: [] 1
+5182: makelocal
+5183: jmp userfunc @4164
+5184: #
+SendMsg(who, "Unable to locate spawn: " + spawns[num]);
+5185: local #2
+5186: "Unable to locate spawn: "
+5187: local #5
+5188: local #12
+5189: [] 1
+5190: +
+5191: makelocal
+5192: jmp userfunc @1559
+5193: #
+return 1;
+5194: 1L
+5195: return
+MoveCharacterToLocation(who, npc.x, npc.y, npc.z, MOVECHAR_FORCELOCATION);
+5196: local #2
+5197: local #13
+5198: get member 'x'
+5199: local #13
+5200: get member 'y'
+5201: local #13
+5202: get member 'z'
+5203: 1073741824L
+5204: Func(2,26): MoveCharacterToLocation
+5205: #
+return 1;
+5206: 1L
+5207: return
+5208: leave block(1)
+5209: local #12
+5210: local #12
+5211: 1L
+5212: +
+5213: :=
+5214: #
+5215: goto5156
+if(retkey[cancel.keyid])
+5216: local #11
+5217: local #4
+5218: get member 'keyid'
+5219: [] 1
+5220: if false goto 5223
+return 0;
+5221: 0L
+5222: return
+for (num := 1; num <= spawns.size(); num := num + 1)
+5223: local #12
+5224: 1L
+5225: :=
+5226: #
+5227: local #12
+5228: local #5
+5229: Call Method size (0 params)
+5230: <=
+5231: if false goto 5251
+if(retkey[bt[num]])
+5232: local #11
+5233: local #8
+5234: local #12
+5235: [] 1
+5236: [] 1
+5237: if false goto 5244
+Despawn(spawns[num]);
+5238: local #5
+5239: local #12
+5240: [] 1
+5241: makelocal
+5242: jmp userfunc @6668
+5243: #
+5244: local #12
+5245: local #12
+5246: 1L
+5247: +
+5248: :=
+5249: #
+5250: goto5227
+return 1;
+5251: 1L
+5252: return
+C:\pol2\pkg\systems\spawnregion\textcmd\gm\regionmanager.src, Line 859
+function ComposeGroupGump(who, region, byref reggroups)
+5253: pop param byref 'reggroups'
+5254: pop param 'region'
+5255: pop param 'who'
+var dfile := OpenDataFile("SpawnGroups");
+5256: decl local #3
+5257: "SpawnGroups"
+5258: Func(6,0): OpenDataFile
+5259: :=
+5260: #
+var entry := dfile.FindElement(region);
+5261: decl local #4
+5262: local #3
+5263: local #1
+5264: Call Method findelement (1 params)
+5265: :=
+5266: #
+regiondone := 0;
+5267: 0L
+5268: global20 := 
+GFInitGump(0, 0);
+5269: 0L
+5270: 0L
+5271: makelocal
+5272: jmp userfunc @1121
+5273: #
+GFNoDispose();
+5274: makelocal
+5275: jmp userfunc @1140
+5276: #
+GFPage(0);
+5277: 0L
+5278: makelocal
+5279: jmp userfunc @1151
+5280: #
+GFResizePic(  0,   0, 5120, 640, 420);                    //dark menu backgroun
+5281: 0L
+5282: 0L
+5283: 5120L
+5284: 640L
+5285: 420L
+5286: makelocal
+5287: jmp userfunc @1169
+5288: #
+GFResizePic( 10,  10, 5054, 620, 400);                    //light menu backgrou
+5289: 10L
+5290: 10L
+5291: 5054L
+5292: 620L
+5293: 400L
+5294: makelocal
+5295: jmp userfunc @1169
+5296: #
+GFTextLine(232, 17, 0, "Spawn Group Manager");
+5297: 232L
+5298: 17L
+5299: 0L
+5300: "Spawn Group Manager"
+5301: makelocal
+5302: jmp userfunc @1247
+5303: #
+GFTextLine(230, 15, COLOR_YELLOW, "Spawn Group Manager");
+5304: 230L
+5305: 15L
+5306: 53L
+5307: "Spawn Group Manager"
+5308: makelocal
+5309: jmp userfunc @1247
+5310: #
+GFTextLine( 20, 40, COLOR_GREEN, region);
+5311: 20L
+5312: 40L
+5313: 63L
+5314: local #1
+5315: makelocal
+5316: jmp userfunc @1247
+5317: #
+GFTextLine(200, 40, COLOR_BLUE_LIGHT, "Time:");
+5318: 200L
+5319: 40L
+5320: 99L
+5321: "Time:"
+5322: makelocal
+5323: jmp userfunc @1247
+5324: #
+GFTextLine(245, 40, COLOR_GREEN, GetTimeOfDay());
+5325: 245L
+5326: 40L
+5327: 63L
+5328: makelocal
+5329: jmp userfunc @3767
+5330: makelocal
+5331: jmp userfunc @1247
+5332: #
+GFTextLine( 30, 70, COLOR_BLUE_LIGHT, "Group Name");
+5333: 30L
+5334: 70L
+5335: 99L
+5336: "Group Name"
+5337: makelocal
+5338: jmp userfunc @1247
+5339: #
+var edit  := GFButtonID(10, 15, 2640, 2641, 1);
+5340: decl local #5
+5341: 10L
+5342: 15L
+5343: 2640L
+5344: 2641L
+5345: 1L
+5346: 0L
+5347: makelocal
+5348: jmp userfunc @1037
+5349: :=
+5350: #
+GFTextLine(50, 20, COLOR_RED, "Edit This Group?");
+5351: 50L
+5352: 20L
+5353: 34L
+5354: "Edit This Group?"
+5355: makelocal
+5356: jmp userfunc @1247
+5357: #
+var erase  := GFButtonID(450, 15, 2640, 2641, 1);
+5358: decl local #6
+5359: 450L
+5360: 15L
+5361: 2640L
+5362: 2641L
+5363: 1L
+5364: 0L
+5365: makelocal
+5366: jmp userfunc @1037
+5367: :=
+5368: #
+GFTextLine(490, 20, COLOR_RED, "Delete This Group?");
+5369: 490L
+5370: 20L
+5371: 34L
+5372: "Delete This Group?"
+5373: makelocal
+5374: jmp userfunc @1247
+5375: #
+var prev := GFButtonID(70, 390, G_RED_OVAL_PREV_0, G_RED_OVAL_PREV_1, 1);
+5376: decl local #7
+5377: 70L
+5378: 390L
+5379: 2322L
+5380: 2323L
+5381: 1L
+5382: 0L
+5383: makelocal
+5384: jmp userfunc @1037
+5385: :=
+5386: #
+var cancel := GFButtonID(135, 390, G_RED_OVAL_CANCEL_0, G_RED_OVAL_CANCEL_1, 1)
+5387: decl local #8
+5388: 135L
+5389: 390L
+5390: 2071L
+5391: 2072L
+5392: 1L
+5393: 0L
+5394: makelocal
+5395: jmp userfunc @1037
+5396: :=
+5397: #
+var yTxt := 90;
+5398: decl local #9
+5399: 90L
+5400: :=
+5401: #
+var xTxt := 30;
+5402: decl local #10
+5403: 30L
+5404: :=
+5405: #
+var yshift := 20;
+5406: decl local #11
+5407: 20L
+5408: :=
+5409: #
+var idx := 1;
+5410: decl local #12
+5411: 1L
+5412: :=
+5413: #
+var gdata, spawns, spawntxt, rdata, ctxt, status, freq, bt, edt := 0;
+5414: decl local #13
+5415: #
+5416: decl local #14
+5417: #
+5418: decl local #15
+5419: #
+5420: decl local #16
+5421: #
+5422: decl local #17
+5423: #
+5424: decl local #18
+5425: #
+5426: decl local #19
+5427: #
+5428: decl local #20
+5429: #
+5430: decl local #21
+5431: 0L
+5432: :=
+5433: #
+var btstatus := array;
+5434: decl local #22
+5435: array
+5436: :=
+5437: #
+var btspawn := array;
+5438: decl local #23
+5439: array
+5440: :=
+5441: #
+var btdespawn := array;
+5442: decl local #24
+5443: array
+5444: :=
+5445: #
+var btrespawn := array;
+5446: decl local #25
+5447: array
+5448: :=
+5449: #
+var holder := {};
+5450: decl local #26
+5451: array
+5452: :=
+5453: #
+foreach grp in reggroups
+5454: local #0
+5455: initforeach @5469
+ctxt := COLOR_GREEN;
+5456: 63L
+5457: local17 := 
+GFTextLine(xTxt, yTxt, ctxt, grp);
+5458: local #10
+5459: local #9
+5460: local #17
+5461: local #27
+5462: makelocal
+5463: jmp userfunc @1247
+5464: #
+ytxt := ytxt + yshift;
+5465: local #9
+5466: local #11
+5467: +
+5468: local9 := 
+5469: stepforeach @5456
+5470: leave block(3)
+var retkey := GFSendGump(who);
+5471: decl local #27
+5472: local #2
+5473: makelocal
+5474: jmp userfunc @1225
+5475: :=
+5476: #
+var num, rgelem;
+5477: decl local #28
+5478: #
+5479: decl local #29
+5480: #
+if(retkey[cancel.keyid])
+5481: local #27
+5482: local #8
+5483: get member 'keyid'
+5484: [] 1
+5485: if false goto 5487
+exit;
+5486: exit
+if(retkey[prev.keyid])
+5487: local #27
+5488: local #7
+5489: get member 'keyid'
+5490: [] 1
+5491: if false goto 5496
+regiondone := 1;
+5492: 1L
+5493: global20 := 
+return 0;
+5494: 0L
+5495: return
+if(retkey[edit.keyid])
+5496: local #27
+5497: local #5
+5498: get member 'keyid'
+5499: [] 1
+5500: if false goto 5524
+edt := ComposeGroupEditor(who, region, reggroups);
+5501: local #2
+5502: local #1
+5503: local #0
+5504: makelocal
+5505: jmp userfunc @7122
+5506: local21 := 
+while(edt == 1)
+5507: local #21
+5508: 1L
+5509: ==
+5510: if false goto 5522
+reggroups := entry.GetProp("npc");
+5511: local #4
+5512: "npc"
+5513: Call Method getprop (1 params)
+5514: local0 := 
+edt := ComposeGroupEditor(who, region, reggroups);
+5515: local #2
+5516: local #1
+5517: local #0
+5518: makelocal
+5519: jmp userfunc @7122
+5520: local21 := 
+5521: goto5507
+return 0;
+5522: 0L
+5523: return
+if(retkey[erase.keyid])
+5524: local #27
+5525: local #6
+5526: get member 'keyid'
+5527: [] 1
+5528: if false goto 5553
+if(YesNo(who, "Are You Sure?"))
+5529: local #2
+5530: "Are You Sure?"
+5531: makelocal
+5532: jmp userfunc @4580
+5533: if false goto 5549
+dfile.DeleteElement(region);
+5534: local #3
+5535: local #1
+5536: Call Method deleteelement (1 params)
+5537: #
+SendSysMessage(who, "Group Deleted.");
+5538: local #2
+5539: "Group Deleted."
+5540: 3L
+5541: 1000L
+5542: Func(2,25): SendSysMessage
+5543: #
+regiondone := 1;
+5544: 1L
+5545: global20 := 
+return 0;
+5546: 0L
+5547: return
+5548: goto5553
+regiondone := 0;
+5549: 0L
+5550: global20 := 
+return 0;
+5551: 0L
+5552: return
+5553: 0L
+5554: return
+C:\pol2\pkg\systems\spawnregion\textcmd\gm\regionmanager.src, Line 460
+function ComposeGroupsPage(page, byref reglist, byref buttons, maxpages)
+5555: pop param 'maxpages'
+5556: pop param byref 'buttons'
+5557: pop param byref 'reglist'
+5558: pop param 'page'
+var bX := 390;
+5559: decl local #4
+5560: 390L
+5561: :=
+5562: #
+var y := 60;
+5563: decl local #5
+5564: 60L
+5565: :=
+5566: #
+var tx := 25;
+5567: decl local #6
+5568: 25L
+5569: :=
+5570: #
+var yshift := 20;
+5571: decl local #7
+5572: 20L
+5573: :=
+5574: #
+var numtemp := TPERPAGE * page;
+5575: decl local #8
+5576: 15L
+5577: local #3
+5578: *
+5579: :=
+5580: #
+var starttemp := TPERPAGE * (page - 1) + 1;
+5581: decl local #9
+5582: 15L
+5583: local #3
+5584: 1L
+5585: -
+5586: *
+5587: 1L
+5588: +
+5589: :=
+5590: #
+GFPage(page);
+5591: local #3
+5592: makelocal
+5593: jmp userfunc @1151
+5594: #
+if (page == 1 && page != maxpages)
+5595: local #3
+5596: 1L
+5597: ==
+5598: local #3
+5599: local #0
+5600: <>
+5601: &&
+5602: if false goto 5614
+GFButtonPage(400, 400, 4005, 4007, page + 1);
+5603: 400L
+5604: 400L
+5605: 4005L
+5606: 4007L
+5607: local #3
+5608: 1L
+5609: +
+5610: makelocal
+5611: jmp userfunc @3839
+5612: #
+5613: goto5661
+elseif (page == maxpages && page != 1)
+5614: local #3
+5615: local #0
+5616: ==
+5617: local #3
+5618: 1L
+5619: <>
+5620: &&
+5621: if false goto 5633
+GFButtonPage(370, 400, 4014, 4016, page - 1);
+5622: 370L
+5623: 400L
+5624: 4014L
+5625: 4016L
+5626: local #3
+5627: 1L
+5628: -
+5629: makelocal
+5630: jmp userfunc @3839
+5631: #
+5632: goto5661
+elseif (page > 1 && page < maxpages)
+5633: local #3
+5634: 1L
+5635: >
+5636: local #3
+5637: local #0
+5638: <
+5639: &&
+5640: if false goto 5661
+GFButtonPage(370, 400, 4014, 4016, page - 1);
+5641: 370L
+5642: 400L
+5643: 4014L
+5644: 4016L
+5645: local #3
+5646: 1L
+5647: -
+5648: makelocal
+5649: jmp userfunc @3839
+5650: #
+GFButtonPage(400, 400, 4005, 4007, page + 1);
+5651: 400L
+5652: 400L
+5653: 4005L
+5654: 4007L
+5655: local #3
+5656: 1L
+5657: +
+5658: makelocal
+5659: jmp userfunc @3839
+5660: #
+var bt, tn, reg, txtcol;
+5661: decl local #10
+5662: #
+5663: decl local #11
+5664: #
+5665: decl local #12
+5666: #
+5667: decl local #13
+5668: #
+for(tn := starttemp; tn <= numtemp; tn := tn + 1)
+5669: local #11
+5670: local #9
+5671: :=
+5672: #
+5673: local #11
+5674: local #8
+5675: <=
+5676: if false goto 5721
+reg := reglist[tn];
+5677: local #2
+5678: local #11
+5679: [] 1
+5680: local12 := 
+if(!reg)
+5681: local #12
+5682: if true goto 5685
+return;
+5683: ""
+5684: return
+bt := GFButtonID(bX, y, 210, 211, 1);
+5685: local #4
+5686: local #5
+5687: 210L
+5688: 211L
+5689: 1L
+5690: 0L
+5691: makelocal
+5692: jmp userfunc @1037
+5693: local10 := 
+buttons.append(bt.keyid);
+5694: local #1
+5695: local #10
+5696: get member 'keyid'
+5697: Call Method append (1 params)
+5698: #
+GFTextCrop(tx, y - 3, 320, 20, COLOR_GREEN, reg);
+5699: local #6
+5700: local #5
+5701: 3L
+5702: -
+5703: 320L
+5704: 20L
+5705: 63L
+5706: local #12
+5707: makelocal
+5708: jmp userfunc @3992
+5709: #
+y := y + yshift;
+5710: local #5
+5711: local #7
+5712: +
+5713: local5 := 
+5714: local #11
+5715: local #11
+5716: 1L
+5717: +
+5718: :=
+5719: #
+5720: goto5673
+5721: 0L
+5722: return
+C:\pol2\pkg\systems\spawnregion\textcmd\gm\regionmanager.src, Line 582
+function ComposeRegionEditor(who, region, byref reggroups)
+5723: pop param byref 'reggroups'
+5724: pop param 'region'
+5725: pop param 'who'
+var dfile := OpenDataFile("SpawnRegions");
+5726: decl local #3
+5727: "SpawnRegions"
+5728: Func(6,0): OpenDataFile
+5729: :=
+5730: #
+var entry := dfile.FindElement(region);
+5731: decl local #4
+5732: local #3
+5733: local #1
+5734: Call Method findelement (1 params)
+5735: :=
+5736: #
+var rect  := entry.GetProp("rect");
+5737: decl local #5
+5738: local #4
+5739: "rect"
+5740: Call Method getprop (1 params)
+5741: :=
+5742: #
+if(!rect)
+5743: local #5
+5744: if true goto 5747
+rect := "X1 Y1 X2 Y2";
+5745: "X1 Y1 X2 Y2"
+5746: local5 := 
+regiondone := 0;
+5747: 0L
+5748: global20 := 
+GFInitGump(0, 0);
+5749: 0L
+5750: 0L
+5751: makelocal
+5752: jmp userfunc @1121
+5753: #
+GFNoDispose();
+5754: makelocal
+5755: jmp userfunc @1140
+5756: #
+GFPage(0);
+5757: 0L
+5758: makelocal
+5759: jmp userfunc @1151
+5760: #
+GFResizePic(  0,   0, 5120, 640, 420);                    //dark menu backgroun
+5761: 0L
+5762: 0L
+5763: 5120L
+5764: 640L
+5765: 420L
+5766: makelocal
+5767: jmp userfunc @1169
+5768: #
+GFResizePic( 10,  10, 5054, 620, 400);                    //light menu backgrou
+5769: 10L
+5770: 10L
+5771: 5054L
+5772: 620L
+5773: 400L
+5774: makelocal
+5775: jmp userfunc @1169
+5776: #
+GFTextLine(232, 17, 0, "Spawn Region Editor");
+5777: 232L
+5778: 17L
+5779: 0L
+5780: "Spawn Region Editor"
+5781: makelocal
+5782: jmp userfunc @1247
+5783: #
+GFTextLine(230, 15, COLOR_YELLOW, "Spawn Region Editor");
+5784: 230L
+5785: 15L
+5786: 53L
+5787: "Spawn Region Editor"
+5788: makelocal
+5789: jmp userfunc @1247
+5790: #
+GFTextLine(20, 40, COLOR_GREEN, region);
+5791: 20L
+5792: 40L
+5793: 63L
+5794: local #1
+5795: makelocal
+5796: jmp userfunc @1247
+5797: #
+GFTextLine(200, 40, COLOR_BLUE_LIGHT, "Time:");
+5798: 200L
+5799: 40L
+5800: 99L
+5801: "Time:"
+5802: makelocal
+5803: jmp userfunc @1247
+5804: #
+GFTextLine(245, 40, COLOR_GREEN, GetTimeOfDay());
+5805: 245L
+5806: 40L
+5807: 63L
+5808: makelocal
+5809: jmp userfunc @3767
+5810: makelocal
+5811: jmp userfunc @1247
+5812: #
+GFTextLine(40, 70, COLOR_BLUE_LIGHT, "Group Name");
+5813: 40L
+5814: 70L
+5815: 99L
+5816: "Group Name"
+5817: makelocal
+5818: jmp userfunc @1247
+5819: #
+GFTextLine(310, 70, COLOR_BLUE_LIGHT, "Spawns");
+5820: 310L
+5821: 70L
+5822: 99L
+5823: "Spawns"
+5824: makelocal
+5825: jmp userfunc @1247
+5826: #
+GFTextLine(400, 70, COLOR_BLUE_LIGHT, "Freq");
+5827: 400L
+5828: 70L
+5829: 99L
+5830: "Freq"
+5831: makelocal
+5832: jmp userfunc @1247
+5833: #
+GFTextLine(470, 70, COLOR_BLUE_LIGHT, "HrStart");
+5834: 470L
+5835: 70L
+5836: 99L
+5837: "HrStart"
+5838: makelocal
+5839: jmp userfunc @1247
+5840: #
+GFTextLine(550, 70, COLOR_BLUE_LIGHT, "HrEnd");
+5841: 550L
+5842: 70L
+5843: 99L
+5844: "HrEnd"
+5845: makelocal
+5846: jmp userfunc @1247
+5847: #
+var apply  := GFButtonID(20, 380, G_YELLOW_OVAL_APPLY_0, G_YELLOW_OVAL_APPLY_1,
+5848: decl local #6
+5849: 20L
+5850: 380L
+5851: 2122L
+5852: 2123L
+5853: 1L
+5854: 0L
+5855: makelocal
+5856: jmp userfunc @1037
+5857: :=
+5858: #
+var cancel := GFButtonID(145, 380, G_RED_OVAL_CANCEL_0, G_RED_OVAL_CANCEL_1, 1)
+5859: decl local #7
+5860: 145L
+5861: 380L
+5862: 2071L
+5863: 2072L
+5864: 1L
+5865: 0L
+5866: makelocal
+5867: jmp userfunc @1037
+5868: :=
+5869: #
+var yTxt := 100;
+5870: decl local #8
+5871: 100L
+5872: :=
+5873: #
+var xTxt := 40;
+5874: decl local #9
+5875: 40L
+5876: :=
+5877: #
+var yshift := 20;
+5878: decl local #10
+5879: 20L
+5880: :=
+5881: #
+var gdata;
+5882: decl local #11
+5883: #
+var holder := {};
+5884: decl local #12
+5885: array
+5886: :=
+5887: #
+var split := SplitWords(rect);
+5888: decl local #13
+5889: local #5
+5890: Func(0,5): SplitWords
+5891: :=
+5892: #
+var rectret := GFTextEntry(410, 30, 200, 20, COLOR_GREEN, rect);
+5893: decl local #14
+5894: 410L
+5895: 30L
+5896: 200L
+5897: 20L
+5898: 63L
+5899: local #5
+5900: makelocal
+5901: jmp userfunc @4069
+5902: :=
+5903: #
+foreach grp in reggroups
+5904: local #0
+5905: initforeach @6002
+gdata := SplitWords(grp);
+5906: local #15
+5907: Func(0,5): SplitWords
+5908: local11 := 
+GFTextEntry(xTxt-20, yTxt, 200, 30, COLOR_GREEN, gdata[1]);
+5909: local #9
+5910: 20L
+5911: -
+5912: local #8
+5913: 200L
+5914: 30L
+5915: 63L
+5916: local #11
+5917: 1L
+5918: [] 1
+5919: makelocal
+5920: jmp userfunc @4069
+5921: #
+GFTextEntry(xTxt+300, yTxt, 50, 30, COLOR_GREEN, gdata[2]);
+5922: local #9
+5923: 300L
+5924: +
+5925: local #8
+5926: 50L
+5927: 30L
+5928: 63L
+5929: local #11
+5930: 2L
+5931: [] 1
+5932: makelocal
+5933: jmp userfunc @4069
+5934: #
+if(!gdata[3])
+5935: local #11
+5936: 3L
+5937: [] 1
+5938: if true goto 5943
+gdata[3] := DEFAULT_GRP_FREQUENCY;
+5939: local #11
+5940: 3L
+5941: 5L
+5942: [] := (1) #
+GFTextEntry(xTxt+370, yTxt, 50, 30, COLOR_GREEN, gdata[3]);
+5943: local #9
+5944: 370L
+5945: +
+5946: local #8
+5947: 50L
+5948: 30L
+5949: 63L
+5950: local #11
+5951: 3L
+5952: [] 1
+5953: makelocal
+5954: jmp userfunc @4069
+5955: #
+if(!gdata[4])
+5956: local #11
+5957: 4L
+5958: [] 1
+5959: if true goto 5964
+gdata[4] := "";
+5960: local #11
+5961: 4L
+5962: ""
+5963: [] := (1) #
+GFTextEntry(xTxt+450, yTxt, 50, 30, COLOR_GREEN, gdata[4]);
+5964: local #9
+5965: 450L
+5966: +
+5967: local #8
+5968: 50L
+5969: 30L
+5970: 63L
+5971: local #11
+5972: 4L
+5973: [] 1
+5974: makelocal
+5975: jmp userfunc @4069
+5976: #
+if(!gdata[5])
+5977: local #11
+5978: 5L
+5979: [] 1
+5980: if true goto 5985
+gdata[5] := "";
+5981: local #11
+5982: 5L
+5983: ""
+5984: [] := (1) #
+GFTextEntry(xTxt+525, yTxt, 50, 30, COLOR_GREEN, gdata[5]);
+5985: local #9
+5986: 525L
+5987: +
+5988: local #8
+5989: 50L
+5990: 30L
+5991: 63L
+5992: local #11
+5993: 5L
+5994: [] 1
+5995: makelocal
+5996: jmp userfunc @4069
+5997: #
+yTxt := ytxt + yshift;
+5998: local #8
+5999: local #10
+6000: +
+6001: local8 := 
+6002: stepforeach @5906
+6003: leave block(3)
+var ct := 0;
+6004: decl local #15
+6005: 0L
+6006: :=
+6007: #
+while(ct < 5)
+6008: local #15
+6009: 5L
+6010: <
+6011: if false goto 6076
+GFTextEntry(xTxt-20, yTxt, 200, 30, COLOR_GREEN, "");
+6012: local #9
+6013: 20L
+6014: -
+6015: local #8
+6016: 200L
+6017: 30L
+6018: 63L
+6019: ""
+6020: makelocal
+6021: jmp userfunc @4069
+6022: #
+GFTextEntry(xTxt+300, yTxt, 50, 30, COLOR_GREEN, "");
+6023: local #9
+6024: 300L
+6025: +
+6026: local #8
+6027: 50L
+6028: 30L
+6029: 63L
+6030: ""
+6031: makelocal
+6032: jmp userfunc @4069
+6033: #
+GFTextEntry(xTxt+370, yTxt, 50, 30, COLOR_GREEN, "");
+6034: local #9
+6035: 370L
+6036: +
+6037: local #8
+6038: 50L
+6039: 30L
+6040: 63L
+6041: ""
+6042: makelocal
+6043: jmp userfunc @4069
+6044: #
+GFTextEntry(xTxt+450, yTxt, 50, 30, COLOR_GREEN, "");
+6045: local #9
+6046: 450L
+6047: +
+6048: local #8
+6049: 50L
+6050: 30L
+6051: 63L
+6052: ""
+6053: makelocal
+6054: jmp userfunc @4069
+6055: #
+GFTextEntry(xTxt+525, yTxt, 50, 30, COLOR_GREEN, "");
+6056: local #9
+6057: 525L
+6058: +
+6059: local #8
+6060: 50L
+6061: 30L
+6062: 63L
+6063: ""
+6064: makelocal
+6065: jmp userfunc @4069
+6066: #
+yTxt := ytxt + yshift;
+6067: local #8
+6068: local #10
+6069: +
+6070: local8 := 
+ct := ct + 1;
+6071: local #15
+6072: 1L
+6073: +
+6074: local15 := 
+6075: goto6008
+var retkey := GFSendGump(who);
+6076: decl local #16
+6077: local #2
+6078: makelocal
+6079: jmp userfunc @1225
+6080: :=
+6081: #
+if(!retkey[apply.keyid])
+6082: local #16
+6083: local #6
+6084: get member 'keyid'
+6085: [] 1
+6086: if true goto 6096
+SendSysMessage(who, "Cancelled");
+6087: local #2
+6088: "Cancelled"
+6089: 3L
+6090: 1000L
+6091: Func(2,25): SendSysMessage
+6092: #
+return 0;
+6093: 0L
+6094: return
+6095: goto6260
+SendSysMessage(who, "Editing");
+6096: local #2
+6097: "Editing"
+6098: 3L
+6099: 1000L
+6100: Func(2,25): SendSysMessage
+6101: #
+var temp;
+6102: decl local #0
+6103: #
+foreach thing in (retkey.keys)
+6104: local #16
+6105: get member 'keys'
+6106: initforeach @6125
+if((thing) && (thing != rectret.keyid))
+6107: local #18
+6108: local #18
+6109: local #14
+6110: get member 'keyid'
+6111: <>
+6112: &&
+6113: if false goto 6125
+temp := SplitWords(retkey[thing]);
+6114: local #16
+6115: local #18
+6116: [] 1
+6117: Func(0,5): SplitWords
+6118: local17 := 
+holder.append(temp[2]);
+6119: local #12
+6120: local #17
+6121: 2L
+6122: [] 1
+6123: Call Method append (1 params)
+6124: #
+6125: stepforeach @6107
+6126: leave block(3)
+var num := 1;
+6127: decl local #1
+6128: 1L
+6129: :=
+6130: #
+var turn := 1;
+6131: decl local #2
+6132: 1L
+6133: :=
+6134: #
+temp := "";
+6135: ""
+6136: local17 := 
+foreach thing in (entry.PropNames())
+6137: local #4
+6138: Call Method propnames (0 params)
+6139: initforeach @6144
+entry.EraseProp(thing);
+6140: local #4
+6141: local #20
+6142: Call Method eraseprop (1 params)
+6143: #
+6144: stepforeach @6140
+6145: leave block(3)
+split := SplitWords(retkey[rectret.keyid]);
+6146: local #16
+6147: local #14
+6148: get member 'keyid'
+6149: [] 1
+6150: Func(0,5): SplitWords
+6151: local13 := 
+entry.SetProp("rect", split[2]+" "+split[3]+" "+split[4]+" "+split[5]);
+6152: local #4
+6153: "rect"
+6154: local #13
+6155: 2L
+6156: [] 1
+6157: " "
+6158: +
+6159: local #13
+6160: 3L
+6161: [] 1
+6162: +
+6163: " "
+6164: +
+6165: local #13
+6166: 4L
+6167: [] 1
+6168: +
+6169: " "
+6170: +
+6171: local #13
+6172: 5L
+6173: [] 1
+6174: +
+6175: Call Method setprop (2 params)
+6176: #
+foreach thing in holder
+6177: local #12
+6178: initforeach @6255
+if((num == 1) || (num == 2) || (num == 3) || (num == 4))
+6179: local #18
+6180: 1L
+6181: ==
+6182: local #18
+6183: 2L
+6184: ==
+6185: ||
+6186: local #18
+6187: 3L
+6188: ==
+6189: ||
+6190: local #18
+6191: 4L
+6192: ==
+6193: ||
+6194: if false goto 6216
+if((thing != "0") && (thing) && (thing != "blank"))
+6195: local #20
+6196: "0"
+6197: <>
+6198: local #20
+6199: &&
+6200: local #20
+6201: "blank"
+6202: <>
+6203: &&
+6204: if false goto 6211
+temp := temp+thing+" ";
+6205: local #17
+6206: local #20
+6207: +
+6208: " "
+6209: +
+6210: local17 := 
+num := num + 1;
+6211: local #18
+6212: 1L
+6213: +
+6214: local18 := 
+6215: goto6255
+elseif(num == 5)
+6216: local #18
+6217: 5L
+6218: ==
+6219: if false goto 6255
+if((thing != "0") && (thing) && (thing != "blank"))
+6220: local #20
+6221: "0"
+6222: <>
+6223: local #20
+6224: &&
+6225: local #20
+6226: "blank"
+6227: <>
+6228: &&
+6229: if false goto 6236
+temp := temp+thing+" ";
+6230: local #17
+6231: local #20
+6232: +
+6233: " "
+6234: +
+6235: local17 := 
+if(temp != "")
+6236: local #17
+6237: ""
+6238: <>
+6239: if false goto 6247
+entry.setprop("group"+turn, temp);
+6240: local #4
+6241: "group"
+6242: local #19
+6243: +
+6244: local #17
+6245: Call Method setprop (2 params)
+6246: #
+temp := "";
+6247: ""
+6248: local17 := 
+turn := turn + 1;
+6249: local #19
+6250: 1L
+6251: +
+6252: local19 := 
+num := 1;
+6253: 1L
+6254: local18 := 
+6255: stepforeach @6179
+6256: leave block(3)
+return 1;
+6257: 1L
+6258: return
+6259: leave block(3)
+6260: 0L
+6261: return
+C:\pol2\pkg\systems\spawnregion\textcmd\gm\regionmanager.src, Line 984
+function ComposeSpawnsPage(page, spawnlist, byref buttons, byref btgo, maxpages
+6262: pop param 'group'
+6263: pop param 'region'
+6264: pop param 'maxpages'
+6265: pop param byref 'btgo'
+6266: pop param byref 'buttons'
+6267: pop param 'spawnlist'
+6268: pop param 'page'
+var c, m;
+6269: decl local #7
+6270: #
+6271: decl local #8
+6272: #
+var color;
+6273: decl local #9
+6274: #
+var y := 85;
+6275: decl local #10
+6276: 85L
+6277: :=
+6278: #
+var yshift := 20;
+6279: decl local #11
+6280: 20L
+6281: :=
+6282: #
+var numtemp := TPERPAGE * page;
+6283: decl local #12
+6284: 15L
+6285: local #6
+6286: *
+6287: :=
+6288: #
+var count := TPERPAGE * (page - 1) + 1;
+6289: decl local #13
+6290: 15L
+6291: local #6
+6292: 1L
+6293: -
+6294: *
+6295: 1L
+6296: +
+6297: :=
+6298: #
+GFPage(page);
+6299: local #6
+6300: makelocal
+6301: jmp userfunc @1151
+6302: #
+if (page == 1 && page != maxpages)
+6303: local #6
+6304: 1L
+6305: ==
+6306: local #6
+6307: local #2
+6308: <>
+6309: &&
+6310: if false goto 6322
+GFButtonPage(600, 380, 4005, 4007, page + 1);
+6311: 600L
+6312: 380L
+6313: 4005L
+6314: 4007L
+6315: local #6
+6316: 1L
+6317: +
+6318: makelocal
+6319: jmp userfunc @3839
+6320: #
+6321: goto6369
+elseif (page == maxpages && page != 1)
+6322: local #6
+6323: local #2
+6324: ==
+6325: local #6
+6326: 1L
+6327: <>
+6328: &&
+6329: if false goto 6341
+GFButtonPage(560, 380, 4014, 4016, page - 1);
+6330: 560L
+6331: 380L
+6332: 4014L
+6333: 4016L
+6334: local #6
+6335: 1L
+6336: -
+6337: makelocal
+6338: jmp userfunc @3839
+6339: #
+6340: goto6369
+elseif (page > 1 && page < maxpages)
+6341: local #6
+6342: 1L
+6343: >
+6344: local #6
+6345: local #2
+6346: <
+6347: &&
+6348: if false goto 6369
+GFButtonPage(600, 380, 4005, 4007, page + 1);
+6349: 600L
+6350: 380L
+6351: 4005L
+6352: 4007L
+6353: local #6
+6354: 1L
+6355: +
+6356: makelocal
+6357: jmp userfunc @3839
+6358: #
+GFButtonPage(560, 380, 4014, 4016, page - 1);
+6359: 560L
+6360: 380L
+6361: 4014L
+6362: 4016L
+6363: local #6
+6364: 1L
+6365: -
+6366: makelocal
+6367: jmp userfunc @3839
+6368: #
+var bt, serial, obj;
+6369: decl local #14
+6370: #
+6371: decl local #15
+6372: #
+6373: decl local #16
+6374: #
+while(count < numtemp)
+6375: local #13
+6376: local #12
+6377: <
+6378: if false goto 6644
+serial := spawnlist[count];
+6379: local #5
+6380: local #13
+6381: [] 1
+6382: local15 := 
+if (!serial)
+6383: local #15
+6384: if true goto 6387
+return;
+6385: ""
+6386: return
+obj := SystemFindObjectBySerial(serial);
+6387: local #15
+6388: 0L
+6389: Func(2,21): SystemFindObjectBySerial
+6390: local16 := 
+if(!obj)
+6391: local #16
+6392: if true goto 6399
+RemoveSerialFromGroup(region, group, serial);
+6393: local #1
+6394: local #0
+6395: local #15
+6396: makelocal
+6397: jmp userfunc @4164
+6398: #
+bt := GFCheckBox(15, y, G_STONE_SQUARE, G_STONE_SQUARE_CHECK, 0);
+6399: 15L
+6400: local #10
+6401: 210L
+6402: 211L
+6403: 0L
+6404: 0L
+6405: makelocal
+6406: jmp userfunc @3897
+6407: local14 := 
+buttons.append(bt.keyid);
+6408: local #4
+6409: local #14
+6410: get member 'keyid'
+6411: Call Method append (1 params)
+6412: #
+if (!obj)
+6413: local #16
+6414: if true goto 6434
+GFTextLine(65, y - 2, COLOR_RED, "dead");
+6415: 65L
+6416: local #10
+6417: 2L
+6418: -
+6419: 34L
+6420: "dead"
+6421: makelocal
+6422: jmp userfunc @1247
+6423: #
+GFTextLine(160, y - 2, COLOR_RED, serial);
+6424: 160L
+6425: local #10
+6426: 2L
+6427: -
+6428: 34L
+6429: local #15
+6430: makelocal
+6431: jmp userfunc @1247
+6432: #
+6433: goto6455
+GFTextLine(65, y - 2, COLOR_GREEN, TemplateName(obj.npctemplate));
+6434: 65L
+6435: local #10
+6436: 2L
+6437: -
+6438: 63L
+6439: local #16
+6440: get member 'npctemplate'
+6441: makelocal
+6442: jmp userfunc @7024
+6443: makelocal
+6444: jmp userfunc @1247
+6445: #
+GFTextLine(160, y - 2, COLOR_GREEN, serial);
+6446: 160L
+6447: local #10
+6448: 2L
+6449: -
+6450: 63L
+6451: local #15
+6452: makelocal
+6453: jmp userfunc @1247
+6454: #
+if (!obj)
+6455: local #16
+6456: if true goto 6462
+c := 0;
+6457: 0L
+6458: local7 := 
+m := 0;
+6459: 0L
+6460: local8 := 
+6461: goto6472
+c := GetHP(obj) * 1.0;
+6462: local #16
+6463: makelocal
+6464: jmp userfunc @6806
+6465: 1LF
+6466: *
+6467: local7 := 
+m := GetMaxHP(obj);
+6468: local #16
+6469: makelocal
+6470: jmp userfunc @6821
+6471: local8 := 
+if (m == 0)
+6472: local #8
+6473: 0L
+6474: ==
+6475: if false goto 6479
+color := COLOR_RED;
+6476: 34L
+6477: local9 := 
+6478: goto6499
+if((c / m) < 0.3)
+6479: local #7
+6480: local #8
+6481: /
+6482: 0.3LF
+6483: <
+6484: if false goto 6488
+color := COLOR_RED;
+6485: 34L
+6486: local9 := 
+6487: goto6499
+elseif((c / m) < 0.7)
+6488: local #7
+6489: local #8
+6490: /
+6491: 0.7LF
+6492: <
+6493: if false goto 6497
+color := COLOR_YELLOW;
+6494: 53L
+6495: local9 := 
+6496: goto6499
+color := COLOR_GREEN;
+6497: 63L
+6498: local9 := 
+GFTextMid(250, y - 2, 50, color, c + "/" + m);
+6499: 250L
+6500: local #10
+6501: 2L
+6502: -
+6503: 50L
+6504: local #9
+6505: local #7
+6506: "/"
+6507: +
+6508: local #8
+6509: +
+6510: makelocal
+6511: jmp userfunc @6898
+6512: #
+if (obj)
+6513: local #16
+6514: if false goto 6525
+c := GetMana(obj) * 1.0;
+6515: local #16
+6516: makelocal
+6517: jmp userfunc @6814
+6518: 1LF
+6519: *
+6520: local7 := 
+m := GetMaxMana(obj);
+6521: local #16
+6522: makelocal
+6523: jmp userfunc @6829
+6524: local8 := 
+if (m == 0)
+6525: local #8
+6526: 0L
+6527: ==
+6528: if false goto 6532
+color := COLOR_RED;
+6529: 34L
+6530: local9 := 
+6531: goto6552
+if((c / m) < 0.3)
+6532: local #7
+6533: local #8
+6534: /
+6535: 0.3LF
+6536: <
+6537: if false goto 6541
+color := COLOR_RED;
+6538: 34L
+6539: local9 := 
+6540: goto6552
+elseif((c / m) < 0.7)
+6541: local #7
+6542: local #8
+6543: /
+6544: 0.7LF
+6545: <
+6546: if false goto 6550
+color := COLOR_YELLOW;
+6547: 53L
+6548: local9 := 
+6549: goto6552
+color := COLOR_GREEN;
+6550: 63L
+6551: local9 := 
+GFTextMid(350, y - 2, 50, color, c + "/" + m);
+6552: 350L
+6553: local #10
+6554: 2L
+6555: -
+6556: 50L
+6557: local #9
+6558: local #7
+6559: "/"
+6560: +
+6561: local #8
+6562: +
+6563: makelocal
+6564: jmp userfunc @6898
+6565: #
+if (obj)
+6566: local #16
+6567: if false goto 6578
+c := GetStamina(obj) * 1.0;
+6568: local #16
+6569: makelocal
+6570: jmp userfunc @6845
+6571: 1LF
+6572: *
+6573: local7 := 
+m := GetMaxStamina(obj);
+6574: local #16
+6575: makelocal
+6576: jmp userfunc @6837
+6577: local8 := 
+if (m == 0)
+6578: local #8
+6579: 0L
+6580: ==
+6581: if false goto 6585
+color := COLOR_RED;
+6582: 34L
+6583: local9 := 
+6584: goto6605
+if((c / m) < 0.3)
+6585: local #7
+6586: local #8
+6587: /
+6588: 0.3LF
+6589: <
+6590: if false goto 6594
+color := COLOR_RED;
+6591: 34L
+6592: local9 := 
+6593: goto6605
+elseif((c / m) < 0.7)
+6594: local #7
+6595: local #8
+6596: /
+6597: 0.7LF
+6598: <
+6599: if false goto 6603
+color := COLOR_YELLOW;
+6600: 53L
+6601: local9 := 
+6602: goto6605
+color := COLOR_GREEN;
+6603: 63L
+6604: local9 := 
+GFTextMid(460, y - 2, 50, color, c + "/" + m);
+6605: 460L
+6606: local #10
+6607: 2L
+6608: -
+6609: 50L
+6610: local #9
+6611: local #7
+6612: "/"
+6613: +
+6614: local #8
+6615: +
+6616: makelocal
+6617: jmp userfunc @6898
+6618: #
+bt := GFButtonID(565, y - 2, 208, 209, 1);
+6619: 565L
+6620: local #10
+6621: 2L
+6622: -
+6623: 208L
+6624: 209L
+6625: 1L
+6626: 0L
+6627: makelocal
+6628: jmp userfunc @1037
+6629: local14 := 
+btgo.append(bt.keyid);
+6630: local #3
+6631: local #14
+6632: get member 'keyid'
+6633: Call Method append (1 params)
+6634: #
+y := y + yshift;
+6635: local #10
+6636: local #11
+6637: +
+6638: local10 := 
+count := count + 1;
+6639: local #13
+6640: 1L
+6641: +
+6642: local13 := 
+6643: goto6375
+6644: 0L
+6645: return
+C:/pol2/scripts/include/createNPC.inc, Line 4
+function CreateNpc(template, x, y, z, props := 0)
+6646: pop param 'props'
+6647: pop param 'z'
+6648: pop param 'y'
+6649: pop param 'x'
+6650: pop param 'template'
+var npc := CreateNpcFromTemplate(template, x, y, z, props);
+6651: decl local #5
+6652: local #4
+6653: local #3
+6654: local #2
+6655: local #1
+6656: local #0
+6657: Func(2,1): CreateNpcFromTemplate
+6658: :=
+6659: #
+SetObjProperty(npc, "AiSerial", npc.serial);
+6660: local #5
+6661: "AiSerial"
+6662: local #5
+6663: get member 'serial'
+6664: Func(2,2): SetObjProperty
+6665: #
+return npc;
+6666: local #5
+6667: return
+C:\pol2\pkg\systems\spawnregion\textcmd\gm\../../spawnRegion.inc, Line 250
+function Despawn(serial)
+6668: pop param 'serial'
+var npc := SystemFindObjectBySerial(serial);
+6669: decl local #1
+6670: local #0
+6671: 0L
+6672: Func(2,21): SystemFindObjectBySerial
+6673: :=
+6674: #
+if(!npc)
+6675: local #1
+6676: if true goto 6680
+return 0;
+6677: 0L
+6678: return
+6679: goto6705
+SetObjProperty(npc, "guardkill", 1);
+6680: local #1
+6681: "guardkill"
+6682: 1L
+6683: Func(2,2): SetObjProperty
+6684: #
+SetObjProperty(npc, "NoSound", 1);
+6685: local #1
+6686: "NoSound"
+6687: 1L
+6688: Func(2,2): SetObjProperty
+6689: #
+ApplyRawDamage(npc, GetMaxHp(npc) * 2);
+6690: local #1
+6691: local #1
+6692: makelocal
+6693: jmp userfunc @6821
+6694: 2L
+6695: *
+6696: Func(2,22): ApplyRawDamage
+6697: #
+sleepms(1);
+6698: 1L
+6699: Func(3,0): sleepms
+6700: #
+counter := counter +1;
+6701: global #18
+6702: 1L
+6703: +
+6704: global18 := 
+6705: 0L
+6706: return
+C:/pol2/scripts/include/datafile.inc, Line 119
+function DFGetProp(byref elem_ref, prop_name, create:=DF_NO_CREATE, assignval:=
+6707: pop param 'assignval'
+6708: pop param 'create'
+6709: pop param 'prop_name'
+6710: pop param byref 'elem_ref'
+var temp := elem_ref.GetProp(prop_name);
+6711: decl local #4
+6712: local #3
+6713: local #2
+6714: Call Method getprop (1 params)
+6715: :=
+6716: #
+if ( (!temp) && (create) )
+6717: local #4
+6718: !
+6719: local #1
+6720: &&
+6721: if false goto 6731
+elem_ref.SetProp(prop_name, assignval);
+6722: local #3
+6723: local #2
+6724: local #0
+6725: Call Method setprop (2 params)
+6726: #
+temp := elem_ref.GetProp(prop_name);
+6727: local #3
+6728: local #2
+6729: Call Method getprop (1 params)
+6730: local4 := 
+if ( temp || (create) && (!assignval) )
+6731: local #4
+6732: local #1
+6733: local #0
+6734: !
+6735: &&
+6736: ||
+6737: if false goto 6741
+return temp;
+6738: local #4
+6739: return
+6740: goto6767
+elseif (create)
+6741: local #1
+6742: if false goto 6767
+var errmsg := error;
+6743: decl local #0
+6744: error
+6745: :=
+6746: #
+errmsg.+errortext := "Could not read data file property " + prop_name + ":" + t
+6747: local #5
+6748: "errortext"
+6749: .+
+6750: "Could not read data file property "
+6751: local #2
+6752: +
+6753: ":"
+6754: +
+6755: local #4
+6756: get member 'errortext'
+6757: +
+6758: := #
+DF_OutPut(errmsg.errortext);
+6759: local #5
+6760: get member 'errortext'
+6761: makelocal
+6762: jmp userfunc @3630
+6763: #
+return errmsg;
+6764: local #5
+6765: return
+6766: leave block(1)
+6767: 0L
+6768: return
+C:/pol2/scripts/include/clock.inc, Line 24
+function GetDayLength()
+var cfg := ReadConfigFile( "::days" );
+6769: decl local #0
+6770: "::days"
+6771: Func(4,0): ReadConfigFile
+6772: :=
+6773: #
+var elem := FindConfigElem( cfg, "WholeDay" );
+6774: decl local #1
+6775: local #0
+6776: "WholeDay"
+6777: Func(4,1): FindConfigElem
+6778: :=
+6779: #
+var length := GetConfigInt( elem, "Length" );
+6780: decl local #2
+6781: local #1
+6782: "Length"
+6783: Func(4,2): GetConfigInt
+6784: :=
+6785: #
+return length;
+6786: local #2
+6787: return
+C:/pol2/scripts/include/clock.inc, Line 48
+function GetHourOfDay()
+var time := GetTimeofDay();
+6788: decl local #0
+6789: makelocal
+6790: jmp userfunc @3767
+6791: :=
+6792: #
+var colon := find(time, ":", 1);
+6793: decl local #1
+6794: local #0
+6795: ":"
+6796: 1L
+6797: Func(0,3): find
+6798: :=
+6799: #
+return CInt(time[1, colon]);
+6800: local #0
+6801: 1L
+6802: local #1
+6803: [,]
+6804: Func(0,0): CInt
+6805: return
+C:/pol2/scripts/include/attributes.inc, Line 448
+function GetHp(who)
+6806: pop param 'who'
+return Cint(GetVital(who, VITALID_LIFE)/ 100);
+6807: local #0
+6808: "Life"
+6809: Func(2,12): GetVital
+6810: 100L
+6811: /
+6812: Func(0,0): CInt
+6813: return
+C:/pol2/scripts/include/attributes.inc, Line 460
+function GetMana(who)
+6814: pop param 'who'
+return(GetVital(who, "Mana")/ 100);
+6815: local #0
+6816: "Mana"
+6817: Func(2,12): GetVital
+6818: 100L
+6819: /
+6820: return
+C:/pol2/scripts/include/attributes.inc, Line 464
+function GetMaxHp(who)
+6821: pop param 'who'
+return Cint(GetVitalMaximumValue(who, VITALID_LIFE)/ 100);
+6822: local #0
+6823: "Life"
+6824: Func(2,13): GetVitalMaximumValue
+6825: 100L
+6826: /
+6827: Func(0,0): CInt
+6828: return
+C:/pol2/scripts/include/attributes.inc, Line 468
+function GetMaxMana(who)
+6829: pop param 'who'
+return Cint(GetVitalMaximumValue(who, VITALID_MANA)/ 100);
+6830: local #0
+6831: "Mana"
+6832: Func(2,13): GetVitalMaximumValue
+6833: 100L
+6834: /
+6835: Func(0,0): CInt
+6836: return
+C:/pol2/scripts/include/attributes.inc, Line 472
+function GetMaxStamina(who)
+6837: pop param 'who'
+return Cint(GetVitalMaximumValue(who, VITALID_STAMINA)/ 100);
+6838: local #0
+6839: "Stamina"
+6840: Func(2,13): GetVitalMaximumValue
+6841: 100L
+6842: /
+6843: Func(0,0): CInt
+6844: return
+C:/pol2/scripts/include/attributes.inc, Line 688
+function GetStamina(who)
+6845: pop param 'who'
+return Cint(GetVital(who, VITALID_STAMINA)/ 100);
+6846: local #0
+6847: "Stamina"
+6848: Func(2,12): GetVital
+6849: 100L
+6850: /
+6851: Func(0,0): CInt
+6852: return
+C:/pol2/scripts/include/clock.inc, Line 5
+function GetTime()
+var cfg := ReadConfigFile( "::days" );
+6853: decl local #0
+6854: "::days"
+6855: Func(4,0): ReadConfigFile
+6856: :=
+6857: #
+var elem := FindConfigElem( cfg, "WholeDay" );
+6858: decl local #1
+6859: local #0
+6860: "WholeDay"
+6861: Func(4,1): FindConfigElem
+6862: :=
+6863: #
+var length := GetConfigInt( elem, "Length" );
+6864: decl local #2
+6865: local #1
+6866: "Length"
+6867: Func(4,2): GetConfigInt
+6868: :=
+6869: #
+var day_length := (60 * length);
+6870: decl local #3
+6871: 60L
+6872: local #2
+6873: *
+6874: :=
+6875: #
+var x := ReadGameClock();
+6876: decl local #4
+6877: Func(2,17): ReadGameClock
+6878: :=
+6879: #
+var bigpart := x / day_length;
+6880: decl local #5
+6881: local #4
+6882: local #3
+6883: /
+6884: :=
+6885: #
+var smallpart := bigpart * day_length;
+6886: decl local #6
+6887: local #5
+6888: local #3
+6889: *
+6890: :=
+6891: #
+x := (x - smallpart);
+6892: local #4
+6893: local #6
+6894: -
+6895: local4 := 
+return ( x );
+6896: local #4
+6897: return
+C:\pol2\pkg\systems\spawnregion\textcmd\gm\../../../../foundations/gumps/gumps.inc, Line 434
+function GFTextMid(x, y, w, colour, text )
+6898: pop param 'text'
+6899: pop param 'colour'
+6900: pop param 'w'
+6901: pop param 'y'
+6902: pop param 'x'
+text := CStr(text);
+6903: local #0
+6904: Func(0,1): CStr
+6905: local0 := 
+x := XGFTextMid( text, CInt(x), w );
+6906: local #0
+6907: local #4
+6908: Func(0,0): CInt
+6909: local #2
+6910: makelocal
+6911: jmp userfunc @7044
+6912: local4 := 
+var line := "text " + CStr(GFref.x + x) + " " + CStr(GFref.y + CInt(y));
+6913: decl local #5
+6914: "text "
+6915: global #0
+6916: get member 'x'
+6917: local #4
+6918: +
+6919: Func(0,1): CStr
+6920: +
+6921: " "
+6922: +
+6923: global #0
+6924: get member 'y'
+6925: local #3
+6926: Func(0,0): CInt
+6927: +
+6928: Func(0,1): CStr
+6929: +
+6930: :=
+6931: #
+line := line + " " + CStr(CInt(colour)) + " " + CStr(GFdtidx);
+6932: local #5
+6933: " "
+6934: +
+6935: local #1
+6936: Func(0,0): CInt
+6937: Func(0,1): CStr
+6938: +
+6939: " "
+6940: +
+6941: global #3
+6942: Func(0,1): CStr
+6943: +
+6944: local5 := 
+GFlayout.append( line );
+6945: global #1
+6946: local #5
+6947: Call Method append (1 params)
+6948: #
+GFdtidx := GFdtidx + 1;		// Update index into GFdata[]
+6949: global #3
+6950: 1L
+6951: +
+6952: global3 := 
+GFdata[GFdtidx] := text;	// arrays start at #1... id#0 goes into [1]!!
+6953: global #2
+6954: global #3
+6955: local #0
+6956: [] := (1) #
+return XGFRetVal( GFlayout.size(), GFdtidx - 1 );
+6957: global #1
+6958: Call Method size (0 params)
+6959: global #3
+6960: 1L
+6961: -
+6962: -1L
+6963: makelocal
+6964: jmp userfunc @1585
+6965: return
+C:/pol2/scripts/include/clock.inc, Line 53
+function HourWithinRange(hr, hrstart, hrend)
+6966: pop param 'hrend'
+6967: pop param 'hrstart'
+6968: pop param 'hr'
+hr := CInt(hr) + 24;
+6969: local #2
+6970: Func(0,0): CInt
+6971: 24L
+6972: +
+6973: local2 := 
+hrstart := CInt(hrstart) + 24;
+6974: local #1
+6975: Func(0,0): CInt
+6976: 24L
+6977: +
+6978: local1 := 
+hrend := CInt(hrend) + 24;
+6979: local #0
+6980: Func(0,0): CInt
+6981: 24L
+6982: +
+6983: local0 := 
+if (hrstart > hrend)
+6984: local #1
+6985: local #0
+6986: >
+6987: if false goto 6999
+if (hr >= hrstart || hr < hrend)
+6988: local #2
+6989: local #1
+6990: >=
+6991: local #2
+6992: local #0
+6993: <
+6994: ||
+6995: if false goto 6998
+return 1;
+6996: 1L
+6997: return
+6998: goto7009
+if (hr >= hrstart && hr <= hrend)
+6999: local #2
+7000: local #1
+7001: >=
+7002: local #2
+7003: local #0
+7004: <=
+7005: &&
+7006: if false goto 7009
+return 1;
+7007: 1L
+7008: return
+return 0;
+7009: 0L
+7010: return
+C:\pol2\pkg\systems\spawnregion\textcmd\gm\../../spawnRegion.inc, Line 153
+function PickRandomNpc(byref npcs)
+7011: pop param byref 'npcs'
+var idx := RandomInt(npcs.size()) + 1;
+7012: decl local #1
+7013: local #0
+7014: Call Method size (0 params)
+7015: Func(5,0): RandomInt
+7016: 1L
+7017: +
+7018: :=
+7019: #
+return npcs[idx];
+7020: local #0
+7021: local #1
+7022: [] 1
+7023: return
+C:/pol2/scripts/include/createNPC.inc, Line 10
+function TemplateName(pkgtemplate)
+7024: pop param 'pkgtemplate'
+var start := find(pkgtemplate, ":", 2) + 1;
+7025: decl local #1
+7026: local #0
+7027: ":"
+7028: 2L
+7029: Func(0,3): find
+7030: 1L
+7031: +
+7032: :=
+7033: #
+if (!start)
+7034: local #1
+7035: if true goto 7038
+return pkgtemplate;
+7036: local #0
+7037: return
+return pkgtemplate[start, len(pkgtemplate)];
+7038: local #0
+7039: local #1
+7040: local #0
+7041: Func(0,2): len
+7042: [,]
+7043: return
+C:\pol2\pkg\systems\spawnregion\textcmd\gm\../../../../foundations/gumps/gumps.inc, Line 930
+Function XGFTextMid(gumptext, x, width)
+7044: pop param 'width'
+7045: pop param 'x'
+7046: pop param 'gumptext'
+Return (x+CInt((width-XGFTextWidth(gumptext))/2));
+7047: local #1
+7048: local #0
+7049: local #2
+7050: makelocal
+7051: jmp userfunc @7058
+7052: -
+7053: 2L
+7054: /
+7055: Func(0,0): CInt
+7056: +
+7057: return
+C:\pol2\pkg\systems\spawnregion\textcmd\gm\../../../../foundations/gumps/gumps.inc, Line 906
+Function XGFTextWidth(gumptext)
+7058: pop param 'gumptext'
+var points:=0;
+7059: decl local #1
+7060: 0L
+7061: :=
+7062: #
+var j;
+7063: decl local #2
+7064: #
+For (j:=len(gumptext); j>0; j:=j-1)
+7065: local #2
+7066: local #0
+7067: Func(0,2): len
+7068: :=
+7069: #
+7070: local #2
+7071: 0L
+7072: >
+7073: if false goto 7120
+var i:=Find(aGFTlength.charsf, gumptext[j], 1)-1;
+7074: decl local #0
+7075: global #8
+7076: get member 'charsf'
+7077: local #0
+7078: local #2
+7079: [] 1
+7080: 1L
+7081: Func(0,3): find
+7082: 1L
+7083: -
+7084: :=
+7085: #
+If (i>=0)
+7086: local #3
+7087: 0L
+7088: >=
+7089: if false goto 7103
+points:=points+aGFTlength.width[CInt(i/14)+1];
+7090: local #1
+7091: global #8
+7092: get member 'width'
+7093: local #3
+7094: 14L
+7095: /
+7096: Func(0,0): CInt
+7097: 1L
+7098: +
+7099: [] 1
+7100: +
+7101: local1 := 
+7102: goto7112
+print("XGFTextWidth: Unknown Character = '"+gumptext[j]+"'");
+7103: "XGFTextWidth: Unknown Character = '"
+7104: local #0
+7105: local #2
+7106: [] 1
+7107: +
+7108: "'"
+7109: +
+7110: Func(1,0): print
+7111: #
+7112: leave block(1)
+7113: local #2
+7114: local #2
+7115: 1L
+7116: -
+7117: :=
+7118: #
+7119: goto7070
+Return (points);
+7120: local #1
+7121: return
+C:\pol2\pkg\systems\spawnregion\textcmd\gm\regionmanager.src, Line 244
+function ComposeGroupEditor(who, region, reggroups)
+7122: pop param 'reggroups'
+7123: pop param 'region'
+7124: pop param 'who'
+var dfile := OpenDataFile("SpawnGroups");
+7125: decl local #3
+7126: "SpawnGroups"
+7127: Func(6,0): OpenDataFile
+7128: :=
+7129: #
+var entry := dfile.FindElement(region);
+7130: decl local #4
+7131: local #3
+7132: local #1
+7133: Call Method findelement (1 params)
+7134: :=
+7135: #
+regiondone := 0;
+7136: 0L
+7137: global20 := 
+GFInitGump(0, 0);
+7138: 0L
+7139: 0L
+7140: makelocal
+7141: jmp userfunc @1121
+7142: #
+GFNoDispose();
+7143: makelocal
+7144: jmp userfunc @1140
+7145: #
+GFPage(0);
+7146: 0L
+7147: makelocal
+7148: jmp userfunc @1151
+7149: #
+GFResizePic(  0,   0, 5120, 640, 420);                    //dark menu backgroun
+7150: 0L
+7151: 0L
+7152: 5120L
+7153: 640L
+7154: 420L
+7155: makelocal
+7156: jmp userfunc @1169
+7157: #
+GFResizePic( 10,  10, 5054, 620, 400);                    //light menu backgrou
+7158: 10L
+7159: 10L
+7160: 5054L
+7161: 620L
+7162: 400L
+7163: makelocal
+7164: jmp userfunc @1169
+7165: #
+GFTextLine(232, 17, 0, "Spawn Group Editor");
+7166: 232L
+7167: 17L
+7168: 0L
+7169: "Spawn Group Editor"
+7170: makelocal
+7171: jmp userfunc @1247
+7172: #
+GFTextLine(230, 15, COLOR_YELLOW, "Spawn Group Editor");
+7173: 230L
+7174: 15L
+7175: 53L
+7176: "Spawn Group Editor"
+7177: makelocal
+7178: jmp userfunc @1247
+7179: #
+GFTextLine(20, 40, COLOR_GREEN, region);
+7180: 20L
+7181: 40L
+7182: 63L
+7183: local #1
+7184: makelocal
+7185: jmp userfunc @1247
+7186: #
+GFTextLine(200, 40, COLOR_BLUE_LIGHT, "Time:");
+7187: 200L
+7188: 40L
+7189: 99L
+7190: "Time:"
+7191: makelocal
+7192: jmp userfunc @1247
+7193: #
+GFTextLine(245, 40, COLOR_GREEN, GetTimeOfDay());
+7194: 245L
+7195: 40L
+7196: 63L
+7197: makelocal
+7198: jmp userfunc @3767
+7199: makelocal
+7200: jmp userfunc @1247
+7201: #
+GFTextLine(30, 60, COLOR_BLUE_LIGHT, "NPC Name");
+7202: 30L
+7203: 60L
+7204: 99L
+7205: "NPC Name"
+7206: makelocal
+7207: jmp userfunc @1247
+7208: #
+var apply  := GFButtonID(20, 400 - 30, G_YELLOW_OVAL_APPLY_0, G_YELLOW_OVAL_APP
+7209: decl local #5
+7210: 20L
+7211: 370L
+7212: 2122L
+7213: 2123L
+7214: 1L
+7215: 0L
+7216: makelocal
+7217: jmp userfunc @1037
+7218: :=
+7219: #
+var cancel := GFButtonID(145, 400 - 30, G_RED_OVAL_CANCEL_0, G_RED_OVAL_CANCEL_
+7220: decl local #6
+7221: 145L
+7222: 370L
+7223: 2071L
+7224: 2072L
+7225: 1L
+7226: 0L
+7227: makelocal
+7228: jmp userfunc @1037
+7229: :=
+7230: #
+var yTxt := 80;
+7231: decl local #7
+7232: 80L
+7233: :=
+7234: #
+var xTxt := 30;
+7235: decl local #8
+7236: 30L
+7237: :=
+7238: #
+var yshift := 20;
+7239: decl local #9
+7240: 20L
+7241: :=
+7242: #
+var gdata;
+7243: decl local #10
+7244: #
+var holder := {};
+7245: decl local #11
+7246: array
+7247: :=
+7248: #
+foreach grp in reggroups
+7249: local #0
+7250: initforeach @7264
+GFTextEntry(xTxt, yTxt, 200, 30, COLOR_GREEN, grp);
+7251: local #8
+7252: local #7
+7253: 200L
+7254: 30L
+7255: 63L
+7256: local #12
+7257: makelocal
+7258: jmp userfunc @4069
+7259: #
+yTxt := ytxt + yshift;
+7260: local #7
+7261: local #9
+7262: +
+7263: local7 := 
+7264: stepforeach @7251
+7265: leave block(3)
+GFTextEntry(    xTxt, yTxt, 200, 30, COLOR_GREEN, "blank");
+7266: local #8
+7267: local #7
+7268: 200L
+7269: 30L
+7270: 63L
+7271: "blank"
+7272: makelocal
+7273: jmp userfunc @4069
+7274: #
+var retkey := GFSendGump(who);
+7275: decl local #12
+7276: local #2
+7277: makelocal
+7278: jmp userfunc @1225
+7279: :=
+7280: #
+if(!retkey[apply.keyid])
+7281: local #12
+7282: local #5
+7283: get member 'keyid'
+7284: [] 1
+7285: if true goto 7295
+SendSysMessage(who, "Cancelled");
+7286: local #2
+7287: "Cancelled"
+7288: 3L
+7289: 1000L
+7290: Func(2,25): SendSysMessage
+7291: #
+return 0;
+7292: 0L
+7293: return
+7294: goto7345
+SendSysMessage(who, "Editing");
+7295: local #2
+7296: "Editing"
+7297: 3L
+7298: 1000L
+7299: Func(2,25): SendSysMessage
+7300: #
+var temp;
+7301: decl local #0
+7302: #
+foreach thing in (retkey.keys)
+7303: local #12
+7304: get member 'keys'
+7305: initforeach @7331
+if(thing)
+7306: local #14
+7307: if false goto 7331
+temp := SplitWords(retkey[thing]);
+7308: local #12
+7309: local #14
+7310: [] 1
+7311: Func(0,5): SplitWords
+7312: local13 := 
+if((temp[2] != "blank") && (temp[2] != error))
+7313: local #13
+7314: 2L
+7315: [] 1
+7316: "blank"
+7317: <>
+7318: local #13
+7319: 2L
+7320: [] 1
+7321: error
+7322: <>
+7323: &&
+7324: if false goto 7331
+holder.append(temp[2]);
+7325: local #11
+7326: local #13
+7327: 2L
+7328: [] 1
+7329: Call Method append (1 params)
+7330: #
+7331: stepforeach @7306
+7332: leave block(3)
+entry.EraseProp("npc");
+7333: local #4
+7334: "npc"
+7335: Call Method eraseprop (1 params)
+7336: #
+entry.SetProp("npc", holder);
+7337: local #4
+7338: "npc"
+7339: local #11
+7340: Call Method setprop (2 params)
+7341: #
+return 1;
+7342: 1L
+7343: return
+7344: leave block(1)
+7345: 0L
+7346: return

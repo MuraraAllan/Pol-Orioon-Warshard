@@ -1,0 +1,287 @@
+use uo;
+use os;
+
+include "include/client";
+include "include/eventID";
+include "include/attributes";
+include "include/skillLists";
+include "../pkg/foundations/gumps/gumps";
+
+
+program rank ( who )
+topguildawp(who);
+endprogram
+
+function topguildawp(who);
+var guilda1:=GetGlobalProperty("gstop1");
+var guilda2:=GetGlobalProperty("gstop2");
+var guilda3:=GetGlobalProperty("gstop3");
+var guilda4:=GetGlobalProperty("gstop4");
+var guilda5:=GetGlobalProperty("gstop5");
+
+var player:= who;
+                                      
+GFInitGump( 50, 20 );
+GFNoMove();
+GFResizePic(50, 20, 2600, 430, 290);
+GFTextLine(195,  37, 64, "TOP GUILDAS");
+
+GFTextLine(80,  75, 33, "Guilda                                 WP큦");
+
+GFTextLine(70,  105, 1, "-------------------------------------------------");
+
+GFTextLine(70,  120, 1153, ""+guilda1[1]);
+GFTextLine(390,  120, 1153, ""+guilda1[2]);
+
+GFTextLine(70,  135, 1, "-------------------------------------------------");
+
+GFTextLine(70, 150, 90, ""+guilda2[1]); 
+GFTextLine(390,  150, 90, ""+guilda2[2]);
+
+GFTextLine(70,  165, 1, "-------------------------------------------------");
+
+GFTextLine(70,  180, 1153, ""+guilda3[1]);
+GFTextLine(390,  180, 1153, ""+guilda3[2]);
+
+GFTextLine(70,  195, 1, "-------------------------------------------------");
+
+GFTextLine(70, 210, 90, ""+guilda4[1]);
+GFTextLine(390,  210, 90, ""+guilda4[2]);
+
+
+GFTextLine(70,  225, 1, "-------------------------------------------------");
+
+GFTextLine(70, 240, 1153, ""+guilda5[1]);
+GFTextLine(390,  240, 1153, ""+guilda5[2]);
+
+GFTextLine(70,  255, 1, "-------------------------------------------------");
+
+
+GFGumpPic(220, 270, 0x938);
+var bt2:=GFButtonID(240, 270, 0x939, 0x93A, 1);
+var bt3:=GFButtonID(260, 270, 0x939, 0x93A, 1);
+var bt4:=GFButtonID(280, 270, 0x939, 0x93A, 1);
+
+var res := GFsendgump(who);
+
+if(res[bt2.keyid])
+topplayerwp(who);
+endif
+
+if(res[bt3.keyid])
+topplayerkp(who);
+endif
+
+if(res[bt4.keyid])
+topplayerpvp(who);
+endif
+endfunction
+
+///top player wp
+function topplayerwp(who);
+var p1:=GetGlobalProperty("topplayerwp1");
+var p2:=GetGlobalProperty("topplayerwp2");
+var p3:=GetGlobalProperty("topplayerwp3");
+var p4:=GetGlobalProperty("topplayerwp4");
+var p5:=GetGlobalProperty("topplayerwp5");
+
+var player:= who;
+                                  
+GFInitGump( 50, 20 );
+GFNoMove();
+GFResizePic(50, 20, 2600, 430, 290);
+GFTextLine(180,  37, 64, "TOP PLAYERS WP");
+
+GFTextLine(80,  75, 33, "Player                                 WP큦");
+
+GFTextLine(70,  105, 1, "-------------------------------------------------");
+
+GFTextLine(70,  120, 1153, ""+p1[1]);
+GFTextLine(390,  120, 1153, ""+p1[2]);
+
+GFTextLine(70,  135, 1, "-------------------------------------------------");
+
+GFTextLine(70, 150, 90, ""+p2[1]); 
+GFTextLine(390,  150, 90, ""+p2[2]);
+
+GFTextLine(70,  165, 1, "-------------------------------------------------");
+
+GFTextLine(70,  180, 1153, ""+p3[1]);
+GFTextLine(390,  180, 1153, ""+p3[2]);
+
+GFTextLine(70,  195, 1, "-------------------------------------------------");
+
+GFTextLine(70, 210, 90, ""+p4[1]);
+GFTextLine(390,  210, 90, ""+p4[2]);
+
+
+GFTextLine(70,  225, 1, "-------------------------------------------------");
+
+GFTextLine(70, 240, 1153, ""+p5[1]);
+GFTextLine(390,  240, 1153, ""+p5[2]);
+
+GFTextLine(70,  255, 1, "-------------------------------------------------");
+
+
+
+var bt1:=GFButtonID(220, 270, 0x939, 0x93A, 1);
+GFGumpPic(240, 270, 0x938);
+var bt3:=GFButtonID(260, 270, 0x939, 0x93A, 1);
+var bt4:=GFButtonID(280, 270, 0x939, 0x93A, 1);
+
+var res := GFsendgump(who);
+
+if(res[bt1.keyid])
+topguildawp(who);
+endif
+
+if(res[bt3.keyid])
+topplayerkp(who);
+endif
+
+if(res[bt4.keyid])
+topplayerpvp(who);
+endif
+
+endfunction
+
+
+///top player kp
+function topplayerkp(who);
+var p1:=GetGlobalProperty("topplayerkp1");
+var p2:=GetGlobalProperty("topplayerkp2");
+var p3:=GetGlobalProperty("topplayerkp3");
+var p4:=GetGlobalProperty("topplayerkp4");
+var p5:=GetGlobalProperty("topplayerkp5");
+
+var player:= who;
+                                  
+GFInitGump( 50, 20 );
+GFNoMove();
+GFResizePic(50, 20, 2600, 430, 290);
+GFTextLine(180,  37, 64, "TOP PLAYERS KP");
+
+GFTextLine(80,  75, 33, "Player                                 KP큦");
+
+GFTextLine(70,  105, 1, "-------------------------------------------------");
+
+GFTextLine(70,  120, 1153, ""+p1[1]);
+GFTextLine(390,  120, 1153, ""+p1[2]);
+
+GFTextLine(70,  135, 1, "-------------------------------------------------");
+
+GFTextLine(70, 150, 90, ""+p2[1]); 
+GFTextLine(390,  150, 90, ""+p2[2]);
+
+GFTextLine(70,  165, 1, "-------------------------------------------------");
+
+GFTextLine(70,  180, 1153, ""+p3[1]);
+GFTextLine(390,  180, 1153, ""+p3[2]);
+
+GFTextLine(70,  195, 1, "-------------------------------------------------");
+
+GFTextLine(70, 210, 90, ""+p4[1]);
+GFTextLine(390,  210, 90, ""+p4[2]);
+
+
+GFTextLine(70,  225, 1, "-------------------------------------------------");
+
+GFTextLine(70, 240, 1153, ""+p5[1]);
+GFTextLine(390,  240, 1153, ""+p5[2]);
+
+GFTextLine(70,  255, 1, "-------------------------------------------------");
+
+
+
+var bt1:=GFButtonID(220, 270, 0x939, 0x93A, 1);
+
+var bt2:=GFButtonID(240, 270, 0x939, 0x93A, 1);
+GFGumpPic(260, 270, 0x938);
+var bt4:=GFButtonID(280, 270, 0x939, 0x93A, 1);
+
+var res := GFsendgump(who);
+
+if(res[bt1.keyid])
+topguildawp(who);
+endif
+
+if(res[bt2.keyid])
+topplayerwp(who);
+endif
+
+if(res[bt4.keyid])
+topplayerpvp(who);
+endif
+
+endfunction
+
+
+//////TOP PVP
+function topplayerpvp(who);
+var p1:=GetGlobalProperty("topplayerpvp1");
+var p2:=GetGlobalProperty("topplayerpvp2");
+var p3:=GetGlobalProperty("topplayerpvp3");
+var p4:=GetGlobalProperty("topplayerpvp4");
+var p5:=GetGlobalProperty("topplayerpvp5");
+
+var player:= who;
+                                  
+GFInitGump( 50, 20 );
+GFNoMove();
+GFResizePic(50, 20, 2600, 430, 290);
+GFTextLine(178,  37, 64, "TOP PLAYERS PVP");
+
+GFTextLine(80,  75, 33, "Player                            PVP Points큦");
+
+GFTextLine(70,  105, 1, "-------------------------------------------------");
+
+GFTextLine(70,  120, 1153, ""+p1[1]);
+GFTextLine(390,  120, 1153, ""+p1[2]);
+
+GFTextLine(70,  135, 1, "-------------------------------------------------");
+
+GFTextLine(70, 150, 90, ""+p2[1]); 
+GFTextLine(390,  150, 90, ""+p2[2]);
+
+GFTextLine(70,  165, 1, "-------------------------------------------------");
+
+GFTextLine(70,  180, 1153, ""+p3[1]);
+GFTextLine(390,  180, 1153, ""+p3[2]);
+
+GFTextLine(70,  195, 1, "-------------------------------------------------");
+
+GFTextLine(70, 210, 90, ""+p4[1]);
+GFTextLine(390,  210, 90, ""+p4[2]);
+
+
+GFTextLine(70,  225, 1, "-------------------------------------------------");
+
+GFTextLine(70, 240, 1153, ""+p5[1]);
+GFTextLine(390,  240, 1153, ""+p5[2]);
+
+GFTextLine(70,  255, 1, "-------------------------------------------------");
+
+
+
+var bt1:=GFButtonID(220, 270, 0x939, 0x93A, 1);
+
+var bt2:=GFButtonID(240, 270, 0x939, 0x93A, 1);
+
+var bt3:=GFButtonID(260, 270, 0x939, 0x93A, 1);
+GFGumpPic(280, 270, 0x938);
+
+var res := GFsendgump(who);
+
+if(res[bt1.keyid])
+topguildawp(who);
+endif
+
+if(res[bt2.keyid])
+topplayerwp(who);
+endif
+
+if(res[bt3.keyid])
+topplayerkp(who);
+endif
+
+endfunction

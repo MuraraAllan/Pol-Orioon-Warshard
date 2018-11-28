@@ -1,0 +1,396 @@
+File 0: 
+File 1: c:\pol\pkg\items\guildstone\guildMove.src
+File 2: c:/pol/scripts/uo.em
+File 3: c:/pol/scripts/os.em
+File 4: c:/pol/scripts/include/canAccess.inc
+File 5: c:/pol/scripts/basic.em
+File 6: c:/pol/scripts/basicio.em
+Ins 0: File 1, Line 6, Block 1 StatementBegin
+Ins 1: File 1, Line 6, Block 1 
+Ins 2: File 1, Line 7, Block 1 StatementBegin
+Ins 3: File 1, Line 7, Block 1 
+Ins 4: File 1, Line 7, Block 1 
+Ins 5: File 1, Line 7, Block 1 
+Ins 6: File 1, Line 8, Block 1 StatementBegin
+Ins 7: File 1, Line 8, Block 1 
+Ins 8: File 1, Line 8, Block 1 
+Ins 9: File 1, Line 8, Block 1 
+Ins 10: File 1, Line 9, Block 1 StatementBegin
+Ins 11: File 1, Line 9, Block 1 
+Ins 12: File 4, Line 2, Block 1 
+Ins 13: File 1, Line 9, Block 1 
+Ins 14: File 1, Line 9, Block 1 
+Ins 15: File 1, Line 9, Block 1 
+Ins 16: File 1, Line 10, Block 1 StatementBegin
+Ins 17: File 1, Line 10, Block 1 
+Ins 18: File 1, Line 11, Block 1 
+Ins 19: File 1, Line 11, Block 1 StatementBegin
+Ins 20: File 1, Line 11, Block 1 
+Ins 21: File 1, Line 11, Block 1 
+Ins 22: File 1, Line 12, Block 1 StatementBegin
+Ins 23: File 1, Line 12, Block 1 
+Ins 24: File 1, Line 13, Block 1 
+Ins 25: File 1, Line 13, Block 1 StatementBegin
+Ins 26: File 1, Line 13, Block 1 
+Ins 27: File 1, Line 13, Block 1 
+Ins 28: File 1, Line 13, Block 1 
+Ins 29: File 1, Line 14, Block 1 StatementBegin
+Ins 30: File 1, Line 14, Block 1 
+Ins 31: File 2, Line 272, Block 1 
+Ins 32: File 2, Line 272, Block 1 
+Ins 33: File 1, Line 14, Block 1 
+Ins 34: File 1, Line 14, Block 1 
+Ins 35: File 1, Line 15, Block 1 StatementBegin
+Ins 36: File 1, Line 15, Block 1 
+Ins 37: File 1, Line 17, Block 1 StatementBegin
+Ins 38: File 1, Line 17, Block 1 
+Ins 39: File 1, Line 17, Block 1 
+Ins 40: File 1, Line 17, Block 1 
+Ins 41: File 1, Line 17, Block 1 
+Ins 42: File 1, Line 17, Block 1 
+Ins 43: File 1, Line 18, Block 1 StatementBegin
+Ins 44: File 1, Line 18, Block 1 
+Ins 45: File 1, Line 18, Block 1 
+Ins 46: File 1, Line 18, Block 1 
+Ins 47: File 1, Line 18, Block 1 
+Ins 48: File 1, Line 19, Block 1 StatementBegin
+Ins 49: File 1, Line 19, Block 1 
+Ins 50: File 1, Line 19, Block 1 
+Ins 51: File 1, Line 19, Block 1 
+Ins 52: File 1, Line 19, Block 1 
+Ins 53: File 1, Line 19, Block 1 
+Ins 54: File 1, Line 20, Block 1 StatementBegin
+Ins 55: File 1, Line 20, Block 1 
+Ins 56: File 1, Line 20, Block 1 
+Ins 57: File 1, Line 20, Block 1 
+Ins 58: File 1, Line 20, Block 1 
+Ins 59: File 1, Line 20, Block 1 
+Ins 60: File 1, Line 20, Block 1 
+Ins 61: File 1, Line 21, Block 1 StatementBegin
+Ins 62: File 1, Line 21, Block 1 
+Ins 63: File 2, Line 272, Block 1 
+Ins 64: File 2, Line 272, Block 1 
+Ins 65: File 1, Line 21, Block 1 
+Ins 66: File 1, Line 21, Block 1 
+Ins 67: File 1, Line 22, Block 1 StatementBegin
+Ins 68: File 1, Line 22, Block 1 
+Ins 69: File 1, Line 24, Block 1 StatementBegin
+Ins 70: File 1, Line 24, Block 1 
+Ins 71: File 1, Line 24, Block 1 
+Ins 72: File 1, Line 24, Block 1 
+Ins 73: File 1, Line 24, Block 1 
+Ins 74: File 1, Line 25, Block 1 StatementBegin
+Ins 75: File 1, Line 25, Block 1 
+Ins 76: File 1, Line 25, Block 1 
+Ins 77: File 1, Line 25, Block 1 
+Ins 78: File 1, Line 25, Block 1 
+Ins 79: File 1, Line 25, Block 1 
+Ins 80: File 1, Line 26, Block 1 StatementBegin
+Ins 81: File 1, Line 26, Block 1 
+Ins 82: File 1, Line 26, Block 1 
+Ins 83: File 1, Line 26, Block 1 
+Ins 84: File 1, Line 26, Block 1 
+Ins 85: File 1, Line 26, Block 1 
+Ins 86: File 1, Line 27, Block 1 StatementBegin
+Ins 87: File 1, Line 27, Block 1 
+Ins 88: File 1, Line 27, Block 1 
+Ins 89: File 1, Line 27, Block 1 
+Ins 90: File 1, Line 27, Block 1 
+Ins 91: File 1, Line 27, Block 1 
+Ins 92: File 1, Line 27, Block 1 
+Ins 93: File 1, Line 27, Block 1 
+Ins 94: File 1, Line 27, Block 1 
+Ins 95: File 1, Line 27, Block 1 
+Ins 96: File 1, Line 27, Block 1 
+Ins 97: File 1, Line 28, Block 1 StatementBegin
+Ins 98: File 1, Line 28, Block 1 
+Ins 99: File 2, Line 272, Block 1 
+Ins 100: File 2, Line 272, Block 1 
+Ins 101: File 1, Line 28, Block 1 
+Ins 102: File 1, Line 28, Block 1 
+Ins 103: File 1, Line 29, Block 1 StatementBegin
+Ins 104: File 1, Line 29, Block 1 
+Ins 105: File 1, Line 31, Block 1 StatementBegin
+Ins 106: File 1, Line 31, Block 1 
+Ins 107: File 1, Line 31, Block 1 
+Ins 108: File 1, Line 31, Block 1 
+Ins 109: File 1, Line 32, Block 1 StatementBegin
+Ins 110: File 1, Line 32, Block 1 
+Ins 111: File 1, Line 32, Block 1 
+Ins 112: File 1, Line 32, Block 1 
+Ins 113: File 1, Line 32, Block 1 
+Ins 114: File 1, Line 32, Block 1 
+Ins 115: File 1, Line 32, Block 1 
+Ins 116: File 1, Line 32, Block 1 
+Ins 117: File 1, Line 32, Block 2 
+Ins 118: File 1, Line 33, Block 2 StatementBegin
+Ins 119: File 1, Line 33, Block 2 
+Ins 120: File 1, Line 33, Block 2 
+Ins 121: File 1, Line 33, Block 2 
+Ins 122: File 1, Line 33, Block 2 
+Ins 123: File 1, Line 33, Block 2 
+Ins 124: File 1, Line 33, Block 2 
+Ins 125: File 1, Line 33, Block 2 
+Ins 126: File 1, Line 33, Block 2 
+Ins 127: File 1, Line 33, Block 2 
+Ins 128: File 1, Line 34, Block 2 StatementBegin
+Ins 129: File 1, Line 34, Block 2 
+Ins 130: File 1, Line 34, Block 2 
+Ins 131: File 1, Line 34, Block 2 
+Ins 132: File 1, Line 34, Block 2 
+Ins 133: File 1, Line 34, Block 2 
+Ins 134: File 1, Line 34, Block 2 
+Ins 135: File 1, Line 34, Block 2 
+Ins 136: File 1, Line 34, Block 2 
+Ins 137: File 1, Line 34, Block 2 
+Ins 138: File 1, Line 34, Block 2 
+Ins 139: File 1, Line 34, Block 2 
+Ins 140: File 1, Line 34, Block 2 
+Ins 141: File 1, Line 34, Block 2 
+Ins 142: File 1, Line 34, Block 2 
+Ins 143: File 1, Line 34, Block 2 
+Ins 144: File 1, Line 34, Block 2 
+Ins 145: File 1, Line 34, Block 2 
+Ins 146: File 1, Line 34, Block 2 
+Ins 147: File 1, Line 34, Block 2 
+Ins 148: File 1, Line 34, Block 2 
+Ins 149: File 1, Line 34, Block 2 
+Ins 150: File 1, Line 34, Block 2 
+Ins 151: File 1, Line 34, Block 2 
+Ins 152: File 1, Line 34, Block 2 
+Ins 153: File 1, Line 34, Block 2 
+Ins 154: File 1, Line 34, Block 2 
+Ins 155: File 1, Line 34, Block 2 
+Ins 156: File 1, Line 34, Block 2 
+Ins 157: File 1, Line 34, Block 2 
+Ins 158: File 1, Line 34, Block 2 
+Ins 159: File 1, Line 34, Block 2 
+Ins 160: File 1, Line 34, Block 2 
+Ins 161: File 1, Line 34, Block 2 
+Ins 162: File 1, Line 34, Block 2 
+Ins 163: File 1, Line 34, Block 2 
+Ins 164: File 1, Line 34, Block 2 
+Ins 165: File 1, Line 34, Block 2 
+Ins 166: File 1, Line 34, Block 2 
+Ins 167: File 1, Line 34, Block 2 
+Ins 168: File 1, Line 34, Block 2 
+Ins 169: File 1, Line 34, Block 2 
+Ins 170: File 1, Line 34, Block 2 
+Ins 171: File 1, Line 34, Block 2 
+Ins 172: File 1, Line 35, Block 2 StatementBegin
+Ins 173: File 1, Line 35, Block 2 
+Ins 174: File 1, Line 36, Block 2 StatementBegin
+Ins 175: File 1, Line 39, Block 2 
+Ins 176: File 1, Line 39, Block 2 
+Ins 177: File 1, Line 40, Block 1 StatementBegin
+Ins 178: File 1, Line 40, Block 1 
+Ins 179: File 1, Line 40, Block 1 
+Ins 180: File 1, Line 40, Block 1 
+Ins 181: File 1, Line 41, Block 1 StatementBegin
+Ins 182: File 1, Line 41, Block 1 
+Ins 183: File 2, Line 272, Block 1 
+Ins 184: File 2, Line 272, Block 1 
+Ins 185: File 1, Line 41, Block 1 
+Ins 186: File 1, Line 41, Block 1 
+Ins 187: File 1, Line 42, Block 1 StatementBegin
+Ins 188: File 1, Line 42, Block 1 
+Ins 189: File 1, Line 44, Block 1 StatementBegin
+Ins 190: File 1, Line 44, Block 1 
+Ins 191: File 1, Line 45, Block 1 StatementBegin
+Ins 192: File 1, Line 45, Block 1 
+Ins 193: File 1, Line 45, Block 3 
+Ins 194: File 1, Line 46, Block 3 StatementBegin
+Ins 195: File 1, Line 46, Block 3 
+Ins 196: File 1, Line 46, Block 3 
+Ins 197: File 1, Line 46, Block 3 
+Ins 198: File 1, Line 46, Block 3 
+Ins 199: File 1, Line 47, Block 3 StatementBegin
+Ins 200: File 1, Line 47, Block 3 
+Ins 201: File 1, Line 48, Block 3 StatementBegin
+Ins 202: File 1, Line 50, Block 3 
+Ins 203: File 1, Line 50, Block 3 
+Ins 204: File 1, Line 51, Block 1 StatementBegin
+Ins 205: File 1, Line 51, Block 1 
+Ins 206: File 1, Line 51, Block 1 
+Ins 207: File 1, Line 51, Block 1 
+Ins 208: File 1, Line 52, Block 1 StatementBegin
+Ins 209: File 1, Line 52, Block 1 
+Ins 210: File 2, Line 272, Block 1 
+Ins 211: File 2, Line 272, Block 1 
+Ins 212: File 1, Line 52, Block 1 
+Ins 213: File 1, Line 52, Block 1 
+Ins 214: File 1, Line 53, Block 1 StatementBegin
+Ins 215: File 1, Line 53, Block 1 
+Ins 216: File 1, Line 54, Block 1 
+Ins 217: File 1, Line 55, Block 1 StatementBegin
+Ins 218: File 1, Line 55, Block 1 
+Ins 219: File 1, Line 55, Block 1 
+Ins 220: File 1, Line 56, Block 1 StatementBegin
+Ins 221: File 1, Line 56, Block 1 
+Ins 222: File 1, Line 56, Block 1 
+Ins 223: File 1, Line 56, Block 1 
+Ins 224: File 1, Line 56, Block 1 
+Ins 225: File 1, Line 56, Block 1 
+Ins 226: File 1, Line 56, Block 1 
+Ins 227: File 1, Line 56, Block 1 
+Ins 228: File 1, Line 56, Block 1 
+Ins 229: File 1, Line 56, Block 1 
+Ins 230: File 1, Line 57, Block 1 StatementBegin
+Ins 231: File 1, Line 57, Block 1 
+Ins 232: File 1, Line 57, Block 1 
+Ins 233: File 1, Line 58, Block 1 StatementBegin
+Ins 234: File 1, Line 58, Block 1 
+Ins 235: File 1, Line 58, Block 1 
+Ins 236: File 1, Line 59, Block 1 StatementBegin
+Ins 237: File 1, Line 59, Block 1 
+Ins 238: File 1, Line 59, Block 1 
+Ins 239: File 1, Line 60, Block 1 StatementBegin
+Ins 240: File 1, Line 60, Block 1 
+Ins 241: File 1, Line 60, Block 1 
+Ins 242: File 1, Line 60, Block 1 
+Ins 243: File 1, Line 60, Block 1 
+Ins 244: File 1, Line 60, Block 1 
+Ins 245: File 1, Line 62, Block 1 
+Ins 246: File 1, Line 62, Block 0 
+Ins 247: File 4, Line 2, Block 4 
+Ins 248: File 4, Line 2, Block 4 
+Ins 249: File 4, Line 2, Block 4 
+Ins 250: File 4, Line 3, Block 4 StatementBegin
+Ins 251: File 4, Line 3, Block 4 
+Ins 252: File 4, Line 3, Block 4 
+Ins 253: File 4, Line 3, Block 4 
+Ins 254: File 4, Line 3, Block 4 
+Ins 255: File 4, Line 3, Block 4 
+Ins 256: File 4, Line 3, Block 4 
+Ins 257: File 4, Line 4, Block 4 StatementBegin
+Ins 258: File 4, Line 4, Block 4 
+Ins 259: File 4, Line 4, Block 4 
+Ins 260: File 4, Line 4, Block 4 
+Ins 261: File 4, Line 4, Block 4 
+Ins 262: File 4, Line 4, Block 4 
+Ins 263: File 4, Line 4, Block 4 
+Ins 264: File 4, Line 5, Block 4 StatementBegin
+Ins 265: File 4, Line 5, Block 4 
+Ins 266: File 2, Line 272, Block 4 
+Ins 267: File 2, Line 272, Block 4 
+Ins 268: File 4, Line 5, Block 4 
+Ins 269: File 4, Line 5, Block 4 
+Ins 270: File 4, Line 6, Block 4 StatementBegin
+Ins 271: File 4, Line 6, Block 4 
+Ins 272: File 4, Line 7, Block 4 
+Ins 273: File 4, Line 7, Block 4 StatementBegin
+Ins 274: File 4, Line 7, Block 4 
+Ins 275: File 4, Line 7, Block 4 
+Ins 276: File 4, Line 7, Block 4 
+Ins 277: File 4, Line 8, Block 4 StatementBegin
+Ins 278: File 4, Line 8, Block 4 
+Ins 279: File 2, Line 272, Block 4 
+Ins 280: File 2, Line 272, Block 4 
+Ins 281: File 4, Line 8, Block 4 
+Ins 282: File 4, Line 8, Block 4 
+Ins 283: File 4, Line 9, Block 4 StatementBegin
+Ins 284: File 4, Line 9, Block 4 
+Ins 285: File 4, Line 10, Block 4 
+Ins 286: File 4, Line 10, Block 4 StatementBegin
+Ins 287: File 4, Line 10, Block 4 
+Ins 288: File 4, Line 10, Block 4 
+Ins 289: File 4, Line 10, Block 4 
+Ins 290: File 4, Line 11, Block 4 StatementBegin
+Ins 291: File 4, Line 11, Block 4 
+Ins 292: File 2, Line 272, Block 4 
+Ins 293: File 2, Line 272, Block 4 
+Ins 294: File 4, Line 11, Block 4 
+Ins 295: File 4, Line 11, Block 4 
+Ins 296: File 4, Line 12, Block 4 StatementBegin
+Ins 297: File 4, Line 12, Block 4 
+Ins 298: File 4, Line 13, Block 4 
+Ins 299: File 4, Line 13, Block 4 StatementBegin
+Ins 300: File 4, Line 13, Block 4 
+Ins 301: File 4, Line 13, Block 4 
+Ins 302: File 4, Line 13, Block 4 
+Ins 303: File 4, Line 13, Block 4 
+Ins 304: File 4, Line 13, Block 4 
+Ins 305: File 4, Line 13, Block 4 
+Ins 306: File 4, Line 13, Block 4 
+Ins 307: File 4, Line 13, Block 4 
+Ins 308: File 4, Line 13, Block 4 
+Ins 309: File 4, Line 13, Block 4 
+Ins 310: File 4, Line 14, Block 4 StatementBegin
+Ins 311: File 4, Line 14, Block 4 
+Ins 312: File 2, Line 272, Block 4 
+Ins 313: File 2, Line 272, Block 4 
+Ins 314: File 4, Line 14, Block 4 
+Ins 315: File 4, Line 14, Block 4 
+Ins 316: File 4, Line 15, Block 4 StatementBegin
+Ins 317: File 4, Line 15, Block 4 
+Ins 318: File 4, Line 16, Block 4 
+Ins 319: File 4, Line 16, Block 4 StatementBegin
+Ins 320: File 4, Line 16, Block 4 
+Ins 321: File 4, Line 16, Block 4 
+Ins 322: File 4, Line 16, Block 4 
+Ins 323: File 4, Line 16, Block 4 
+Ins 324: File 4, Line 16, Block 4 
+Ins 325: File 4, Line 16, Block 4 
+Ins 326: File 4, Line 16, Block 4 
+Ins 327: File 4, Line 16, Block 4 
+Ins 328: File 4, Line 16, Block 4 
+Ins 329: File 4, Line 17, Block 4 StatementBegin
+Ins 330: File 4, Line 17, Block 4 
+Ins 331: File 2, Line 272, Block 4 
+Ins 332: File 2, Line 272, Block 4 
+Ins 333: File 4, Line 17, Block 4 
+Ins 334: File 4, Line 17, Block 4 
+Ins 335: File 4, Line 18, Block 4 StatementBegin
+Ins 336: File 4, Line 18, Block 4 
+Ins 337: File 4, Line 19, Block 4 
+Ins 338: File 4, Line 19, Block 4 StatementBegin
+Ins 339: File 4, Line 19, Block 4 
+Ins 340: File 4, Line 19, Block 4 
+Ins 341: File 4, Line 20, Block 4 StatementBegin
+Ins 342: File 4, Line 20, Block 4 
+Ins 343: File 2, Line 272, Block 4 
+Ins 344: File 2, Line 272, Block 4 
+Ins 345: File 4, Line 20, Block 4 
+Ins 346: File 4, Line 20, Block 4 
+Ins 347: File 4, Line 21, Block 4 StatementBegin
+Ins 348: File 4, Line 21, Block 4 
+Ins 349: File 4, Line 22, Block 4 
+Ins 350: File 4, Line 23, Block 4 StatementBegin
+Ins 351: File 4, Line 23, Block 4 
+Ins 352: File 4, Line 25, Block 4 
+Ins 353: File 4, Line 25, Block 4 
+Block 0:
+  Parent block: 0
+Block 1:
+  Parent block: 0
+  Local variables 0-8: 
+      0: who
+      1: stone
+      2: guild_id
+      3: guild
+      4: gm
+      5: house
+      6: owner
+      7: coowners
+      8: chk
+Block 2:
+  Parent block: 1
+  Local variables 9-11: 
+      9: item
+      10: _item_expr
+      11: _item_counter
+Block 3:
+  Parent block: 1
+  Local variables 9-11: 
+      9: item
+      10: _item_expr
+      11: _item_counter
+Block 4:
+  Parent block: 0
+  Local variables 0-3: 
+      0: flags
+      1: item
+      2: who
+      3: owner
+Function 0: can_access
+  FirstPC=247, lastPC=353

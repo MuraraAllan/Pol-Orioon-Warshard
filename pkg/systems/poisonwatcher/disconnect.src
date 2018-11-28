@@ -1,0 +1,14 @@
+use uo;
+use os;
+
+
+include ":poisonwatcher:poisons";
+include "include/attributes";
+
+
+program Logon(who)
+
+SetObjProperty(who, "#Online", -1);
+endprogram
+
+

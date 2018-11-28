@@ -1,0 +1,175 @@
+C:\pol2\pkg\items\moongates\start.src, Line 5
+print("Initializing moongates");
+0: "Initializing moongates"
+1: Func(1,0): print
+2: #
+CreateMoongates();
+3: makelocal
+4: jmp userfunc @7
+5: #
+6: progend
+C:\pol2\pkg\items\moongates\moongates.inc, Line 5
+function CreateMoongates()
+var moongates := {
+7: decl local #0
+8: array
+9: array
+10: 4467L
+11: +=
+12: 1283L
+13: +=
+14: 5L
+15: +=
+16: "Moonglow"
+17: +=
+18: +=
+19: array
+20: 1336L
+21: +=
+22: 1997L
+23: +=
+24: 5L
+25: +=
+26: "Britain"
+27: +=
+28: +=
+29: array
+30: 1499L
+31: +=
+32: 3771L
+33: +=
+34: 5L
+35: +=
+36: "Jhelom"
+37: +=
+38: +=
+39: array
+40: 771L
+41: +=
+42: 753L
+43: +=
+44: 5L
+45: +=
+46: "Yew"
+47: +=
+48: +=
+49: array
+50: 2701L
+51: +=
+52: 693L
+53: +=
+54: 5L
+55: +=
+56: "Minoc"
+57: +=
+58: +=
+59: array
+60: 1828L
+61: +=
+62: 2948L
+63: +=
+64: -20L
+65: +=
+66: "Trinsic"
+67: +=
+68: +=
+69: array
+70: 643L
+71: +=
+72: 2067L
+73: +=
+74: 5L
+75: +=
+76: "Skara"
+77: +=
+78: +=
+79: array
+80: 3564L
+81: +=
+82: 2140L
+83: +=
+84: 34L
+85: +=
+86: "Magincia"
+87: +=
+88: +=
+89: :=
+90: #
+var moongate;
+91: decl local #1
+92: #
+var index := 1;
+93: decl local #2
+94: 1L
+95: :=
+96: #
+syslog( "Creating moongates." );
+97: "Creating moongates."
+98: Func(3,0): syslog
+99: #
+foreach gate in moongates
+100: local #0
+101: initforeach @153
+foreach thing in ListItemsNearLocation(gate[1], gate[2], gate[3], 0);
+102: local #3
+103: 1L
+104: [] 1
+105: local #3
+106: 2L
+107: [] 1
+108: local #3
+109: 3L
+110: [] 1
+111: 0L
+112: Func(2,0): ListItemsNearLocation
+113: initforeach @122
+if(thing.objtype != 0x887b)
+114: local #6
+115: get member 'objtype'
+116: 34939L
+117: <>
+118: if false goto 122
+DestroyItem(thing);
+119: local #6
+120: Func(2,1): DestroyItem
+121: #
+122: stepforeach @114
+123: leave block(3)
+moongate := CreateItemAtLocation( gate[1], gate[2], gate[3], "systemmoongate", 
+124: local #3
+125: 1L
+126: [] 1
+127: local #3
+128: 2L
+129: [] 1
+130: local #3
+131: 3L
+132: [] 1
+133: "systemmoongate"
+134: 1L
+135: Func(2,2): CreateItemAtLocation
+136: local1 := 
+SetObjProperty(moongate, "City", gate[4]);
+137: local #1
+138: "City"
+139: local #3
+140: 4L
+141: [] 1
+142: Func(2,3): SetObjProperty
+143: #
+moongate.facing := 29;
+144: local #1
+145: 29L
+146: set member 'facing' #
+moongate.decayAt := 0;
+147: local #1
+148: 0L
+149: set member 'decayAt' #
+moongate.movable := 0;
+150: local #1
+151: 0L
+152: set member 'movable' #
+153: stepforeach @102
+154: leave block(3)
+155: 0L
+156: return

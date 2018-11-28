@@ -1,0 +1,6 @@
+
+use uo;
+
+program WriteBookData(who)
+sendsysmessage(who,"Testando as Cores!",9,88);
+endprogram

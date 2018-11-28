@@ -1,0 +1,802 @@
+C:\pol2\pkg\systems\boat\shipDeed.src, Line 10
+program useshipdeed(who, deed)
+include "include/canAccess";
+0: get arg 'who'
+1: get arg 'deed'
+if(DeedAlreadyBuiltFrom(deed))
+2: local #1
+3: makelocal
+4: jmp userfunc @516
+5: if false goto 14
+PrintTextAbovePrivate(deed, "That ship has already been built.", who);
+6: local #1
+7: "That ship has already been built."
+8: local #0
+9: 3L
+10: 1000L
+11: Func(3,13): PrintTextAbovePrivate
+12: #
+13: goto25
+elseif(can_access(who, deed))
+14: local #0
+15: local #1
+16: 0L
+17: makelocal
+18: jmp userfunc @336
+19: if false goto 25
+BuildShip(who, deed);
+20: local #0
+21: local #1
+22: makelocal
+23: jmp userfunc @27
+24: #
+25: leave block(2)
+26: progend
+C:\pol2\pkg\systems\boat\shipDeed.src, Line 18
+function BuildShip(who, deed)
+27: pop param 'deed'
+28: pop param 'who'
+var shiptype := GetShipObjtype(deed.objtype);
+29: decl local #2
+30: local #0
+31: get member 'objtype'
+32: makelocal
+33: jmp userfunc @564
+34: :=
+35: #
+if(!shiptype)
+36: local #2
+37: if true goto 47
+PrintTextAbovePrivate(deed, "That ship deed appears to be broken.", who);
+38: local #0
+39: "That ship deed appears to be broken."
+40: local #1
+41: 3L
+42: 1000L
+43: Func(3,13): PrintTextAbovePrivate
+44: #
+return;
+45: ""
+46: return
+var flags := ShipFacingFlags(who.facing);
+47: decl local #3
+48: local #1
+49: get member 'facing'
+50: makelocal
+51: jmp userfunc @598
+52: :=
+53: #
+var where := TargetMultiPlacement(who, shiptype, flags);
+54: decl local #4
+55: local #1
+56: local #2
+57: local #3
+58: Func(3,14): TargetMultiPlacement
+59: :=
+60: #
+if(!where)
+61: local #4
+62: if true goto 83
+if(deed.graphic == 5363)
+63: local #0
+64: get member 'graphic'
+65: 5363L
+66: ==
+67: if false goto 72
+deed.graphic := 5364;
+68: local #0
+69: 5364L
+70: set member 'graphic' #
+71: goto80
+elseif(deed.graphic == 5364)
+72: local #0
+73: get member 'graphic'
+74: 5364L
+75: ==
+76: if false goto 80
+deed.graphic := 5363;
+77: local #0
+78: 5363L
+79: set member 'graphic' #
+return;
+80: ""
+81: return
+82: goto114
+elseif((where.x == deed.x) && (where.y == deed.y))
+83: local #4
+84: get member 'x'
+85: local #0
+86: get member 'x'
+87: ==
+88: local #4
+89: get member 'y'
+90: local #0
+91: get member 'y'
+92: ==
+93: &&
+94: if false goto 114
+if(deed.graphic == 5363)
+95: local #0
+96: get member 'graphic'
+97: 5363L
+98: ==
+99: if false goto 104
+deed.graphic := 5364;
+100: local #0
+101: 5364L
+102: set member 'graphic' #
+103: goto112
+elseif(deed.graphic == 5364)
+104: local #0
+105: get member 'graphic'
+106: 5364L
+107: ==
+108: if false goto 112
+deed.graphic := 5363;
+109: local #0
+110: 5363L
+111: set member 'graphic' #
+return;
+112: ""
+113: return
+set_critical(1);
+114: 1L
+115: Func(4,1): set_critical
+116: #
+if((where.x < who.x - 10) || (where.y < who.y - 10) || (where.x > who.x + 10) |
+117: local #4
+118: get member 'x'
+119: local #1
+120: get member 'x'
+121: 10L
+122: -
+123: <
+124: local #4
+125: get member 'y'
+126: local #1
+127: get member 'y'
+128: 10L
+129: -
+130: <
+131: ||
+132: local #4
+133: get member 'x'
+134: local #1
+135: get member 'x'
+136: 10L
+137: +
+138: >
+139: ||
+140: local #4
+141: get member 'y'
+142: local #1
+143: get member 'y'
+144: 10L
+145: +
+146: >
+147: ||
+148: if false goto 157
+SendSysMessage(who, "You cannot place a boat that far away.");
+149: local #1
+150: "You cannot place a boat that far away."
+151: 3L
+152: 1000L
+153: Func(3,9): SendSysMessage
+154: #
+return;
+155: ""
+156: return
+var created := CreateShipKeysAndBuiltDeed(who, shiptype, where.x, where.y, wher
+157: decl local #5
+158: local #1
+159: local #2
+160: local #4
+161: get member 'x'
+162: local #4
+163: get member 'y'
+164: local #4
+165: get member 'z'
+166: local #3
+167: makelocal
+168: jmp userfunc @443
+169: :=
+170: #
+if(created)
+171: local #5
+172: if false goto 334
+var ship := created.ship;
+173: decl local #0
+174: local #5
+175: get member 'ship'
+176: :=
+177: #
+var deedtype := deed.objtype;
+178: decl local #1
+179: local #0
+180: get member 'objtype'
+181: :=
+182: #
+if((deed.name != "a toy boat") && (!deed.name["deed"]))
+183: local #0
+184: get member 'name'
+185: "a toy boat"
+186: <>
+187: local #0
+188: get member 'name'
+189: "deed"
+190: [] 1
+191: !
+192: &&
+193: if false goto 199
+ship.tillerman.name := deed.name;
+194: local #6
+195: get member 'tillerman'
+196: local #0
+197: get member 'name'
+198: set member 'name' #
+if(DestroyItem(deed))
+199: local #0
+200: Func(3,15): DestroyItem
+201: if false goto 320
+ship.starboardplank.locked    := 1;
+202: local #6
+203: get member 'starboardplank'
+204: 1L
+205: set member 'locked' #
+ship.portplank.locked         := 1;
+206: local #6
+207: get member 'portplank'
+208: 1L
+209: set member 'locked' #
+ship.hold.locked              := 1;
+210: local #6
+211: get member 'hold'
+212: 1L
+213: set member 'locked' #
+var lockid := AllocLockId();
+214: decl local #0
+215: makelocal
+216: jmp userfunc @630
+217: :=
+218: #
+SetObjProperty(ship.starboardplank, "lockid",      lockid);
+219: local #6
+220: get member 'starboardplank'
+221: "lockid"
+222: local #8
+223: Func(3,16): SetObjProperty
+224: #
+SetObjProperty(ship.starboardplank, "owner",       who.serial);
+225: local #6
+226: get member 'starboardplank'
+227: "owner"
+228: local #1
+229: get member 'serial'
+230: Func(3,16): SetObjProperty
+231: #
+SetObjProperty(ship.starboardplank, "tillermanid", ship.tillerman.serial);
+232: local #6
+233: get member 'starboardplank'
+234: "tillermanid"
+235: local #6
+236: get member 'tillerman'
+237: get member 'serial'
+238: Func(3,16): SetObjProperty
+239: #
+SetObjProperty(ship.portplank,      "lockid",      lockid);
+240: local #6
+241: get member 'portplank'
+242: "lockid"
+243: local #8
+244: Func(3,16): SetObjProperty
+245: #
+SetObjProperty(ship.portplank,      "owner",       who.serial);
+246: local #6
+247: get member 'portplank'
+248: "owner"
+249: local #1
+250: get member 'serial'
+251: Func(3,16): SetObjProperty
+252: #
+SetObjProperty(ship.portplank,      "tillermanid", ship.tillerman.serial);
+253: local #6
+254: get member 'portplank'
+255: "tillermanid"
+256: local #6
+257: get member 'tillerman'
+258: get member 'serial'
+259: Func(3,16): SetObjProperty
+260: #
+SetObjProperty(ship.hold,           "lockid",      lockid);
+261: local #6
+262: get member 'hold'
+263: "lockid"
+264: local #8
+265: Func(3,16): SetObjProperty
+266: #
+SetObjProperty(ship.tillerman,      "owner",       who.serial);
+267: local #6
+268: get member 'tillerman'
+269: "owner"
+270: local #1
+271: get member 'serial'
+272: Func(3,16): SetObjProperty
+273: #
+SetObjProperty(ship.tillerman,      "shipserial",  ship.serial);
+274: local #6
+275: get member 'tillerman'
+276: "shipserial"
+277: local #6
+278: get member 'serial'
+279: Func(3,16): SetObjProperty
+280: #
+SetObjProperty(ship.tillerman,      "lockid",      lockid);
+281: local #6
+282: get member 'tillerman'
+283: "lockid"
+284: local #8
+285: Func(3,16): SetObjProperty
+286: #
+SetObjProperty(ship.tillerman,      "shiptype",    deedtype);
+287: local #6
+288: get member 'tillerman'
+289: "shiptype"
+290: local #7
+291: Func(3,16): SetObjProperty
+292: #
+SetObjProperty(created.packkey,     "lockid",      lockid);
+293: local #5
+294: get member 'packkey'
+295: "lockid"
+296: local #8
+297: Func(3,16): SetObjProperty
+298: #
+SetObjProperty(created.packkey,     "shipserial",  ship.serial);
+299: local #5
+300: get member 'packkey'
+301: "shipserial"
+302: local #6
+303: get member 'serial'
+304: Func(3,16): SetObjProperty
+305: #
+SetObjProperty(ship.tillerman,      "decay",       (ReadGameClock()+ 864000));
+306: local #6
+307: get member 'tillerman'
+308: "decay"
+309: Func(3,17): ReadGameClock
+310: 864000L
+311: +
+312: Func(3,16): SetObjProperty
+313: #
+ship.tillerman.usescript := ":boat:tillerman";
+314: local #6
+315: get member 'tillerman'
+316: ":boat:tillerman"
+317: set member 'usescript' #
+318: leave block(1)
+319: goto333
+DestroyItem(created.packkey);
+320: local #5
+321: get member 'packkey'
+322: Func(3,15): DestroyItem
+323: #
+DestroyMulti(ship);
+324: local #6
+325: Func(3,18): DestroyMulti
+326: #
+SendSysMessage(who, "There was an error creating the boat.");
+327: local #1
+328: "There was an error creating the boat."
+329: 3L
+330: 1000L
+331: Func(3,9): SendSysMessage
+332: #
+333: leave block(2)
+334: 0L
+335: return
+C:/pol2/scripts/include/canAccess.inc, Line 2
+function can_access(who, item, flags := 0)
+336: pop param 'flags'
+337: pop param 'item'
+338: pop param 'who'
+var owner := Cint(GetObjProperty(item, "Owner"));
+339: decl local #3
+340: local #1
+341: "Owner"
+342: Func(3,2): GetObjProperty
+343: Func(0,0): CInt
+344: :=
+345: #
+if((owner) and (owner != who.serial))
+346: local #3
+347: local #3
+348: local #2
+349: get member 'serial'
+350: <>
+351: &&
+352: if false goto 362
+SendSysMessage(who, "You cannot use that.");
+353: local #2
+354: "You cannot use that."
+355: 3L
+356: 1000L
+357: Func(3,9): SendSysMessage
+358: #
+return 0;
+359: 0L
+360: return
+361: goto441
+elseif(GetObjProperty(item, "Vendored"))
+362: local #1
+363: "Vendored"
+364: Func(3,2): GetObjProperty
+365: if false goto 375
+SendSysMessage(who, "You cannot use that.");
+366: local #2
+367: "You cannot use that."
+368: 3L
+369: 1000L
+370: Func(3,9): SendSysMessage
+371: #
+return 0;
+372: 0L
+373: return
+374: goto441
+elseif(!Accessible(who, item))
+375: local #2
+376: local #1
+377: Func(3,10): Accessible
+378: if true goto 388
+SendSysMessage(who, "You cannot use that.");
+379: local #2
+380: "You cannot use that."
+381: 3L
+382: 1000L
+383: Func(3,9): SendSysMessage
+384: #
+return 0;
+385: 0L
+386: return
+387: goto441
+elseif((!flags["distance"]) and ((Distance(who, item) > 2)))
+388: local #0
+389: "distance"
+390: [] 1
+391: !
+392: local #2
+393: local #1
+394: Func(3,11): Distance
+395: 2L
+396: >
+397: &&
+398: if false goto 408
+SendSysMessage(who, "That item is too far away.");
+399: local #2
+400: "That item is too far away."
+401: 3L
+402: 1000L
+403: Func(3,9): SendSysMessage
+404: #
+return 0;
+405: 0L
+406: return
+407: goto441
+elseif((!flags["unmovable"]) and (item.movable == 0))
+408: local #0
+409: "unmovable"
+410: [] 1
+411: !
+412: local #1
+413: get member 'movable'
+414: 0L
+415: ==
+416: &&
+417: if false goto 427
+SendSysMessage(who, "You cannot use that while locked down.");
+418: local #2
+419: "You cannot use that while locked down."
+420: 3L
+421: 1000L
+422: Func(3,9): SendSysMessage
+423: #
+return 0;
+424: 0L
+425: return
+426: goto441
+elseif(!ReserveItem(item))
+427: local #1
+428: Func(3,12): ReserveItem
+429: if true goto 439
+SendSysMessage(who, "That item is already in use.");
+430: local #2
+431: "That item is already in use."
+432: 3L
+433: 1000L
+434: Func(3,9): SendSysMessage
+435: #
+return 0;
+436: 0L
+437: return
+438: goto441
+return 1;
+439: 1L
+440: return
+441: 0L
+442: return
+C:\pol2\pkg\systems\boat\shipDeed.src, Line 96
+function CreateShipKeysAndBuiltDeed(who, shiptype, x, y, z, flags)
+443: pop param 'flags'
+444: pop param 'z'
+445: pop param 'y'
+446: pop param 'x'
+447: pop param 'shiptype'
+448: pop param 'who'
+var bankbox := FindBankBox(who);
+449: decl local #6
+450: local #5
+451: makelocal
+452: jmp userfunc @528
+453: :=
+454: #
+var packkey := CreateItemInBackpack(who, UOBJ_COPPER_KEY);
+455: decl local #7
+456: local #5
+457: 4110L
+458: 1L
+459: Func(3,19): CreateItemInBackpack
+460: :=
+461: #
+if(!packkey)
+462: local #7
+463: if true goto 473
+PrintTextAbovePrivate(who, "My backpack is too full!", who);
+464: local #5
+465: "My backpack is too full!"
+466: local #5
+467: 3L
+468: 1000L
+469: Func(3,13): PrintTextAbovePrivate
+470: #
+return 0;
+471: 0L
+472: return
+var ship := CreateMultiAtLocation(x, y, z, shiptype, flags);
+473: decl local #8
+474: local #3
+475: local #2
+476: local #1
+477: local #4
+478: local #0
+479: Func(3,20): CreateMultiAtLocation
+480: :=
+481: #
+if(!ship)
+482: local #8
+483: if true goto 497
+PrintTextAbovePrivate(who, "I can't place the ship there.", who);
+484: local #5
+485: "I can't place the ship there."
+486: local #5
+487: 3L
+488: 1000L
+489: Func(3,13): PrintTextAbovePrivate
+490: #
+DestroyItem(packkey);
+491: local #7
+492: Func(3,15): DestroyItem
+493: #
+return 0;
+494: 0L
+495: return
+496: goto514
+var result := struct;
+497: decl local #0
+498: struct
+499: :=
+500: #
+result.+packkey := packkey;
+501: local #9
+502: "packkey"
+503: .+
+504: local #7
+505: := #
+result.+ship    := ship;
+506: local #9
+507: "ship"
+508: .+
+509: local #8
+510: := #
+return result;
+511: local #9
+512: return
+513: leave block(1)
+514: 0L
+515: return
+C:\pol2\pkg\systems\boat\shipDeed.src, Line 116
+function DeedAlreadyBuiltFrom(deed)
+516: pop param 'deed'
+if(GetObjProperty(deed, "builtserial"))
+517: local #0
+518: "builtserial"
+519: Func(3,2): GetObjProperty
+520: if false goto 524
+return 1;
+521: 1L
+522: return
+523: goto526
+return 0;
+524: 0L
+525: return
+526: 0L
+527: return
+C:/pol2/scripts/util/bank.inc, Line 14
+function FindBankBox( character )
+528: pop param 'character'
+var worldbank := OpenWorldBank();
+529: decl local #1
+530: makelocal
+531: jmp userfunc @581
+532: :=
+533: #
+var bank_obj_name := "Bankbox of " + character.serial;
+534: decl local #2
+535: "Bankbox of "
+536: local #0
+537: get member 'serial'
+538: +
+539: :=
+540: #
+var bankbox := FindRootItemInStorageArea( worldbank, bank_obj_name );
+541: decl local #3
+542: local #1
+543: local #2
+544: Func(3,4): FindRootItemInStorageArea
+545: :=
+546: #
+if (!bankbox)
+547: local #3
+548: if true goto 554
+bankbox := CreateRootItemInStorageArea( worldbank, bank_obj_name, UOBJ_BANKBOX 
+549: local #1
+550: local #2
+551: 3648L
+552: Func(3,5): CreateRootItemInStorageArea
+553: local3 := 
+if(!bankbox)
+554: local #3
+555: if true goto 562
+syslog( "Unable to find or create bankbox for " + character.serial );
+556: "Unable to find or create bankbox for "
+557: local #0
+558: get member 'serial'
+559: +
+560: Func(4,0): syslog
+561: #
+return bankbox;
+562: local #3
+563: return
+C:\pol2\pkg\systems\boat\shipDeed.src, Line 124
+function GetShipObjtype(objtype)
+564: pop param 'objtype'
+var cfg := ReadConfigFile(":boat:itemdesc");
+565: decl local #1
+566: ":boat:itemdesc"
+567: Func(2,0): ReadConfigFile
+568: :=
+569: #
+var ot := GetObjtypeByName(cfg[objtype].ShipObjType);
+570: decl local #2
+571: local #1
+572: local #0
+573: [] 1
+574: get member 'ShipObjType'
+575: Func(3,21): GetObjtypeByName
+576: :=
+577: #
+return Cint(ot);
+578: local #2
+579: Func(0,0): CInt
+580: return
+C:/pol2/scripts/util/bank.inc, Line 34
+function OpenWorldBank()
+var bank := FindStorageArea( "World Bank" );
+581: decl local #0
+582: "World Bank"
+583: Func(3,7): FindStorageArea
+584: :=
+585: #
+if (!bank)
+586: local #0
+587: if true goto 591
+bank := CreateStorageArea( "World Bank" );
+588: "World Bank"
+589: Func(3,8): CreateStorageArea
+590: local0 := 
+if (!bank)
+591: local #0
+592: if true goto 596
+syslog( "Unable to open or create world bank!" );
+593: "Unable to open or create world bank!"
+594: Func(4,0): syslog
+595: #
+return bank;
+596: local #0
+597: return
+C:\pol2\pkg\systems\boat\shipDeed.src, Line 81
+function ShipFacingFlags(facing)
+598: pop param 'facing'
+var flags := 0;
+599: decl local #1
+600: 0L
+601: :=
+602: #
+case facing
+603: local #0
+604: casejmp
+	0: @605
+	1: @608
+	2: @611
+	3: @614
+	4: @617
+	5: @620
+	6: @623
+	7: @626
+	default: @628
+flags := CRMULTI_FACING_NORTH;
+605: 0L
+606: local1 := 
+607: goto628
+flags := CRMULTI_FACING_NORTH;
+608: 0L
+609: local1 := 
+610: goto628
+flags := CRMULTI_FACING_EAST;
+611: 256L
+612: local1 := 
+613: goto628
+flags := CRMULTI_FACING_SOUTH;
+614: 512L
+615: local1 := 
+616: goto628
+flags := CRMULTI_FACING_SOUTH;
+617: 512L
+618: local1 := 
+619: goto628
+flags := CRMULTI_FACING_SOUTH;
+620: 512L
+621: local1 := 
+622: goto628
+flags := CRMULTI_FACING_WEST;
+623: 768L
+624: local1 := 
+625: goto628
+flags := CRMULTI_FACING_NORTH;
+626: 0L
+627: local1 := 
+return flags;
+628: local #1
+629: return
+C:/pol2/scripts/util/key.inc, Line 5
+function AllocLockId()
+var lockid := GetGlobalProperty( "nextlockid" );
+630: decl local #0
+631: "nextlockid"
+632: Func(3,0): GetGlobalProperty
+633: :=
+634: #
+if (!lockid)
+635: local #0
+636: if true goto 639
+lockid := 1;
+637: 1L
+638: local0 := 
+SetGlobalProperty( "nextlockid", lockid+1 );
+639: "nextlockid"
+640: local #0
+641: 1L
+642: +
+643: Func(3,1): SetGlobalProperty
+644: #
+return lockid;
+645: local #0
+646: return

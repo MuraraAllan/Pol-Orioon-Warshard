@@ -1,0 +1,28 @@
+use uo;
+use os;
+include "util/bancoglobal";
+
+program dblclick_bancobox( who , bank )
+bank.color:=1161;
+bank.name:="Banco Global";
+Abrir(who);
+
+endprogram
+
+///
+function Abrir(who)
+
+Local bankbox := ProcurarBancoGlobal( who );
+if (bankbox)
+
+///if(!who.criminal)
+SendOpenSpecialContainer( who, bankbox );
+SendSysMessage(who, "Voce abriu seu cofre bancario global.",9,89);
+////SendSysMessage(who, who.name + ", Voce abriu o seu Banco!",9,89);
+///else
+///SendSysMessage(who, "Criminosos nao podem abrir o cofre bancario.",9,89);
+///endif
+
+endif
+
+endfunction

@@ -1,0 +1,39 @@
+use uo;
+use os;
+
+program textcmd_news( me, cmd )
+
+
+
+WriteNews(me);
+return;
+
+endprogram
+
+function WriteNews(me)
+
+local news := { };
+local newsline := "";
+
+newsline := SendTextEntryGump( me, "Regra: ", 
+TE_CANCEL_DISABLE,TE_STYLE_NORMAL, 40);
+local prompt := newsline;
+if (!prompt)
+SendSysMessage(me,"Cancelado",9,89);
+return;
+endif
+
+news[ 1 ] := newsline;
+repeat
+newsline := SendTextEntryGump( me, "Regra: "+len(news)+" "+prompt, 
+TE_CANCEL_DISABLE,TE_STYLE_NORMAL, 40);
+if(newsline)
+news[ len(news)+1 ] := newsline;
+prompt := newsline;
+endif
+until (!newsline);
+SetGlobalProperty("newss",news);
+SendSysMessage(me,"Regras Completas");
+
+
+endfunction

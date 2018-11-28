@@ -1,0 +1,19 @@
+use os;
+use uo;
+use util;
+use http;
+
+include "include/clock";
+include "include/accounts";
+
+program display_server_status ()
+WriteHTML ("666");		
+Broadcast("Servidor Sendo FEXADO, [.shutdown]", 0, 33);
+Broadcast("Consulte no IRC para maiores informacoes!", 0, 33);
+Broadcast("#Sysco @BrasNet", 0, 33);
+    Broadcast( "Salvando o Mundo..." ,0,33 );
+    SaveWorldState();
+    Broadcast( "Mundo Salvo, ENCERRANDO!" ,0,50 );
+sleep(10);	
+ Shutdown();
+endprogram

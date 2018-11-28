@@ -1,0 +1,108 @@
+use uo;
+use os;
+
+include "include/client";
+include "include/eventID";
+include "include/attributes";
+include "include/skillLists";
+include "../pkg/foundations/gumps/gumps";
+
+
+program iniciar ( who )
+start(who);
+endprogram
+
+
+
+
+function start(who)
+var player := who;
+var bolsa := who.backpack;
+
+var classe:=GetObjProperty(player, "classe");
+
+
+if((classe == "trabalhador") || (classe == "guerreiro"))
+sendsysmessage(player, "Voce ja possui uma classe...", 3,89);
+return;
+endif
+
+///sexo///
+if(player.graphic == 400)
+SetObjProperty( player, "sexo", "homem");
+endif
+///\/\
+///\/\
+if(player.graphic == 401)
+SetObjProperty( player, "sexo", "mulher");
+endif
+///sexo///
+			 player.frozen:=1;
+        		 sendsysmessage(player, "Selecione oque voce deseja ser...", 3,89);
+        		 sleepms(500);
+
+			 
+  GFInitGump( 250 , 100 );
+  GFNoClose();
+  GFNoMove();
+  GFResizePic(50, 5, 2600, 265, 230);
+  GFTextLine( 115 , 20, 1153 , "Selecione sua Classe" );
+  var war := GFButtonID( 100, 85, 0x15b9, 0x15ba, 1);
+  var work := GFButtonID( 200, 85, 0x15b3, 0x15b4, 1);
+ 
+  GFTextLine(100, 150, 33 , "Guerreiro"); 
+  GFTextLine(192, 150, 33 , "Trabalhador"); 
+  GFTextLine(155, 190,1153, "#Sysco"); 
+ 
+  var res := GFSendGump(player);
+
+    if(res[war.keyid]) 
+    sendsysmessage(player, "Voce foi setado como Guerreiro!",9,89);
+var a := ", Player Do Sysco WS (Guerreiro)";
+player.title_suffix := ", Player Do Sysco WS (Guerreiro)";
+SetObjProperty( player, "titullo", a );
+
+var bolsa := player.backpack;
+foreach coisasnabolsa in EnumerateItemsInContainer(bolsa)
+DestroyItem(coisasnabolsa);
+endforeach
+var book := CreateItemInBackpack( player, 0x0efa, 1 );
+var scroll;
+for( scroll := 0x1f2d; scroll <= 0x1f6c; scroll := scroll + 1 )
+CreateItemInContainer( book, scroll, 1 );
+endfor
+var gold := CreateItemInBackpack(player, 3821, 6000);
+MoveCharacterToLocation( player, 2762,119,90 );
+SetObjProperty( player, "classe", "guerreiro");
+player.frozen:=0;
+return;
+    endif
+
+
+
+    if(res[work.keyid]) 
+    sendsysmessage(player, "Voce foi setado como Trabalhador!",9,89);
+
+var a := ", Player Do Sysco WS (Trabalhador)";
+player.title_suffix := ", Player Do Sysco WS (Trabalhador)";
+SetObjProperty( player, "titullo", a );
+
+var bolsa := player.backpack;
+foreach coisasnabolsa in EnumerateItemsInContainer(bolsa)
+DestroyItem(coisasnabolsa);
+endforeach
+var book := CreateItemInBackpack( player, 0x0efa, 1 );
+var scroll;
+for( scroll := 0x1f2d; scroll <= 0x1f6c; scroll := scroll + 1 )
+CreateItemInContainer( book, scroll, 1 );
+endfor
+var gold := CreateItemInBackpack(player, 3821, 6000);
+MoveCharacterToLocation( player, 2762,119,90 );
+SetObjProperty( player, "classe", "trabalhador");
+player.frozen:=0;
+return;
+    endif
+
+
+
+endfunction

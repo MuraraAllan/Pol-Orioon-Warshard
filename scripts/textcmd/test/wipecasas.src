@@ -1,0 +1,13 @@
+use uo;
+use os;
+
+program wiparcasas(who)
+
+var aa := ListMultisInBox( 0,0,0, 6000,6000,6000 );
+
+foreach b in aa 
+sendsysmessage(who,"LALAL:" +b.objtype);
+DestroyMulti( b);
+endforeach
+
+endprogram

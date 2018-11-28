@@ -1,0 +1,12 @@
+use uo;
+use boat;
+
+include "include/client";
+
+program destroy_boat( who, param )
+var boat := param;
+var res := DestroyMulti( boat );
+if (!res)
+SendSysMessage( who, "Nao foi possivel destruir o Barco",0x9,90 );
+endif
+endprogram

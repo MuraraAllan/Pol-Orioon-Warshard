@@ -1,0 +1,32 @@
+// command .info  started June 19, 2000
+// Zulu (zulu@zuluhotel.com)
+// last updated June 25, 2000
+
+use uo;
+use os;
+use cfgfile;
+use basic;
+
+include "util/bank";
+include "include/attributes";
+include "include/yesNo";
+include "include/gumpUtil";
+include "include/math";
+include "../pkg/foundations/gumps/gumps";
+
+program infoplayer( xxx )
+
+var player:=xxx[1];
+var who:=xxx[2];
+Broadcast("xx1: " +player.name, 0, 221);
+Broadcast("xx2: " +who.serial, 0, 221);
+
+  GFInitGump( 80 , 100 );
+  GFNoMove();
+  GFResizePic(50, 5, 5120, 300, 440);
+  GFTextLine( 175 , 15, 1153 , "Player: " +player.name );
+
+var res:=GFSendGump(who);
+
+endprogram
+

@@ -1,0 +1,129 @@
+use os;
+use uo;
+use cfgfile;
+use util;
+use basic;
+include "../pkg/foundations/gumps/gumps";
+
+var xxxx:=array("page 0",
+"nodispose",
+"text 18 20 77 0",
+"text 10 40 77 2",
+"text 10 70 77 2",
+"text 10 100 77 2",
+"button 35 50 2130 2129 1 0 1",
+"button 105 50 2119 2120 1 0 0"
+);
+var dddd:={" Deseja Realmente Zerar?",
+"",
+"",
+""
+};
+
+
+program zerar(who)
+
+
+  GFInitGump( 80 , 100 );
+  GFResizePic(50, 5, 5120, 500, 180);
+  GFTextLine( 150 , 20, 2 , "Zerador de WPS/KPS/PVP Points.");
+  GFTextLine( 75 , 40, 33 , "Atencao! Ao zerar voce estara zerando de todo o Shard!" );
+  
+  GFTextLine( 85 , 70, 55 , "WP큦 - (Zera WP dos Players e Guildas do Shard)" );
+  var bwp:=GFButtonID(71, 73, 0x29f4, 0x29f5, 1);
+
+  GFTextLine( 85 , 110, 55 , "KP큦 - (Zera KP dos players do Shard)" );
+  var bkp:=GFButtonID(71, 113, 0x29f4, 0x29f5, 1);
+
+  GFTextLine( 85 , 150, 55 , "Pvp큦 - (Zera PVP Point큦 dos players do Shard" );
+  var bpvp:=GFButtonID(71, 153, 0x29f4, 0x29f5, 1);
+
+var res :=  GFSendGump(who);
+
+if(res[bwp.keyid])
+zerawp(who);
+endif
+
+if(res[bkp.keyid])
+zerakp(who);
+endif
+
+if(res[bpvp.keyid])
+
+endif
+
+    
+endprogram
+
+////zera wp
+function zerawp(who);
+var ctz:=SendDialogGump(who, xxxx, dddd);
+
+if(!ctz)
+SendSysMessage(who, "Cancelado.",9,33);
+return;
+endif
+var conta;
+foreach acc in ListAccounts( )
+conta:=FindAccount( acc );
+
+EraseObjProperty(conta.GetCharacter(1), "warpoints");
+EraseObjProperty(conta.GetCharacter(2), "warpoints");
+EraseObjProperty(conta.GetCharacter(3), "warpoints");
+EraseObjProperty(conta.GetCharacter(4), "warpoints");
+EraseObjProperty(conta.GetCharacter(5), "warpoints");
+endforeach
+
+foreach guilda in ListGuilds()
+guilda.eraseprop("warpoints");
+endforeach
+
+SendSysMessage(who, "WP큦 ZERADOS!",3,33);
+endfunction
+
+////zera kp
+function zerakp(who);
+
+var ctz:=SendDialogGump(who, xxxx, dddd);
+
+if(!ctz)
+SendSysMessage(who, "Cancelado.",9,33);
+return;
+endif
+var conta;
+foreach acc in ListAccounts( )
+conta:=FindAccount( acc );
+
+EraseObjProperty(conta.GetCharacter(1), "kp");
+EraseObjProperty(conta.GetCharacter(2), "kp");
+EraseObjProperty(conta.GetCharacter(3), "kp");
+EraseObjProperty(conta.GetCharacter(4), "kp");
+EraseObjProperty(conta.GetCharacter(5), "kp");
+endforeach
+
+SendSysMessage(who, "KP큦 ZERADOS!",3,33);
+endfunction
+
+
+////zera pvp
+function zerapvp(who);
+var ctz:=SendDialogGump(who, xxxx, dddd);
+
+if(!ctz)
+SendSysMessage(who, "Cancelado.",9,33);
+return;
+endif
+var conta;
+foreach acc in ListAccounts( )
+conta:=FindAccount( acc );
+
+EraseObjProperty(conta.GetCharacter(1), "pvppoint");
+EraseObjProperty(conta.GetCharacter(2), "pvppoint");
+EraseObjProperty(conta.GetCharacter(3), "pvppoint");
+EraseObjProperty(conta.GetCharacter(4), "pvppoint");
+EraseObjProperty(conta.GetCharacter(5), "pvppoint");
+endforeach
+
+SendSysMessage(who, "PVP큦 ZERADOS!",3,33);
+
+endfunction

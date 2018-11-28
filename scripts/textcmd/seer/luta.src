@@ -1,0 +1,253 @@
+use uo;
+use os;
+
+
+include "include/client";
+include "include/attributes";
+include "../pkg/foundations/gumps/gumps";
+
+
+program luta(who, alvo)
+
+
+  GFInitGump( 140 , 100 );
+  GFResizePic(50, 5, 5120, 200, 140);
+  GFTextLine( 65 , 20, 1153 , "Escolha o Estilo de Luta" );
+  var bt2 := GFButtonID( 62, 53, 0x04b9, 0x04b9, 1);
+  var bt3 := GFButtonID( 62, 83, 0x04b9, 0x04b9, 1);
+  var bt4 := GFButtonID( 62, 113,0x04b9, 0x04b9, 1);
+ 
+  GFTextLine(80, 50, 1154, "Luta 1 x 1"); 
+  GFTextLine(80, 80, 1154, "Luta 2 x 2"); 
+  GFTextLine(80, 110, 1154, "Luta 3 x 3"); 
+
+  var res := GFSendGump(who);
+
+if(res[bt2.keyid])
+ sendsysmessage(who, "Selecione o Primeiro Lutador!",0,33);   
+ var player1 := target(who);
+ sendsysmessage(who, "Selecione o Segundo Lutador!",0,33);
+ var player2 := target(who);
+
+ if((!player1) || (!player2))
+ sendsysmessage(who, "Cancelado!",0,33);
+ return;
+ endif
+
+SetObjProperty(player1, "mr", 0);
+SetObjProperty(player2, "mr", 0);
+SetObjProperty(player1, "delayreflect", ReadGameClock() );
+SetObjProperty(player2, "delayreflect", ReadGameClock() );
+
+ Broadcast("1x1 Entre: " + player1.name + " E " +player2.name, 0,66);
+ player1.frozen := 1;
+ player2.frozen := 1;
+ sendsysmessage(player1, "A Luta se iniciara em 5 segundos!",0,24);
+ sendsysmessage(player2, "A Luta se iniciara em 5 segundos!",0,24);
+ PrintTextAbove(who, "5");
+ sleepms(1000);
+ PrintTextAbove(who, "4");
+ sendsysmessage(player1, "4",0,2);
+ sendsysmessage(player2, "4",0,2);
+ sleepms(1000);
+ PrintTextAbove(who, "3");
+ sendsysmessage(player1, "3",0,2);
+ sendsysmessage(player2, "3",0,2);
+ sleepms(1000); 
+ PrintTextAbove(who, "2");
+ sendsysmessage(player1, "2",0,2);
+ sendsysmessage(player2, "2",0,2);
+ sleepms(1000);
+ PrintTextAbove(who, "1");
+ sendsysmessage(player1, "1",0,2);
+ sendsysmessage(player2, "1",0,2);
+ sleepms(1000);
+ PrintTextAbove(who, "Valendo!");
+ sendsysmessage(player1, "Valendo!",0,2);
+ sendsysmessage(player2, "Valendo!",0,2);
+ player1.frozen := 0;
+ player2.frozen := 0;
+ who.concealed := 1;
+endif
+ 
+if(res[bt3.keyid]) 
+ sendsysmessage(who, "Selecione os lutadores da primeira dupla!",0,33);
+ sendsysmessage(who, "Primeiro",0,60);   
+ var player1 := target(who);
+ sendsysmessage(who, "Segundo",0,60);   
+ var player12 := target(who);
+ sendsysmessage(who, "Selecione os lutadores da segunda dupla!",0,33);
+ sendsysmessage(who, "Primeiro",0,60); 
+ var player2 := target(who);
+ sendsysmessage(who, "Segundo",0,60);   
+ var player22 := target(who);
+
+ if((!player1) || (!player2) || (!player12) || (!player22))
+ sendsysmessage(who, "Cancelado!",0,33);
+ return;
+ endif
+
+SetObjProperty(player1, "mr", 0);
+SetObjProperty(player12, "mr", 0);
+SetObjProperty(player1, "delayreflect", ReadGameClock() );
+SetObjProperty(player12, "delayreflect", ReadGameClock() );
+
+SetObjProperty(player2, "mr", 0);
+SetObjProperty(player22, "mr", 0);
+SetObjProperty(player2, "delayreflect", ReadGameClock() );
+SetObjProperty(player22, "delayreflect", ReadGameClock() );
+
+ Broadcast("2x2 Entre: " + player1.name + " e " + player12.name + " Vs. " + player2.name + " e " + player22.name, 0,66);
+ player1.frozen := 1;
+ player2.frozen := 1;
+ player12.frozen := 1;
+ player22.frozen := 1;
+ PrintTextAbove(who, "5");
+ sendsysmessage(player1, "A Luta se iniciara em 5 segundos!",0,24);
+ sendsysmessage(player2, "A Luta se iniciara em 5 segundos!",0,24);
+ sendsysmessage(player12, "A Luta se iniciara em 5 segundos!",0,24);
+ sendsysmessage(player22, "A Luta se iniciara em 5 segundos!",0,24);
+ sleepms(1000);
+ PrintTextAbove(who, "4");
+ sendsysmessage(player1, "4",0,2);
+ sendsysmessage(player2, "4",0,2);
+ sendsysmessage(player12, "4",0,2);
+ sendsysmessage(player22, "4",0,2);
+ sleepms(1000);
+ PrintTextAbove(who, "3");
+ sendsysmessage(player1, "3",0,2);
+ sendsysmessage(player2, "3",0,2);
+ sendsysmessage(player12, "3",0,2);
+ sendsysmessage(player22, "3",0,2);
+ sleepms(1000); 
+ PrintTextAbove(who, "2");
+ sendsysmessage(player1, "2",0,2);
+ sendsysmessage(player2, "2",0,2);
+ sendsysmessage(player12, "2",0,2);
+ sendsysmessage(player22, "2",0,2);
+ sleepms(1000);
+ PrintTextAbove(who, "1");
+ sendsysmessage(player1, "1",0,2);
+ sendsysmessage(player2, "1",0,2);
+ sendsysmessage(player12, "1",0,2);
+ sendsysmessage(player22, "1",0,2);
+ sleepms(1000);
+ PrintTextAbove(who, "Valendo!");
+ sendsysmessage(player1, "Valendo!",0,2);
+ sendsysmessage(player2, "Valendo!",0,2);
+ sendsysmessage(player12, "Valendo!",0,2);
+ sendsysmessage(player22, "Valendo!",0,2);
+ player1.frozen := 0;
+ player2.frozen := 0;
+ player12.frozen := 0;
+ player22.frozen := 0;
+ who.concealed := 1;
+endif
+
+if(res[bt4.keyid]) 
+ sendsysmessage(who, "Selecione os lutadores do primeiro trio!",0,33);
+ sendsysmessage(who, "Primeiro",0,60);      
+ var player1 := target(who);
+ sendsysmessage(who, "Segundo",0,60);   
+ var player12 := target(who);
+ sendsysmessage(who, "Terceiro",0,60);   
+ var player13 := target(who);
+
+
+ sendsysmessage(who, "Selecione os lutadores do segundo trio!",0,33);
+ sendsysmessage(who, "Primeiro",0,60); 
+ var player2 := target(who);
+ sendsysmessage(who, "Segundo",0,60);
+ var player22 := target(who);
+ sendsysmessage(who, "Terceiro",0,60);
+ var player23 := target(who);
+
+ if((!player1) || (!player2) || (!player12) || (!player22) || (!player13) || (!player23))
+ sendsysmessage(who, "Cancelado!",0,33);
+ return;
+ endif
+
+SetObjProperty(player1, "mr", 0);
+SetObjProperty(player12, "mr", 0);
+SetObjProperty(player1, "delayreflect", ReadGameClock() );
+SetObjProperty(player12, "delayreflect", ReadGameClock() );
+
+SetObjProperty(player2, "mr", 0);
+SetObjProperty(player22, "mr", 0);
+SetObjProperty(player2, "delayreflect", ReadGameClock() );
+SetObjProperty(player22, "delayreflect", ReadGameClock() );
+
+
+SetObjProperty(player13, "mr", 0);
+SetObjProperty(player23, "mr", 0);
+SetObjProperty(player13, "delayreflect", ReadGameClock() );
+SetObjProperty(player23, "delayreflect", ReadGameClock() );
+
+ Broadcast("3x3 Entre: " + player1.name + ", " + player12.name + " e " + player13.name, 0,66);
+ Broadcast("Vs.",0,66);
+ Broadcast("3x3 Entre: " + player2.name + ", " + player22.name + " e " + player23.name, 0,66);
+ 
+ player1.frozen := 1;
+ player2.frozen := 1;
+ player12.frozen := 1;
+ player22.frozen := 1;
+ player13.frozen := 1;
+ player23.frozen := 1;
+ 
+  PrintTextAbove(who, "5");
+ sendsysmessage(player1, "A Luta se iniciara em 5 segundos!",0,24);
+ sendsysmessage(player2, "A Luta se iniciara em 5 segundos!",0,24);
+ sendsysmessage(player12, "A Luta se iniciara em 5 segundos!",0,24);
+ sendsysmessage(player22, "A Luta se iniciara em 5 segundos!",0,24);
+ sendsysmessage(player13, "A Luta se iniciara em 5 segundos!",0,24);
+ sendsysmessage(player23, "A Luta se iniciara em 5 segundos!",0,24);
+ sleepms(1000);
+ PrintTextAbove(who, "4");
+ sendsysmessage(player1, "4",0,2);
+ sendsysmessage(player2, "4",0,2);
+ sendsysmessage(player12, "4",0,2);
+ sendsysmessage(player22, "4",0,2);
+ sendsysmessage(player13, "4",0,2);
+ sendsysmessage(player23, "4",0,2);
+ sleepms(1000);
+ PrintTextAbove(who, "3");
+ sendsysmessage(player1, "3",0,2);
+ sendsysmessage(player2, "3",0,2);
+ sendsysmessage(player12, "3",0,2);
+ sendsysmessage(player22, "3",0,2);
+ sendsysmessage(player13, "3",0,2);
+ sendsysmessage(player23, "3",0,2);
+ sleepms(1000); 
+ PrintTextAbove(who, "2");
+ sendsysmessage(player1, "2",0,2);
+ sendsysmessage(player2, "2",0,2);
+ sendsysmessage(player12, "2",0,2);
+ sendsysmessage(player22, "2",0,2);
+ sendsysmessage(player13, "2",0,2);
+ sendsysmessage(player23, "2",0,2);
+ sleepms(1000);
+ PrintTextAbove(who, "1");
+ sendsysmessage(player1, "1",0,2);
+ sendsysmessage(player2, "1",0,2);
+ sendsysmessage(player12, "1",0,2);
+ sendsysmessage(player22, "1",0,2);
+ sendsysmessage(player13, "1",0,2);
+ sendsysmessage(player23, "1",0,2);
+ sleepms(1000);
+ PrintTextAbove(who, "Valendo!");
+ sendsysmessage(player1, "Valendo!",0,2);
+ sendsysmessage(player2, "Valendo!",0,2);
+ sendsysmessage(player12, "Valendo!",0,2);
+ sendsysmessage(player22, "Valendo!",0,2);
+ sendsysmessage(player13, "Valendo!",0,2);
+ sendsysmessage(player23, "Valendo!",0,2);
+ player1.frozen := 0;
+ player2.frozen := 0;
+ player12.frozen := 0;
+ player22.frozen := 0;
+ player13.frozen := 0;
+ player23.frozen := 0;
+ who.concealed := 1;
+endif
+
+endprogram

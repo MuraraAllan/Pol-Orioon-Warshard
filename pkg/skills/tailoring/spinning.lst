@@ -1,0 +1,356 @@
+C:\pol2\pkg\skills\tailoring\spinning.src, Line 11
+program use_wool(who, wool)
+const uobj_wheel_end := 0x101e;
+0: get arg 'who'
+1: get arg 'wool'
+EraseObjProperty(who, "IsMeditating");
+2: local #0
+3: "IsMeditating"
+4: Func(2,5): EraseObjProperty
+5: #
+EraseObjProperty(who, "HealTimer");
+6: local #0
+7: "HealTimer"
+8: Func(2,5): EraseObjProperty
+9: #
+if(!can_access(who, wool))
+10: local #0
+11: local #1
+12: 0L
+13: makelocal
+14: jmp userfunc @133
+15: if true goto 18
+return;
+16: ""
+17: progend
+if(wool.movable == 0)
+18: local #1
+19: get member 'movable'
+20: 0L
+21: ==
+22: if false goto 31
+SendSysMessage(who, "You cannot use that.");
+23: local #0
+24: "You cannot use that."
+25: 3L
+26: 1000L
+27: Func(2,1): SendSysMessage
+28: #
+return;
+29: ""
+30: progend
+if(!ReserveItem(wool))
+31: local #1
+32: Func(2,4): ReserveItem
+33: if true goto 36
+return;
+34: ""
+35: progend
+SendSysMessage( who, "Select the spinning wheel to use that on" );
+36: local #0
+37: "Select the spinning wheel to use that on"
+38: 3L
+39: 1000L
+40: Func(2,1): SendSysMessage
+41: #
+var use_on := Target(who);
+42: decl local #2
+43: local #0
+44: 1L
+45: Func(2,6): Target
+46: :=
+47: #
+if (!use_on)
+48: local #2
+49: if true goto 58
+SendSysMessage(who,"cancelled");
+50: local #0
+51: "cancelled"
+52: 3L
+53: 1000L
+54: Func(2,1): SendSysMessage
+55: #
+return;
+56: ""
+57: progend
+var obj := use_on.objtype;
+58: decl local #3
+59: local #2
+60: get member 'objtype'
+61: :=
+62: #
+if (((obj >= uobj_wheel_start) && (obj <= uobj_wheel_end)) || ((obj >= 0x10a4) 
+63: local #3
+64: 4117L
+65: >=
+66: local #3
+67: 4126L
+68: <=
+69: &&
+70: local #3
+71: 4260L
+72: >=
+73: local #3
+74: 4262L
+75: <=
+76: &&
+77: ||
+78: if false goto 125
+var gfx;
+79: decl local #0
+80: #
+case(obj)
+81: local #3
+82: casejmp
+	4117: @83
+	4119: @86
+	4121: @89
+	4123: @92
+	4124: @95
+	4126: @98
+	4260: @101
+	4262: @104
+	default: @106
+gfx := 0x1016;
+83: 4118L
+84: local4 := 
+85: goto106
+gfx := 0x1016;
+86: 4118L
+87: local4 := 
+88: goto106
+gfx := 0x101a;
+89: 4122L
+90: local4 := 
+91: goto106
+gfx := 0x101a;
+92: 4122L
+93: local4 := 
+94: goto106
+gfx := 0x101d;
+95: 4125L
+96: local4 := 
+97: goto106
+gfx := 0x101d;
+98: 4125L
+99: local4 := 
+100: goto106
+gfx := 0x10a5;
+101: 4261L
+102: local4 := 
+103: goto106
+gfx := 0x10a5;
+104: 4261L
+105: local4 := 
+use_on.graphic := gfx;
+106: local #2
+107: local #4
+108: set member 'graphic' #
+Detach();
+109: Func(2,7): Detach
+110: #
+sleep(3);
+111: 3L
+112: Func(3,0): sleep
+113: #
+use_on.graphic := use_on.objtype;
+114: local #2
+115: local #2
+116: get member 'objtype'
+117: set member 'graphic' #
+Makeyarn(who, wool);
+118: local #0
+119: local #1
+120: makelocal
+121: jmp userfunc @240
+122: #
+123: leave block(1)
+124: goto131
+SendSysMessage(who, "You can only use wool on a spinning wheel");
+125: local #0
+126: "You can only use wool on a spinning wheel"
+127: 3L
+128: 1000L
+129: Func(2,1): SendSysMessage
+130: #
+131: leave block(4)
+132: progend
+C:/pol2/scripts/include/canAccess.inc, Line 2
+function can_access(who, item, flags := 0)
+133: pop param 'flags'
+134: pop param 'item'
+135: pop param 'who'
+var owner := Cint(GetObjProperty(item, "Owner"));
+136: decl local #3
+137: local #1
+138: "Owner"
+139: Func(2,0): GetObjProperty
+140: Func(0,0): CInt
+141: :=
+142: #
+if((owner) and (owner != who.serial))
+143: local #3
+144: local #3
+145: local #2
+146: get member 'serial'
+147: <>
+148: &&
+149: if false goto 159
+SendSysMessage(who, "You cannot use that.");
+150: local #2
+151: "You cannot use that."
+152: 3L
+153: 1000L
+154: Func(2,1): SendSysMessage
+155: #
+return 0;
+156: 0L
+157: return
+158: goto238
+elseif(GetObjProperty(item, "Vendored"))
+159: local #1
+160: "Vendored"
+161: Func(2,0): GetObjProperty
+162: if false goto 172
+SendSysMessage(who, "You cannot use that.");
+163: local #2
+164: "You cannot use that."
+165: 3L
+166: 1000L
+167: Func(2,1): SendSysMessage
+168: #
+return 0;
+169: 0L
+170: return
+171: goto238
+elseif(!Accessible(who, item))
+172: local #2
+173: local #1
+174: Func(2,2): Accessible
+175: if true goto 185
+SendSysMessage(who, "You cannot use that.");
+176: local #2
+177: "You cannot use that."
+178: 3L
+179: 1000L
+180: Func(2,1): SendSysMessage
+181: #
+return 0;
+182: 0L
+183: return
+184: goto238
+elseif((!flags["distance"]) and ((Distance(who, item) > 2)))
+185: local #0
+186: "distance"
+187: [] 1
+188: !
+189: local #2
+190: local #1
+191: Func(2,3): Distance
+192: 2L
+193: >
+194: &&
+195: if false goto 205
+SendSysMessage(who, "That item is too far away.");
+196: local #2
+197: "That item is too far away."
+198: 3L
+199: 1000L
+200: Func(2,1): SendSysMessage
+201: #
+return 0;
+202: 0L
+203: return
+204: goto238
+elseif((!flags["unmovable"]) and (item.movable == 0))
+205: local #0
+206: "unmovable"
+207: [] 1
+208: !
+209: local #1
+210: get member 'movable'
+211: 0L
+212: ==
+213: &&
+214: if false goto 224
+SendSysMessage(who, "You cannot use that while locked down.");
+215: local #2
+216: "You cannot use that while locked down."
+217: 3L
+218: 1000L
+219: Func(2,1): SendSysMessage
+220: #
+return 0;
+221: 0L
+222: return
+223: goto238
+elseif(!ReserveItem(item))
+224: local #1
+225: Func(2,4): ReserveItem
+226: if true goto 236
+SendSysMessage(who, "That item is already in use.");
+227: local #2
+228: "That item is already in use."
+229: 3L
+230: 1000L
+231: Func(2,1): SendSysMessage
+232: #
+return 0;
+233: 0L
+234: return
+235: goto238
+return 1;
+236: 1L
+237: return
+238: 0L
+239: return
+C:\pol2\pkg\skills\tailoring\spinning.src, Line 53
+function Makeyarn(who, item)
+240: pop param 'item'
+241: pop param 'who'
+if (not Accessible(who, item))
+242: local #1
+243: local #0
+244: Func(2,2): Accessible
+245: if true goto 254
+SendSysMessage(who, "You don't have any wool!");
+246: local #1
+247: "You don't have any wool!"
+248: 3L
+249: 1000L
+250: Func(2,1): SendSysMessage
+251: #
+return;
+252: ""
+253: return
+if(SubtractAmount(item, 1))
+254: local #0
+255: 1L
+256: Func(2,8): SubtractAmount
+257: if false goto 273
+var yarn := CreateItemInBackpack(who, 0xe1f, 3);
+258: decl local #0
+259: local #1
+260: 3615L
+261: 3L
+262: Func(2,9): CreateItemInBackpack
+263: :=
+264: #
+SendSysMessage(who, "You spin some wool and create some yarn");
+265: local #1
+266: "You spin some wool and create some yarn"
+267: 3L
+268: 1000L
+269: Func(2,1): SendSysMessage
+270: #
+271: leave block(1)
+272: goto279
+SendSysMessage(who, "You don't have enough wool for the ball of yarn.");
+273: local #1
+274: "You don't have enough wool for the ball of yarn."
+275: 3L
+276: 1000L
+277: Func(2,1): SendSysMessage
+278: #
+279: 0L
+280: return

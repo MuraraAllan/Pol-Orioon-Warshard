@@ -1,0 +1,21 @@
+use uo;
+use os;
+
+include "include/yesNo";
+
+program gate(who)
+  SendSysMessage(who, "Voce tem certeza que quer entrar?",9,89);
+  var movx:=who.x;
+  var movy:=who.y;
+  var tele := yesno(who,"Entrar?");
+  if(!tele)
+    sendsysmessage(who,"Cancelado",9,89);
+  return;
+  elseif(who.x<>movx or who.y<>movy)
+    sendsysmessage(who,"Voce precisa estar em cima!",9,89);
+    return;
+  else
+  MoveCharacterToLocation(who, 634,833,40 );
+  Broadcast(who.name + " Entrou na Arena de Yew.",9,89);
+  endif
+endprogram

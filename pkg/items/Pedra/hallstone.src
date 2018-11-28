@@ -1,0 +1,27 @@
+
+use uo;
+use os;
+
+include "include/attributes";
+include "include/client";
+
+program resme(quem, item)
+DestroyItem(item);
+return;
+
+var max:=(getmaxhp(quem));
+var lugar:=randomdiceroll("1d2");
+
+if(gethp(quem) < getmaxhp(quem));
+sendsysmessage(quem,"Voce precisa estar de full life para ir ao Posto de Armamento.",9,89);
+return;
+else
+ if(lugar == 1)
+  MoveCharacterToLocation( quem, 3691,2522,0 );
+ else
+  MoveCharacterToLocation( quem, 3692,2522,0 );
+ endif
+sendsysmessage(quem,"Voce foi teleportado para o Posto de Armamento.",9,89);
+endif
+
+endprogram

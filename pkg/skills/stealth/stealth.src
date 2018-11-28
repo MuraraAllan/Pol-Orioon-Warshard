@@ -1,0 +1,28 @@
+use uo;
+use util;
+
+include "include/client";
+include "include/attributes";
+
+program skill_stealth( who )
+  EraseObjProperty(who, "IsMeditating");
+  EraseObjProperty(who, "HealTimer");
+  if(GetEffectiveSkill(who, SKILLID_HIDING) < 80)
+    PrintTextAbovePrivate( who, "Voce precisa no minimo de 80 de hid para usa ra skill", who );
+    return;
+  endif
+  if(!who.hidden)
+    PrintTextAbovePrivate( who, "Voce precisa esta hid para usar a skill", who );
+    return;
+  endif
+  var mount := GetEquipmentByLayer(who, 25 );
+  var skill := GetEffectiveSkill(who, SKILLID_STEALTH);
+  if(CheckSkill(who, SKILLID_STEALTH, -1, skill))
+    skill := (skill / 10);
+    who.stealthsteps := skill + RandomInt(skill);
+    PrintTextAbovePrivate( who, "Voce conseguiu se mover", who );
+  else
+    who.hidden := 0;
+    PrintTextAbovePrivate( who, "Voce foi revelado!", who );
+  endif
+endprogram

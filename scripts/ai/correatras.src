@@ -1,0 +1,29 @@
+use npc;
+use basic;
+use os;
+use uo;
+
+include "include/listex";
+include "include/eventID";
+include "include/sysEvent";
+include "include/randName";
+include "include/utility";
+include "include/client";
+include "include/vetement";
+include "include/NPCBackpacks";
+include "util/bank";
+include "include/anchors";
+include "include/dist";
+include "include/skillLists";
+include "include/begging";
+include "include/attributes";
+const MAX_SKILLS      := 48;     // There are currently 48 Skills.
+const UOBJ_GOLDCOIN   := 0x0eed; // A gold coi n
+const UOBJ_METALCHEST := 0x0e7c; // A Metal Chest
+const REACT_THRESHOLD := 2;
+
+
+program guarda(who)
+
+
+endprogram

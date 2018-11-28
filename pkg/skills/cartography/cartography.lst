@@ -1,0 +1,490 @@
+C:\pol2\pkg\skills\cartography\cartography.src, Line 8
+program go_go_gadget_map(who)
+include "include/canAccess";
+0: get arg 'who'
+EraseObjProperty(who, "IsMeditating");
+1: local #0
+2: "IsMeditating"
+3: Func(2,5): EraseObjProperty
+4: #
+EraseObjProperty(who, "HealTimer");
+5: local #0
+6: "HealTimer"
+7: Func(2,5): EraseObjProperty
+8: #
+var blank := Target(who);
+9: decl local #1
+10: local #0
+11: 1L
+12: Func(2,6): Target
+13: :=
+14: #
+if(!blank)
+15: local #1
+16: if true goto 25
+SendSysMessage(who, "Cancelled.");
+17: local #0
+18: "Cancelled."
+19: 3L
+20: 1000L
+21: Func(2,1): SendSysMessage
+22: #
+return;
+23: ""
+24: progend
+if(blank.objtype != UOBJ_MAP1 || GetObjProperty(blank, "decoder"))
+25: local #1
+26: get member 'objtype'
+27: 5355L
+28: <>
+29: local #1
+30: "decoder"
+31: Func(2,0): GetObjProperty
+32: ||
+33: if false goto 42
+SendSysMessage(who, "Voce nao pode ver o mapa em branco.",9,89);
+34: local #0
+35: "Voce nao pode ver o mapa em branco."
+36: 9L
+37: 89L
+38: Func(2,1): SendSysMessage
+39: #
+return;
+40: ""
+41: progend
+if(!can_access(who, blank))
+42: local #0
+43: local #1
+44: 0L
+45: makelocal
+46: jmp userfunc @213
+47: if true goto 50
+return;
+48: ""
+49: progend
+var choice := SelectMenuItem2(who, "Cartography");
+50: decl local #2
+51: local #0
+52: "Cartography"
+53: Func(2,7): SelectMenuItem2
+54: :=
+55: #
+if(!choice)
+56: local #2
+57: if true goto 66
+SendSysMessage(who, "Cancelado",9,89);
+58: local #0
+59: "Cancelado"
+60: 9L
+61: 89L
+62: Func(2,1): SendSysMessage
+63: #
+return;
+64: ""
+65: progend
+var props;
+66: decl local #3
+67: #
+case(choice.index)
+68: local #2
+69: get member 'index'
+70: casejmp
+	1: @71
+	2: @122
+	3: @173
+	default: @211
+if(CheckSkill(who, SKILLID_CARTOGRAPHY, 20, 70))
+71: local #0
+72: 12L
+73: 20L
+74: 70L
+75: Func(2,8): CheckSkill
+76: if false goto 112
+props := array("local", who.x - 265, who.y - 260, who.x + 265, who.y + 260, 200
+77: array
+78: "local"
+79: +=
+80: local #0
+81: get member 'x'
+82: 265L
+83: -
+84: +=
+85: local #0
+86: get member 'y'
+87: 260L
+88: -
+89: +=
+90: local #0
+91: get member 'x'
+92: 265L
+93: +
+94: +=
+95: local #0
+96: get member 'y'
+97: 260L
+98: +
+99: +=
+100: 200L
+101: +=
+102: 200L
+103: +=
+104: local3 := 
+makemap(who, props, blank);
+105: local #0
+106: local #3
+107: local #1
+108: makelocal
+109: jmp userfunc @320
+110: #
+111: goto121
+SendSysMessage(who, "You are not familiar enough with the area to draw the map"
+112: local #0
+113: "You are not familiar enough with the area to draw the map"
+114: 3L
+115: 1000L
+116: Func(2,1): SendSysMessage
+117: #
+DestroyItem(blank);
+118: local #1
+119: Func(2,9): DestroyItem
+120: #
+121: goto211
+if(CheckSkill(who, SKILLID_CARTOGRAPHY, 50, 100))
+122: local #0
+123: 12L
+124: 50L
+125: 100L
+126: Func(2,8): CheckSkill
+127: if false goto 163
+props := array("regional", who.x - 850, who.y - 800, who.x + 850, who.y + 800, 
+128: array
+129: "regional"
+130: +=
+131: local #0
+132: get member 'x'
+133: 850L
+134: -
+135: +=
+136: local #0
+137: get member 'y'
+138: 800L
+139: -
+140: +=
+141: local #0
+142: get member 'x'
+143: 850L
+144: +
+145: +=
+146: local #0
+147: get member 'y'
+148: 800L
+149: +
+150: +=
+151: 400L
+152: +=
+153: 400L
+154: +=
+155: local3 := 
+makemap(who, props, blank);
+156: local #0
+157: local #3
+158: local #1
+159: makelocal
+160: jmp userfunc @320
+161: #
+162: goto172
+SendSysMessage(who, "You are not familiar enough with the area to draw the map"
+163: local #0
+164: "You are not familiar enough with the area to draw the map"
+165: 3L
+166: 1000L
+167: Func(2,1): SendSysMessage
+168: #
+DestroyItem(blank);
+169: local #1
+170: Func(2,9): DestroyItem
+171: #
+172: goto211
+if(CheckSkill(who, SKILLID_CARTOGRAPHY, 80, 150))
+173: local #0
+174: 12L
+175: 80L
+176: 150L
+177: Func(2,8): CheckSkill
+178: if false goto 202
+props := array("world", 0, 0, 5119, 4095, 500, 400);
+179: array
+180: "world"
+181: +=
+182: 0L
+183: +=
+184: 0L
+185: +=
+186: 5119L
+187: +=
+188: 4095L
+189: +=
+190: 500L
+191: +=
+192: 400L
+193: +=
+194: local3 := 
+makemap(who, props, blank);
+195: local #0
+196: local #3
+197: local #1
+198: makelocal
+199: jmp userfunc @320
+200: #
+201: goto211
+SendSysMessage(who, "You are not familiar enough with the area to draw the map"
+202: local #0
+203: "You are not familiar enough with the area to draw the map"
+204: 3L
+205: 1000L
+206: Func(2,1): SendSysMessage
+207: #
+DestroyItem(blank);
+208: local #1
+209: Func(2,9): DestroyItem
+210: #
+211: leave block(4)
+212: progend
+C:/pol2/scripts/include/canAccess.inc, Line 2
+function can_access(who, item, flags := 0)
+213: pop param 'flags'
+214: pop param 'item'
+215: pop param 'who'
+var owner := Cint(GetObjProperty(item, "Owner"));
+216: decl local #3
+217: local #1
+218: "Owner"
+219: Func(2,0): GetObjProperty
+220: Func(0,0): CInt
+221: :=
+222: #
+if((owner) and (owner != who.serial))
+223: local #3
+224: local #3
+225: local #2
+226: get member 'serial'
+227: <>
+228: &&
+229: if false goto 239
+SendSysMessage(who, "You cannot use that.");
+230: local #2
+231: "You cannot use that."
+232: 3L
+233: 1000L
+234: Func(2,1): SendSysMessage
+235: #
+return 0;
+236: 0L
+237: return
+238: goto318
+elseif(GetObjProperty(item, "Vendored"))
+239: local #1
+240: "Vendored"
+241: Func(2,0): GetObjProperty
+242: if false goto 252
+SendSysMessage(who, "You cannot use that.");
+243: local #2
+244: "You cannot use that."
+245: 3L
+246: 1000L
+247: Func(2,1): SendSysMessage
+248: #
+return 0;
+249: 0L
+250: return
+251: goto318
+elseif(!Accessible(who, item))
+252: local #2
+253: local #1
+254: Func(2,2): Accessible
+255: if true goto 265
+SendSysMessage(who, "You cannot use that.");
+256: local #2
+257: "You cannot use that."
+258: 3L
+259: 1000L
+260: Func(2,1): SendSysMessage
+261: #
+return 0;
+262: 0L
+263: return
+264: goto318
+elseif((!flags["distance"]) and ((Distance(who, item) > 2)))
+265: local #0
+266: "distance"
+267: [] 1
+268: !
+269: local #2
+270: local #1
+271: Func(2,3): Distance
+272: 2L
+273: >
+274: &&
+275: if false goto 285
+SendSysMessage(who, "That item is too far away.");
+276: local #2
+277: "That item is too far away."
+278: 3L
+279: 1000L
+280: Func(2,1): SendSysMessage
+281: #
+return 0;
+282: 0L
+283: return
+284: goto318
+elseif((!flags["unmovable"]) and (item.movable == 0))
+285: local #0
+286: "unmovable"
+287: [] 1
+288: !
+289: local #1
+290: get member 'movable'
+291: 0L
+292: ==
+293: &&
+294: if false goto 304
+SendSysMessage(who, "You cannot use that while locked down.");
+295: local #2
+296: "You cannot use that while locked down."
+297: 3L
+298: 1000L
+299: Func(2,1): SendSysMessage
+300: #
+return 0;
+301: 0L
+302: return
+303: goto318
+elseif(!ReserveItem(item))
+304: local #1
+305: Func(2,4): ReserveItem
+306: if true goto 316
+SendSysMessage(who, "That item is already in use.");
+307: local #2
+308: "That item is already in use."
+309: 3L
+310: 1000L
+311: Func(2,1): SendSysMessage
+312: #
+return 0;
+313: 0L
+314: return
+315: goto318
+return 1;
+316: 1L
+317: return
+318: 0L
+319: return
+C:\pol2\pkg\skills\cartography\cartography.src, Line 54
+function makemap(who, mapdef, mapitem)
+320: pop param 'mapitem'
+321: pop param 'mapdef'
+322: pop param 'who'
+set_critical(1);
+323: 1L
+324: Func(3,0): set_critical
+325: #
+releaseitem(mapitem);
+326: local #0
+327: Func(2,10): ReleaseItem
+328: #
+DestroyItem (mapitem);
+329: local #0
+330: Func(2,9): DestroyItem
+331: #
+var map := CreateItemInBackpack( who, UOBJ_MAP2 );   
+332: decl local #3
+333: local #2
+334: 5356L
+335: 1L
+336: Func(2,11): CreateItemInBackpack
+337: :=
+338: #
+set_critical(0);   
+339: 0L
+340: Func(3,0): set_critical
+341: #
+SetName( map , ("a completed " + mapdef[1] + " map") );
+342: local #3
+343: "a completed "
+344: local #1
+345: 1L
+346: [] 1
+347: +
+348: " map"
+349: +
+350: Func(2,12): SetName
+351: #
+if(mapdef[2] < 0)
+352: local #1
+353: 2L
+354: [] 1
+355: 0L
+356: <
+357: if false goto 362
+mapdef[2] := 0;
+358: local #1
+359: 2L
+360: 0L
+361: [] := (1) #
+if(mapdef[3] < 0)
+362: local #1
+363: 3L
+364: [] 1
+365: 0L
+366: <
+367: if false goto 372
+mapdef[3] := 0;
+368: local #1
+369: 3L
+370: 0L
+371: [] := (1) #
+map.xwest := mapdef[2];
+372: local #3
+373: local #1
+374: 2L
+375: [] 1
+376: set member 'xwest' #
+map.ynorth := mapdef[3];
+377: local #3
+378: local #1
+379: 3L
+380: [] 1
+381: set member 'ynorth' #
+map.xeast := mapdef[4];
+382: local #3
+383: local #1
+384: 4L
+385: [] 1
+386: set member 'xeast' #
+map.ysouth := mapdef[5];
+387: local #3
+388: local #1
+389: 5L
+390: [] 1
+391: set member 'ysouth' #
+map.gumpwidth := mapdef[6];
+392: local #3
+393: local #1
+394: 6L
+395: [] 1
+396: set member 'gumpwidth' #
+map.gumpheight := mapdef[7];
+397: local #3
+398: local #1
+399: 7L
+400: [] 1
+401: set member 'gumpheight' #
+SendSysMessage(who, "You successfully scribe the map.");
+402: local #2
+403: "You successfully scribe the map."
+404: 3L
+405: 1000L
+406: Func(2,1): SendSysMessage
+407: #
+408: 0L
+409: return

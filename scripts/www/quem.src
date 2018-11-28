@@ -1,0 +1,55 @@
+use os;
+use uo;
+use util;
+use http;
+
+include "include/clock";
+include "include/accounts";
+
+program display_server_status ()
+WriteHTML ("<title>Lista de Players Logados. #Sysco WS</title>");
+	var pon := EnumerateOnlineCharacters().size();
+if (pon > 0)
+	WriteHTML ("<font color=#CC0000><b>Lista de Players Logados:</b></font> ");
+	WriteHTML ("<br>");
+
+foreach onlinechr in EnumerateOnlineCharacters()
+	WriteHTML ("<br><font size=4,5 color=#0000FF>" +onlinechr.name+ "</font>");
+
+if(onlinechr.guild)
+var guild_id:=onlinechr.guildid;
+var guild:= FindGuild(guild_id);
+WriteHTML (" - <b>Guilda:</b> " +guild.getprop("guildname")+ ".");
+endif
+
+if(!onlinechr.guild)
+var guild_id:=onlinechr.guildid;
+var guild:= FindGuild(guild_id);
+WriteHTML (" - <b>Guilda:</b> Nenhuma");
+endif
+
+if(onlinechr.getprop("classe") == "guerreiro")
+WriteHTML (" - <b>Classe:</b> Guerreiro.");
+WriteHTML ("<br>");
+endif
+
+if(onlinechr.getprop("classe") == "trabalhador")
+WriteHTML (" - <b>Classe:</b> Trabalhador.");
+WriteHTML ("<br>");
+endif
+
+if((onlinechr.getprop("classe") != "trabalhador") && (onlinechr.getprop("classe") != "guerreiro"))
+WriteHTML (" - <b>Classe:</b> Não Setada.");
+WriteHTML ("<br>");
+endif
+
+endforeach
+WriteHTML ("<br>");
+WriteHTML ("<br><font size=4 color=#660066> Total de Players:</font><font size=4 color=#CC00FF> " +pon+ "</font>");
+endif
+
+if (pon == 0)
+WriteHTML ("Nao ha players conectado.");
+endif
+
+endprogram

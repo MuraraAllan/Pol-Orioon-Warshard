@@ -1,0 +1,69 @@
+C:\pol2\pkg\items\lighting\change.src, Line 14
+program change(who, item )
+use cfgfile;
+0: get arg 'who'
+1: get arg 'item'
+var cfg := ReadConfigFile(":*:itemdesc");
+2: decl local #2
+3: ":*:itemdesc"
+4: Func(3,0): ReadConfigFile
+5: :=
+6: #
+var elem := FindConfigElem(cfg, item.objtype);
+7: decl local #3
+8: local #2
+9: local #1
+10: get member 'objtype'
+11: Func(3,1): FindConfigElem
+12: :=
+13: #
+if(elem.staff > who.cmdlevel)
+14: local #3
+15: get member 'staff'
+16: local #0
+17: get member 'cmdlevel'
+18: >
+19: if false goto 22
+return;
+20: ""
+21: progend
+if(item.graphic == item.objtype)
+22: local #1
+23: get member 'graphic'
+24: local #1
+25: get member 'objtype'
+26: ==
+27: if false goto 41
+if(elem.changesnd)
+28: local #3
+29: get member 'changesnd'
+30: if false goto 36
+PlaySoundEffect(who, elem.changesnd);
+31: local #0
+32: local #3
+33: get member 'changesnd'
+34: Func(2,0): PlaySoundEffect
+35: #
+item.graphic := elem.change;
+36: local #1
+37: local #3
+38: get member 'change'
+39: set member 'graphic' #
+40: goto53
+if(elem.originsnd)
+41: local #3
+42: get member 'originsnd'
+43: if false goto 49
+PlaySoundEffect(who, elem.originsnd );
+44: local #0
+45: local #3
+46: get member 'originsnd'
+47: Func(2,0): PlaySoundEffect
+48: #
+item.graphic := item.objtype;
+49: local #1
+50: local #1
+51: get member 'objtype'
+52: set member 'graphic' #
+53: leave block(4)
+54: progend

@@ -1,0 +1,18 @@
+use uo;
+use os;
+var ev;
+
+
+program textcmd_bcast( who, text )
+    ev := struct;
+    ev.+type := "interno";
+    ev.+command := "bcast1";
+    ev.+name := who.name;
+    ev.+texto:= text;
+    var auxconnection := GetProcess(GetGlobalProperty("#AuxConnection"));
+    auxconnection.SendEvent(ev);
+
+
+Broadcast(who.name + ": " + text, 0, 221);
+
+endprogram

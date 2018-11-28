@@ -1,0 +1,6 @@
+open sysco.ma.cx
+sysco
+sysco85717511
+cd public_html
+send C:\pol\db\rank.htm
+bye

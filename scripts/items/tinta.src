@@ -1,0 +1,40 @@
+use os;
+use uo;
+use cfgfile;
+
+include "include/canAccess";
+
+var cfg  := ReadConfigFile( ":*:itemdesc" );
+
+program dyeable(who, dyetub)
+  if(!ReserveItem(dyetub))
+	return;
+  endif
+  SendSysMessage(who, "Selecione um item para pintar.",9,89);
+  var item := Target(who);
+  if(!item)
+    SendSysMessage(who, "Cancelado!",9,89);
+    return;
+  endif
+  if(!ReserveItem(item))
+    SendSysMessage(who, "O Item ja esta em uso.",9,89);
+    return;
+  elseif(!Accessible(who, item))
+    SendSysMessage(who, "Voce nao alcansa isto.",9,89);
+    return;
+  endif
+  var element  := FindConfigElem(cfg,  item.objtype);
+  var dyeable  := GetConfigInt(element, "dyeable");
+  if(dyeable == 1)
+    if((item.isa(POLCLASS_WEAPON) || (item.objtype == 0x0fab) || (item.graphic == 0xfab) || (item.graphic == 0x0fab)))
+      SendSysMessage(who, "Voce nao pode pintar isto!",9,89);
+      return;
+    else
+      item.color := dyetub.color;
+      PlaySoundEffect(who, 0x23f);
+    endif
+  else
+    SendSysMessage( who, "Voce nao pode pintar isto!",9,89);
+    return;
+  endif
+endprogram

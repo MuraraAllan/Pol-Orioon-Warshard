@@ -1,0 +1,251 @@
+use uo;
+use os;
+
+include "include/client";
+include "include/eventID";
+include "include/attributes";
+include "include/skillLists";
+include "../pkg/foundations/gumps/gumps";
+
+
+program skills ( who )
+
+var player:= who;
+
+
+                                  
+                                         
+GFInitGump( 50, 20 );
+GFNoMove();
+GFResizePic(50, 20, 2600, 430, 435);
+GFTextLine(165,  37, 64, "Escolha seu Cabelo ou Barba");
+
+GFTextLine(100,  90, 1153, "Cabelo Curto");
+GFTextLine(100, 120, 1153, "Cabelo Longo"); 
+GFTextLine(100,  150, 1153, "Rabo de Cavalo");
+GFTextLine(100, 180, 1153, "Moicano");
+GFTextLine(100, 210, 1153, "Playboyzinho");
+GFTextLine(100, 240, 1153, "Black Power");
+GFTextLine(100, 270, 1153, "Cabelo Raspadinho"); 
+GFTextLine(100, 300, 1153, "2 Trancas"); 
+GFTextLine(100,  330, 1153, "Trancinha");
+GFTextLine(100, 380, 33, "Cortar Cabelo");
+
+var cc:=GFButtonID(75, 91, 0x138a, 0x138b, 1);
+var cl:=GFButtonID(75, 121, 0x138a, 0x138b, 1);
+var rc:=GFButtonID(75, 151, 0x138a, 0x138b, 1);
+var mo:=GFButtonID(75, 181, 0x138a, 0x138b, 1);
+var pl:=GFButtonID(75, 211, 0x138a, 0x138b, 1);
+var bp:=GFButtonID(75, 241, 0x138a, 0x138b, 1);
+var cr:=GFButtonID(75, 271, 0x138a, 0x138b, 1);
+var tt:=GFButtonID(75, 301, 0x138a, 0x138b, 1);
+var tr:=GFButtonID(75, 331, 0x138a, 0x138b, 1);
+var cut:=GFButtonID(75, 381, 0x138a, 0x138b, 1);
+
+
+GFTextLine(305, 90, 1153, "Barba Longa"); 
+GFTextLine(305, 120, 1153, "Barba Curta"); 
+GFTextLine(305, 150, 1153,"Cavanhaque"); 
+GFTextLine(305, 180, 1153, "Bigode"); 
+GFTextLine(305, 210, 1153, "Barba e Bigode Curto");
+GFTextLine(305, 240, 1153, "Barba e Bigode Longo");
+GFTextLine(305, 270, 1153, "Bigodao");
+GFTextLine(305, 380, 33, "Cortar Barba");
+
+var bl:=GFButtonID(280, 91, 0x138a, 0x138b, 1);
+var bc:=GFButtonID(280, 121, 0x138a, 0x138b, 1);
+var cv:=GFButtonID(280, 151, 0x138a, 0x138b, 1);
+var bi:=GFButtonID(280, 181, 0x138a, 0x138b, 1);
+var bbc:=GFButtonID(280, 211, 0x138a, 0x138b, 1);
+var bbl:=GFButtonID(280, 241, 0x138a, 0x138b, 1);
+var bidao:=GFButtonID(280, 271, 0x138a, 0x138b, 1);
+var cutb:=GFButtonID(280, 381, 0x138a, 0x138b, 1);
+
+GFTextLine(230, 405, 33, "Tinta");
+var tubo:=GFButtonID(205, 406, 0x138a, 0x138b, 1);
+var res := GFsendgump(who);
+
+///barba layer 16
+///cabelo layer 11
+
+
+//// inicio botoes de cabelo////
+if(res[cc.keyid]) 
+destroyitem(GetEquipmentByLayer(who, 11 ));
+var a := CreateItemInBackpack(who, 0x203b, 1);
+equipitem(who, a);  
+a.movable:=0;
+sendsysmessage(who, "Cabelo Criado com Sucesso!",9,89);
+endif
+
+if(res[cl.keyid]) 
+destroyitem(GetEquipmentByLayer(who, 11 ));
+var a := CreateItemInBackpack(who, 0x203c, 1);
+equipitem(who, a);  
+a.movable:=0;
+sendsysmessage(who, "Cabelo Criado com Sucesso!",9,89);
+endif
+
+if(res[rc.keyid]) 
+destroyitem(GetEquipmentByLayer(who, 11 ));
+var a := CreateItemInBackpack(who, 0x203d, 1);
+equipitem(who, a);  
+a.movable:=0;
+sendsysmessage(who, "Cabelo Criado com Sucesso!",9,89);
+endif
+
+if(res[mo.keyid]) 
+destroyitem(GetEquipmentByLayer(who, 11 ));
+var a := CreateItemInBackpack(who, 0x2044, 1);
+equipitem(who, a);  
+a.movable:=0;
+sendsysmessage(who, "Cabelo Criado com Sucesso!",9,89);
+endif
+
+if(res[pl.keyid]) 
+destroyitem(GetEquipmentByLayer(who, 11 ));
+var a := CreateItemInBackpack(who, 0x2045, 1);
+equipitem(who, a);  
+a.movable:=0;
+sendsysmessage(who, "Cabelo Criado com Sucesso!",9,89);
+endif
+
+if(res[bp.keyid]) 
+destroyitem(GetEquipmentByLayer(who, 11 ));
+var a := CreateItemInBackpack(who, 0x2046, 1);
+equipitem(who, a);  
+a.movable:=0;
+sendsysmessage(who, "Cabelo Criado com Sucesso!",9,89);
+endif
+
+if(res[cr.keyid]) 
+destroyitem(GetEquipmentByLayer(who, 11 ));
+var a := CreateItemInBackpack(who, 0x2048, 1);
+equipitem(who, a);  
+a.movable:=0;
+sendsysmessage(who, "Cabelo Criado com Sucesso!",9,89);
+endif
+
+if(res[tt.keyid]) 
+destroyitem(GetEquipmentByLayer(who, 11 ));
+var a := CreateItemInBackpack(who, 0x2049, 1);
+equipitem(who, a);  
+a.movable:=0;
+sendsysmessage(who, "Cabelo Criado com Sucesso!",9,89);
+endif
+
+if(res[tr.keyid]) 
+destroyitem(GetEquipmentByLayer(who, 11 ));
+var a := CreateItemInBackpack(who, 0x204a, 1);
+equipitem(who, a);  
+a.movable:=0;
+sendsysmessage(who, "Cabelo Criado com Sucesso!",9,89);
+endif
+
+if(res[cut.keyid]) 
+destroyitem(GetEquipmentByLayer(who, 11 ));
+sendsysmessage(who, "Cabelo Cortado com Sucesso!",9,89);
+endif
+////Fim dos botoes de Cabelo////
+
+////inicio dos botoes da barba////
+
+if(res[bl.keyid]) 
+if(who.gender == 1)
+sendsysmessage(who, "Mulheres nao podem usar barba!",9,89);
+return;
+endif
+destroyitem(GetEquipmentByLayer(who, 16 ));
+var a := CreateItemInBackpack(who, 0x203e, 1);
+equipitem(who, a);  
+a.movable:=0;
+sendsysmessage(who, "Barba Criada com Sucesso!",9,89);
+endif
+
+if(res[bc.keyid]) 
+if(who.gender == 1)
+sendsysmessage(who, "Mulheres nao podem usar barba!",9,89);
+return;
+endif
+destroyitem(GetEquipmentByLayer(who, 16 ));
+var a := CreateItemInBackpack(who, 0x203f, 1);
+equipitem(who, a);  
+a.movable:=0;
+sendsysmessage(who, "Barba Criada com Sucesso!",9,89);
+endif
+
+if(res[cv.keyid]) 
+if(who.gender == 1)
+sendsysmessage(who, "Mulheres nao podem usar barba!",9,89);
+return;
+endif
+destroyitem(GetEquipmentByLayer(who, 16 ));
+var a := CreateItemInBackpack(who, 0x2040, 1);
+equipitem(who, a);  
+a.movable:=0;
+sendsysmessage(who, "Barba Criada com Sucesso!",9,89);
+endif
+
+if(res[bi.keyid]) 
+if(who.gender == 1)
+sendsysmessage(who, "Mulheres nao podem usar barba!",9,89);
+return;
+endif
+destroyitem(GetEquipmentByLayer(who, 16 ));
+var a := CreateItemInBackpack(who, 0x2041, 1);
+equipitem(who, a);  
+a.movable:=0;
+sendsysmessage(who, "Barba Criada com Sucesso!",9,89);
+endif
+
+if(res[bbc.keyid]) 
+if(who.gender == 1)
+sendsysmessage(who, "Mulheres nao podem usar barba!",9,89);
+return;
+endif
+destroyitem(GetEquipmentByLayer(who, 16 ));
+var a := CreateItemInBackpack(who, 0x204b, 1);
+equipitem(who, a);  
+a.movable:=0;
+sendsysmessage(who, "Barba Criada com Sucesso!",9,89);
+endif
+
+if(res[bbl.keyid]) 
+if(who.gender == 1)
+sendsysmessage(who, "Mulheres nao podem usar barba!",9,89);
+return;
+endif
+destroyitem(GetEquipmentByLayer(who, 16 ));
+var a := CreateItemInBackpack(who, 0x204c, 1);
+equipitem(who, a);  
+a.movable:=0;
+sendsysmessage(who, "Barba Criada com Sucesso!",9,89);
+endif
+
+if(res[bidao.keyid]) 
+if(who.gender == 1)
+sendsysmessage(who, "Mulheres nao podem usar barba!",9,89);
+return;
+endif
+destroyitem(GetEquipmentByLayer(who, 16 ));
+var a := CreateItemInBackpack(who, 0x204d, 1);
+equipitem(who, a);  
+a.movable:=0;
+sendsysmessage(who, "Barba Criada com Sucesso!",9,89);
+endif
+
+if(res[cutb.keyid]) 
+if(who.gender == 1)
+sendsysmessage(who, "Mulheres nao podem usar barba!",9,89);
+return;
+endif
+destroyitem(GetEquipmentByLayer(who, 16 ));
+sendsysmessage(who, "Barba Cortada Sucesso!",9,89);
+endif
+////Fim dos botoes da barba////
+
+if(res[tubo.keyid]) 
+CreateItemInBackpack(who, 0x0e27, 1);
+sendsysmessage(who, "Tubo de Tinta Criado com Sucesso!",0,0);
+endif
+endprogram

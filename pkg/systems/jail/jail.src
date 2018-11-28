@@ -1,0 +1,25 @@
+use os;
+use uo;
+use cfgfile;
+use util;
+use basic;
+
+
+program desjailar()
+while(1)
+
+foreach acc in ListAccounts( )
+var conta:=FindAccount( acc );
+
+if((conta.enabled == 0) && (conta.banned == 0))
+if(conta.getprop("tempojail") <= ReadGameClock() )
+conta.eraseprop("tempojail");
+conta.enable();
+endif
+endif
+
+endforeach
+
+sleep(600);
+endwhile
+endprogram

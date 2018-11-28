@@ -1,0 +1,169 @@
+use npc;
+use os;
+use uo; 
+
+
+include "include/eventID";
+include "include/sysEvent";
+include "include/randName";
+include "include/utility";
+include "include/mrcSpawn2";
+include "include/speech";
+include "include/client";
+include "include/vetement";
+include "include/NPCBackpacks";
+include "include/findCity";
+include "include/begging";
+include "include/anchors";
+include "include/dist";
+
+const MAX_SKILLS      := 48;
+const RESPAWN_MINUTES := 120;    
+const UOBJ_METALCHEST := 0x0E7C; 
+
+
+var me := Self();
+var storage, inv_fs, inv_pb, inv_1c;
+var equipt        := GetObjProperty(me, "Equipt");
+var npccfg        := ReadConfigFile("npcdesc");
+
+set_priority( 50 );
+
+var merchant_type := GetObjProperty( Self(), "MerchantType" );
+
+if(!merchant_type)
+  SetObjProperty(me, "MerchantType", "Mage");
+  merchant_type := "Mage";
+endif
+start_script("NPCKeeper", me);
+storage := FindStorageArea("Merchant Storage");
+if(!storage)
+  exit;
+endif
+inv_fs := find_or_create_item( storage, me.serial + " FS", UOBJ_METALCHEST );
+inv_pb := find_or_create_item( storage, me.serial + " PB", UOBJ_METALCHEST );
+inv_1c := find_or_create_item( storage, me.serial + " 1C", UOBJ_METALCHEST );
+
+if (!inv_fs or !inv_pb or !inv_1c)
+    exit;
+endif
+  RestockInventory( merchant_type, inv_fs );
+  var next_restock := ReadGameClock() + RESPAWN_MINUTES*60;
+
+
+  EnableEvents( SYSEVENT_ITEM_GIVEN);
+  // 1 = Range, cada Range = 1 tile 
+  EnableEvents( SYSEVENT_SPEECH, 1);
+  EnableEvents(SYSEVENT_ENGAGED + SYSEVENT_DISENGAGED + SYSEVENT_DAMAGED);
+  EnableEvents(SYSEVENT_ENTEREDAREA, 3);
+
+  if (GetObjProperty(me, "frozen"))
+    me.frozen := 1;
+  endif
+
+/////deixar pelado////
+var x, i;
+	for (i := 1; i <= 24; i := i + 1)
+		if ( (i == 0x0b) || (i == 0x10) || (i == 0x15) )
+			x := { };	// Do nothing.
+		else
+			x := GetEquipmentByLayer(me, i);
+			DestroyItem(x);
+		endif
+	endfor
+/// Nova Roupa
+var mochila:=GetEquipmentByLayer(me, 21);
+mochila.color:=1153;
+mochila.name:="Lancheira";
+
+var montaria := CreateItemInBackpack(me, 0xF021,1);
+montaria.graphic:=0x3eab;
+EquipItem(me, montaria);
+
+var sobretudo:=CreateItemInBackpack(me, "robe", 1 );
+sobretudo.color:=1161;
+EquipItem(me, sobretudo);
+
+var sapatos:=CreateItemInBackpack(me, 5903, 1 );
+sapatos.color:=1153;
+EquipItem(me, sapatos);
+
+var ev, hairwhere, hairtemp, hairold, res;
+while (1)
+    var ev;
+  ev := os::wait_for_event(5);
+  if (ev)
+    case (ev.type)
+      SYSEVENT_SPEECH:      if(ev.text["comprar"])
+                    var res;
+		    TurnToward( ev.source );
+                    res := SendBuyWindow( ev.source, inv_fs, self(), inv_pb );
+                    if (!res)
+                        print("Ola.");
+                    endif
+                elseif (ev.text["vender"])
+                    PrintTextAbovePrivate( self(), "Eu nao compro nada, Somente Vendo!", ev.source );
+		    TurnToward( ev.source );
+		    break;
+		    return;
+                    TurnToward( ev.source );
+                    ModifyPCSellList(merchant_type, (ev.source).backpack);
+                    local res := SendSellWindow( ev.source, self(), inv_fs, inv_pb, inv_1c );
+                    if (res)
+                        PrintTextAbovePrivate( self(), "No que posso ajuda-lo?", ev.source );
+                    else
+                        print( "SendSellWindow failed: " + res.errortext );
+                    endif
+endif
+      EVID_MERCHANT_BOUGHT: TurnToward( ev.source );
+                            PrintTextAbovePrivate( Self(), "O total de sua venda foi de " + ev.amount+ " moedas de Ouro", ev.source );
+                            foreach item in EnumerateItemsInContainer( inv_pb )
+                              DestroyItem( item );
+                            endforeach
+      EVID_MERCHANT_SOLD:   TurnToward( ev.source );
+                            PrintTextAbovePrivate( Self(), "O total de sua compro foi de " + ev.amount+ " moedas de Ouro", ev.source );
+                            foreach item in EnumerateItemsInContainer( ev.source.backpack )
+	                          hairwhere :=GetObjProperty(item, "faceloc");
+	                          if(hairwhere)
+		                        if(hairwhere==11)//hair
+			                      EraseObjProperty(item, "faceloc");
+			                      hairtemp := GetEquipmentByLayer(ev.source, 0x0b);
+			                      DestroyItem(hairtemp);
+			                      EquipItem(ev.source, item);
+			                      hairold := GetEquipmentByLayer(ev.source, 0x10);
+		                        elseif(hairwhere==16)
+			                      EraseObjProperty( item, "faceloc" );
+			                      hairtemp := GetEquipmentByLayer(ev.source, 0x10);
+			                      DestroyItem(hairtemp);
+			                      if(ev.source.graphic == 0x191)
+			                        say("Silly woman, you cannot grow a beard!");
+			                      else
+			                        EquipItem(ev.source, item);
+			                        hairold := GetEquipmentByLayer(ev.source, 0x0b);
+		                          endif
+		                        endif
+		                      endif
+                           endforeach
+       SYSEVENT_ENGAGED: var pessoa:=ev.source;
+			 chamarguarda ( pessoa );
+    endcase
+  elseif (ReadGameClock() > next_restock)
+  RestockInventory( merchant_type, inv_fs );
+    next_restock := ReadGameClock() + RESPAWN_MINUTES*60;
+  endif
+
+
+endwhile
+
+function chamarguarda(pessoa);
+
+PrintTextAbove(me,"Guardas!!",3,95);
+if(pessoa)
+TurnToward( pessoa );
+SetObjProperty(pessoa,"guarda", 1);
+pessoa.hidden := 0;
+var guarda := CreateNpcFromTemplate( "guarda", me.x, me.y, me.z );
+SetObjProperty(guarda, "atacar", pessoa.serial);
+movecharactertolocation(guarda,pessoa.x, pessoa.y, pessoa.z, MOVECHAR_FORCELOCATION);
+endif
+endfunction

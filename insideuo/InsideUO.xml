@@ -1,0 +1,765 @@
+<!--
+
+  This is a *required* configuration file for InsideUO.  
+
+  The parser that I threw together for this file
+  is a little sloppy, so modifying it may cause the
+  program to malfunction.
+
+  Alazane
+
+-->
+
+<InsideUO>
+  <Files>
+    <File>ANIM.MUL</File>
+    <File>ANIM.IDX</File>
+    <File Vital="False">ANIM2.MUL</File>
+    <File Vital="False">ANIM2.IDX</File>
+    <File>ANIMDATA.MUL</File>
+    <File>ANIMINFO.MUL</File>
+    <File>ART.MUL</File>
+    <File>ARTIDX.MUL</File>
+    <File>FONTS.MUL</File>
+    <File>GUMPART.MUL</File>
+    <File>GUMPIDX.MUL</File>
+    <File>HUES.MUL</File>
+    <File>MAP0.MUL</File>
+    <File Vital="False">MAPDIFL0.MUL</File>
+    <File Vital="False">MAPDIF0.MUL</File>
+    <File Vital="False">MAP2.MUL</File>
+    <File Vital="False">MAPDIFL2.MUL</File>
+    <File Vital="False">MAPDIF2.MUL</File>
+    <File>MULTI.IDX</File>
+    <File>MULTI.MUL</File>
+    <File>RADARCOL.MUL</File>
+    <File>SKILLS.IDX</File>
+    <File>SKILLS.MUL</File>
+    <File>SOUND.MUL</File>
+    <File>SOUNDIDX.MUL</File>
+    <File>STAIDX0.MUL</File>
+    <File Vital="False">STADIFL0.MUL</File>
+    <File Vital="False">STADIFI0.MUL</File>
+    <File Vital="False">STAIDX2.MUL</File>
+    <File Vital="False">STADIFL2.MUL</File>
+    <File Vital="False">STADIFI2.MUL</File>
+    <File>STATICS0.MUL</File>
+    <File Vital="False">STADIF0.MUL</File>
+    <File Vital="False">STATICS2.MUL</File>
+    <File Vital="False">STADIF2.MUL</File>
+    <File>TEXIDX.MUL</File>
+    <File>TEXMAPS.MUL</File>
+    <File>TILEDATA.MUL</File>
+    <File Vital="False">VERDATA.MUL</File>
+  </Files>
+
+  <Animations>
+    <CharacterType StartModel="0">
+      <Name>High Detail Critters</Name>
+      <Anim_file>ANIM.MUL</Anim_file>
+      <AnimIdx_file>ANIM.IDX</AnimIdx_file>
+      <Sequences Size="110">
+        <Seq Start="0">Walk</Seq>
+        <Seq Start="5">Stand</Seq>
+        <Seq Start="10">Die.1</Seq>
+        <Seq Start="15">Die.2</Seq>
+        <Seq Start="20">Attack.1</Seq>
+        <Seq Start="25">Attack.2</Seq>
+        <Seq Start="30">Attack.3</Seq>
+        <Seq Start="35">Misc.1</Seq>
+        <Seq Start="40">Misc (roll over, etc.)</Seq>
+        <Seq Start="45">Misc.2</Seq>
+        <Seq Start="50">Stumble</Seq>
+        <Seq Start="55">Misc (Stomp, slap ground, etc.)</Seq>
+        <Seq Start="60">Misc (Cast, breathe fire, etc.)</Seq>
+        <Seq Start="65">Get Hit.1</Seq>
+        <Seq Start="70">Misc.3</Seq>
+        <Seq Start="75">Get Hit.2</Seq>
+        <Seq Start="80">Get Hit.3</Seq>
+        <Seq Start="85">Fidget.1</Seq>
+        <Seq Start="90">Fidget.2</Seq>
+        <Seq Start="95">Fly</Seq>
+        <Seq Start="100">Land</Seq>
+        <Seq Start="105">Die in flight</Seq>
+      </Sequences>
+      <Characters Start="110">
+        <Character Start="110">Ogre</Character>
+        <Character Start="220">Ettin</Character>
+        <Character Start="330">Zombie</Character>
+        <Character Start="440">Gargoyle</Character>
+        <Character Start="550">Eagle</Character>
+        <Character Start="660">Bird</Character>
+        <Character Start="770">Orc Captain</Character>
+        <Character Start="880">Corpser/Kraken</Character>
+        <Character Start="990">Daemon (unarmed)</Character>
+        <Character Start="1100">Daemon (with sword)</Character>
+        <Character Start="1320">Dragon (gray)</Character>
+        <Character Start="1430">Elemental (air)</Character>
+        <Character Start="1540">Elemental (earth)</Character>
+        <Character Start="1650">Elemental (fire)</Character>
+        <Character Start="1760">Elemental (water)</Character>
+        <Character Start="1870">Orc (unarmed)</Character>
+        <Character Start="1980">Ettin (with hammer)</Character>
+        <Character Start="2310">Serpent (giant)</Character>
+        <Character Start="2420">Gazer</Character>
+        <Character Start="2640">Lich</Character>
+        <Character Start="2860">Shade</Character>
+        <Character Start="3080">Spider (giant)</Character>
+        <Character Start="3190">Ape</Character>
+        <Character Start="3300">Harpie</Character>
+        <Character Start="3410">Headless</Character>
+        <Character Start="3630">Lizard man (unarmed)</Character>
+        <Character Start="3850">Lizard man (with spear)</Character>
+        <Character Start="3960">Lizard man (with mace)</Character>
+        <Character Start="4290">Mong Bat/Imp</Character>
+        <Character Start="4510">Orc (with club)</Character>
+        <Character Start="4620">Rat Man (unarmed)</Character>
+        <Character Start="4840">Rat Man (with axe)</Character>
+        <Character Start="4950">Rat Man (with sword)</Character>
+        <Character Start="5170">Reaper</Character>
+        <Character Start="5280">Scorpion (giant)</Character>
+        <Character Start="5500">Skeleton (unarmed)</Character>
+        <Character Start="5610">Slime/Ooze</Character>
+        <Character Start="5720">Snake</Character>
+        <Character Start="5830">Troll (with axe)</Character>
+        <Character Start="5940">Troll (unarmed)</Character>
+        <Character Start="6050">Troll (with maul)</Character>
+        <Character Start="6160">Skeleton (with axe)</Character>
+        <Character Start="6270">Skeleton (with schimitar)</Character>
+        <Character Start="6380">Wisp</Character>
+        <Character Start="6490">Dragon (red)</Character>
+        <Character Start="6600">Drake (gray)</Character>
+        <Character Start="6710">Drake (red)</Character>
+
+        <!-- T2A Creatures thanks to Mindblow -->
+
+        <Character Start="7700">Terathen Warrior</Character>
+        <Character Start="7810">Terathen Drone</Character>
+        <Character Start="7920">Terathen Matriarch</Character>
+        <Character Start="8250">Titan</Character>
+        <Character Start="8360">Cyclops</Character>
+        <Character Start="8800">Giant Toad</Character>
+        <Character Start="8910">Bullfrog</Character>
+        <Character Start="9350">Ophidian Mage</Character>
+        <Character Start="9460">Ophidian Warrior</Character>
+        <Character Start="9570">Ophidian Queen</Character>
+        <Character Start="10450">Unknown sea creature</Character>
+        <Character Start="16500">Serpent (Sea)</Character>
+        <Character Start="16610">Dolphin</Character>
+      </Characters>
+    </CharacterType>
+    <CharacterType StartModel="200">
+      <Name>Low Detail Critters</Name>
+      <Anim_file>ANIM.MUL</Anim_file>
+      <AnimIdx_file>ANIM.IDX</AnimIdx_file>
+      <Sequences Size="65">
+        <Seq Start="0">Walk</Seq>
+        <Seq Start="5">Run</Seq>
+        <Seq Start="10">Stand</Seq>
+        <Seq Start="15">Graze/Eat</Seq>
+        <Seq Start="20"/>
+        <Seq Start="25">Attack.1</Seq>
+        <Seq Start="30">Attack.2</Seq>
+        <Seq Start="35">Attack.3</Seq>
+        <Seq Start="40">Die.1</Seq>
+        <Seq Start="45">Fidget.1</Seq>
+        <Seq Start="50">Fidget.2</Seq>
+        <Seq Start="55">Lie Down</Seq>
+        <Seq Start="60">Die.2</Seq>
+      </Sequences>
+      <Characters Start="22000">
+        <Character Start="22000">Horse (light brown)</Character>
+        <Character Start="22065">Cat/Hell Cat</Character>
+        <Character Start="22130">Aligator</Character>
+        <Character Start="22195">Pig</Character>
+        <Character Start="22260">Horse (dark brown)</Character>
+        <Character Start="22325">Bunny</Character>
+        <Character Start="22390">Lava Lizard</Character>
+        <Character Start="22455">Sheep (unsheered)</Character>
+        <Character Start="22520">Chicken</Character>
+        <Character Start="22585">Goat</Character>
+        <Character Start="22650">Desert Ostard</Character>
+        <Character Start="22715">Bear (dark brown)</Character>
+        <Character Start="22780">Bear (light brown)</Character>
+        <Character Start="22845">Bear (polar)</Character>
+        <Character Start="22910">Panther</Character>
+        <Character Start="22975">Rat (giant)</Character>
+        <Character Start="23040">Cow (black and white)</Character>
+        <Character Start="23105">Dog</Character>
+        <Character Start="23170">Frenzied Ostard</Character>
+        <Character Start="23235">Forest Ostard</Character>
+        <Character Start="23300">Llama</Character>
+        <Character Start="23365">Walrus</Character>
+        <Character Start="23495">Sheep (sheered)</Character>
+        <Character Start="23625">Wolf/Hell Hound</Character>
+        <Character Start="23690">Horse (light gray)</Character>
+        <Character Start="23820">Horse (gray-brown)</Character>
+        <Character Start="24015">Cow (brown)</Character>
+        <Character Start="24080">Bull (brown)</Character>
+        <Character Start="24145">Bull (black and white)</Character>
+        <Character Start="24210">Great Hart</Character>
+        <Character Start="24405">Deer</Character>
+        <Character Start="24470">Rat</Character>
+        <Character Start="27850">Boar</Character>
+        <Character Start="27915">Horse (pack)</Character>
+        <Character Start="27980">Llama (pack)</Character>
+      </Characters>
+    </CharacterType>
+    <CharacterType StartModel="400">
+      <Name>People and Accessories</Name>
+      <Anim_file>ANIM.MUL</Anim_file>
+      <AnimIdx_file>ANIM.IDX</AnimIdx_file>
+      <Sequences Size="175">
+        <Seq Start="0">Walk unarmed</Seq>
+        <Seq Start="5">Walk armed</Seq>
+        <Seq Start="10">Run unarmed</Seq>
+        <Seq Start="15">Run armed</Seq>
+        <Seq Start="20">Stand</Seq>
+        <Seq Start="25">Fidget.3</Seq>
+        <Seq Start="30">Fidget.2</Seq>
+        <Seq Start="35">Stand for one handed attack</Seq>
+        <Seq Start="40">Stand for two handed attack</Seq>
+        <Seq Start="45">Attack.One handed</Seq>
+        <Seq Start="50">Attack.Unarmed.1</Seq>
+        <Seq Start="55">Attack.Unarmed.2</Seq>
+        <Seq Start="60">Attack.Two handed.Down</Seq>
+        <Seq Start="65">Attack.Two handed.Wide</Seq>
+        <Seq Start="70">Attack.Two handed.Jab</Seq>
+        <Seq Start="75">Walk in attack position</Seq>
+        <Seq Start="80">Cast.Directed</Seq>
+        <Seq Start="85">Cast.Area/Summon</Seq>
+        <Seq Start="90">Attack.Bow and arrow</Seq>
+        <Seq Start="95">Attack.Crossbow</Seq>
+        <Seq Start="100">Take hit</Seq>
+        <Seq Start="105">Die.1</Seq>
+        <Seq Start="110">Die.2</Seq>
+        <Seq Start="115">Horseback.Ride slow</Seq>
+        <Seq Start="120">Horseback.Ride fast</Seq>
+        <Seq Start="125">Horseback.Stand</Seq>
+        <Seq Start="130">Horseback.Attack</Seq>
+        <Seq Start="135">Horseback.Attack.Bow and arrow</Seq>
+        <Seq Start="140">Horseback.Attack.Crossbow</Seq>
+        <Seq Start="145">Horseback.Slap horse</Seq>
+        <Seq Start="150">Turn</Seq>
+        <Seq Start="155">Attack.Unarmed and walk?</Seq>
+        <Seq Start="160">Bow</Seq>
+        <Seq Start="165">Salute</Seq>
+        <Seq Start="170">Fidget.3</Seq>
+      </Sequences>
+      <Characters Start="35000">
+        <Character Start="35000">**Man</Character>
+        <Character Start="35175">**Woman</Character>
+
+        <Character Start="35700">Hat.Floppy</Character>
+        <Character Start="35875">Hat.Two Pointed</Character>
+        <Character Start="36050">Hat.Cap</Character>
+        <Character Start="36225">Hat.Straw.Tall</Character>
+        <Character Start="36400">Hat.Straw</Character>
+        <Character Start="36575">Hat.Wide-Brim</Character>
+        <Character Start="36750">Hat.Skullcap</Character>
+        <Character Start="36925">Hat.Feathered</Character>
+        <Character Start="37100">Hat.Pirate</Character>
+        <Character Start="37275">Hat.Jesters</Character>
+        <Character Start="37450">Mask.Bear</Character>
+        <Character Start="37625">Mask.Deer</Character>
+        <Character Start="37800">Mask.Orc</Character>
+        <Character Start="37975">Mask.Tribal.1</Character>
+        <Character Start="38150">Mask.Tribal.2</Character>
+        <Character Start="38325">Hat.Bandanna</Character>
+        <Character Start="38500">*Boy.Blond</Character>
+        <Character Start="38675">*Boy.Brunette</Character>
+        <Character Start="38850">*Girl.Toddler</Character>
+        <Character Start="39025">*Girl.Brunette</Character>
+
+        <Character Start="40250">Pants.Short</Character>
+        <Character Start="40425">Pants.Long</Character>
+
+        <Character Start="40950">Shirt.Sleevless</Character>
+        <Character Start="41125">Shirt.Fancy</Character>
+
+        <Character Start="43225">Dress.Long</Character>
+        <Character Start="43400">Dress.Fancy</Character>
+        <Character Start="43575">Skirt.Long</Character>
+
+        <Character Start="44625">Kilt</Character>
+
+        <Character Start="46375">Apron.Long</Character>
+        <Character Start="46550">Apron.Short</Character>
+
+        <Character Start="46900">Cape</Character>
+        <Character Start="47075">Robe</Character>
+
+        <Character Start="48300">Boots.Thigh</Character>
+        <Character Start="48475">Boots</Character>
+
+        <Character Start="48825">Shoes.Sandals</Character>
+        <Character Start="49000">Shoes</Character>
+
+        <Character Start="50750">Sash</Character>
+
+        <Character Start="51100">Hat.Headband</Character>
+
+        <Character Start="52500">Light.Lantern.Lit</Character>
+        <Character Start="52675">Light.Torch.Lit</Character>
+        <Character Start="52850">Light.Candle.Lit</Character>
+        <Character Start="53025">Light.Lantern.Unlit</Character>
+        <Character Start="53200">Light.Torch.Unlit</Character>
+        <Character Start="53375">Light.Candle.Unlit</Character>
+
+        <Character Start="56175">Armor.Breastpiece.Studded Leather</Character>
+
+        <Character Start="56525">Armor.Arms.Studded Leather</Character>
+
+        <Character Start="56875">Armor.Gorget.Studded Leather</Character>
+
+        <Character Start="57225">Armor.Breastpiece.Plate</Character>
+        <Character Start="57400">Armor.Arms.Plate</Character>
+        <Character Start="57575">Armor.Leggings.Plate</Character>
+        <Character Start="57750">Armor.Gloves.Plate</Character>
+        <Character Start="57925">Armor.Gorget.Plate</Character>
+
+        <Character Start="59150">Armor.Breastpiece.Chainmail</Character>
+
+        <Character Start="59500">Armor.Leggings.Chainmail</Character>
+
+        <Character Start="59850">Armor.Breastpiece.Leather</Character>
+        <Character Start="60025">Armor.Leggings.Leather</Character>
+        <Character Start="60200">Armor.Arms.Leather</Character>
+        <Character Start="60375">Armor.Gloves.Leather</Character>
+        <Character Start="60550">Armor.Gorget.Leather</Character>
+
+        <Character Start="60900">Armor.Breastpiece.Ring</Character>
+        <Character Start="61075">Armor.Leggings.Ring</Character>
+        <Character Start="61250">Armor.Arms.Ring</Character>
+
+        <Character Start="61950">Armor.Breastpiece.Bone</Character>
+        <Character Start="62125">Armor.Leggings.Bone</Character>
+        <Character Start="62300">Armor.Arms.Bone</Character>
+        <Character Start="62475">Armor.Gloves.Bone</Character>
+
+        <Character Start="63000">Armor.Head.Leather Cap</Character>
+        <Character Start="63175">Armor.Head.Chainmail Coif</Character>
+        <Character Start="63350">Armor.Head.Bone Helm</Character>
+        <Character Start="63525">Armor.Head.Plate Helm</Character>
+        <Character Start="63700">Armor.Head.Bascinet</Character>
+        <Character Start="63875">Armor.Head.Helmet</Character>
+
+        <Character Start="65275"/>  <!-- This one is probably a test case -->
+        <Character Start="65450">*Bladed Spirit</Character>
+
+        <Character Start="65800">Armor.Shield.Round</Character>
+        <Character Start="65975">Armor.Shield.Bronze</Character>
+        <Character Start="66150">Armor.Shield.Wooden</Character>
+        <Character Start="66325">Armor.Shield.Tiny</Character>
+        <Character Start="66500">Armor.Shield.Wooden Kite</Character>
+        <Character Start="66675">Armor.Shield.Metal Kite</Character>
+        <Character Start="66850">Armor.Shield.Heater</Character>
+
+        <Character Start="71925">Weapon.Battle Axe</Character>
+        <Character Start="72100">Weapon.Axe</Character>
+        <Character Start="72275">Weapon.Executioner's Axe</Character>
+        <Character Start="72450">Weapon.Bardiche</Character>
+        <Character Start="72625">Weapon.Hatchet</Character>
+        <Character Start="72800">Weapon.Heavy Crossbow</Character>
+        <Character Start="72975">Weapon.Black Staff</Character>
+        <Character Start="73150">Weapon.Sword</Character>
+        <Character Start="73325">Weapon.Cleaver</Character>
+        <Character Start="73500">Weapon.Club</Character>
+        <Character Start="73675">Weapon.Crook</Character>
+        <Character Start="73850">Weapon.Dagger</Character>
+        <Character Start="74025">Weapon.Cutlass</Character>
+        <Character Start="74200">Weapon.Halberd</Character>
+        <Character Start="74375">Weapon.Hammer Pick</Character>
+        <Character Start="74550">Weapon.Spear</Character>
+        <Character Start="74725">Weapon.Skinning Knife</Character>
+        <Character Start="74900">Weapon.Gnarled Staff</Character>
+        <Character Start="75075">Weapon.Katana</Character>
+        <Character Start="75250">Weapon.Kriss</Character>
+        <Character Start="75425">Weapon.Mace</Character>
+        <Character Start="75775">Weapon.Maul</Character>
+        <Character Start="75950">Weapon.Large Battle Axe</Character>
+        <Character Start="76125">Weapon.Pick</Character>
+        <Character Start="76300">Weapon.Pitch Fork</Character>
+        <Character Start="76475">Weapon.Scimitar</Character>
+        <Character Start="76650">Weapon.Short Sword</Character>
+        <Character Start="76825">Weapon.Short Spear</Character>
+        <Character Start="77000">Weapon.Hammer</Character>
+        <Character Start="77175">Weapon.Spear</Character>
+        <Character Start="77350">Weapon.War Mace</Character>
+        <Character Start="77525">Weapon.Viking Sword</Character>
+        <Character Start="77700">Weapon.War Axe</Character>
+        <Character Start="77875">Weapon.War Fork</Character>
+        <Character Start="78050">Weapon.War Hammer</Character>
+        <Character Start="78400">Weapon.Quarter Staff</Character>
+        <Character Start="78575">Weapon.Bow</Character>
+        <Character Start="78925">Weapon.Crossbow</Character>
+        <Character Start="79275">Weapon.Axe.?</Character>
+
+        <Character Start="87500">Hair.Short</Character>
+        <Character Start="87675">Hair.Long</Character>
+        <Character Start="87850">Hair.Ponytail</Character>
+        <Character Start="88025">Hair.Mohawk</Character>
+
+        <Character Start="89250">Hair.Sholder Length</Character>
+
+        <Character Start="89600">Hair.Buns</Character>
+
+        <Character Start="105000">Hair.Facial.Gotee</Character>
+        <Character Start="105175">Hair.Facial.Long Beard</Character>
+        <Character Start="105350">Hair.Facial.Short Beard</Character>
+        <Character Start="105525">Hair.Facial.Mustache</Character>
+
+        <Character Start="122500">Hair.Short.2</Character>
+        <Character Start="122675">Hair.Receeding</Character>
+        <Character Start="122850">Hair.Pig Tails</Character>
+        <Character Start="123025">Hair.Topknot</Character>
+        <Character Start="123200">Hair.Facial.Short Beard.2</Character>
+        <Character Start="123375">Hair.Facial.Long Beard.2</Character>
+        <Character Start="123550">Hair.Facial.Gotee.2</Character>
+
+        <Character Start="124075">Shirt.1</Character>
+        <Character Start="124250">Shirt.2</Character>
+        <Character Start="124425">Shirt.Checkered</Character>
+        <Character Start="124600">Shirt.Jesters</Character>
+        <Character Start="124775">Shirt.5</Character>
+
+        <Character Start="126175">Armor.Female.1</Character>
+        <Character Start="126350">Armor.Female.2</Character>
+        <Character Start="126525">Armor.Female.3</Character>
+        <Character Start="126700">Armor.Female.4</Character>
+        <Character Start="126875">Armor.Female.5</Character>
+        <Character Start="127050">Armor.Female.Leather skirt</Character>
+        <Character Start="127225">Armor.Female.Leather shorts</Character>
+        <Character Start="127400">Armor.Head.Close Helm</Character>
+        <Character Start="127575">Armor.Head.Norse Helm</Character>
+
+        <Character Start="134750">*Ghost</Character>
+        <Character Start="134925">Skirt.Long.2</Character>
+        <Character Start="135100">Fishing Rod</Character>
+        <Character Start="135275">Armor.Head.Orc Helm</Character>
+
+        <Character Start="136500">Wand.1</Character>
+        <Character Start="136675">Wand.2</Character>
+        <Character Start="136850">Wand.3</Character>
+        <Character Start="137025">Wand.4</Character>
+        <Character Start="137200">Spell book.1</Character>
+        <Character Start="137375">Spell book.2</Character>
+        <Character Start="137550">Armor.Breastpiece.Female.Chain</Character>
+        <Character Start="137725">*Counselor</Character>
+        <Character Start="137900">Shirt.6</Character>
+        <Character Start="138250">*Serpent's Order Armor (L.British)</Character>
+        <Character Start="138425">*Blackthorne</Character>
+        <Character Start="138600">Armor.Shield.Order</Character>
+        <Character Start="138775">Armor.Shield.Chaos</Character>
+        <Character Start="138950">*Dupre(?)</Character>
+        <!-- To make sure that any additional characters are lumped in at the
+             end, set this to the last possible character which is
+             FileSizeInBytes / 12 - 1.  This is a little dangerous, but
+             hopefully it will expose any hidden chars. -->
+        <Character Start="148809">EOF</Character>
+      </Characters>
+    </CharacterType>
+
+    <!-- 
+      LBR hacking thanks to Russell Bailey and Jeffrey Mikoni 
+      and thanks to Tony Lusardi for figuring out and typing in the creature names.
+    -->
+
+    <CharacterType StartModel="0">
+      <Name>LBR Monsters</Name>
+      <Anim_file>ANIM2.MUL</Anim_file>
+      <AnimIdx_file>ANIM2.IDX</AnimIdx_file>
+      <Sequences Size="110">
+        <Seq Start="0">Walk</Seq>
+        <Seq Start="5">Stand</Seq>
+        <Seq Start="10">Die.1</Seq>
+        <Seq Start="15">Die.2</Seq>
+        <Seq Start="20">Attack.1</Seq>
+        <Seq Start="25">Attack.2</Seq>
+        <Seq Start="30">Attack.3</Seq>
+        <Seq Start="35">Misc.1</Seq>
+        <Seq Start="40">Misc (roll over, etc.)</Seq>
+        <Seq Start="45">Misc.2</Seq>
+        <Seq Start="50">Stumble</Seq>
+        <Seq Start="55">Misc (Stomp, slap ground, etc.)</Seq>
+        <Seq Start="60">Misc (Cast, breathe fire, etc.)</Seq>
+        <Seq Start="65">Get Hit.1</Seq>
+        <Seq Start="70">Misc.3</Seq>
+        <Seq Start="75">Get Hit.2</Seq>
+        <Seq Start="80">Get Hit.3</Seq>
+        <Seq Start="85">Fidget.1</Seq>
+        <Seq Start="90">Fidget.2</Seq>
+        <Seq Start="95">Fly</Seq>
+        <Seq Start="100">Land</Seq>
+        <Seq Start="105">Die in flight</Seq>
+      </Sequences>
+      <Characters Start="110">
+        <Character Start="220">Spider Lord</Character>
+        <Character Start="330">Dread Spider</Character>
+        <Character Start="440">Frost Spider</Character>
+        <Character Start="550">Giant Spider</Character>
+        <Character Start="660">Centaur</Character>
+        <Character Start="770">Deamon</Character>
+        <Character Start="880">Black Gate Deamon</Character>
+        <Character Start="990">Balron</Character>
+        <Character Start="1100">Exodus</Character>
+        <Character Start="1210">Ice Fiend</Character>
+        <Character Start="1320">Serpentine Dragon</Character>
+        <Character Start="1430">Skeletal Dragon</Character>
+        <Character Start="1540">Wyvern</Character>
+        <Character Start="1650">Pixie</Character>
+        <Character Start="1760">Forest Queen</Character>
+        <Character Start="1870">Fire Gargoyle</Character>
+        <Character Start="1980">Imp</Character>
+        <Character Start="2090">Kraken</Character>
+        <Character Start="2200">Evil Mage</Character>
+        <Character Start="2310">Evil Mage Lord</Character>
+        <Character Start="2420">Shadowlord</Character>
+        <Character Start="2530">Skeleton mage</Character>
+        <Character Start="2640">Shade</Character>
+        <Character Start="2750">succubus</Character>
+        <Character Start="2860">Terathan Avenger</Character>
+        <Character Start="2970">Titan</Character>
+        <Character Start="3080">Mummy</Character>
+        <Character Start="3190">Iron Golem</Character>
+        <Character Start="3300">Orc Bomber</Character>
+        <Character Start="3410">Orc Brute</Character>
+        <Character Start="3520">Juka Warrior</Character>
+        <Character Start="3630">Juka Mage</Character>
+        <Character Start="3740">Juka Lord</Character>
+        <Character Start="3850">Blackthorn Betrayer</Character>
+        <Character Start="3960">Blackthorn Juggernaught</Character>
+        <Character Start="4070">Blackthorn</Character>
+        <Character Start="4180">Meer Mage</Character>
+        <Character Start="4290">Meer Warrior</Character>
+        <Character Start="4400">Meer Eternal</Character>
+        <Character Start="4510">Meer Captain</Character>
+        <Character Start="4620">Dawn</Character>
+        <Character Start="4730">Plague Beast</Character>
+        <Character Start="4840">Small Horde Deamon</Character>
+        <Character Start="4950">Doppleganger</Character>
+        <Character Start="5060">A Swarm</Character>
+        <Character Start="5170">Bogling</Character>
+        <Character Start="5280">Bog Thing</Character>
+        <Character Start="5390">Fire Ant Worker</Character>
+        <Character Start="5500">Fire Ant Warrior</Character>
+        <Character Start="5610">Fire Ant Queen</Character>
+        <Character Start="5720">Arcane Deamon</Character>
+        <Character Start="5830">Four Armed Deamon</Character>
+        <Character Start="6050">Ant Lion</Character>
+        <Character Start="6160">Sphinx</Character>
+        <Character Start="6270">Quagmire</Character>
+        <Character Start="6490">Chaos Deamon</Character>
+        <Character Start="6600">Medium Horde Deamon</Character>
+        <Character Start="6710">Large Horde Deamon</Character>
+        <Character Start="6820">Reptile Lord</Character>
+        <Character Start="6930">Ancient Wyrm</Character>
+        <Character Start="7040">Ethereal Warrior</Character>
+        <Character Start="7150">Forest Lord</Character>
+        <Character Start="7260">Abyss Lord</Character>
+        <Character Start="7370">Orc Mage</Character>
+        <Character Start="7590">Multi Colored Horde Deamon</Character>
+        <Character Start="7700">Stone Gargoyle</Character>
+        <Character Start="7810">Enslaved Gargoyle</Character>
+        <Character Start="7920">Enforcer Gargoyle</Character>
+        <Character Start="8030">Destroyer Gargoyle</Character>
+        <Character Start="8140">Shop Keeper Gargoyle</Character>
+        <Character Start="8250">Exodus Overseer</Character>
+        <Character Start="8360">Exodus Minion</Character>
+        <Character Start="8470">Exodus Minion Lord</Character>
+        <Character Start="13310">End of section</Character>
+      </Characters>
+    </CharacterType>
+
+    <CharacterType StartModel="0">
+      <Name>LBR Rideables</Name>
+      <Anim_file>ANIM2.MUL</Anim_file>
+      <AnimIdx_file>ANIM2.IDX</AnimIdx_file>
+      <Sequences Size="65">
+        <Seq Start="0">Walk</Seq>
+        <Seq Start="5">Run</Seq>
+        <Seq Start="10">Stand</Seq>
+        <Seq Start="15">Graze/Eat</Seq>
+        <Seq Start="20"/>
+        <Seq Start="25">Attack.1</Seq>
+        <Seq Start="30">Attack.2</Seq>
+        <Seq Start="35">Attack.3</Seq>
+        <Seq Start="40">Die.1</Seq>
+        <Seq Start="45">Fidget.1</Seq>
+        <Seq Start="50">Fidget.2</Seq>
+        <Seq Start="55">Lie Down</Seq>
+        <Seq Start="60">Die.2</Seq>
+      </Sequences>
+      <Characters Start="13420">
+        <Character Start="13420">Kirin</Character>
+        <Character Start="22000">Unicorn</Character>
+        <Character Start="22065">Ridgeback</Character>
+        <Character Start="22130">Savage Ridgeback</Character>
+        <Character Start="22195">Giant Beatle</Character>
+        <Character Start="22260">Skeletal Mount</Character>
+        <Character Start="22325">Swamp Dragon</Character>
+        <Character Start="22390">Armored Swamp Dragon</Character>
+      </Characters>
+    </CharacterType> 
+  </Animations>
+
+  <!--
+    Multi names thanks to BA Barrackas
+    Note that the Index values must be in numerical order.
+  -->
+
+  <Multis>
+    <MultiSet>
+      <Multi_file>MULTI.MUL</Multi_file>
+      <MultiIdx_file>MULTI.IDX</MultiIdx_file>
+      <Multi Index="0x00000000">Small Boat [north]</Multi>
+      <Multi Index="0x00000001">Small Boat [east]</Multi>
+      <Multi Index="0x00000002">Small Boat [south]</Multi>
+      <Multi Index="0x00000003">Small Boat [west]</Multi>
+      <Multi Index="0x00000004">Small Dragon Boat [north]</Multi>
+      <Multi Index="0x00000005">Small Dragon Boat [east]</Multi>
+      <Multi Index="0x00000006">Small Dragon Boat [south]</Multi>
+      <Multi Index="0x00000007">Small Dragon Boat [west]</Multi>
+      <Multi Index="0x00000008">Medium Boat [north]</Multi>
+      <Multi Index="0x00000009">Medium Boat [east]</Multi>
+      <Multi Index="0x0000000A">Medium Boat [south]</Multi>
+      <Multi Index="0x0000000B">Medium Boat [west]</Multi>
+      <Multi Index="0x0000000C">Medium Dragon Boat [north]</Multi>
+      <Multi Index="0x0000000D">Medium Dragon [east]</Multi>
+      <Multi Index="0x0000000E">Medium Dragon [south]</Multi>
+      <Multi Index="0x0000000F">Medium Dragon [west]</Multi>
+      <Multi Index="0x00000010">Large Boat [north]</Multi>
+      <Multi Index="0x00000011">Large Boat [east]</Multi>
+      <Multi Index="0x00000012">Large Boat [south]</Multi>
+      <Multi Index="0x00000013">Large Boat [west]</Multi>
+      <Multi Index="0x00000014">Large Dragon Boat [north]</Multi>
+      <Multi Index="0x00000015">Large Dragon Boat [east]</Multi>
+      <Multi Index="0x00000016">Large Dragon Boat [south]</Multi>
+      <Multi Index="0x00000017">Large Dragon Boat [west]</Multi>
+      <Multi Index="0x00000064">Small Stone and Plaster House</Multi>
+      <Multi Index="0x00000065">Small Stone and Plaster House</Multi>
+      <Multi Index="0x00000066">Small Fieldstone House</Multi>
+      <Multi Index="0x00000067">Small Fieldstone House</Multi>
+      <Multi Index="0x00000068">Small Brick House</Multi>
+      <Multi Index="0x00000069">Small Brick House</Multi>
+      <Multi Index="0x0000006A">Small Wood House</Multi>
+      <Multi Index="0x0000006B">Small Wood House</Multi>
+      <Multi Index="0x0000006C">Small Wood and Plaster House</Multi>
+      <Multi Index="0x0000006D">Small Wood and Plaster House</Multi>
+      <Multi Index="0x0000006E">Small Thatched Roof Cottage</Multi>
+      <Multi Index="0x0000006F">Small Thatched Roof Cottage</Multi>
+      <Multi Index="0x00000070">Tent [blue]</Multi>
+      <Multi Index="0x00000071">Tent [blue]</Multi>
+      <Multi Index="0x00000072">Tent [green]</Multi>
+      <Multi Index="0x00000073">Tent [green]</Multi>
+      <Multi Index="0x00000074">Large Brick House</Multi>
+      <Multi Index="0x00000075">Large Brick House</Multi>
+      <Multi Index="0x00000076">Two Story Wood and Plaster House</Multi>
+      <Multi Index="0x00000077">Two Story Wood and Plaster House</Multi>
+      <Multi Index="0x00000078">Two Story Stone and Plaster House</Multi>
+      <Multi Index="0x00000079">Two Story Stone and Plaster House</Multi>
+      <Multi Index="0x0000007A">Large Tower</Multi>
+      <Multi Index="0x0000007B">Large Tower</Multi>
+      <Multi Index="0x0000007C">Stone Keep</Multi>
+      <Multi Index="0x0000007D">Stone Keep</Multi>
+      <Multi Index="0x0000007E">Castle</Multi>
+      <Multi Index="0x0000007F">Castle</Multi>
+      <Multi Index="0x00000087">Large Patio House</Multi>
+      <Multi Index="0x0000008C">Large Patio House</Multi>
+      <Multi Index="0x0000008D">Large Patio House</Multi>
+      <Multi Index="0x00000096">Large Marble Patio House</Multi>
+      <Multi Index="0x00000098">Small Tower</Multi>
+      <Multi Index="0x0000009A">Log Cabin</Multi>
+      <Multi Index="0x0000009C">Sandstone Patio House</Multi>
+      <Multi Index="0x0000009E">Two-Story Villa</Multi>
+      <Multi Index="0x000000A0">Small Stone Workshop</Multi>
+      <Multi Index="0x000000A2">Small Marble Workshop</Multi>
+      <Multi Index="0x000001F4">Wandering Healer Camp</Multi>
+      <Multi Index="0x000001F5">Wandering Mage Camp</Multi>
+      <Multi Index="0x000001F6">Wandering Bank Camp</Multi>
+      <Multi Index="0x000003E8">Treasure Pile</Multi>
+      <Multi Index="0x000003E9">Treasure Pile</Multi>
+      <Multi Index="0x000003EA">Treasure Pile</Multi>
+      <Multi Index="0x000003EB">Treasure Pile</Multi>
+      <Multi Index="0x000007D0">Wooden Supports</Multi>
+      <Multi Index="0x000007D1">Wooden Supports</Multi>
+      <Multi Index="0x000007D2">Wooden Supports</Multi>
+      <Multi Index="0x000007D3">Wooden Supports</Multi>
+      <Multi Index="0x000007D4">Wooden Supports</Multi>
+      <Multi Index="0x000007D5">Wooden Supports</Multi>
+      <Multi Index="0x000007D6">Wooden Supports</Multi>
+      <Multi Index="0x000007D7">Wooden Supports</Multi>
+      <Multi Index="0x00000BB8">Farmer's Cabin</Multi>
+      <Multi Index="0x00000FA0">Exodus Generator</Multi>
+      <Multi Index="0x00000FA1">Exodus Generator</Multi>
+      <Multi Index="0x00000FA2">Exodus Control Pylon</Multi>
+      <Multi Index="0x00000FA3">Nystul's Tower (stage 1)</Multi>
+      <Multi Index="0x00000FA4">Nystul's Tower (stage 2)</Multi>
+      <Multi Index="0x00000FA5">Nystul's Tower (stage 3)</Multi>
+      <Multi Index="0x00000FA6">Nystul's Tower (stage 4)</Multi>
+      <Multi Index="0x00000FA7">Nystul's Tower (stage 5)</Multi>
+      <Multi Index="0x00000FA8">Nystul's Tower (stage 6)</Multi>
+      <Multi Index="0x00000FA9">Scaffold and Trailer</Multi>
+      <Multi Index="0x00000FAA">Exodus Energy Tower</Multi>
+      <Multi Index="0x00000FAB">Exodus Barrier</Multi>
+      <Multi Index="0x00000FAC">Exodus Control Device</Multi>
+      <Multi Index="0x00001388">Minax Stronghold</Multi>
+      <Multi Index="0x00001D4C">New Player Quest Camp</Multi>
+    </MultiSet>
+  </Multis>
+
+  <!-- Map "Area" tag format is:
+       Left Block, Right Block, Width In Blocks, Height In Blocks -->
+
+  <Maps>
+    <Map Key="Default">
+      <Name>Default Ultima Map</Name>
+      <Map_file>MAP0.MUL</Map_file>
+      <MapDifLoc_file>MAPDIFL0.MUL</MapDifLoc_file>
+      <MapDif_file>MAPDIF0.MUL</MapDif_file>
+      <Staidx_file>STAIDX0.MUL</Staidx_file>
+      <StaDifLoc_file>STADIFL0.MUL</StaDifLoc_file>
+      <StaDif_file>STADIFI0.MUL</StaDif_file>
+      <Statics_file>STATICS0.MUL</Statics_file>
+      <StaticsDif_file>STADIF0.MUL</StaticsDif_file>
+      <Area>0,0,768,512</Area>
+      <View>
+        <Name>Full</Name>
+        <Area>0,0,768,512</Area>
+      </View>
+      <View>
+        <Name>Map</Name>
+        <Area>0,0,640,512</Area>
+      </View>
+      <View>
+        <Name>Dungeon</Name>
+        <Area>640,0,128,288</Area>
+      </View>
+      <View>
+        <Name>The Second Age</Name>
+        <Area>640,288,128,224</Area>
+      </View>
+    </Map>
+
+    <!-- Third Dawn Map sizes thanks to Andreas Waas -->
+    <!-- mailto:awaas@yahoo.com http://www.uodabo.de -->
+
+    <Map Key="ThirdDawn">
+      <Name>Third Dawn Map</Name>
+      <Map_file>MAP2.MUL</Map_file>
+      <MapDifLoc_file>MAPDIFL2.MUL</MapDifLoc_file>
+      <MapDif_file>MAPDIF2.MUL</MapDif_file>
+      <Staidx_file>STAIDX2.MUL</Staidx_file>
+      <StaDifLoc_file>STADIFL2.MUL</StaDifLoc_file>
+      <StaDif_file>STADIFI2.MUL</StaDif_file>
+      <Statics_file>STATICS2.MUL</Statics_file>
+      <StaticsDif_file>STADIF2.MUL</StaticsDif_file>
+      <Area>0,0,288,200</Area>
+      <View>
+        <Name>Map</Name>
+        <Area>0,0,288,200</Area>
+      </View>
+    </Map>
+  </Maps>
+</InsideUO>
+

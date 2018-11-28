@@ -1,0 +1,28 @@
+use os;
+use uo;
+
+program textcmd_online( who )
+var staffs:=0;
+
+foreach char in EnumerateOnlineCharacters()
+
+if((char.cmdlevel >= 3))
+staffs:= staffs + 1;
+endif
+var staffss:= Getglobalproperty("gmon");
+if(staffss >= 1)
+Sendsysmessage(who, "Os Gms Ja Estao Online Por Tanto o comando se cancelara!!");
+return;
+
+SetGlobalProperty("gmon", staffs);
+SendSysMessage(who, "Gm's OnLine: " + cint(GetGlobalProperty("gmon")));
+
+endif
+endforeach
+
+
+Sendsysmessage(who, "Setando agora Gm's para numero de Gm's online");
+SetGlobalProperty("gmon", staffs);
+SendSysMessage(who, "Gm's OnLine: " + cint(GetGlobalProperty("gmon")));
+endprogram
+

@@ -1,0 +1,5 @@
+use uo;
+use os;
+
+print("Iniciando Sistema de Ranking");
+start_script("atualizarrank");

@@ -1,0 +1,612 @@
+C:\pol2\pkg\systems\daynight\dayNight.src, Line 4
+set_critical( 1);
+0: 1L
+1: Func(3,0): set_critical
+2: #
+C:\pol2\pkg\systems\daynight\dayNight.src, Line 12
+var length :=(CInt(GetDayLength()) * 60);
+3: decl global #0
+4: makelocal
+5: jmp userfunc @421
+6: Func(0,0): CInt
+7: 60L
+8: *
+9: :=
+10: #
+var transtime :=( length *(0.25));
+11: decl global #1
+12: global #0
+13: 0.25LF
+14: *
+15: :=
+16: #
+C:\pol2\pkg\systems\daynight\dayNight.src, Line 16
+program DNCycle()
+print("Starting Day/Night cycle...");
+17: "Starting Day/Night cycle..."
+18: Func(1,0): print
+19: #
+var time;
+20: decl local #0
+21: #
+var wstuff := GetGlobalProperty("Weather");
+22: decl local #1
+23: "Weather"
+24: Func(2,2): GetGlobalProperty
+25: :=
+26: #
+if(!wstuff)
+27: local #1
+28: if true goto 49
+SetGlobalProperty("Weather", {0, 0, 0, 0, 18, 0, 0, 0});
+29: "Weather"
+30: array
+31: 0L
+32: +=
+33: 0L
+34: +=
+35: 0L
+36: +=
+37: 0L
+38: +=
+39: 18L
+40: +=
+41: 0L
+42: +=
+43: 0L
+44: +=
+45: 0L
+46: +=
+47: Func(2,1): SetGlobalProperty
+48: #
+while(1)
+49: 1L
+50: if false goto 177
+time := CInt(GetTime());
+51: makelocal
+52: jmp userfunc @440
+53: Func(0,0): CInt
+54: local0 := 
+if((time >= 0) &&(time < transtime))
+55: local #0
+56: 0L
+57: >=
+58: local #0
+59: global #1
+60: <
+61: &&
+62: if false goto 90
+wstuff := GetGlobalProperty("Weather");
+63: "Weather"
+64: Func(2,2): GetGlobalProperty
+65: local1 := 
+SetRegionLightLevel("Background", wstuff[5]);
+66: "Background"
+67: local #1
+68: 5L
+69: [] 1
+70: Func(2,3): SetRegionLightLevel
+71: #
+wstuff[6] := wstuff[5];
+72: local #1
+73: 6L
+74: local #1
+75: 5L
+76: [] 1
+77: [] := (1) #
+wstuff[3] := 0;
+78: local #1
+79: 3L
+80: 0L
+81: [] := (1) #
+SetGlobalProperty("Weather", wstuff);
+82: "Weather"
+83: local #1
+84: Func(2,1): SetGlobalProperty
+85: #
+sleep(transtime);
+86: global #1
+87: Func(3,1): sleep
+88: #
+89: goto176
+elseif((time >=(transtime)) &&(time <(length / 2)))
+90: local #0
+91: global #1
+92: >=
+93: local #0
+94: global #0
+95: 2L
+96: /
+97: <
+98: &&
+99: if false goto 116
+wstuff := GetGlobalProperty("Weather");
+100: "Weather"
+101: Func(2,2): GetGlobalProperty
+102: local1 := 
+wstuff[3] := 2;
+103: local #1
+104: 3L
+105: 2L
+106: [] := (1) #
+SetGlobalProperty("Weather", wstuff);
+107: "Weather"
+108: local #1
+109: Func(2,1): SetGlobalProperty
+110: #
+DawnTransition(wstuff);
+111: local #1
+112: makelocal
+113: jmp userfunc @216
+114: #
+115: goto176
+elseif((time >=(length - transtime)) &&(time < length))
+116: local #0
+117: global #0
+118: global #1
+119: -
+120: >=
+121: local #0
+122: global #0
+123: <
+124: &&
+125: if false goto 146
+SetGlobalProperty("day", 2);
+126: "day"
+127: 2L
+128: Func(2,1): SetGlobalProperty
+129: #
+wstuff := GetGlobalProperty("Weather");
+130: "Weather"
+131: Func(2,2): GetGlobalProperty
+132: local1 := 
+wstuff[3] := 2;
+133: local #1
+134: 3L
+135: 2L
+136: [] := (1) #
+SetGlobalProperty("Weather", wstuff);
+137: "Weather"
+138: local #1
+139: Func(2,1): SetGlobalProperty
+140: #
+DuskTransition(wstuff);
+141: local #1
+142: makelocal
+143: jmp userfunc @338
+144: #
+145: goto176
+wstuff := GetGlobalProperty("Weather");
+146: "Weather"
+147: Func(2,2): GetGlobalProperty
+148: local1 := 
+DoMoons(wstuff);
+149: local #1
+150: makelocal
+151: jmp userfunc @271
+152: #
+ChangeMoonlightSet(wstuff);
+153: local #1
+154: makelocal
+155: jmp userfunc @179
+156: #
+SetRegionLightLevel( "Background", wstuff[4]);
+157: "Background"
+158: local #1
+159: 4L
+160: [] 1
+161: Func(2,3): SetRegionLightLevel
+162: #
+wstuff[6] := wstuff[4];
+163: local #1
+164: 6L
+165: local #1
+166: 4L
+167: [] 1
+168: [] := (1) #
+SetGlobalProperty("Weather", wstuff);
+169: "Weather"
+170: local #1
+171: Func(2,1): SetGlobalProperty
+172: #
+sleep(transtime);
+173: global #1
+174: Func(3,1): sleep
+175: #
+176: goto49
+177: leave block(2)
+178: progend
+C:\pol2\pkg\systems\daynight\moonlight.inc, Line 23
+function ChangeMoonLightSet(wstuff)
+179: pop param 'wstuff'
+var tlight := FindLight(wstuff[2]);
+180: decl local #1
+181: local #0
+182: 2L
+183: [] 1
+184: makelocal
+185: jmp userfunc @393
+186: :=
+187: #
+var flight := FindLight(wstuff[1]);
+188: decl local #2
+189: local #0
+190: 1L
+191: [] 1
+192: makelocal
+193: jmp userfunc @393
+194: :=
+195: #
+var mlight := (tlight + flight);
+196: decl local #3
+197: local #1
+198: local #2
+199: +
+200: :=
+201: #
+var moonlight := (mlight / 2);
+202: decl local #4
+203: local #3
+204: 2L
+205: /
+206: :=
+207: #
+wstuff[5] := (18 - moonlight);
+208: local #0
+209: 5L
+210: 18L
+211: local #4
+212: -
+213: [] := (1) #
+214: 0L
+215: return
+C:\pol2\pkg\systems\daynight\moonlight.inc, Line 46
+function DawnTransition(wstuff)
+216: pop param 'wstuff'
+var dlight := wstuff[4];
+217: decl local #1
+218: local #0
+219: 4L
+220: [] 1
+221: :=
+222: #
+var mlight := wstuff[5];
+223: decl local #2
+224: local #0
+225: 5L
+226: [] 1
+227: :=
+228: #
+var inter_level_time := (CInt(transtime / (mlight - dlight)));
+229: decl local #3
+230: global #1
+231: local #2
+232: local #1
+233: -
+234: /
+235: Func(0,0): CInt
+236: :=
+237: #
+var lightamt := mlight;
+238: decl local #4
+239: local #2
+240: :=
+241: #
+while( lightamt >= dlight )
+242: local #4
+243: local #1
+244: >=
+245: if false goto 269
+wstuff := GetGlobalProperty("Weather");
+246: "Weather"
+247: Func(2,2): GetGlobalProperty
+248: local0 := 
+lightamt := lightamt - 1;
+249: local #4
+250: 1L
+251: -
+252: local4 := 
+SetRegionLightLevel("Background", lightamt);
+253: "Background"
+254: local #4
+255: Func(2,3): SetRegionLightLevel
+256: #
+wstuff[6] := lightamt;
+257: local #0
+258: 6L
+259: local #4
+260: [] := (1) #
+SetGlobalProperty("Weather", wstuff);
+261: "Weather"
+262: local #0
+263: Func(2,1): SetGlobalProperty
+264: #
+sleep(inter_level_time);
+265: local #3
+266: Func(3,1): sleep
+267: #
+268: goto242
+269: 0L
+270: return
+C:\pol2\pkg\systems\daynight\moonlight.inc, Line 1
+function DoMoons(wstuff)
+271: pop param 'wstuff'
+var fphase := wstuff[1];
+272: decl local #1
+273: local #0
+274: 1L
+275: [] 1
+276: :=
+277: #
+var tphase := wstuff[2];
+278: decl local #2
+279: local #0
+280: 2L
+281: [] 1
+282: :=
+283: #
+var season := wstuff[8];
+284: decl local #3
+285: local #0
+286: 8L
+287: [] 1
+288: :=
+289: #
+fphase := fphase + 1;
+290: local #1
+291: 1L
+292: +
+293: local1 := 
+if (fphase == 8)
+294: local #1
+295: 8L
+296: ==
+297: if false goto 304
+fphase := 0;
+298: 0L
+299: local1 := 
+tphase := tphase +1;
+300: local #2
+301: 1L
+302: +
+303: local2 := 
+wstuff[1] := fphase;
+304: local #0
+305: 1L
+306: local #1
+307: [] := (1) #
+if (tphase == 8)
+308: local #2
+309: 8L
+310: ==
+311: if false goto 336
+tphase := 0;
+312: 0L
+313: local2 := 
+season := season + 1;
+314: local #3
+315: 1L
+316: +
+317: local3 := 
+if (season == 4)
+318: local #3
+319: 4L
+320: ==
+321: if false goto 324
+season := 0;
+322: 0L
+323: local3 := 
+wstuff[2] := tphase;
+324: local #0
+325: 2L
+326: local #2
+327: [] := (1) #
+wstuff[8] := season;
+328: local #0
+329: 8L
+330: local #3
+331: [] := (1) #
+SetGlobalProperty("Weather", wstuff);
+332: "Weather"
+333: local #0
+334: Func(2,1): SetGlobalProperty
+335: #
+336: 0L
+337: return
+C:\pol2\pkg\systems\daynight\moonlight.inc, Line 31
+function DuskTransition(wstuff)
+338: pop param 'wstuff'
+var dlight := wstuff[4];
+339: decl local #1
+340: local #0
+341: 4L
+342: [] 1
+343: :=
+344: #
+var mlight := wstuff[5];
+345: decl local #2
+346: local #0
+347: 5L
+348: [] 1
+349: :=
+350: #
+var inter_level_time := (CInt(transtime / (mlight - dlight)));
+351: decl local #3
+352: global #1
+353: local #2
+354: local #1
+355: -
+356: /
+357: Func(0,0): CInt
+358: :=
+359: #
+var lightamt := dlight;
+360: decl local #4
+361: local #1
+362: :=
+363: #
+while( lightamt <= mlight )
+364: local #4
+365: local #2
+366: <=
+367: if false goto 391
+wstuff := GetGlobalProperty("Weather");
+368: "Weather"
+369: Func(2,2): GetGlobalProperty
+370: local0 := 
+lightamt := lightamt + 1;
+371: local #4
+372: 1L
+373: +
+374: local4 := 
+SetRegionLightLevel("Background", lightamt);
+375: "Background"
+376: local #4
+377: Func(2,3): SetRegionLightLevel
+378: #
+wstuff[6] := lightamt;
+379: local #0
+380: 6L
+381: local #4
+382: [] := (1) #
+SetGlobalProperty("Weather", wstuff);
+383: "Weather"
+384: local #0
+385: Func(2,1): SetGlobalProperty
+386: #
+sleep(inter_level_time);
+387: local #3
+388: Func(3,1): sleep
+389: #
+390: goto364
+391: 0L
+392: return
+C:\pol2\pkg\systems\daynight\moonlight.inc, Line 61
+function FindLight(phase)
+393: pop param 'phase'
+case(phase)
+394: local #0
+395: casejmp
+	0: @396
+	1: @399
+	2: @402
+	3: @405
+	4: @408
+	5: @411
+	6: @414
+	7: @417
+	default: @419
+return 0;
+396: 0L
+397: return
+398: goto419
+return 1;
+399: 1L
+400: return
+401: goto419
+return 2;
+402: 2L
+403: return
+404: goto419
+return 3;
+405: 3L
+406: return
+407: goto419
+return 4;
+408: 4L
+409: return
+410: goto419
+return 3;
+411: 3L
+412: return
+413: goto419
+return 2;
+414: 2L
+415: return
+416: goto419
+return 1;
+417: 1L
+418: return
+419: 0L
+420: return
+C:/pol2/scripts/include/clock.inc, Line 24
+function GetDayLength()
+var cfg := ReadConfigFile( "::days" );
+421: decl local #0
+422: "::days"
+423: Func(4,0): ReadConfigFile
+424: :=
+425: #
+var elem := FindConfigElem( cfg, "WholeDay" );
+426: decl local #1
+427: local #0
+428: "WholeDay"
+429: Func(4,1): FindConfigElem
+430: :=
+431: #
+var length := GetConfigInt( elem, "Length" );
+432: decl local #2
+433: local #1
+434: "Length"
+435: Func(4,2): GetConfigInt
+436: :=
+437: #
+return length;
+438: local #2
+439: return
+C:/pol2/scripts/include/clock.inc, Line 5
+function GetTime()
+var cfg := ReadConfigFile( "::days" );
+440: decl local #0
+441: "::days"
+442: Func(4,0): ReadConfigFile
+443: :=
+444: #
+var elem := FindConfigElem( cfg, "WholeDay" );
+445: decl local #1
+446: local #0
+447: "WholeDay"
+448: Func(4,1): FindConfigElem
+449: :=
+450: #
+var length := GetConfigInt( elem, "Length" );
+451: decl local #2
+452: local #1
+453: "Length"
+454: Func(4,2): GetConfigInt
+455: :=
+456: #
+var day_length := (60 * length);
+457: decl local #3
+458: 60L
+459: local #2
+460: *
+461: :=
+462: #
+var x := ReadGameClock();
+463: decl local #4
+464: Func(2,0): ReadGameClock
+465: :=
+466: #
+var bigpart := x / day_length;
+467: decl local #5
+468: local #4
+469: local #3
+470: /
+471: :=
+472: #
+var smallpart := bigpart * day_length;
+473: decl local #6
+474: local #5
+475: local #3
+476: *
+477: :=
+478: #
+x := (x - smallpart);
+479: local #4
+480: local #6
+481: -
+482: local4 := 
+return ( x );
+483: local #4
+484: return

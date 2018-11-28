@@ -1,0 +1,29 @@
+use os;
+use uo;
+use cfgfile;
+use util;
+use basic;
+
+include "../pkg/foundations/gumps/gumps";
+include "../pkg/items/guildstone/guildData";
+
+
+
+program gss(who)
+
+var targ:=Target(who);
+
+if(!targ)
+SendSysMessage(who,"Cancelado!");
+endif
+
+var id:=GetObjProperty(targ, "guild_id");
+
+var guilda:=FindGuild( id );
+
+guilda.eraseprop("movetime");
+guilda.eraseprop("nametime");
+
+SendSysMessage(who,"Nome: " +guilda.name);
+
+endprogram

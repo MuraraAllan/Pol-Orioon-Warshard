@@ -1,0 +1,19 @@
+//estraga um pouco da planta kuando se anda nela!
+//verssaum 1.0
+//Plug
+//ICQ: 35165523
+//xxx@sercomtel.com.br
+
+use uo;
+
+program anda(who, planta)
+var dono := GetObjProperty(planta, "dono");
+var kuantos := GetObjProperty(planta, "kuantos");
+if (Cint(dono) != Cint(who.serial))
+who.SetCriminal(1);
+endif
+if (kuantos >= 1)
+SetObjProperty(planta, "kuantos", (Cint(kuantos) - Cint(1)));
+SendSysMessage(who, "Voce machuca um pouco a planta...",9,90);
+endif
+endprogram

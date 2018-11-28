@@ -1,0 +1,169 @@
+use uo;
+use os;
+include "../pkg/foundations/gumps/gumps";
+
+program abc (who)
+var bp:=0;
+var bm:=0;
+var ss:=0;
+var sa:=0;
+var mr:=0;
+var ns:=0;
+var gs:=0;
+var gl:=0;
+var cor;
+var potheal:=0;
+var potmana:=0;
+var potstam:=0;
+
+var milhos:=0;
+//Foreach para listar items da bag ;]
+foreach item in enumerateitemsincontainer(who.backpack)
+
+if(item.graphic == 3962) ///bp
+bp:=bp+item.amount;
+elseif(item.graphic == 3963) ///bm
+bm:=bm+item.amount;
+elseif(item.graphic == 3981) ///ss
+ss:=ss+item.amount;
+elseif(item.graphic == 3980) ///sa
+sa:=sa+item.amount;
+elseif(item.graphic == 3974) ///mr
+mr:=mr+item.amount;
+elseif(item.graphic == 3976) //ns
+ns:=ns+item.amount;
+elseif(item.graphic == 3973) ///gs
+gs:=gs+item.amount;
+elseif(item.graphic == 3972) ///gl
+gl:=gl+item.amount;
+
+elseif(item.graphic == 3852) ///POT GH
+potheal:=potheal+1;
+elseif(item.graphic == 3625) ///POT MANA
+potmana:=potmana+1;
+elseif(item.graphic == 3851) ///POT STAM
+potstam:=potstam+1;
+
+elseif(item.graphic == 3202) ///Milhos
+milhos:=milhos+item.amount;
+endif
+
+endforeach
+
+if(GetObjProperty(who, "auxgumpRESOLUCAO") == "640x480")
+  GFInitGump( 0 , 485 );
+elseif(GetObjProperty(who, "auxgumpRESOLUCAO") == "800x600")
+  GFInitGump( 0 , 605 );
+else
+  GFInitGump( 0 , 485 );
+endif
+  GFNoMove();
+  GFNoClose();
+//  GFResizePic(0, 0, 0x23F0, 642, 50);
+
+//botões
+//  var options:=GFButtonID( 600, 5, 0x25ff, 0x2600, 1);
+
+
+
+//desenhos
+ //reags
+//  GFTilePic(1,5, 3962); 	//bp
+//  GFTilePic(71,5, 3963);	//bm
+//  GFTilePic(141,5, 3981);	//ss
+//  GFTilePic(211,5, 3980);	//sa
+//  GFTilePic(281,5, 3974);	//mr
+//  GFTilePic(351,5, 3976);	//ns
+//  GFTilePic(421,5, 3973);	//gs
+//  GFTilePic(491,5, 3972);	//gl
+ //poções
+//  GFTilePic(10,24 , 3852);	//gh
+//  GFTilePic(100,26, 3625);	//mana
+//  GFTilePic(190,24, 3851);	//stam
+ //comida
+//  GFTilePic(280,28, 3202);	//milho
+
+//text das quantias 
+ //reags
+  cor:=setarcor(bp);
+  GFTextLine(30, 0,  cor, Cint(bp)); //bp
+  cor:=setarcor(bm);
+  GFTextLine(108, 0, cor, Cint(bm)); //bm
+  cor:=setarcor(ss);
+  GFTextLine(168, 0, cor, Cint(ss)); //ss
+  cor:=setarcor(sa);
+  GFTextLine(250, 0, cor, Cint(sa)); //sa
+  cor:=setarcor(mr);
+  GFTextLine(313, 0, cor, Cint(mr)); //mr
+  cor:=setarcor(ns);
+  GFTextLine(388, 0, cor, Cint(ns)); //ns
+  cor:=setarcor(gs);
+  GFTextLine(456, 0, cor, Cint(gs)); //gs
+  cor:=setarcor(gl);
+  GFTextLine(521, 0, cor, Cint(gl)); //gl
+ //poções
+  cor:=setarcor(potheal);
+  GFTextLine(47, 25,  cor, Cint(potheal)); //pot heal
+  cor:=setarcor(potmana);
+  GFTextLine(133, 25, cor, Cint(potmana)); //pot mana
+  cor:=setarcor(potstam);
+  GFTextLine(231, 25, cor, Cint(potstam)); //pot stam
+ //comida
+  cor:=setarcor(milhos);
+  GFTextLine(325, 25, cor, Cint(milhos)); //milho
+
+ 
+  var res := GFSendGump(who);
+
+//if(res[options.keyid]) 
+//start_script("auxgump/auxgumpopenopcoes", who);
+//endif
+endprogram
+
+function setarcor(i);
+if(i <= 4);
+return 33;
+else
+return 1153;
+endif
+endfunction
+
+function gumpopcoes(who);
+if(!GetObjProperty(who, "auxgumpRESOLUCAO"))
+SetObjProperty(who, "auxgumpRESOLUCAO", CStr("640x480"));
+endif
+
+  GFInitGump( 250 , 100 );
+  GFNoClose();
+  GFNoMove();
+  GFResizePic(50, 5, 2600, 265, 230);
+  GFTextLine( 120 , 20, 1153 , "Menu de Opções" );
+  var ok := GFButtonID( 155, 185, 2130, 2129, 1);
+
+if(GetObjProperty(who, "auxgumpRESOLUCAO") == "640x480")
+  GFRadioButton(145, 50, 0xd2, 0xd3, 1, 2);
+else
+  GFRadioButton(145, 50, 0xd2, 0xd3, 0, 2);
+endif
+if(GetObjProperty(who, "auxgumpRESOLUCAO") == "800x600")
+  GFRadioButton(220, 50, 0xd2, 0xd3, 1, 4);
+else
+  GFRadioButton(220, 50, 0xd2, 0xd3, 0, 4);
+endif
+ 
+  GFTextLine(70, 50, 33 , "Resolução:"); 
+  GFTextLine(169, 50, 1153 , "640"); 
+  GFTextLine(241, 50, 1153 , "800"); 
+ 
+  var res := GFSendGump(who);
+
+if(res[ok.keyid]) 
+foreach a in (res.keys)
+case(a)
+2: SetObjProperty(who, "auxgumpRESOLUCAO", CStr("640x480"));
+4: SetObjProperty(who, "auxgumpRESOLUCAO", CStr("800x600"));
+endcase
+endforeach
+endif
+
+endfunction

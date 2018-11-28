@@ -1,0 +1,25 @@
+use uo;
+use os;
+
+
+include "include/client";
+include "include/res";
+include "include/client";
+include "include/resPenalty";
+
+
+program res(who, alvo)
+sendsysmessage(who,"Quem voce deseja reviver?",0x9,90);
+  var player := Target(who);
+  if(!player.dead)
+    SendSysMessage(who, "O individuo nao esta morto!",0,60);
+    return 0;
+  else
+   Resurrect( player );
+   SendSysMessage(who, "Revivendo..",9,47);
+  SetHp(player, GetMaxHp(player));
+  SetMana(player, GetMaxMana(player));
+  SetStamina(player, GetMaxStamina(player));
+  SendSysMessage(player, "Voce foi ressucitado!",0,24);
+  endif
+endprogram

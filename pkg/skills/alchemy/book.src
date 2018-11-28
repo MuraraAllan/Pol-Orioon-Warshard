@@ -1,0 +1,1119 @@
+use os;
+use uo;
+use util;
+
+include "drinkPotion";
+include "include/canAccess";
+include "include/attributes";
+include "../pkg/foundations/gumps/gumps";
+
+const REAGENT_START := 0x0f78;
+const REAGENT_STOP := 0x0f91;
+const SOUND_EFFECT_GRIND := 0x243;
+const SOUND_EFFECT_POUR := 0x241;
+const SOUND_EFFECT_BUBBLE :=  0x4f;
+const UOBJECT_EMPTY_BOTTLE := 0x0f0e;
+
+
+program ar_color(who, account, item)
+
+
+var book := FindReags(who, 0x1950);
+book.movable := 0;
+bookkk(who, item); 
+
+endprogram
+
+
+
+function bookkk(who, item)
+
+ 
+GFInitGump( 40 , 40 );
+
+var book := FindReags(who, 0x1950);
+
+  GFNoMove();
+  GFResizePic(50, 5, 0x167, 430, 250);
+  GFTextLine( 110 , 20, 1153 , "Systema De Alchemy (#sysco)" );
+
+  var bt2 := GFButtonID( 55, 55, 0x04b9, 0x04b9, 1);
+  var bt3 := GFButtonID( 55, 85, 0x04b9, 0x04b9, 1);
+  var bt4 := GFButtonID( 55, 115,0x04b9, 0x04b9, 1);
+  var bt5 := GFButtonID( 55, 145,0x04b9, 0x04b9, 1);
+  var bt6 := GFButtonID( 55, 175,0x04b9, 0x04b9, 1);
+  var bt13 := GFButtonID( 55, 205,0x04b9, 0x04b9, 1);
+  ////var bt14 := GFButtonID( 55, 235,0x04b9, 0x04b9, 1);
+
+
+  var bt7 := GFButtonID( 270, 55,0x04b9, 0x04b9, 1);
+  var bt8 := GFButtonID( 270, 85,0x04b9, 0x04b9, 1);
+  var bt9 := GFButtonID( 270, 115,0x04b9, 0x04b9, 1);
+  var cancel := GFButtonID(270, 150, 0xf3, 0xf2, 1);
+  
+
+  GFTextLine(80, 50, 1154, "Pocoes De Heal"); 
+  GFTextLine(80, 80, 1154, "Pocoes De Mana"); 
+  GFTextLine(80, 110, 1154,"Pocoes De Dextreza"); 
+  GFTextLine(80, 140, 1154,"Pocoes De Forca"); 
+  GFTextLine(80, 170, 1154,"Pocoes De Cura"); 
+  GFTextLine(80, 200, 1154,"Pocoes De Veneno"); 
+///  GFTextLine(80, 230, 1154,"Pocoes De Protecao"); 
+
+  GFTextLine(300, 50, 1154, "Pocao De Invisibilidade");
+  GFTextLine(300, 80, 1154, "Pocoes De Revigoracao"); 
+  GFTextLine(300, 110, 1154,"Pocoes De Inteligencia"); 
+
+ var res := GFSendGump(who);
+
+if((res[cancel.keyid]) || (!res))
+sendsysmessage(who, "Cancelado");
+book.movable := 1;
+return;
+endif
+
+if(res[bt2.keyid])
+healbook(who);
+endif
+
+if(res[bt3.keyid])
+manapotion(who);
+endif
+
+
+endfunction
+
+
+///////////funcao pot de heal//////////////////
+function healbook(who)
+
+
+var dificuldade;
+var book := FindReags(who, 0x1950);
+var mortero := FindReags(who, 0x0e9b);
+var garrafavazia := FindReags(who, 3854);
+var reags2 := FindReags(who, 3960);
+var reags3 := FindReags(who, 3973);  
+ 
+
+  var diff := CInt(GetEffectiveSkill(who, SKILLID_ALCHEMY));
+
+GFInitGump( 40 , 40 );
+
+  GFNoMove();
+  GFResizePic(50, 5, 5120, 430, 250);
+  GFTextLine( 110 , 20, 1153 , "Systema De Alchemy (#sysco)" );
+  var bt2 := GFButtonID( 55, 55, 0x04b9, 0x04b9, 1);
+  var bt3 := GFButtonID( 55, 85, 0x04b9, 0x04b9, 1);
+  var bt4 := GFButtonID( 55, 115, 0x04b9, 0x04b9, 1);
+
+
+
+  GFTextLine(80, 50, 1154, "Pocao De Heal Forte(8 ginsengs e 2 batwings)"); 
+  GFTextLine(80, 80, 1154, "Pocao De Heal Normal(4 ginsengs)"); 
+  GFTextLine(80, 110, 1154,"Pocao De Heal Fraco(2 ginsengs)"); 
+ 
+
+  var cancel := GFButtonID(200, 155, 0xf3, 0xf2, 1);
+
+ var res := GFSendGump(who);
+
+if((res[cancel.keyid]) || (!res))
+sendsysmessage(who, "Cancelado");
+book.movable := 1;
+return;
+endif
+
+if(res[bt2.keyid])
+var quantidade := SendTextEntryGump( who, "Quantas pocoes de heal forte deseja fazer ??? ", TE_CANCEL_ENABLE, TE_STYLE_NORMAL);;
+if(!quantidade)
+sendsysmessage(who, "Cancelado");
+book.movable := 1;
+reags3.movable := 1;
+garrafavazia.movable := 1;
+mortero.movable := 1;
+return;
+endif
+if((cint(quantidade) == 0))
+sendsysmessage(who, "Voce deve selecionar um valor acima de 0",9,89);
+book.movable := 1;
+reags2.movable := 1;
+reags3.movable := 1;
+garrafavazia.movable := 1;
+mortero.movable := 1;
+return;
+endif
+if(cint(quantidade) > 10)
+sendsysmessage(who, "Voce apenas pode fazer 10 pocoes ou menos por vez",9,89);
+book.movable := 1;
+reags2.movable := 1;
+reags3.movable := 1;
+garrafavazia.movable := 1;
+mortero.movable := 1;
+return;
+endif
+if(cint(quantidade) <= 10)
+setobjproperty(who, "pocoesparafazer", cint(quantidade));
+endif
+
+     dificuldade :=   75;   
+while(cint(getobjproperty(who, "pocoesparafazer") >= 1))
+
+
+
+
+
+var morteropilao:= FindRegs(who, 0x0e9b);
+
+morteropilao.movable := 0;
+if((cint(morteropilao == 0)))
+sendsysmessage(who, "Voce precisa ter um morteiro com pilao para poder misturar os reagentes",9,89);
+book.movable := 1;
+reags2.movable := 1;
+reags3.movable := 1;
+garrafavazia.movable := 1;
+mortero.movable := 1;
+return;
+endif
+var reg := FindRegs(who, 3960);
+var ginseng := FindRegs(who, 3973);
+if((reg < 2) || (ginseng < 8))
+sendsysmessage(who, "voce nao tem reagentes suficientes");
+book.movable := 1;
+reags2.movable := 1;
+reags3.movable := 1;
+garrafavazia.movable := 1;
+mortero.movable := 1;
+return;
+endif
+
+
+cint(SubtractAmount(reags2, 2));
+cint(SubtractAmount(reags3, 8));
+reags2.movable := 0;
+reags3.movable := 0;
+garrafavazia.movable := 0;
+mortero.movable := 0;
+
+var xx := who.x;
+var xy := who.y;
+printtextabove(who, "Voce Mistura Os Reagentes");
+PlaySoundEffect(who, SOUND_EFFECT_GRIND);
+sleep(3);
+printtextabove(who, "Voce Mistura Os Reagentes");
+PlaySoundEffect(who, SOUND_EFFECT_GRIND);
+sleep(3);
+printtextabove(who, "Voce Mistura Os Reagentes");
+PlaySoundEffect(who, SOUND_EFFECT_GRIND);
+sleep(3);
+printtextabove(who, "Voce Mistura Os Reagentes");
+PlaySoundEffect(who, SOUND_EFFECT_GRIND);
+sleep(3);
+
+
+var regg:= FindRegs(who, 3854);
+if((cint(regg == 0)))
+sendsysmessage(who, "Voce nao tem garrafas vazias em sua mochila",9,89);
+book.movable := 1;
+reags2.movable := 1;
+reags3.movable := 1;
+garrafavazia.movable := 1;
+mortero.movable := 1;
+return;
+endif
+
+
+if ((RandomInt(30) + dificuldade) >= diff)
+var chance := randomdiceroll("1d10");
+if(chance <= 5)
+sleepms(250);
+printtextabove(who, "Voce Joga Fora A Mistura Inutil");
+PlaySoundEffect(who, SOUND_EFFECT_POUR);
+book.movable := 1;
+reags2.movable := 1;
+reags3.movable := 1;
+garrafavazia.movable := 1;
+mortero.movable := 1;
+break;
+elseif((chance >= 6))
+printtextabove(who, "A Mistura Fica Instavel E Explode");
+PlayObjectCenteredEffect( who, FX_EXPLODE_3, 5, 1 );
+PlaySoundEffect(who, SFX_SPELL_EXPLOSION );
+ApplyRawDamage(who, 45 );
+book.movable := 1;
+reags2.movable := 1;
+reags3.movable := 1;
+garrafavazia.movable := 1;
+mortero.movable := 1;
+return;
+endif
+endif
+ 
+cint(SubtractAmount(garrafavazia, 1));
+Sendsysmessage(who, "Voce Faz a Pocao e coloca em sua mochila",9,89);
+PlaySoundEffect(who, SOUND_EFFECT_POUR);	
+CreateItemInBackpack(who, 0xDC03, 1 );
+setobjproperty(who, "pocoesparafazer", cint(getobjproperty(who, "pocoesparafazer"))-1);
+if((who.x != xx) || (who.y != xy))
+return;
+book.movable := 1;
+reags2.movable := 1;
+reags3.movable := 1;
+garrafavazia.movable := 1;
+mortero.movable := 1;
+endif
+sleep(2);
+endwhile
+book.movable := 1;
+reags2.movable := 1;
+reags3.movable := 1;
+garrafavazia.movable := 1;
+mortero.movable := 1;
+endif
+
+
+
+////////////inicio pot heal normal//////////////////////
+if(res[bt3.keyid])
+var quantidade := SendTextEntryGump( who, "Quantas pocoes de heal normal deseja fazer ??? ", TE_CANCEL_ENABLE, TE_STYLE_NORMAL);;
+if(!quantidade)
+sendsysmessage(who, "Cancelado");
+book.movable := 1;
+reags3.movable := 1;
+garrafavazia.movable := 1;
+mortero.movable := 1;
+return;
+endif
+
+if((cint(quantidade) == 0))
+sendsysmessage(who, "Voce deve selecionar um valor acima de 0",9,89);
+book.movable := 1;
+reags3.movable := 1;
+garrafavazia.movable := 1;
+mortero.movable := 1;
+return;
+endif
+if(cint(quantidade) > 10)
+sendsysmessage(who, "Voce apenas pode fazer 10 pocoes ou menos por vez",9,89);
+book.movable := 1;
+reags2.movable := 1;
+reags3.movable := 1;
+garrafavazia.movable := 1;
+mortero.movable := 1;
+return;
+endif
+if(cint(quantidade) <= 10)
+setobjproperty(who, "pocoesparafazer", cint(quantidade));
+endif
+
+     dificuldade :=   45;   
+while(cint(getobjproperty(who, "pocoesparafazer") >= 1))
+
+
+
+
+
+var morteropilao:= FindRegs(who, 0x0e9b);
+
+morteropilao.movable := 0;
+if((cint(morteropilao == 0)))
+sendsysmessage(who, "Voce precisa ter um morteiro com pilao para poder misturar os reagentes",9,89);
+book.movable := 1;
+
+reags3.movable := 1;
+garrafavazia.movable := 1;
+mortero.movable := 1;
+return;
+endif
+var ginseng := FindRegs(who, 3973);
+if((ginseng < 4))
+sendsysmessage(who, "voce nao tem reagentes suficientes");
+book.movable := 1;
+reags3.movable := 1;
+garrafavazia.movable := 1;
+mortero.movable := 1;
+return;
+endif
+
+
+cint(SubtractAmount(reags3, 4));
+reags3.movable := 0;
+garrafavazia.movable := 0;
+mortero.movable := 0;
+
+var xx := who.x;
+var xy := who.y;
+printtextabove(who, "Voce Mistura Os Reagentes");
+PlaySoundEffect(who, SOUND_EFFECT_GRIND);
+sleep(3);
+printtextabove(who, "Voce Mistura Os Reagentes");
+PlaySoundEffect(who, SOUND_EFFECT_GRIND);
+sleep(3);
+printtextabove(who, "Voce Mistura Os Reagentes");
+PlaySoundEffect(who, SOUND_EFFECT_GRIND);
+sleep(3);
+printtextabove(who, "Voce Mistura Os Reagentes");
+PlaySoundEffect(who, SOUND_EFFECT_GRIND);
+sleep(3);
+
+
+var regg:= FindRegs(who, 3854);
+if((cint(regg == 0)))
+sendsysmessage(who, "Voce nao tem garrafas vazias em sua mochila",9,89);
+book.movable := 1;
+reags3.movable := 1;
+garrafavazia.movable := 1;
+mortero.movable := 1;
+return;
+endif
+
+
+if ((RandomInt(30) + dificuldade) >= diff)
+var chance := randomdiceroll("1d10");
+if(chance <= 5)
+sleepms(250);
+printtextabove(who, "Voce Joga Fora A Mistura Inutil");
+PlaySoundEffect(who, SOUND_EFFECT_POUR);
+book.movable := 1;
+reags3.movable := 1;
+garrafavazia.movable := 1;
+mortero.movable := 1;
+break;
+elseif((chance >= 6))
+printtextabove(who, "A Mistura Fica Instavel E Explode");
+PlayObjectCenteredEffect( who, FX_EXPLODE_3, 5, 1 );
+PlaySoundEffect(who, SFX_SPELL_EXPLOSION );
+ApplyRawDamage(who, 45 );
+book.movable := 1;
+reags3.movable := 1;
+garrafavazia.movable := 1;
+mortero.movable := 1;
+return;
+endif
+endif
+ 
+cint(SubtractAmount(garrafavazia, 1));
+Sendsysmessage(who, "Voce Faz a Pocao e coloca em sua mochila",9,89);
+PlaySoundEffect(who, SOUND_EFFECT_POUR);	
+CreateItemInBackpack(who, 0xDC02, 1 );
+setobjproperty(who, "pocoesparafazer", cint(getobjproperty(who, "pocoesparafazer"))-1);
+if((who.x != xx) || (who.y != xy))
+return;
+book.movable := 1;
+reags3.movable := 1;
+garrafavazia.movable := 1;
+mortero.movable := 1;
+endif
+sleep(2);
+endwhile
+book.movable := 1;
+reags3.movable := 1;
+garrafavazia.movable := 1;
+mortero.movable := 1;
+endif
+
+//////////////////inicio pot heal fraco/////////////////
+
+if(res[bt4.keyid])
+var quantidade := SendTextEntryGump( who, "Quantas pocoes de heal fraco deseja fazer ??? ", TE_CANCEL_ENABLE, TE_STYLE_NORMAL);;
+if(!quantidade)
+sendsysmessage(who, "Cancelado");
+book.movable := 1;
+reags3.movable := 1;
+garrafavazia.movable := 1;
+mortero.movable := 1;
+return;
+endif
+
+if((cint(quantidade) == 0))
+sendsysmessage(who, "Voce deve selecionar um valor acima de 0",9,89);
+book.movable := 1;
+reags3.movable := 1;
+garrafavazia.movable := 1;
+mortero.movable := 1;
+return;
+endif
+if(cint(quantidade) > 10)
+sendsysmessage(who, "Voce apenas pode fazer 10 pocoes ou menos por vez",9,89);
+book.movable := 1;
+reags3.movable := 1;
+garrafavazia.movable := 1;
+mortero.movable := 1;
+return;
+endif
+if(cint(quantidade) <= 10)
+setobjproperty(who, "pocoesparafazer", cint(quantidade));
+endif
+
+     dificuldade :=   25;   
+while(cint(getobjproperty(who, "pocoesparafazer") >= 1))
+
+
+
+
+
+var morteropilao:= FindRegs(who, 0x0e9b);
+
+morteropilao.movable := 0;
+if((cint(morteropilao == 0)))
+sendsysmessage(who, "Voce precisa ter um morteiro com pilao para poder misturar os reagentes",9,89);
+book.movable := 1;
+
+reags3.movable := 1;
+garrafavazia.movable := 1;
+mortero.movable := 1;
+return;
+endif
+var ginseng := FindRegs(who, 3973);
+if((ginseng < 2))
+sendsysmessage(who, "voce nao tem reagentes suficientes");
+book.movable := 1;
+reags3.movable := 1;
+garrafavazia.movable := 1;
+mortero.movable := 1;
+return;
+endif
+
+
+cint(SubtractAmount(reags3, 4));
+reags3.movable := 0;
+garrafavazia.movable := 0;
+mortero.movable := 0;
+
+var xx := who.x;
+var xy := who.y;
+printtextabove(who, "Voce Mistura Os Reagentes");
+PlaySoundEffect(who, SOUND_EFFECT_GRIND);
+sleep(3);
+printtextabove(who, "Voce Mistura Os Reagentes");
+PlaySoundEffect(who, SOUND_EFFECT_GRIND);
+sleep(3);
+printtextabove(who, "Voce Mistura Os Reagentes");
+PlaySoundEffect(who, SOUND_EFFECT_GRIND);
+sleep(3);
+printtextabove(who, "Voce Mistura Os Reagentes");
+PlaySoundEffect(who, SOUND_EFFECT_GRIND);
+sleep(3);
+
+
+var regg:= FindRegs(who, 3854);
+if((cint(regg == 0)))
+sendsysmessage(who, "Voce nao tem garrafas vazias em sua mochila",9,89);
+book.movable := 1;
+reags3.movable := 1;
+garrafavazia.movable := 1;
+mortero.movable := 1;
+return;
+endif
+
+
+if ((RandomInt(30) + dificuldade) >= diff)
+var chance := randomdiceroll("1d10");
+if(chance <= 5)
+sleepms(250);
+printtextabove(who, "Voce Joga Fora A Mistura Inutil");
+PlaySoundEffect(who, SOUND_EFFECT_POUR);
+book.movable := 1;
+reags3.movable := 1;
+garrafavazia.movable := 1;
+mortero.movable := 1;
+break;
+elseif((chance >= 6))
+printtextabove(who, "A Mistura Fica Instavel E Explode");
+PlayObjectCenteredEffect( who, FX_EXPLODE_3, 5, 1 );
+PlaySoundEffect(who, SFX_SPELL_EXPLOSION );
+ApplyRawDamage(who, 45 );
+book.movable := 1;
+reags3.movable := 1;
+garrafavazia.movable := 1;
+mortero.movable := 1;
+return;
+endif
+endif
+ 
+cint(SubtractAmount(garrafavazia, 1));
+Sendsysmessage(who, "Voce Faz a Pocao e coloca em sua mochila",9,89);
+PlaySoundEffect(who, SOUND_EFFECT_POUR);	
+CreateItemInBackpack(who, 0xDC01, 1 );
+setobjproperty(who, "pocoesparafazer", cint(getobjproperty(who, "pocoesparafazer"))-1);
+if((who.x != xx) || (who.y != xy))
+return;
+book.movable := 1;
+reags3.movable := 1;
+garrafavazia.movable := 1;
+mortero.movable := 1;
+endif
+sleep(2);
+endwhile
+book.movable := 1;
+reags3.movable := 1;
+garrafavazia.movable := 1;
+mortero.movable := 1;
+endif
+
+
+endfunction
+
+
+////////////final da funcao da pot de heal///////////////
+
+
+
+
+
+
+///////////funcao pot de mana//////////////////
+function manapotion(who)
+
+
+var dificuldade;
+var book := FindReags(who, 0x1950);
+var mortero := FindReags(who, 0x0e9b);
+var garrafavazia := FindReags(who, 3854);
+var reags2 := FindReags(who, 3975);
+var reags3 := FindReags(who, 3973);  
+ 
+
+  var diff := CInt(GetEffectiveSkill(who, SKILLID_ALCHEMY));
+
+GFInitGump( 40 , 40 );
+
+  GFNoMove();
+  GFResizePic(50, 5, 5120, 430, 250);
+  GFTextLine( 110 , 20, 1153 , "Systema De Alchemy (#sysco)" );
+  var bt2 := GFButtonID( 55, 55, 0x04b9, 0x04b9, 1);
+  var bt3 := GFButtonID( 55, 85, 0x04b9, 0x04b9, 1);
+  var bt4 := GFButtonID( 55, 115, 0x04b9, 0x04b9, 1);
+
+
+
+  GFTextLine(80, 50, 1154, "Pocao De Mana Forte (10 Eyes Of Newt)"); 
+  GFTextLine(80, 80, 1154, "Pocao De Mana Normal(5 Eyes Of Newt)"); 
+  GFTextLine(80, 110, 1154,"Pocao De Heal Fraco (3 Eyes Of Newt)"); 
+ 
+
+  var cancel := GFButtonID(200, 155, 0xf3, 0xf2, 1);
+
+ var res := GFSendGump(who);
+
+if((res[cancel.keyid]) || (!res))
+sendsysmessage(who, "Cancelado");
+book.movable := 1;
+return;
+endif
+
+if(res[bt2.keyid])
+var quantidade := SendTextEntryGump( who, "Quantas pocoes de heal forte deseja fazer ??? ", TE_CANCEL_ENABLE, TE_STYLE_NORMAL);;
+if(!quantidade)
+sendsysmessage(who, "Cancelado");
+book.movable := 1;
+reags2.movable := 1;
+garrafavazia.movable := 1;
+mortero.movable := 1;
+return;
+endif
+if((cint(quantidade) == 0))
+sendsysmessage(who, "Voce deve selecionar um valor acima de 0",9,89);
+book.movable := 1;
+reags2.movable := 1;
+garrafavazia.movable := 1;
+mortero.movable := 1;
+return;
+endif
+if(cint(quantidade) > 10)
+sendsysmessage(who, "Voce apenas pode fazer 10 pocoes ou menos por vez",9,89);
+book.movable := 1;
+reags2.movable := 1;
+garrafavazia.movable := 1;
+mortero.movable := 1;
+return;
+endif
+if(cint(quantidade) <= 10)
+setobjproperty(who, "pocoesparafazer", cint(quantidade));
+endif
+
+     dificuldade :=   75;   
+while(cint(getobjproperty(who, "pocoesparafazer") >= 1))
+
+
+
+
+
+var morteropilao:= FindRegs(who, 0x0e9b);
+
+morteropilao.movable := 0;
+if((cint(morteropilao == 0)))
+sendsysmessage(who, "Voce precisa ter um morteiro com pilao para poder misturar os reagentes",9,89);
+book.movable := 1;
+reags2.movable := 1;
+reags3.movable := 1;
+garrafavazia.movable := 1;
+mortero.movable := 1;
+return;
+endif
+var reg := FindRegs(who, 3975);
+var ginseng := FindRegs(who, 3973);
+if((reg < 10))
+sendsysmessage(who, "voce nao tem reagentes suficientes");
+book.movable := 1;
+reags2.movable := 1;
+garrafavazia.movable := 1;
+mortero.movable := 1;
+return;
+endif
+
+
+cint(SubtractAmount(reags2, 10));
+reags2.movable := 0;
+garrafavazia.movable := 0;
+mortero.movable := 0;
+
+var xx := who.x;
+var xy := who.y;
+printtextabove(who, "Voce Mistura Os Reagentes");
+PlaySoundEffect(who, SOUND_EFFECT_GRIND);
+sleep(3);
+printtextabove(who, "Voce Mistura Os Reagentes");
+PlaySoundEffect(who, SOUND_EFFECT_GRIND);
+sleep(3);
+printtextabove(who, "Voce Mistura Os Reagentes");
+PlaySoundEffect(who, SOUND_EFFECT_GRIND);
+sleep(3);
+printtextabove(who, "Voce Mistura Os Reagentes");
+PlaySoundEffect(who, SOUND_EFFECT_GRIND);
+sleep(3);
+
+
+var regg:= FindRegs(who, 3854);
+if((cint(regg == 0)))
+sendsysmessage(who, "Voce nao tem garrafas vazias em sua mochila",9,89);
+book.movable := 1;
+reags2.movable := 1;
+reags3.movable := 1;
+garrafavazia.movable := 1;
+mortero.movable := 1;
+return;
+endif
+
+
+if ((RandomInt(30) + dificuldade) >= diff)
+var chance := randomdiceroll("1d10");
+if(chance <= 5)
+sleepms(250);
+printtextabove(who, "Voce Joga Fora A Mistura Inutil");
+PlaySoundEffect(who, SOUND_EFFECT_POUR);
+book.movable := 1;
+reags2.movable := 1;
+reags3.movable := 1;
+garrafavazia.movable := 1;
+mortero.movable := 1;
+break;
+elseif((chance >= 6))
+printtextabove(who, "A Mistura Fica Instavel E Explode");
+PlayObjectCenteredEffect( who, FX_EXPLODE_3, 5, 1 );
+PlaySoundEffect(who, SFX_SPELL_EXPLOSION );
+ApplyRawDamage(who, 45 );
+book.movable := 1;
+reags2.movable := 1;
+reags3.movable := 1;
+garrafavazia.movable := 1;
+mortero.movable := 1;
+return;
+endif
+endif
+ 
+cint(SubtractAmount(garrafavazia, 1));
+Sendsysmessage(who, "Voce Faz a Pocao e coloca em sua mochila",9,89);
+PlaySoundEffect(who, SOUND_EFFECT_POUR);	
+CreateItemInBackpack(who, 0xDC19, 1 );
+setobjproperty(who, "pocoesparafazer", cint(getobjproperty(who, "pocoesparafazer"))-1);
+if((who.x != xx) || (who.y != xy))
+return;
+book.movable := 1;
+reags2.movable := 1;
+reags3.movable := 1;
+garrafavazia.movable := 1;
+mortero.movable := 1;
+endif
+sleep(2);
+endwhile
+book.movable := 1;
+reags2.movable := 1;
+reags3.movable := 1;
+garrafavazia.movable := 1;
+mortero.movable := 1;
+endif
+
+
+
+////////////inicio pot mana normal//////////////////////
+if(res[bt3.keyid])
+var quantidade := SendTextEntryGump( who, "Quantas pocoes de heal normal deseja fazer ??? ", TE_CANCEL_ENABLE, TE_STYLE_NORMAL);;
+if(!quantidade)
+sendsysmessage(who, "Cancelado");
+book.movable := 1;
+reags3.movable := 1;
+garrafavazia.movable := 1;
+mortero.movable := 1;
+return;
+endif
+
+if((cint(quantidade) == 0))
+sendsysmessage(who, "Voce deve selecionar um valor acima de 0",9,89);
+book.movable := 1;
+reags3.movable := 1;
+garrafavazia.movable := 1;
+mortero.movable := 1;
+return;
+endif
+if(cint(quantidade) > 10)
+sendsysmessage(who, "Voce apenas pode fazer 10 pocoes ou menos por vez",9,89);
+book.movable := 1;
+reags2.movable := 1;
+reags3.movable := 1;
+garrafavazia.movable := 1;
+mortero.movable := 1;
+return;
+endif
+if(cint(quantidade) <= 10)
+setobjproperty(who, "pocoesparafazer", cint(quantidade));
+endif
+
+     dificuldade :=   45;   
+while(cint(getobjproperty(who, "pocoesparafazer") >= 1))
+
+
+
+
+
+var morteropilao:= FindRegs(who, 0x0e9b);
+
+morteropilao.movable := 0;
+if((cint(morteropilao == 0)))
+sendsysmessage(who, "Voce precisa ter um morteiro com pilao para poder misturar os reagentes",9,89);
+book.movable := 1;
+
+reags3.movable := 1;
+garrafavazia.movable := 1;
+mortero.movable := 1;
+return;
+endif
+var ginseng := FindRegs(who, 3973);
+if((ginseng < 4))
+sendsysmessage(who, "voce nao tem reagentes suficientes");
+book.movable := 1;
+reags3.movable := 1;
+garrafavazia.movable := 1;
+mortero.movable := 1;
+return;
+endif
+
+
+cint(SubtractAmount(reags3, 4));
+reags3.movable := 0;
+garrafavazia.movable := 0;
+mortero.movable := 0;
+
+var xx := who.x;
+var xy := who.y;
+printtextabove(who, "Voce Mistura Os Reagentes");
+PlaySoundEffect(who, SOUND_EFFECT_GRIND);
+sleep(3);
+printtextabove(who, "Voce Mistura Os Reagentes");
+PlaySoundEffect(who, SOUND_EFFECT_GRIND);
+sleep(3);
+printtextabove(who, "Voce Mistura Os Reagentes");
+PlaySoundEffect(who, SOUND_EFFECT_GRIND);
+sleep(3);
+printtextabove(who, "Voce Mistura Os Reagentes");
+PlaySoundEffect(who, SOUND_EFFECT_GRIND);
+sleep(3);
+
+
+var regg:= FindRegs(who, 3854);
+if((cint(regg == 0)))
+sendsysmessage(who, "Voce nao tem garrafas vazias em sua mochila",9,89);
+book.movable := 1;
+reags3.movable := 1;
+garrafavazia.movable := 1;
+mortero.movable := 1;
+return;
+endif
+
+
+if ((RandomInt(30) + dificuldade) >= diff)
+var chance := randomdiceroll("1d10");
+if(chance <= 5)
+sleepms(250);
+printtextabove(who, "Voce Joga Fora A Mistura Inutil");
+PlaySoundEffect(who, SOUND_EFFECT_POUR);
+book.movable := 1;
+reags3.movable := 1;
+garrafavazia.movable := 1;
+mortero.movable := 1;
+break;
+elseif((chance >= 6))
+printtextabove(who, "A Mistura Fica Instavel E Explode");
+PlayObjectCenteredEffect( who, FX_EXPLODE_3, 5, 1 );
+PlaySoundEffect(who, SFX_SPELL_EXPLOSION );
+ApplyRawDamage(who, 45 );
+book.movable := 1;
+reags3.movable := 1;
+garrafavazia.movable := 1;
+mortero.movable := 1;
+return;
+endif
+endif
+ 
+cint(SubtractAmount(garrafavazia, 1));
+Sendsysmessage(who, "Voce Faz a Pocao e coloca em sua mochila",9,89);
+PlaySoundEffect(who, SOUND_EFFECT_POUR);	
+CreateItemInBackpack(who, 0xDC02, 1 );
+setobjproperty(who, "pocoesparafazer", cint(getobjproperty(who, "pocoesparafazer"))-1);
+if((who.x != xx) || (who.y != xy))
+return;
+book.movable := 1;
+reags3.movable := 1;
+garrafavazia.movable := 1;
+mortero.movable := 1;
+endif
+sleep(2);
+endwhile
+book.movable := 1;
+reags3.movable := 1;
+garrafavazia.movable := 1;
+mortero.movable := 1;
+endif
+
+//////////////////inicio pot heal fraco/////////////////
+
+if(res[bt4.keyid])
+var quantidade := SendTextEntryGump( who, "Quantas pocoes de heal fraco deseja fazer ??? ", TE_CANCEL_ENABLE, TE_STYLE_NORMAL);;
+if(!quantidade)
+sendsysmessage(who, "Cancelado");
+book.movable := 1;
+reags3.movable := 1;
+garrafavazia.movable := 1;
+mortero.movable := 1;
+return;
+endif
+
+if((cint(quantidade) == 0))
+sendsysmessage(who, "Voce deve selecionar um valor acima de 0",9,89);
+book.movable := 1;
+reags3.movable := 1;
+garrafavazia.movable := 1;
+mortero.movable := 1;
+return;
+endif
+if(cint(quantidade) > 10)
+sendsysmessage(who, "Voce apenas pode fazer 10 pocoes ou menos por vez",9,89);
+book.movable := 1;
+reags3.movable := 1;
+garrafavazia.movable := 1;
+mortero.movable := 1;
+return;
+endif
+if(cint(quantidade) <= 10)
+setobjproperty(who, "pocoesparafazer", cint(quantidade));
+endif
+
+     dificuldade :=   25;   
+while(cint(getobjproperty(who, "pocoesparafazer") >= 1))
+
+
+
+
+
+var morteropilao:= FindRegs(who, 0x0e9b);
+
+morteropilao.movable := 0;
+if((cint(morteropilao == 0)))
+sendsysmessage(who, "Voce precisa ter um morteiro com pilao para poder misturar os reagentes",9,89);
+book.movable := 1;
+
+reags3.movable := 1;
+garrafavazia.movable := 1;
+mortero.movable := 1;
+return;
+endif
+var ginseng := FindRegs(who, 3973);
+if((ginseng < 2))
+sendsysmessage(who, "voce nao tem reagentes suficientes");
+book.movable := 1;
+reags3.movable := 1;
+garrafavazia.movable := 1;
+mortero.movable := 1;
+return;
+endif
+
+
+cint(SubtractAmount(reags3, 4));
+reags3.movable := 0;
+garrafavazia.movable := 0;
+mortero.movable := 0;
+
+var xx := who.x;
+var xy := who.y;
+printtextabove(who, "Voce Mistura Os Reagentes");
+PlaySoundEffect(who, SOUND_EFFECT_GRIND);
+sleep(3);
+printtextabove(who, "Voce Mistura Os Reagentes");
+PlaySoundEffect(who, SOUND_EFFECT_GRIND);
+sleep(3);
+printtextabove(who, "Voce Mistura Os Reagentes");
+PlaySoundEffect(who, SOUND_EFFECT_GRIND);
+sleep(3);
+printtextabove(who, "Voce Mistura Os Reagentes");
+PlaySoundEffect(who, SOUND_EFFECT_GRIND);
+sleep(3);
+
+
+var regg:= FindRegs(who, 3854);
+if((cint(regg == 0)))
+sendsysmessage(who, "Voce nao tem garrafas vazias em sua mochila",9,89);
+book.movable := 1;
+reags3.movable := 1;
+garrafavazia.movable := 1;
+mortero.movable := 1;
+return;
+endif
+
+
+if ((RandomInt(30) + dificuldade) >= diff)
+var chance := randomdiceroll("1d10");
+if(chance <= 5)
+sleepms(250);
+printtextabove(who, "Voce Joga Fora A Mistura Inutil");
+PlaySoundEffect(who, SOUND_EFFECT_POUR);
+book.movable := 1;
+reags3.movable := 1;
+garrafavazia.movable := 1;
+mortero.movable := 1;
+break;
+elseif((chance >= 6))
+printtextabove(who, "A Mistura Fica Instavel E Explode");
+PlayObjectCenteredEffect( who, FX_EXPLODE_3, 5, 1 );
+PlaySoundEffect(who, SFX_SPELL_EXPLOSION );
+ApplyRawDamage(who, 45 );
+book.movable := 1;
+reags3.movable := 1;
+garrafavazia.movable := 1;
+mortero.movable := 1;
+return;
+endif
+endif
+ 
+cint(SubtractAmount(garrafavazia, 1));
+Sendsysmessage(who, "Voce Faz a Pocao e coloca em sua mochila",9,89);
+PlaySoundEffect(who, SOUND_EFFECT_POUR);	
+CreateItemInBackpack(who, 0xDC01, 1 );
+setobjproperty(who, "pocoesparafazer", cint(getobjproperty(who, "pocoesparafazer"))-1);
+if((who.x != xx) || (who.y != xy))
+return;
+book.movable := 1;
+reags3.movable := 1;
+garrafavazia.movable := 1;
+mortero.movable := 1;
+endif
+sleep(2);
+endwhile
+book.movable := 1;
+reags3.movable := 1;
+garrafavazia.movable := 1;
+mortero.movable := 1;
+endif
+
+
+endfunction
+
+
+////////////final da funcao da pot de mana///////////////
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function FindRegs(who, type)
+  var holder := 0;
+  foreach thing in EnumerateItemsInContainer(who.backpack)
+    if(thing.objtype == type)
+      holder := thing.amount;
+      break;
+    endif
+  endforeach
+  return holder;
+endfunction
+
+function FindReags(who, type)
+  var holder := "none";
+  foreach thing in EnumerateItemsInContainer(who.backpack)
+    if(thing.objtype == type)
+      holder := thing;
+      break;
+    endif
+  endforeach
+  return holder;
+endfunction

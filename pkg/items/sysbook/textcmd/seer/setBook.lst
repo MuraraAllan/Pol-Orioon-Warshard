@@ -1,0 +1,200 @@
+C:\pol2\pkg\items\sysbook\textcmd\seer\setBook.src, Line 10
+var layout := {
+0: decl global #0
+1: array
+2: "page 0                         "
+3: +=
+4: "gumppic   0   0 2321           "
+5: +=
+6: "text    150  14    0    0      "
+7: +=
+8: "group 1                        "
+9: +=
+10: "radio    40  60 1209 1210 0 1  "
+11: +=
+12: "radio   100  60 1209 1210 0 2  "
+13: +=
+14: "radio   167  60 1209 1210 0 3  "
+15: +=
+16: "radio   220  60 1209 1210 0 4  "
+17: +=
+18: "radio    40  15 1209 1210 1 5  "
+19: +=
+20: "tilepic  48  60 4079           "
+21: +=
+22: "tilepic 108  60 4080           "
+23: +=
+24: "tilepic 175  60 4081           "
+25: +=
+26: "tilepic 230  60 4082           "
+27: +=
+28: "text     53  14    0    1      "
+29: +=
+30: "button  206 100 2128 2129 1 0 9"
+31: +=
+32: "text     52 102    0    2      "
+33: +=
+34: "text    115 102    0    3      "
+35: +=
+36: "group 2                        "
+37: +=
+38: "radio    40 105 1209 1210 1 6  "
+39: +=
+40: "radio   100 105 1209 1210 0 7  "
+41: +=
+42: :=
+43: #
+var data := {
+44: decl global #1
+45: array
+46: "Book Graphic"
+47: +=
+48: "Random"
+49: +=
+50: "R/W"
+51: +=
+52: "Read-Only"
+53: +=
+54: :=
+55: #
+C:\pol2\pkg\items\sysbook\textcmd\seer\setBook.src, Line 40
+program test(who)
+56: get arg 'who'
+var book := Target(who, TGTOPT_NOCHECK_LOS);
+57: decl local #1
+58: local #0
+59: 0L
+60: Func(2,0): Target
+61: :=
+62: #
+if(!book) return; endif
+63: local #1
+64: if true goto 67
+return; endif
+65: ""
+66: progend
+if (GetObjProperty(book,"maxpages")==16) return; endif
+67: local #1
+68: "maxpages"
+69: Func(2,1): GetObjProperty
+70: 16L
+71: ==
+72: if false goto 75
+return; endif
+73: ""
+74: progend
+var res := SendDialogGump(who, layout, data);
+75: decl local #2
+76: local #0
+77: global #0
+78: global #1
+79: Func(2,2): SendDialogGump
+80: :=
+81: #
+if(res[0] == 9)
+82: local #2
+83: 0L
+84: [] 1
+85: 9L
+86: ==
+87: if false goto 127
+foreach thing in (res.keys)
+88: local #2
+89: get member 'keys'
+90: initforeach @124
+case(thing)
+91: local #3
+92: casejmp
+	1: @93
+	2: @97
+	3: @101
+	4: @105
+	5: @109
+	6: @114
+	7: @119
+	default: @124
+book.graphic := 4079;
+93: local #1
+94: 4079L
+95: set member 'graphic' #
+96: goto124
+book.graphic := 4080;
+97: local #1
+98: 4080L
+99: set member 'graphic' #
+100: goto124
+book.graphic := 4081;
+101: local #1
+102: 4081L
+103: set member 'graphic' #
+104: goto124
+book.graphic := 4082;
+105: local #1
+106: 4082L
+107: set member 'graphic' #
+108: goto124
+RandomGraphic(book);
+109: local #1
+110: makelocal
+111: jmp userfunc @135
+112: #
+113: goto124
+EraseObjProperty(book, "NoWrite");
+114: local #1
+115: "NoWrite"
+116: Func(2,3): EraseObjProperty
+117: #
+118: goto124
+SetObjProperty(book, "NoWrite", 1);
+119: local #1
+120: "NoWrite"
+121: 1L
+122: Func(2,4): SetObjProperty
+123: #
+124: stepforeach @91
+125: leave block(3)
+126: goto133
+SendSysMessage(who, "Canceled");
+127: local #0
+128: "Canceled"
+129: 3L
+130: 1000L
+131: Func(2,5): SendSysMessage
+132: #
+133: leave block(3)
+134: progend
+C:\pol2\pkg\items\sysbook\textcmd\seer\setBook.src, Line 63
+function RandomGraphic(book)
+135: pop param 'book'
+case(RandomInt(4) + 1)
+136: 4L
+137: Func(4,0): RandomInt
+138: 1L
+139: +
+140: casejmp
+	1: @141
+	2: @145
+	3: @149
+	4: @153
+	default: @156
+book.graphic := 4079;
+141: local #0
+142: 4079L
+143: set member 'graphic' #
+144: goto156
+book.graphic := 4080;
+145: local #0
+146: 4080L
+147: set member 'graphic' #
+148: goto156
+book.graphic := 4081;
+149: local #0
+150: 4081L
+151: set member 'graphic' #
+152: goto156
+book.graphic := 4082;
+153: local #0
+154: 4082L
+155: set member 'graphic' #
+156: 0L
+157: return

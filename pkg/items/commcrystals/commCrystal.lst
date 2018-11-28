@@ -1,0 +1,328 @@
+C:\pol2\pkg\items\commcrystals\commCrystal.src, Line 8
+program use_commcrystal(who, crystal)
+const RECEIVEROBJ := 0xC002;
+0: get arg 'who'
+1: get arg 'crystal'
+var CrystalStatus := GetObjProperty(crystal, "Status");
+2: decl local #2
+3: local #1
+4: "Status"
+5: Func(2,0): GetObjProperty
+6: :=
+7: #
+var Charges := GetObjProperty(crystal, "Charges");
+8: decl local #3
+9: local #1
+10: "Charges"
+11: Func(2,0): GetObjProperty
+12: :=
+13: #
+Charges := Cint(Charges);
+14: local #3
+15: Func(0,0): CInt
+16: local3 := 
+if ( Charges <= 0 )
+17: local #3
+18: 0L
+19: <=
+20: if false goto 29
+SendSysMessage(who, "All charges have been used");
+21: local #0
+22: "All charges have been used"
+23: 3L
+24: 1000L
+25: Func(2,1): SendSysMessage
+26: #
+return;
+27: ""
+28: progend
+var LinkString := GetObjProperty(crystal, "Links");
+29: decl local #4
+30: local #1
+31: "Links"
+32: Func(2,0): GetObjProperty
+33: :=
+34: #
+var Links := Splitwords(LinkString);
+35: decl local #5
+36: local #4
+37: Func(0,1): SplitWords
+38: :=
+39: #
+var LinkCount := Len(Links);
+40: decl local #6
+41: local #5
+42: Func(0,2): len
+43: :=
+44: #
+var CrystalId := crystal.serial;
+45: decl local #7
+46: local #1
+47: get member 'serial'
+48: :=
+49: #
+var i, blank, placeholder, receiver;
+50: decl local #8
+51: #
+52: decl local #9
+53: #
+54: decl local #10
+55: #
+56: decl local #11
+57: #
+SendSysMessage(who, "Select object.");
+58: local #0
+59: "Select object."
+60: 3L
+61: 1000L
+62: Func(2,1): SendSysMessage
+63: #
+var TargetItem := target(who);
+64: decl local #12
+65: local #0
+66: 1L
+67: Func(2,2): Target
+68: :=
+69: #
+if ( (TargetItem.objtype != CRYSTALOBJ) and (TargetItem.objtype != RECEIVEROBJ)
+70: local #12
+71: get member 'objtype'
+72: 49153L
+73: <>
+74: local #12
+75: get member 'objtype'
+76: 49154L
+77: <>
+78: &&
+79: if false goto 88
+SendSysMessage(who, "That is not a communication crystal.");
+80: local #0
+81: "That is not a communication crystal."
+82: 3L
+83: 1000L
+84: Func(2,1): SendSysMessage
+85: #
+return;
+86: ""
+87: progend
+if (TargetItem.serial == crystal.serial)
+88: local #12
+89: get member 'serial'
+90: local #1
+91: get member 'serial'
+92: ==
+93: if false goto 140
+if (CrystalStatus == "OFF")
+94: local #2
+95: "OFF"
+96: ==
+97: if false goto 127
+SendSysMessage(who, "Crystal activated.  You are linked to " + (LinkCount-1) + 
+98: local #0
+99: "Crystal activated.  You are linked to "
+100: local #6
+101: 1L
+102: -
+103: +
+104: " receivers."
+105: +
+106: 3L
+107: 1000L
+108: Func(2,1): SendSysMessage
+109: #
+SetObjProperty(crystal, "Status", "ON");
+110: local #1
+111: "Status"
+112: "ON"
+113: Func(2,3): SetObjProperty
+114: #
+Charges := Charges -1;
+115: local #3
+116: 1L
+117: -
+118: local3 := 
+SetObjProperty( crystal, "Charges", Charges );
+119: local #1
+120: "Charges"
+121: local #3
+122: Func(2,3): SetObjProperty
+123: #
+return;
+124: ""
+125: progend
+126: goto140
+SendSysMessage(who, "Crystal deactivated.");
+127: local #0
+128: "Crystal deactivated."
+129: 3L
+130: 1000L
+131: Func(2,1): SendSysMessage
+132: #
+SetObjProperty(crystal, "Status", "OFF");
+133: local #1
+134: "Status"
+135: "OFF"
+136: Func(2,3): SetObjProperty
+137: #
+return;
+138: ""
+139: progend
+if (TargetItem.objtype == RECEIVEROBJ)
+140: local #12
+141: get member 'objtype'
+142: 49154L
+143: ==
+144: if false goto 268
+var Master := GetObjProperty(TargetItem, "Master");
+145: decl local #0
+146: local #12
+147: "Master"
+148: Func(2,0): GetObjProperty
+149: :=
+150: #
+Master := Cint(Master);
+151: local #13
+152: Func(0,0): CInt
+153: local13 := 
+if (Master == 0)
+154: local #13
+155: 0L
+156: ==
+157: if false goto 197
+If (LinkCount > 10)
+158: local #6
+159: 10L
+160: >
+161: if false goto 170
+SendSysMessage(who, "Too many receivers.   Aborted.");
+162: local #0
+163: "Too many receivers.   Aborted."
+164: 3L
+165: 1000L
+166: Func(2,1): SendSysMessage
+167: #
+return;
+168: ""
+169: progend
+SendSysMessage(who, "Linked.");
+170: local #0
+171: "Linked."
+172: 3L
+173: 1000L
+174: Func(2,1): SendSysMessage
+175: #
+SetObjProperty(TargetItem, "Master", CrystalId);
+176: local #12
+177: "Master"
+178: local #7
+179: Func(2,3): SetObjProperty
+180: #
+LinkString := Cstr(LinkString) + " " + Cstr(TargetItem.serial);
+181: local #4
+182: Func(0,3): CStr
+183: " "
+184: +
+185: local #12
+186: get member 'serial'
+187: Func(0,3): CStr
+188: +
+189: local4 := 
+SetObjProperty(crystal, "Links", LinkString);
+190: local #1
+191: "Links"
+192: local #4
+193: Func(2,3): SetObjProperty
+194: #
+return;
+195: ""
+196: progend
+if (Master == CrystalId)
+197: local #13
+198: local #7
+199: ==
+200: if false goto 259
+receiver := CStr(TargetItem.serial);
+201: local #12
+202: get member 'serial'
+203: Func(0,3): CStr
+204: local11 := 
+placeholder := "";
+205: ""
+206: local10 := 
+i := 1;
+207: 1L
+208: local8 := 
+LinkCount := LinkCount + 1;
+209: local #6
+210: 1L
+211: +
+212: local6 := 
+SetObjProperty(TargetItem, "Master", 0);
+213: local #12
+214: "Master"
+215: 0L
+216: Func(2,3): SetObjProperty
+217: #
+while (i < LinkCount)
+218: local #8
+219: local #6
+220: <
+221: if false goto 245
+blank := CStr(Links[i]);
+222: local #5
+223: local #8
+224: [] 1
+225: Func(0,3): CStr
+226: local9 := 
+if (blank == receiver)
+227: local #9
+228: local #11
+229: ==
+230: if false goto 234
+blank := "nothing";
+231: "nothing"
+232: local9 := 
+233: goto240
+placeholder := placeholder + " " + blank;
+234: local #10
+235: " "
+236: +
+237: local #9
+238: +
+239: local10 := 
+i := i + 1;
+240: local #8
+241: 1L
+242: +
+243: local8 := 
+244: goto218
+SetObjProperty(crystal, "Links", placeholder);
+245: local #1
+246: "Links"
+247: local #10
+248: Func(2,3): SetObjProperty
+249: #
+SendSysMessage(who, "Unlinked.");
+250: local #0
+251: "Unlinked."
+252: 3L
+253: 1000L
+254: Func(2,1): SendSysMessage
+255: #
+return;
+256: ""
+257: progend
+258: goto267
+SendSysMessage(who, "That receiver is in use.");
+259: local #0
+260: "That receiver is in use."
+261: 3L
+262: 1000L
+263: Func(2,1): SendSysMessage
+264: #
+return;
+265: ""
+266: progend
+267: leave block(1)
+268: leave block(13)
+269: progend

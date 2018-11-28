@@ -1,0 +1,40 @@
+/////////////////////////////////
+/////////////////////////////////
+///                           ///
+/// .findhouse <login>        ///
+///                           ///
+///         por din0 ;]       ///
+/////////////////////////////////
+/////////////////////////////////
+
+use uo; 
+
+program findhouse( who, acc )
+
+var procurando:= CStr(acc);
+
+if(!procurando)
+Sendsysmessage( who, "Utilize '.findhouse <login>' .");
+return;
+endif
+
+if (!FindAccount(procurando))
+Sendsysmessage( who, "A conta " +procurando+ " nao existe." );
+return;
+endif
+
+var axei;
+
+foreach casa in ListMultisInBox( who.x+(-9999),who.y+(-9999) ,who.z+(-130), who.x+9999,who.y+9999,who.z+130 )
+var acasa:= SystemFindObjectBySerial(casa.serial);
+if(GetObjProperty(acasa, "owneracct") == procurando)
+Sendsysmessage( who, "Casa da Conta: " +procurando+ ". Esta nas seguintes coordenadas: X: " +casa.x+ " Y: " +casa.y+ " Z: " +casa.z+ "." );
+axei:=1;
+endif
+endforeach
+
+if(!axei)
+Sendsysmessage( who, "A conta " +procurando+ " parece nao possuir uma casa." );
+endif
+
+endprogram

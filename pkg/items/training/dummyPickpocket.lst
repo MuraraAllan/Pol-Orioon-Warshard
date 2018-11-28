@@ -1,0 +1,128 @@
+C:\pol2\pkg\items\training\dummyPickpocket.src, Line 17
+program pickpocket_dummy( who, dummy )
+const UOBJECT_DUMMYFREEZE_NS := 0x1ec3;
+0: get arg 'who'
+1: get arg 'dummy'
+EraseObjProperty(who, "IsMeditating");
+2: local #0
+3: "IsMeditating"
+4: Func(2,0): EraseObjProperty
+5: #
+EraseObjProperty(who, "HealTimer");
+6: local #0
+7: "HealTimer"
+8: Func(2,0): EraseObjProperty
+9: #
+if( !Accessible( who, dummy ) )
+10: local #0
+11: local #1
+12: Func(2,1): Accessible
+13: if true goto 22
+SendSysMessage( who, "You can't reach that!" );
+14: local #0
+15: "You can't reach that!"
+16: 3L
+17: 1000L
+18: Func(2,2): SendSysMessage
+19: #
+return;
+20: ""
+21: progend
+if( !CheckLineOfSight( who, dummy ))
+22: local #0
+23: local #1
+24: Func(2,3): CheckLineOfSight
+25: if true goto 34
+SendSysMessage( who, "You don't have line of sight to that." );
+26: local #0
+27: "You don't have line of sight to that."
+28: 3L
+29: 1000L
+30: Func(2,2): SendSysMessage
+31: #
+return;
+32: ""
+33: progend
+if( CheckSkill( who, SKILLID_STEALING, 10, 40 ))
+34: local #0
+35: 33L
+36: 10L
+37: 40L
+38: Func(2,4): CheckSkill
+39: if false goto 54
+PlaySoundEffect( who, SFX_58 );
+40: local #0
+41: 88L
+42: Func(2,5): PlaySoundEffect
+43: #
+SendSysMessage( who, "You unnoticedly grip into the bag." );
+44: local #0
+45: "You unnoticedly grip into the bag."
+46: 3L
+47: 1000L
+48: Func(2,2): SendSysMessage
+49: #
+sleepms(3600);
+50: 3600L
+51: Func(3,0): sleepms
+52: #
+53: goto99
+set_critical(1);
+54: 1L
+55: Func(3,1): set_critical
+56: #
+PlaySoundEffect( who, SFX_41 );
+57: local #0
+58: 65L
+59: Func(2,5): PlaySoundEffect
+60: #
+SendSysMessage( who, "You foolishly grip into the bag." );
+61: local #0
+62: "You foolishly grip into the bag."
+63: 3L
+64: 1000L
+65: Func(2,2): SendSysMessage
+66: #
+if ( dummy.objtype == UOBJECT_DUMMYFREEZE_NS )
+67: local #1
+68: get member 'objtype'
+69: 7875L
+70: ==
+71: if false goto 82
+dummy.graphic := UOBJECT_DUMMYSWING_NS; // dummy swing
+72: local #1
+73: 7876L
+74: set member 'graphic' #
+sleepms(3600); // show animation for (x) ms
+75: 3600L
+76: Func(3,0): sleepms
+77: #
+dummy.graphic := UOBJECT_DUMMYFREEZE_NS; // dummy freeze
+78: local #1
+79: 7875L
+80: set member 'graphic' #
+81: goto96
+elseif ( dummy.objtype == UOBJECT_DUMMYFREEZE_EW )
+82: local #1
+83: get member 'objtype'
+84: 7872L
+85: ==
+86: if false goto 96
+dummy.graphic := UOBJECT_DUMMYSWING_EW; // dummy swing
+87: local #1
+88: 7873L
+89: set member 'graphic' #
+sleepms(3600); // show animation for (x) ms
+90: 3600L
+91: Func(3,0): sleepms
+92: #
+dummy.graphic := UOBJECT_DUMMYFREEZE_EW; // dummy freeze
+93: local #1
+94: 7872L
+95: set member 'graphic' #
+set_critical(0);
+96: 0L
+97: Func(3,1): set_critical
+98: #
+99: leave block(2)
+100: progend

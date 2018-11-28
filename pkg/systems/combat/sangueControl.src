@@ -1,0 +1,8 @@
+use uo;
+use os;
+use util;
+
+program sanguecontrol(sangue)
+  sleep(6);
+  DestroyItem(sangue);
+endprogram

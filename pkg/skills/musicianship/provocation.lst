@@ -1,0 +1,811 @@
+C:\pol2\pkg\skills\musicianship\provocation.src, Line 13
+program bard_provoke(who)
+use uo;
+0: get arg 'who'
+EraseObjProperty(who, "IsMeditating");
+1: local #0
+2: "IsMeditating"
+3: Func(2,19): EraseObjProperty
+4: #
+if(Cint(GetObjProperty(who, "LastProvoke")) > ReadGameClock())
+5: local #0
+6: "LastProvoke"
+7: Func(2,1): GetObjProperty
+8: Func(0,0): CInt
+9: Func(2,20): ReadGameClock
+10: >
+11: if false goto 20
+SendSysMessage(who, "You must wait a moment before playing again.");
+12: local #0
+13: "You must wait a moment before playing again."
+14: 3L
+15: 1000L
+16: Func(2,21): SendSysMessage
+17: #
+return;
+18: ""
+19: progend
+SetObjProperty(who, "LastProvoke", Cint(ReadGameClock() + 2));
+20: local #0
+21: "LastProvoke"
+22: Func(2,20): ReadGameClock
+23: 2L
+24: +
+25: Func(0,0): CInt
+26: Func(2,3): SetObjProperty
+27: #
+var instrument := findinstrument(who);
+28: decl local #1
+29: local #0
+30: makelocal
+31: jmp userfunc @300
+32: :=
+33: #
+if(!instrument)
+34: local #1
+35: if true goto 44
+SendSysMessage(who, "You don't have an instrument!");
+36: local #0
+37: "You don't have an instrument!"
+38: 3L
+39: 1000L
+40: Func(2,21): SendSysMessage
+41: #
+return;
+42: ""
+43: progend
+if(!ReserveItem(instrument))
+44: local #1
+45: Func(2,22): ReserveItem
+46: if true goto 49
+return;
+47: ""
+48: progend
+SendSysMessage(who, "Select the creature to provoke.");
+49: local #0
+50: "Select the creature to provoke."
+51: 3L
+52: 1000L
+53: Func(2,21): SendSysMessage
+54: #
+var thetarg := Target(who, TGTOPT_HARMFUL);
+55: decl local #2
+56: local #0
+57: 2L
+58: Func(2,23): Target
+59: :=
+60: #
+if((!thetarg) || (!thetarg.npctemplate))
+61: local #2
+62: !
+63: local #2
+64: get member 'npctemplate'
+65: !
+66: ||
+67: if false goto 76
+SendSysMessage(who, "Targetting cancelled.");
+68: local #0
+69: "Targetting cancelled."
+70: 3L
+71: 1000L
+72: Func(2,21): SendSysMessage
+73: #
+return;
+74: ""
+75: progend
+if(dist(who, thetarg) > 10)
+76: local #0
+77: local #2
+78: makelocal
+79: jmp userfunc @294
+80: 10L
+81: >
+82: if false goto 91
+SendSysMessage(who, "The target is too far away.");
+83: local #0
+84: "The target is too far away."
+85: 3L
+86: 1000L
+87: Func(2,21): SendSysMessage
+88: #
+return;
+89: ""
+90: progend
+var configfile := ReadConfigFile("::npcdesc");
+91: decl local #3
+92: "::npcdesc"
+93: Func(5,0): ReadConfigFile
+94: :=
+95: #
+var theobj:= thetarg.npctemplate;
+96: decl local #4
+97: local #2
+98: get member 'npctemplate'
+99: :=
+100: #
+var elem := FindConfigElem(configfile, theobj);
+101: decl local #5
+102: local #3
+103: local #4
+104: Func(5,1): FindConfigElem
+105: :=
+106: #
+var difficulty;
+107: decl local #6
+108: #
+if(elem)
+109: local #5
+110: if false goto 115
+difficulty := elem.provoke;
+111: local #5
+112: get member 'provoke'
+113: local6 := 
+114: goto123
+SendSysMessage(who, "You cannot provoke that!");
+115: local #0
+116: "You cannot provoke that!"
+117: 3L
+118: 1000L
+119: Func(2,21): SendSysMessage
+120: #
+return;
+121: ""
+122: progend
+if(!difficulty)
+123: local #6
+124: if true goto 127
+difficulty := 100;
+125: 100L
+126: local6 := 
+var ev := array;
+127: decl local #7
+128: array
+129: :=
+130: #
+ev.+ type;
+131: local #7
+132: "type"
+133: .+
+134: #
+ev.+ source;
+135: local #7
+136: "source"
+137: .+
+138: #
+if(difficulty < 1)
+139: local #6
+140: 1L
+141: <
+142: if false goto 146
+difficulty := 0;
+143: 0L
+144: local6 := 
+145: goto152
+elseif(difficulty > 100)
+146: local #6
+147: 100L
+148: >
+149: if false goto 152
+difficulty := 110;
+150: 110L
+151: local6 := 
+if(play(who, difficulty, instrument, SKILLID_PROVOCATION))
+152: local #0
+153: local #6
+154: local #1
+155: 22L
+156: makelocal
+157: jmp userfunc @334
+158: if false goto 257
+SendSysMessage(who, "Select a target to provoke this onto.");
+159: local #0
+160: "Select a target to provoke this onto."
+161: 3L
+162: 1000L
+163: Func(2,21): SendSysMessage
+164: #
+var newtarg := Target(who, (TGTOPT_NOCHECK_LOS + TGTOPT_HARMFUL) );
+165: decl local #0
+166: local #0
+167: 2L
+168: Func(2,23): Target
+169: :=
+170: #
+if(newtarg == thetarg)
+171: local #8
+172: local #2
+173: ==
+174: if false goto 183
+SendSysMessage(who, "You can't provoke something onto itself!");
+175: local #0
+176: "You can't provoke something onto itself!"
+177: 3L
+178: 1000L
+179: Func(2,21): SendSysMessage
+180: #
+return;
+181: ""
+182: progend
+if((dist(thetarg, newtarg) > 10) || (dist(who, newtarg) > 10))
+183: local #2
+184: local #8
+185: makelocal
+186: jmp userfunc @294
+187: 10L
+188: >
+189: local #0
+190: local #8
+191: makelocal
+192: jmp userfunc @294
+193: 10L
+194: >
+195: ||
+196: if false goto 205
+SendSysMessage(who, "The target is too far away.");
+197: local #0
+198: "The target is too far away."
+199: 3L
+200: 1000L
+201: Func(2,21): SendSysMessage
+202: #
+return;
+203: ""
+204: progend
+SendSysMessage(who, "You provoke " + thetarg.name + " to attack " + newtarg.nam
+205: local #0
+206: "You provoke "
+207: local #2
+208: get member 'name'
+209: +
+210: " to attack "
+211: +
+212: local #8
+213: get member 'name'
+214: +
+215: "!"
+216: +
+217: 3L
+218: 1000L
+219: Func(2,21): SendSysMessage
+220: #
+ev.source := newtarg;
+221: local #7
+222: local #8
+223: set member 'source' #
+if(newtarg.warmode)
+224: local #8
+225: get member 'warmode'
+226: if false goto 241
+ev.type := EVID_PEACEMADE;
+227: local #7
+228: 2147483647L
+229: set member 'type' #
+SendEvent(thetarg, ev);
+230: local #2
+231: local #7
+232: Func(2,4): SendEvent
+233: #
+SendEvent(newtarg, ev);
+234: local #8
+235: local #7
+236: Func(2,4): SendEvent
+237: #
+sleep(1);
+238: 1L
+239: Func(3,2): sleep
+240: #
+ev.type := EVID_DAMAGED;
+241: local #7
+242: 8L
+243: set member 'type' #
+SendEvent(thetarg, ev);
+244: local #2
+245: local #7
+246: Func(2,4): SendEvent
+247: #
+ev.source := thetarg;
+248: local #7
+249: local #2
+250: set member 'source' #
+SendEvent(newtarg, ev);
+251: local #8
+252: local #7
+253: Func(2,4): SendEvent
+254: #
+255: leave block(1)
+256: goto292
+ev.source := who;
+257: local #7
+258: local #0
+259: set member 'source' #
+if(thetarg.warmode)
+260: local #2
+261: get member 'warmode'
+262: if false goto 273
+ev.type := EVID_PEACEMADE;
+263: local #7
+264: 2147483647L
+265: set member 'type' #
+SendEvent(thetarg, ev);
+266: local #2
+267: local #7
+268: Func(2,4): SendEvent
+269: #
+sleep(1);
+270: 1L
+271: Func(3,2): sleep
+272: #
+ev.type := EVID_DAMAGED;
+273: local #7
+274: 8L
+275: set member 'type' #
+PrintTextAbovePrivate(thetarg, "You enrage " + thetarg.name + "!", who);
+276: local #2
+277: "You enrage "
+278: local #2
+279: get member 'name'
+280: +
+281: "!"
+282: +
+283: local #0
+284: 3L
+285: 1000L
+286: Func(2,24): PrintTextAbovePrivate
+287: #
+SendEvent(thetarg, ev);
+288: local #2
+289: local #7
+290: Func(2,4): SendEvent
+291: #
+292: leave block(8)
+293: progend
+C:/pol2/scripts/include/dist.inc, Line 9
+function dist( obj1, obj2 )
+294: pop param 'obj2'
+295: pop param 'obj1'
+return Distance( obj1, obj2 );
+296: local #1
+297: local #0
+298: Func(2,18): Distance
+299: return
+C:/pol2/scripts/include/bard.inc, Line 32
+function findinstrument(character)
+300: pop param 'character'
+var instruments := {0x0eb1, 0x0eb2, 0x0eb3, 0x0eb4, 0x0e9c, 0x0e9d, 0x0e9e};
+301: decl local #1
+302: array
+303: 3761L
+304: +=
+305: 3762L
+306: +=
+307: 3763L
+308: +=
+309: 3764L
+310: +=
+311: 3740L
+312: +=
+313: 3741L
+314: +=
+315: 3742L
+316: +=
+317: :=
+318: #
+foreach item in EnumerateItemsInContainer(character.backpack)
+319: local #0
+320: get member 'backpack'
+321: Func(2,17): EnumerateItemsInContainer
+322: initforeach @330
+if(item.graphic in instruments)
+323: local #2
+324: get member 'graphic'
+325: local #1
+326: in
+327: if false goto 330
+return item;
+328: local #2
+329: return
+330: stepforeach @323
+331: leave block(3)
+332: 0L
+333: return
+C:/pol2/scripts/include/bard.inc, Line 6
+function play(character, theskill, item, skil)
+334: pop param 'skil'
+335: pop param 'item'
+336: pop param 'theskill'
+337: pop param 'character'
+var success, fail;
+338: decl local #4
+339: #
+340: decl local #5
+341: #
+case(item.graphic)
+342: local #1
+343: get member 'graphic'
+344: casejmp
+	3761: @345
+	3762: @350
+	3763: @355
+	3764: @360
+	3740: @365
+	3741: @370
+	3742: @375
+	default: @379
+success := 0x44;  fail := 0x45;
+345: 68L
+346: local4 := 
+fail := 0x45;
+347: 69L
+348: local5 := 
+349: goto379
+success := 0x46;  fail := 0x47;
+350: 70L
+351: local4 := 
+fail := 0x47;
+352: 71L
+353: local5 := 
+354: goto379
+success := 0x4d;  fail := 0x4e;
+355: 77L
+356: local4 := 
+fail := 0x4e;
+357: 78L
+358: local5 := 
+359: goto379
+success := 0x4d;  fail := 0x4e;
+360: 77L
+361: local4 := 
+fail := 0x4e;
+362: 78L
+363: local5 := 
+364: goto379
+success := 0x39;  fail := 0x3a;
+365: 57L
+366: local4 := 
+fail := 0x3a;
+367: 58L
+368: local5 := 
+369: goto379
+success := 0x53;  fail := 0x54;
+370: 83L
+371: local4 := 
+fail := 0x54;
+372: 84L
+373: local5 := 
+374: goto379
+success := 0x53;  fail := 0x54;
+375: 83L
+376: local4 := 
+fail := 0x54;
+377: 84L
+378: local5 := 
+var thepoints := GetEffectiveSkill(character, SKILLID_MUSICIANSHIP);
+379: decl local #6
+380: local #3
+381: 29L
+382: makelocal
+383: jmp userfunc @422
+384: :=
+385: #
+if(CheckSkill(character, SKILLID_MUSICIANSHIP, theskill, thepoints))
+386: local #3
+387: 29L
+388: local #2
+389: local #6
+390: Func(2,15): CheckSkill
+391: if false goto 414
+if(CheckSkill(character, skil, theskill, thepoints * 2))
+392: local #3
+393: local #0
+394: local #2
+395: local #6
+396: 2L
+397: *
+398: Func(2,15): CheckSkill
+399: if false goto 407
+PlaySoundEffect( character, success);
+400: local #3
+401: local #4
+402: Func(2,16): PlaySoundEffect
+403: #
+return 1;
+404: 1L
+405: return
+406: goto413
+PlaySoundEffect( character, fail);
+407: local #3
+408: local #5
+409: Func(2,16): PlaySoundEffect
+410: #
+return 0;
+411: 0L
+412: return
+413: goto420
+PlaySoundEffect( character, fail);
+414: local #3
+415: local #5
+416: Func(2,16): PlaySoundEffect
+417: #
+return 0;
+418: 0L
+419: return
+420: 0L
+421: return
+C:/pol2/scripts/include/attributes.inc, Line 431
+function GetEffectiveSkill(who, skillid)
+422: pop param 'skillid'
+423: pop param 'who'
+return GetAttribute(who, GetAttributeIdBySkillId(skillid));
+424: local #1
+425: local #0
+426: makelocal
+427: jmp userfunc @430
+428: Func(2,7): GetAttribute
+429: return
+C:/pol2/scripts/include/attributes.inc, Line 250
+function GetAttributeIdBySkillId(skillid)
+430: pop param 'skillid'
+case(skillid)
+431: local #0
+432: casejmp
+	0: @433
+	1: @436
+	2: @439
+	3: @442
+	4: @445
+	5: @448
+	6: @451
+	7: @454
+	8: @457
+	9: @460
+	10: @463
+	11: @466
+	12: @469
+	13: @472
+	14: @475
+	15: @478
+	16: @481
+	17: @484
+	18: @487
+	19: @490
+	20: @493
+	21: @496
+	22: @499
+	23: @502
+	24: @505
+	25: @508
+	26: @511
+	27: @514
+	28: @517
+	29: @520
+	30: @523
+	31: @526
+	32: @529
+	33: @532
+	34: @535
+	35: @538
+	36: @541
+	37: @544
+	38: @547
+	39: @550
+	40: @553
+	41: @556
+	42: @559
+	43: @562
+	44: @565
+	45: @568
+	46: @571
+	47: @574
+	48: @577
+	default: @579
+return ATTRIBUTEID_ALCHEMY;
+433: "alchemy"
+434: return
+435: goto579
+return ATTRIBUTEID_ANATOMY;
+436: "anatomy"
+437: return
+438: goto579
+return ATTRIBUTEID_ANIMALLORE;
+439: "animallore"
+440: return
+441: goto579
+return ATTRIBUTEID_ITEMID;
+442: "itemid"
+443: return
+444: goto579
+return ATTRIBUTEID_ARMSLORE;
+445: "armslore"
+446: return
+447: goto579
+return ATTRIBUTEID_PARRY;
+448: "parry"
+449: return
+450: goto579
+return ATTRIBUTEID_BEGGING;
+451: "begging"
+452: return
+453: goto579
+return ATTRIBUTEID_BLACKSMITHY;
+454: "blacksmithy"
+455: return
+456: goto579
+return ATTRIBUTEID_BOWCRAFT;
+457: "bowcraft"
+458: return
+459: goto579
+return ATTRIBUTEID_PEACEMAKING;
+460: "peacemaking"
+461: return
+462: goto579
+return ATTRIBUTEID_CAMPING;
+463: "camping"
+464: return
+465: goto579
+return ATTRIBUTEID_CARPENTRY;
+466: "carpentry"
+467: return
+468: goto579
+return ATTRIBUTEID_CARTOGRAPHY;
+469: "cartography"
+470: return
+471: goto579
+return ATTRIBUTEID_COOKING;
+472: "cooking"
+473: return
+474: goto579
+return ATTRIBUTEID_DETECTINGHIDDEN;
+475: "detectinghidden"
+476: return
+477: goto579
+return ATTRIBUTEID_ENTICEMENT;
+478: "enticement"
+479: return
+480: goto579
+return ATTRIBUTEID_EVALINT;
+481: "evaluatingintelligence"
+482: return
+483: goto579
+return ATTRIBUTEID_HEALING;
+484: "healing"
+485: return
+486: goto579
+return ATTRIBUTEID_FISHING;
+487: "fishing"
+488: return
+489: goto579
+return ATTRIBUTEID_FORENSICS;
+490: "forensicevaluation"
+491: return
+492: goto579
+return ATTRIBUTEID_HERDING;
+493: "herding"
+494: return
+495: goto579
+return ATTRIBUTEID_HIDING;
+496: "hiding"
+497: return
+498: goto579
+return ATTRIBUTEID_PROVOCATION;
+499: "provocation"
+500: return
+501: goto579
+return ATTRIBUTEID_INSCRIPTION;
+502: "inscription"
+503: return
+504: goto579
+return ATTRIBUTEID_LOCKPICKING;
+505: "lockpicking"
+506: return
+507: goto579
+return ATTRIBUTEID_MAGERY;
+508: "magery"
+509: return
+510: goto579
+return ATTRIBUTEID_MAGICRESISTANCE;
+511: "magicresistance"
+512: return
+513: goto579
+return ATTRIBUTEID_TACTICS;
+514: "tactics"
+515: return
+516: goto579
+return ATTRIBUTEID_SNOOPING;
+517: "snooping"
+518: return
+519: goto579
+return ATTRIBUTEID_MUSICIANSHIP;
+520: "musicianship"
+521: return
+522: goto579
+return ATTRIBUTEID_POISONING;
+523: "poisoning"
+524: return
+525: goto579
+return ATTRIBUTEID_ARCHERY;
+526: "archery"
+527: return
+528: goto579
+return ATTRIBUTEID_SPIRITSPEAK;
+529: "spiritspeak"
+530: return
+531: goto579
+return ATTRIBUTEID_STEALING;
+532: "stealing"
+533: return
+534: goto579
+return ATTRIBUTEID_TAILORING;
+535: "tailoring"
+536: return
+537: goto579
+return ATTRIBUTEID_TAMING;
+538: "animaltaming"
+539: return
+540: goto579
+return ATTRIBUTEID_TASTEID;
+541: "tasteidentification"
+542: return
+543: goto579
+return ATTRIBUTEID_TINKERING;
+544: "tinkering"
+545: return
+546: goto579
+return ATTRIBUTEID_TRACKING;
+547: "tracking"
+548: return
+549: goto579
+return ATTRIBUTEID_VETERINARY;
+550: "veterinary"
+551: return
+552: goto579
+return ATTRIBUTEID_SWORDSMANSHIP;
+553: "swordsmanship"
+554: return
+555: goto579
+return ATTRIBUTEID_MACEFIGHTING;
+556: "macefighting"
+557: return
+558: goto579
+return ATTRIBUTEID_FENCING;
+559: "fencing"
+560: return
+561: goto579
+return ATTRIBUTEID_WRESTLING;
+562: "wrestling"
+563: return
+564: goto579
+return ATTRIBUTEID_LUMBERJACKING;
+565: "lumberjacking"
+566: return
+567: goto579
+return ATTRIBUTEID_MINING;
+568: "mining"
+569: return
+570: goto579
+return ATTRIBUTEID_MEDITATION;
+571: "meditation"
+572: return
+573: goto579
+return ATTRIBUTEID_STEALTH;
+574: "stealth"
+575: return
+576: goto579
+return ATTRIBUTEID_REMOVETRAP;
+577: "removetrap"
+578: return
+var ret        := error;
+579: decl local #1
+580: error
+581: :=
+582: #
+ret.+errortext := "No equivalent attributeid found for skillid " + skillid;
+583: local #1
+584: "errortext"
+585: .+
+586: "No equivalent attributeid found for skillid "
+587: local #0
+588: +
+589: := #
+return ret;
+590: local #1
+591: return

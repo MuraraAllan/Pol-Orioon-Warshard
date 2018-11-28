@@ -1,0 +1,31 @@
+//limpando reags!
+//verssaum 1.0
+//Plug
+//ICQ: 35165523
+//xxx@sercomtel.com.br
+
+use uo;
+
+program limpa(who, reag)
+var kual := GetObjProperty(reag, "raiz");
+
+if (kual == "mr")
+DestroyItem(reag);
+//CreateItemInBackpack(who, "mr");
+CreateItemInBackpack(who, 0x0F86);
+SendSysMessage(who, "Voce limpou a raiz!",9,90);
+
+elseif (kual == "ga")
+DestroyItem(reag);
+//CreateItemInBackpack(who, "ga");
+CreateItemInBackpack(who, 0x0F84);
+SendSysMessage(who, "Voce limpou a raiz!",9,90);
+
+elseif (kual == "gs")
+DestroyItem(reag);
+CreateItemInBackpack(who, "gs");
+CreateItemInBackpack(who, 0x0F85);
+SendSysMessage(who, "Voce limpou a raiz!",9,90);
+
+endif
+endprogram

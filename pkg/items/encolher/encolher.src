@@ -1,0 +1,87 @@
+//////////////////////////////////////////////////////////////////////
+//
+//   :O
+//
+//////////////////////////////////////////////////////////////////////
+
+use uo;
+use basic;
+use cfgfile;
+
+include "include/attributes";
+
+program Shrink(me, item)
+SubtractAmount(Item , 1);
+var tipoMini;
+var  mana;
+    PrintTextAbove(me, "Kal Vas Xen Encolher");
+     PerformAction(me,ANIM_CAST_DIR);
+ sleep(1);
+    var animal := Target(me);
+   
+if(!animal)
+PlayObjectCenteredEffect(me, 0x3735,0x0a, 0x1e);
+return;
+ endif
+var conf := ReadConfigFile("::npcdesc");
+var shrink1 := FindConfigElem(conf, animal.npctemplate);
+if(!shrink1)
+  PlaySoundEffect(me,0x005d);
+ PlayObjectCenteredEffect(me, 0x3735,0x0a, 0x1e);
+ return;
+ else
+   if(animal.master != me)
+      sendsysmessage(me, "Esse animal nao te pertence.", 9,89);
+      return;
+   endif
+   if(animal.summoned == 1)
+   sendsysmessage(me, "Esse animal eh sumonado nao pode ser encolhido!", 9,89);
+return;
+endif
+
+
+   var cor := animal.color;
+   var nome := animal.name;
+   case(animal.graphic)
+        204:  TipoMini := 0x2121;
+	200:  TipoMini := 0x2124;
+	226:  TipoMini := 0x211f;
+	228:  TipoMini := 0x2120;
+	220:  TipoMini := 0x20f6;
+	210:  TipoMini := 0x2135;
+	0xdb: TipoMini := 0x2137;
+	218:  TipoMini := 0x2136;
+        221:  TipoMini := 8479; 
+        791:  TipoMini := "0x260f";
+        132:  TipoMini := "0x25a0";
+        122:  TipoMini := "0x25ce";
+        799:  TipoMini := "0x2619";
+        793:  TipoMini := "0x2617";
+        187:  TipoMini := "0x2615";
+        115:  TipoMini := "0x259a";
+        170:  TipoMini := "8487";
+        60:   TipoMini := "8406";
+
+endcase
+
+   if(!TipoMini)
+   sendsysmessage(me, "Nao posso cuidar desse animal!", 9,89);
+   else
+
+MoveCharacterToLocation(animal, 0, 0, 1, MOVECHAR_FORCELOCATION);
+SetObjProperty(animal, "guardkill", 1);
+ApplyRawDamage( animal, GetHp(animal) );
+var  mana;
+PlaySoundEffect(me, SFX_SPELL_RESSURECTION);  
+PlayStationaryEffect( TipoMini.x, TipoMini.y, TipoMini.z, FX_CURSE_EFFECT, 10, 0xa, 0 );
+ 
+var mini := CreateItemInBackPack(me, tipomini);
+setobjproperty(mini, "antgnome", nome);
+mini.name := "Miniatura de "+nome+"";
+mini.color:= cor;
+
+endif
+
+endif
+
+endprogram

@@ -1,0 +1,210 @@
+use uo;
+use os;
+use util;
+
+include "include/spellRestrictions";
+
+program cast_chainlightning( parms )
+  var circle := 7;
+  var delivery := "indirect";
+  var noto := "harmful";
+  var result := maincast(parms, delivery, circle, noto, 49);
+if(result == 0)
+    return;
+  endif
+ 
+  var caster := result[1];
+  var cast_on := result[2];
+ var range := 7;
+  var victims := ListMobilesNearLocationEx( caster.x, caster.y, caster.z, range, LISTEX_FLAG_NORMAL + LISTEX_FLAG_HIDDEN );
+  var dmg;
+  Detach();
+  foreach mobile in victims
+if(mobile == caster)
+mobile := "null";
+endif
+     SetObjProperty(mobile, "LastHit", {caster.name, caster.serial, "chain lightning"});
+SetObjProperty(mobile, "Lastataque", Readgameclock() + 5);
+   var magery := GetEffectiveSkill(caster, SKILLID_MAGERY);
+  var insc   := GetEffectiveSkill(caster, SKILLID_EVALINT);
+  var mod_amount := GetModDuration(magery) / 11 + GetModDuration(insc) / 15 + RandomDiceRoll("1d10");; 
+send_attack(mobile,caster, 49);
+     
+      
+    var mr := CInt(GetObjProperty(mobile , "mr"));
+ var mrr := CInt(GetObjProperty(caster, "mr"));
+
+//se o cast_on tiver de reflect e o caster  n ;x
+if((mr >= 55) && (mrr <= 0))
+
+ PlayLightningBoltEffect( mobile);
+   PlaySoundEffect(mobile, SFX_SPELL_LIGHTNING);
+PlaySoundEffect(mobile, SFX_SPELL_MAGIC_REFLECTION);
+    PlayObjectCenteredEffect(mobile, FX_CURSE_EFFECT, 10,10);
+    SendSysMessage(mobile, "Seu Reflect lhe salvou!",9,89);
+SetobjProperty(mobile,"mr", GetobjProperty(cast_on,"mr")-120);
+sleepms(2000);
+     PlaySoundEffect(mobile, SFX_SPELL_LIGHTNING);
+SetobjProperty(mobile,"delayreflect", Readgameclock() + 120);
+
+mobile := caster;
+
+
+//se o caster tiver de reflect maior que o cast_on;
+elseif((mr >= 35) && (mrr >= mr))
+//cast_on
+PlaySoundEffect(mobile, SFX_SPELL_MAGIC_REFLECTION);
+    PlayObjectCenteredEffect(mobile, FX_CURSE_EFFECT, 10,10);
+    SendSysMessage(mobile, "Seu Reflect lhe salvou!",9,89);
+SetobjProperty(mobile,"mr", GetobjProperty(cast_on,"mr")-150);
+ PlayLightningBoltEffect( mobile);
+   PlaySoundEffect(mobile, SFX_SPELL_LIGHTNING);
+SetobjProperty(mobile,"delayreflect", Readgameclock() + 120);
+sleepms(2000);
+
+//caster
+ PlayLightningBoltEffect( caster);
+    PlaySoundEffect(cast_on, SFX_SPELL_LIGHTNING);
+PlaySoundEffect(caster, SFX_SPELL_MAGIC_REFLECTION);
+    PlayObjectCenteredEffect(caster, FX_CURSE_EFFECT, 10,10);
+    SendSysMessage(caster, "Seu Reflect lhe salvou!",9,89);
+SetobjProperty(caster,"mr", GetobjProperty(caster,"mr")-150);
+SetobjProperty(caster,"delayreflect", Readgameclock() + 120);
+sleepms(2000);
+
+//cast_on
+PlaySoundEffect(mobile, SFX_SPELL_MAGIC_REFLECTION);
+    PlayObjectCenteredEffect(mobile, FX_CURSE_EFFECT, 10,10);
+    SendSysMessage(mobile, "Seu Reflect lhe salvou!",9,89);
+SetobjProperty(mobile,"mr", GetobjProperty(cast_on,"mr")-150);
+ PlayLightningBoltEffect( mobile);
+   PlaySoundEffect(mobile, SFX_SPELL_LIGHTNING);
+SetobjProperty(mobile,"delayreflect", Readgameclock() + 120);
+sleepms(2000);
+
+//caster
+ PlayLightningBoltEffect( caster);
+    PlaySoundEffect(cast_on, SFX_SPELL_LIGHTNING);
+PlaySoundEffect(caster, SFX_SPELL_MAGIC_REFLECTION);
+    PlayObjectCenteredEffect(caster, FX_CURSE_EFFECT, 10,10);
+    SendSysMessage(caster, "Seu Reflect lhe salvou!",9,89);
+SetobjProperty(caster,"mr", GetobjProperty(caster,"mr")-150);
+SetobjProperty(caster,"delayreflect", Readgameclock() + 120);
+sleepms(1500);
+
+    PlaySoundEffect(mobile, SFX_SPELL_LIGHTNING);
+SetobjProperty(mobile,"delayreflect", Readgameclock() + 120);
+mobile := mobile;
+
+
+//se o cast_on tiver de reflect maior que o caster;
+elseif((mr >= 35) && (mr >= mrr) && (mrr >= 1))
+//cast_on
+PlaySoundEffect(mobile, SFX_SPELL_MAGIC_REFLECTION);
+    PlayObjectCenteredEffect(mobile, FX_CURSE_EFFECT, 10,10);
+    SendSysMessage(mobile, "Seu Reflect lhe salvou!",9,89);
+SetobjProperty(mobile,"mr", GetobjProperty(cast_on,"mr")-150);
+ PlayLightningBoltEffect( mobile);
+   PlaySoundEffect(mobile, SFX_SPELL_LIGHTNING);
+SetobjProperty(mobile,"delayreflect", Readgameclock() + 120);
+sleepms(2000);
+
+
+//caster
+ PlayLightningBoltEffect( caster);
+    PlaySoundEffect(cast_on, SFX_SPELL_LIGHTNING);
+PlaySoundEffect(caster, SFX_SPELL_MAGIC_REFLECTION);
+    PlayObjectCenteredEffect(caster, FX_CURSE_EFFECT, 10,10);
+    SendSysMessage(caster, "Seu Reflect lhe salvou!",9,89);
+SetobjProperty(caster,"mr", GetobjProperty(caster,"mr")-150);
+SetobjProperty(caster,"delayreflect", Readgameclock() + 120);
+sleepms(2000);
+
+//cast_on
+PlaySoundEffect(mobile, SFX_SPELL_MAGIC_REFLECTION);
+    PlayObjectCenteredEffect(mobile, FX_CURSE_EFFECT, 10,10);
+    SendSysMessage(mobile, "Seu Reflect lhe salvou!",9,89);
+SetobjProperty(mobile,"mr", GetobjProperty(cast_on,"mr")-150);
+ PlayLightningBoltEffect( mobile);
+   PlaySoundEffect(mobile, SFX_SPELL_LIGHTNING);
+SetobjProperty(mobile,"delayreflect", Readgameclock() + 120);
+sleepms(2000);
+
+
+mobile := caster;
+
+endif
+
+if(caster == cast_on)
+
+ApplyRawDamage(cast_on, mod_amount);
+PrintTextAbove(cast_on, " " + mod_amount + " ", FONT_SMALL_LIGHT, 38);
+elseif(mobile != "null")
+sleepms(600);
+var dmgg  := (Resistchain(circle, caster, mobile, mod_amount));
+ PlayLightningBoltEffect( mobile );
+      PlaySoundEffect(mobile, SFX_SPELL_LIGHTNING);
+
+endif
+
+
+
+
+  endforeach
+
+endprogram
+
+
+
+function Resistchain(circle, caster, cast_on, amt)
+  var magery := CInt(GetEffectiveSkill(caster, SKILLID_MAGERY));
+  var evalint := CInt(GetEffectiveSkill(caster, SKILLID_EVALINT));
+  var resist := CInt(GetEffectiveSkill(cast_on, SKILLID_MAGICRESISTANCE));
+  var chk := resist * 2 - resist / 3 - (((magery  + evalint - 50) / 6) + (circle * 4));
+sendsysmessage(caster,"AAA:"+chk);
+   var  diff := chk;
+ 
+  var points := getresistpoints(circle, cast_on, SKILLID_MAGICRESISTANCE);
+  if(cast_on.dead)
+    return 0;
+  endif
+
+  if((RandomInt(99) + 35) <= diff)
+SetObjProperty(cast_on, "resist", 1);    
+SendSysMessage(cast_on, "Voce sente seu corpo resistindo a magia!",9,89);
+    PlaySoundEffect(cast_on, SFX_SPELL_WEAKEN);
+    PlayObjectCenteredEffect(cast_on, FX_CURSE_EFFECT, 5,5);
+   AwardRawSkillPoints(cast_on, SKILLID_MAGICRESISTANCE, points);
+
+   var magery := GetEffectiveSkill(caster, SKILLID_MAGERY);
+  var insc   := GetEffectiveSkill(caster, SKILLID_EVALINT);
+var dmg1 := cint(GetModDuration(magery) / 20 + GetModDuration(insc) / 15 + RandomDiceRoll("1d10") - 3 - GetModDuration(resist) / 15);
+if(dmg1 < 10)
+dmg1 := randomdiceroll("1d5") + 7;
+endif
+
+send_attack(cast_on,caster, 43);
+ApplyRawDamage(cast_on,dmg1);
+PrintTextAbove(cast_on, " " + dmg1 + " ", FONT_SMALL_LIGHT, 38);
+SetObjProperty(caster, "Lastataque", Readgameclock() + 5); 
+return 1;
+else
+
+
+  var insc   := GetEffectiveSkill(caster, SKILLID_EVALINT);
+if(insc >= 80)
+send_attack(cast_on,caster, 43);
+var dmg :=  cint(GetModDuration(magery) / 20 + GetModDuration(insc) / 15  + RandomDiceRoll("1d19") + 20  - GetModDuration(resist) / 15);
+ApplyRawDamage(cast_on,dmg);
+PrintTextAbove(cast_on, " " + dmg + " ", FONT_SMALL_LIGHT, 38);
+SetObjProperty(caster, "Lastataque", Readgameclock() + 5); 
+else
+send_attack(cast_on,caster, 43);
+var dmg :=  cint(GetModDuration(magery) / 20 + GetModDuration(insc) / 15  + RandomDiceRoll("1d15") + 8  - GetModDuration(resist) / 15);
+ApplyRawDamage(cast_on,dmg);
+PrintTextAbove(cast_on, " " + dmg + " ", FONT_SMALL_LIGHT, 38);
+SetObjProperty(caster, "Lastataque", Readgameclock() + 5); 
+return 1;
+endif
+endif
+endfunction

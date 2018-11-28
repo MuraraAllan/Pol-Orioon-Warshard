@@ -1,0 +1,559 @@
+C:\pol2\pkg\tools\gmtools\go.src, Line 20
+var locationscount := 0;  // The number of locations found for this user
+0: decl global #0
+1: 0L
+2: :=
+3: #
+var pagecount := 1;       // The current developing page
+4: decl global #1
+5: 1L
+6: :=
+7: #
+var layout := array(      // The layout of the gump with text notes to be added
+8: decl global #2
+9: array
+10: "page 0"
+11: +=
+12: "nodispose"
+13: +=
+14: "gumppic 0 50 2620"
+15: +=
+16: "gumppic 20 50 2621"
+17: +=
+18: "gumppic 290 50 2622"
+19: +=
+20: "gumppic 0 68 2623"
+21: +=
+22: "gumppic 22 68 2624"
+23: +=
+24: "gumppic 288 68 2625"
+25: +=
+26: "gumppic 0 272 2623"
+27: +=
+28: "gumppic 22 272 2624"
+29: +=
+30: "gumppic 288 272 2625"
+31: +=
+32: "gumppic 0 476 2626"
+33: +=
+34: "gumppic 20 476 2627"
+35: +=
+36: "gumppic 290 476 2628"
+37: +=
+38: "gumppic 20 80 2621"
+39: +=
+40: "text 20 59 40 0"
+41: +=
+42: "text 200 59 40 1"
+43: +=
+44: "text 260 59 40 2"
+45: +=
+46: :=
+47: #
+var data := array(      // The data array that holds all the text to be display
+48: decl global #3
+49: array
+50: "Location"
+51: +=
+52: "Goto"
+53: +=
+54: "Send"
+55: +=
+56: :=
+57: #
+C:\pol2\pkg\tools\gmtools\go.src, Line 54
+program textcmd_go( who, text )
+58: get arg 'who'
+59: get arg 'text'
+if(!text)
+60: local #1
+61: if true goto 163
+var tname := lower(who.name);
+62: decl local #0
+63: local #0
+64: get member 'name'
+65: Func(0,4): lower
+66: :=
+67: #
+FillInArrays( tname );
+68: local #2
+69: makelocal
+70: jmp userfunc @244
+71: #
+var result := SendDialogGump( who, layout, data );
+72: decl local #1
+73: local #0
+74: global #2
+75: global #3
+76: Func(3,15): SendDialogGump
+77: :=
+78: #
+if (result[0] == 0)
+79: local #3
+80: 0L
+81: [] 1
+82: 0L
+83: ==
+84: if false goto 87
+return;
+85: ""
+86: progend
+var locs    := ReadConfigFile("::golocs");
+87: decl local #2
+88: "::golocs"
+89: Func(4,0): ReadConfigFile
+90: :=
+91: #
+var MaxLocs := GetConfigMaxIntKey(locs)+1;
+92: decl local #3
+93: local #4
+94: Func(4,2): GetConfigMaxIntKey
+95: 1L
+96: +
+97: :=
+98: #
+var dest    := locs[mod(result[0], MaxLocs)];
+99: decl local #4
+100: local #4
+101: local #3
+102: 0L
+103: [] 1
+104: local #5
+105: makelocal
+106: jmp userfunc @459
+107: [] 1
+108: :=
+109: #
+var traveler;
+110: decl local #5
+111: #
+if ( result[0] > MaxLocs ) // teleporting someone else
+112: local #3
+113: 0L
+114: [] 1
+115: local #5
+116: >
+117: if false goto 145
+SendSysMessage( who, "Select a MOBILE." );
+118: local #0
+119: "Select a MOBILE."
+120: 3L
+121: 1000L
+122: Func(3,16): SendSysMessage
+123: #
+traveler :=  Target( who, TGTOPT_NOCHECK_LOS );
+124: local #0
+125: 0L
+126: Func(3,17): Target
+127: local7 := 
+if(!traveler || !GetStrength(traveler))
+128: local #7
+129: !
+130: local #7
+131: makelocal
+132: jmp userfunc @454
+133: !
+134: ||
+135: if false goto 144
+SendSysMessage( who, "Invalid selection." );
+136: local #0
+137: "Invalid selection."
+138: 3L
+139: 1000L
+140: Func(3,16): SendSysMessage
+141: #
+return;
+142: ""
+143: progend
+144: goto147
+traveler := who;
+145: local #0
+146: local7 := 
+MoveCharacterToLocation(traveler, dest.X, dest.Y, GetMapInfo(dest.X, dest.Y).z)
+147: local #7
+148: local #6
+149: get member 'X'
+150: local #6
+151: get member 'Y'
+152: local #6
+153: get member 'X'
+154: local #6
+155: get member 'Y'
+156: Func(3,19): GetMapInfo
+157: get member 'z'
+158: 0L
+159: Func(3,18): MoveCharacterToLocation
+160: #
+161: leave block(6)
+162: goto239
+text := lower( text );
+163: local #1
+164: Func(0,4): lower
+165: local1 := 
+var cfg := ReadConfigFile("golocs");
+166: decl local #0
+167: "golocs"
+168: Func(4,0): ReadConfigFile
+169: :=
+170: #
+var tname := lower(who.name);
+171: decl local #1
+172: local #0
+173: get member 'name'
+174: Func(0,4): lower
+175: :=
+176: #
+var elem;
+177: decl local #2
+178: #
+var cfglength := GetConfigMaxIntKey(cfg);
+179: decl local #3
+180: local #2
+181: Func(4,2): GetConfigMaxIntKey
+182: :=
+183: #
+var i;
+184: decl local #4
+185: #
+for( i := 1; i <= cfglength; i := i + 1  )
+186: local #6
+187: 1L
+188: :=
+189: #
+190: local #6
+191: local #5
+192: <=
+193: if false goto 232
+elem := cfg[i];
+194: local #2
+195: local #6
+196: [] 1
+197: local4 := 
+if (elem.Name == text)
+198: local #4
+199: get member 'Name'
+200: local #1
+201: ==
+202: if false goto 225
+if ((elem.TYPE == "all") || (elem.TYPE == tname))
+203: local #4
+204: get member 'TYPE'
+205: "all"
+206: ==
+207: local #4
+208: get member 'TYPE'
+209: local #3
+210: ==
+211: ||
+212: if false goto 225
+MoveCharacterToLocation(who, elem.x, elem.y, elem.z);
+213: local #0
+214: local #4
+215: get member 'x'
+216: local #4
+217: get member 'y'
+218: local #4
+219: get member 'z'
+220: 0L
+221: Func(3,18): MoveCharacterToLocation
+222: #
+return;
+223: ""
+224: progend
+225: local #6
+226: local #6
+227: 1L
+228: +
+229: :=
+230: #
+231: goto190
+SendSysMessage(who, "Unknown Location");
+232: local #0
+233: "Unknown Location"
+234: 3L
+235: 1000L
+236: Func(3,16): SendSysMessage
+237: #
+238: leave block(5)
+UnloadConfigFile("::golocs");
+239: "::golocs"
+240: Func(4,3): UnloadConfigFile
+241: #
+242: leave block(2)
+243: progend
+C:\pol2\pkg\tools\gmtools\go.src, Line 111
+function FillInArrays( tname )
+244: pop param 'tname'
+var telelocations := ReadConfigFile("::golocs");
+245: decl local #1
+246: "::golocs"
+247: Func(4,0): ReadConfigFile
+248: :=
+249: #
+var datalen;
+250: decl local #2
+251: #
+var layoutlen;
+252: decl local #3
+253: #
+var prev_y := CInt(TEXTSTARTLOCY);
+254: decl local #4
+255: 70L
+256: Func(0,0): CInt
+257: :=
+258: #
+var datindx := 2;
+259: decl local #5
+260: 2L
+261: :=
+262: #
+var buttonret := 1;
+263: decl local #6
+264: 1L
+265: :=
+266: #
+var i;
+267: decl local #7
+268: #
+var numlocations := GetConfigMaxIntKey(telelocations);
+269: decl local #8
+270: local #1
+271: Func(4,2): GetConfigMaxIntKey
+272: :=
+273: #
+var currloc;
+274: decl local #9
+275: #
+for( i := 1; i <= numlocations; i := i + 1  )
+276: local #7
+277: 1L
+278: :=
+279: #
+280: local #7
+281: local #8
+282: <=
+283: if false goto 446
+currloc := telelocations[i];
+284: local #1
+285: local #7
+286: [] 1
+287: local9 := 
+if ((currloc.TYPE == "all") || (currloc.TYPE == tname))
+288: local #9
+289: get member 'TYPE'
+290: "all"
+291: ==
+292: local #9
+293: get member 'TYPE'
+294: local #0
+295: ==
+296: ||
+297: if false goto 435
+locationscount := locationscount + 1;
+298: global #0
+299: 1L
+300: +
+301: global0 := 
+datalen := GetDataLength();
+302: makelocal
+303: jmp userfunc @448
+304: local2 := 
+layoutlen := GetLayoutLength();
+305: makelocal
+306: jmp userfunc @451
+307: local3 := 
+datindx := datalen+1;
+308: local #2
+309: 1L
+310: +
+311: local5 := 
+data[datindx] := currloc.Name;
+312: global #3
+313: local #5
+314: local #9
+315: get member 'Name'
+316: [] := (1) #
+if (mod(locationscount, 19) == 1)
+317: global #0
+318: 19L
+319: makelocal
+320: jmp userfunc @459
+321: 1L
+322: ==
+323: if false goto 371
+if (locationscount >= 19)
+324: global #0
+325: 19L
+326: >=
+327: if false goto 337
+layout[GetLayoutLength()+1] := "button 285 465 2648 2647 0 " + (pagecount);
+328: global #2
+329: makelocal
+330: jmp userfunc @451
+331: 1L
+332: +
+333: "button 285 465 2648 2647 0 "
+334: global #1
+335: +
+336: [] := (1) #
+layout[GetLayoutLength()+1] := "page " + pagecount;
+337: global #2
+338: makelocal
+339: jmp userfunc @451
+340: 1L
+341: +
+342: "page "
+343: global #1
+344: +
+345: [] := (1) #
+pagecount := pagecount + 1;
+346: global #1
+347: 1L
+348: +
+349: global1 := 
+prev_y := TEXTSTARTLOCY;
+350: 70L
+351: local4 := 
+if (locationscount > 19)
+352: global #0
+353: 19L
+354: >
+355: if false goto 371
+if( i > 19)
+356: local #7
+357: 19L
+358: >
+359: if false goto 371
+layout[GetLayoutLength()+1] := "button 285 85 2650 2651 0 " + (pagecount - 2);
+360: global #2
+361: makelocal
+362: jmp userfunc @451
+363: 1L
+364: +
+365: "button 285 85 2650 2651 0 "
+366: global #1
+367: 2L
+368: -
+369: +
+370: [] := (1) #
+layout[GetLayoutLength()+1] := ("text 20 " + CStr(prev_y + 20) + " 40 " + datal
+371: global #2
+372: makelocal
+373: jmp userfunc @451
+374: 1L
+375: +
+376: "text 20 "
+377: local #4
+378: 20L
+379: +
+380: Func(0,5): CStr
+381: +
+382: " 40 "
+383: +
+384: local #2
+385: +
+386: [] := (1) #
+layout[GetLayoutLength()+1] := ("button 200 " + CStr(prev_y + 20) + " 2640 2641
+387: global #2
+388: makelocal
+389: jmp userfunc @451
+390: 1L
+391: +
+392: "button 200 "
+393: local #4
+394: 20L
+395: +
+396: Func(0,5): CStr
+397: +
+398: " 2640 2641 1 0 "
+399: +
+400: local #6
+401: 1L
+402: +
+403: 2L
+404: /
+405: +
+406: [] := (1) #
+layout[GetLayoutLength()+1] := ("button 260 " + CStr(prev_y + 20) + " 2640 2641
+407: global #2
+408: makelocal
+409: jmp userfunc @451
+410: 1L
+411: +
+412: "button 260 "
+413: local #4
+414: 20L
+415: +
+416: Func(0,5): CStr
+417: +
+418: " 2640 2641 1 0 "
+419: +
+420: local #6
+421: 1L
+422: +
+423: 2L
+424: /
+425: local #8
+426: +
+427: 1L
+428: +
+429: +
+430: [] := (1) #
+prev_y := prev_y + 20;
+431: local #4
+432: 20L
+433: +
+434: local4 := 
+buttonret := buttonret + 2;
+435: local #6
+436: 2L
+437: +
+438: local6 := 
+439: local #7
+440: local #7
+441: 1L
+442: +
+443: :=
+444: #
+445: goto280
+446: 0L
+447: return
+C:\pol2\pkg\tools\gmtools\go.src, Line 175
+function GetDataLength();
+return (len(data));
+448: global #3
+449: Func(0,2): len
+450: return
+C:\pol2\pkg\tools\gmtools\go.src, Line 170
+function GetLayoutLength();
+return (len(layout));
+451: global #2
+452: Func(0,2): len
+453: return
+C:/pol2/scripts/include/attributes.inc, Line 700
+function GetStrength(who)
+454: pop param 'who'
+return GetAttribute(who, ATTRIBUTEID_STRENGTH);
+455: local #0
+456: "strength"
+457: Func(3,7): GetAttribute
+458: return
+C:/pol2/scripts/include/math.inc, Line 73
+function Mod(Numerator, Denominator)
+459: pop param 'Denominator'
+460: pop param 'Numerator'
+var dividend := Numerator - ( CInt(Numerator/Denominator) * Denominator );
+461: decl local #2
+462: local #1
+463: local #1
+464: local #0
+465: /
+466: Func(0,0): CInt
+467: local #0
+468: *
+469: -
+470: :=
+471: #
+return dividend;
+472: local #2
+473: return

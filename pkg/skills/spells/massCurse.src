@@ -1,0 +1,55 @@
+use os;
+use uo;
+use util;
+
+include "include/spellRestrictions";
+include "include/attributes";
+include "include/spellAttack";
+
+program cast_curse( parms )
+  var circle := 6;
+  var delivery := "indirect";
+  var noto := "harmful";
+  var result := maincast(parms, delivery, circle, noto, 46);
+  if(result == 0)
+    return;
+  endif
+  var caster := result[1];
+  var cast_on := result[2];
+  PlaySoundEffect(caster, SFX_SPELL_MASS_CURSE);
+  var magery := GetEffectiveSkill(caster, SKILLID_MAGERY);
+  var mod_amount := GetModAmount( magery );
+  var duration := GetModDuration( magery );
+  Detach();
+  foreach cast_on in ListMobilesNearLocation( cast_on.x, cast_on.y, cast_on.z, 4 );
+if((cast_on.x > 4462 && cast_on.x < 4480 && cast_on.y > 1151 && cast_on.y < 1174))
+SendSysMessage(caster, "Nao sao permitidos ataques neste local!",3,70);   
+return 0;
+endif	
+SetObjProperty(cast_on, "LastHit", {caster.name, caster.serial, "mass curse"});
+ var mr := CInt(GetObjProperty(cast_on, "mr"));
+  if(mr >= 1)
+    PlaySoundEffect(cast_on, SFX_SPELL_MAGIC_REFLECTION);
+    PlayObjectCenteredEffect(cast_on, FX_CURSE_EFFECT, 10,10);
+    SendSysMessage(cast_on, "Seu Reflect lhe salvou!",9,89);
+SetobjProperty(cast_on,"mr", GetobjProperty(cast_on,"mr")-65);
+cast_on := caster;
+endif
+    PlaySoundEffect(cast_on, SFX_SPELL_MASS_CURSE);
+    PlayObjectCenteredEffect( cast_on, FX_CURSE_EFFECT, 10,10);
+	send_attack(cast_on,caster, 46);
+    if(cast_on.criminal == 0)
+      caster.setCriminal(1);
+    endif
+    mod_amount := Resisted(circle,caster,cast_on, GetModAmount( magery ));
+	if (CanMod(cast_on, "str"))
+	  DoTempMod(cast_on, "str", 0- mod_amount, duration);
+	endif
+	if (CanMod(cast_on, "dex"))
+	  DoTempMod(cast_on, "dex", 0- mod_amount, duration);
+	endif
+	if (CanMod(cast_on, "int"))
+	  DoTempMod(cast_on, "int", 0- mod_amount, duration);
+	endif
+  endforeach
+endprogram

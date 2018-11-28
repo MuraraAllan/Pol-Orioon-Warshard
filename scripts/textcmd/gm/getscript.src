@@ -1,0 +1,8 @@
+use uo;
+
+program textcmd_getscript(who)
+sendsysmessage(who,"Qual e-script voce deseja saber qual e?",0x9,90);
+var targ := Target(who);
+SendSysMessage(who, "E-script: " +CStr(targ.script),0x9,90 );
+
+endprogram

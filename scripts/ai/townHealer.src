@@ -1,0 +1,116 @@
+use npc;
+use basic;
+use os;
+use uo;
+use util;
+
+include ":poisonwatcher:poisons";
+include "include/res";
+include "include/resPenalty";
+include "include/client";
+include "include/listex";
+include "include/eventID";
+include "include/sysEvent";
+include "include/randName";
+include "include/utility";
+include "include/vetement";
+include "include/NPCBackpacks";
+include "util/bank";
+include "include/anchors";
+include "include/dist";
+include "include/skillLists";
+include "include/begging";
+include "include/attributes";
+
+set_priority( 50 );
+
+const SOUND_EFFECT_RES := 0x215;
+const ACTION_EFFECT_CAST2 := 0x11;
+
+var me := Self();
+
+program ressar()
+  EnableEvents( SYSEVENT_ITEM_GIVEN);
+  EnableEvents(SYSEVENT_ENGAGED + SYSEVENT_DISENGAGED + SYSEVENT_DAMAGED);
+  EnableEvents(SYSEVENT_ENTEREDAREA, 2);
+  DisableEvents(SYSEVENT_SPEECH);
+
+PrintTextAbove(me, "Criado....");
+
+
+
+
+  while (1)
+    var ev;
+    ev := os::wait_for_event(120);
+    if(ev)
+      case (ev.type)
+        SYSEVENT_ENTEREDAREA:     if(!ev.source.isA(POLCLASS_NPC))
+                                    HealerStuff(ev.source);
+                                  endif
+      endcase
+    endif
+
+  endwhile
+
+endprogram
+
+function HealerStuff(mobile)
+   
+
+	if((!mobile.criminal) && (!mobile.dead) && (mobile.poisoned))
+	TurnToward(mobile);
+	PrintTextAbove(me, "An Nox");
+	sleepms(1000);
+	PlayObjectCenteredEffect( mobile, FX_SPARK_EFFECT, 7, 0x10 );
+	PlaySoundEffect(mobile, SFX_SPELL_GREATER_HEAL );
+	CurePoison(mobile, 120, "defaultPoison", 100);
+	return 1;
+	endif
+
+	if((mobile.criminal) && (mobile.dead))
+	TurnToward(mobile);
+	PrintTextAbove(me, "Limpe seus pecados e poderei ajuda-lo!");
+	return 1;
+	endif
+
+
+	if((!mobile.dead) && (mobile.criminal))
+	TurnToward(mobile);
+	PrintTextAbove(me, "Saia daqui seu criminoso!");
+	return 1;
+	endif
+
+	if((GetHP(mobile) < 60) && (!mobile.dead) && (mobile.criminal))
+	TurnToward(mobile);
+	PrintTextAbove(me, "Saia daqui seu criminoso!");
+	return 1;
+	endif
+
+	if((GetHP(mobile) < 60) && (!mobile.dead) && (!mobile.criminal))
+	TurnToward(mobile);
+	PrintTextAbove(me, "A compaixao cura a todos!");
+	sleepms(500);
+	var heal := RandomDiceRoll("1d15+17");
+	PrintTextAbove(me, "In Vas Mani");
+	sleepms(1500);
+	HealDamage(mobile, heal);
+	PrintTextAbove(mobile, " " + heal + " ", FONT_SMALL_LIGHT, 1153);
+	PlayObjectCenteredEffect( mobile, FX_SPARK_EFFECT, 7, 0x10 );
+	PlaySoundEffect(mobile, SFX_SPELL_GREATER_HEAL );
+	return 1;
+	endif
+
+	if((mobile.dead) && (CheckLineOfSight(me, mobile)) && (!mobile.criminal))
+	TurnToward(mobile);
+	PrintTextAbove(me, "Volte a vida por suas virtudes!");
+	sleep(1);
+	PerformAction(me, ACTION_EFFECT_CAST2);
+	PlaySoundEffect(me, SOUND_EFFECT_RES);
+      	Resurrect(mobile);
+	DestroyItem(GetEquipmentByLayer(mobile, 22));
+	return 1;
+	endif
+
+return 1;
+endfunction

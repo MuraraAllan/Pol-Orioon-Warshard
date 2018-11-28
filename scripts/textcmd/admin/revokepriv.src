@@ -1,0 +1,16 @@
+use uo;
+
+program textcmd_grantpriv( who, priv )
+    SendSysMessage( who, "From whom do you want to revoke the '" + priv + "' privilege?" );
+    
+    var subject := Target( who, TGTOPT_NOCHECK_LOS );
+if(subject.cmdlevel >= who.cmdlevel)
+elseif(subject.name == who.name)
+SendSysMessage(who, "Proibido!",3,70);
+SendSysMessage(subject, who.name + " tentou usar o comando " + priv + "em voce!",3,70);
+return 0;
+endif    
+if (subject)
+        RevokePrivilege( subject, priv );
+    endif
+endprogram

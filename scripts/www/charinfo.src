@@ -1,0 +1,76 @@
+use uo;
+use uo;
+use util;
+use http;
+use math;
+use basic;
+include "include/accounts";
+include "include/attributes";
+include "include/www";
+
+program charinfo()
+DesativarBotaoDireito();
+
+WriteHTML ("<body text=#999999 bgcolor=#000000>");
+var acctname := QueryParam ("acctname");
+var acctpass := QueryParam ("acctpass");
+var charid   := QueryParam ("charid");
+
+
+var acct := FindAccount (acctname);
+if (!acct)
+WriteHTML ("<html><head><title>Sysco - Erro Detectado!</title></head>");
+WriteHTML ("Erro! Contate um Administrador!");
+return;
+endif
+if (acct.checkpassword(acctpass) == 0)
+WriteHTML ("<html><head><title>Sysco - Erro Detectado!</title></head>");
+WriteHTML ("Erro! Contate um Administrador!");
+return;
+endif	
+var personagem:=SystemFindObjectBySerial(Cint(charid), SYSFIND_SEARCH_OFFLINE_MOBILES);
+if (personagem.acct.name != acctname)
+WriteHTML ("<html><head><title>Sysco - Erro Detectado!</title></head>");
+WriteHTML ("Erro! Contate um Administrador!");
+return;
+endif
+
+WriteHTML ("<html><head><title>Informações do personagem "+personagem.name+"</title></head>");
+
+WriteHTML ("<b>Nome:</b> "+personagem.name+"");
+if (personagem.gender)
+WriteHTML ("<br><b>Sexo:</b> Feminino");
+else
+WriteHTML ("<br><b>Sexo:</b> Masculino");
+endif
+
+if(personagem.getprop("classe") == "guerreiro")
+WriteHTML ("<br><b>Classe:</b> Guerreiro");
+elseif(personagem.getprop("classe") == "trabalhador")
+WriteHTML ("<br><b>Classe:</b> Trabalhador");
+else
+WriteHTML ("<br><b>Classe:</b> Não Definida");
+endif
+
+if (GetObjProperty(personagem, "guild_id"))
+WriteHTML ("<br><b>Guilda:</b> "+FindGuild(GetObjProperty(personagem,"guild_id")).getprop("guildname")+"");
+WriteHTML ("<br>");
+WriteHTML ("<br><b>War Points:</b> "+Cint(GetObjProperty(personagem, "warpoints"))+"");
+else
+WriteHTML ("<br>");
+endif
+
+WriteHTML ("<br><b>Kill Points:</b> "+Cint(GetObjProperty(personagem, "kp"))+"");
+WriteHTML ("<br><b>Pvp Points:</b> "+Cint(GetObjProperty(personagem, "pvppoint"))+"");
+WriteHTML ("<br><b>Longs:</b> "+Cint(GetObjProperty(personagem, "longmurders"))+"");
+
+WriteHTML ("<br>");
+
+WriteHTML ("<br><b>Str:</b> "+GetBaseStrength(personagem)+"");
+WriteHTML ("<br><b>Dex:</b> "+GetBaseDexterity(personagem)+"");
+WriteHTML ("<br><b>Int:</b> "+GetIntelligence(personagem)+"");
+
+WriteHTML ("<br>");
+
+WriteHTML ("<br><A href="+CChr(34)+"?acctname="+acctname+"&acctpass="+acctpass+"&charid="+charid+""+CChr(34)+" onClick="+CChr(34)+"window.open('skillsinfo.ecl?acctname="+acctname+"&acctpass="+acctpass+"&charid="+charid+"', '','width=270,height=450'); return ok;"+CChr(34)+">Ver Skills</A>");
+endprogram

@@ -1,0 +1,745 @@
+C:\pol2\pkg\skills\carpentry\ovenDeed.src, Line 14
+program place_deed(who, deed)
+const CANCEL_ID         := 9999;
+0: get arg 'who'
+1: get arg 'deed'
+EraseObjProperty(who, "IsMeditating");
+2: local #0
+3: "IsMeditating"
+4: Func(2,19): EraseObjProperty
+5: #
+EraseObjProperty(who, "HealTimer");
+6: local #0
+7: "HealTimer"
+8: Func(2,19): EraseObjProperty
+9: #
+if(!Accessible(who, deed))
+10: local #0
+11: local #1
+12: Func(2,20): Accessible
+13: if true goto 22
+SendSysMessage(who, "You can't reach that.");
+14: local #0
+15: "You can't reach that."
+16: 3L
+17: 1000L
+18: Func(2,21): SendSysMessage
+19: #
+return;
+20: ""
+21: progend
+if(!ReserveItem(deed))
+22: local #1
+23: Func(2,22): ReserveItem
+24: if true goto 27
+return;
+25: ""
+26: progend
+var cfg := ReadConfigFile(":carpentry:itemdesc");
+27: decl local #2
+28: ":carpentry:itemdesc"
+29: Func(4,0): ReadConfigFile
+30: :=
+31: #
+var element := FindConfigElem(cfg, deed.objtype);
+32: decl local #3
+33: local #2
+34: local #1
+35: get member 'objtype'
+36: Func(4,1): FindConfigElem
+37: :=
+38: #
+if(!element)
+39: local #3
+40: if true goto 49
+SendSysMessage(who, "You can't make anything out of this deed.");
+41: local #0
+42: "You can't make anything out of this deed."
+43: 3L
+44: 1000L
+45: Func(2,21): SendSysMessage
+46: #
+return;
+47: ""
+48: progend
+var items := SplitWords(element.ObjList);
+49: decl local #4
+50: local #3
+51: get member 'ObjList'
+52: Func(0,1): SplitWords
+53: :=
+54: #
+var items2 := SplitWords(element.ObjList2);
+55: decl local #5
+56: local #3
+57: get member 'ObjList2'
+58: Func(0,1): SplitWords
+59: :=
+60: #
+if(!len(items))
+61: local #4
+62: Func(0,4): len
+63: if true goto 72
+SendSysMessage(who, "You can't make anything out of this deed.");
+64: local #0
+65: "You can't make anything out of this deed."
+66: 3L
+67: 1000L
+68: Func(2,21): SendSysMessage
+69: #
+return;
+70: ""
+71: progend
+SendSysMessage(who, "Where do you want to create the item?");
+72: local #0
+73: "Where do you want to create the item?"
+74: 3L
+75: 1000L
+76: Func(2,21): SendSysMessage
+77: #
+var start := TargetCoordinates(who);
+78: decl local #6
+79: local #0
+80: Func(2,23): TargetCoordinates
+81: :=
+82: #
+if(!CheckLosAt(who, CInt(start.x), CInt(start.y), CInt(start.z)))
+83: local #0
+84: local #6
+85: get member 'x'
+86: Func(0,0): CInt
+87: local #6
+88: get member 'y'
+89: Func(0,0): CInt
+90: local #6
+91: get member 'z'
+92: Func(0,0): CInt
+93: Func(2,24): CheckLosAt
+94: if true goto 103
+SendSysMessage(who, "You can't see that.");
+95: local #0
+96: "You can't see that."
+97: 3L
+98: 1000L
+99: Func(2,21): SendSysMessage
+100: #
+return;
+101: ""
+102: progend
+if((!who.multi) && (who.cmdlevel < 2))
+103: local #0
+104: get member 'multi'
+105: !
+106: local #0
+107: get member 'cmdlevel'
+108: 2L
+109: <
+110: &&
+111: if false goto 120
+SendSysMessage(who, "You have to be in your house to place this item.");
+112: local #0
+113: "You have to be in your house to place this item."
+114: 3L
+115: 1000L
+116: Func(2,21): SendSysMessage
+117: #
+return;
+118: ""
+119: progend
+if(GetObjProperty(who.multi, "owneracct") != who.acctname)
+120: local #0
+121: get member 'multi'
+122: "owneracct"
+123: Func(2,2): GetObjProperty
+124: local #0
+125: get member 'acctname'
+126: <>
+127: if false goto 161
+var house := who.multi;
+128: decl local #0
+129: local #0
+130: get member 'multi'
+131: :=
+132: #
+var co_owners := GetObjProperty(house, "coownlist");
+133: decl local #1
+134: local #7
+135: "coownlist"
+136: Func(2,2): GetObjProperty
+137: :=
+138: #
+var i;
+139: decl local #2
+140: #
+if((!(who.serial in co_owners)) and (who.cmdlevel < 2))
+141: local #0
+142: get member 'serial'
+143: local #8
+144: in
+145: !
+146: local #0
+147: get member 'cmdlevel'
+148: 2L
+149: <
+150: &&
+151: if false goto 160
+SendSysMessage(who, "You can only place this item if you own or co-own the hous
+152: local #0
+153: "You can only place this item if you own or co-own the house!"
+154: 3L
+155: 1000L
+156: Func(2,21): SendSysMessage
+157: #
+return;
+158: ""
+159: progend
+160: leave block(3)
+var objlist2   := element.ObjList2;
+161: decl local #7
+162: local #3
+163: get member 'ObjList2'
+164: :=
+165: #
+var created    := {};
+166: decl local #8
+167: array
+168: :=
+169: #
+var objtypemod := 0;
+170: decl local #9
+171: 0L
+172: :=
+173: #
+var itemname   := GetObjProperty(deed, "ItemBaseName");
+174: decl local #10
+175: local #1
+176: "ItemBaseName"
+177: Func(2,2): GetObjProperty
+178: :=
+179: #
+var menu := CreateMenu("Choose an orientation");
+180: decl local #11
+181: "Choose an orientation"
+182: Func(2,25): CreateMenu
+183: :=
+184: #
+if(deed.objtype == 0xb011)
+185: local #1
+186: get member 'objtype'
+187: 45073L
+188: ==
+189: if false goto 209
+AddMenuItem(menu, Cint(items[1]), "south");
+190: local #11
+191: local #4
+192: 1L
+193: [] 1
+194: Func(0,0): CInt
+195: "south"
+196: Func(2,26): AddMenuItem
+197: #
+if(objlist2)
+198: local #7
+199: if false goto 208
+AddMenuItem(menu, Cint(items2[1]), "east");
+200: local #11
+201: local #5
+202: 1L
+203: [] 1
+204: Func(0,0): CInt
+205: "east"
+206: Func(2,26): AddMenuItem
+207: #
+208: goto227
+AddMenuItem(menu, Cint(items[2]), "south");
+209: local #11
+210: local #4
+211: 2L
+212: [] 1
+213: Func(0,0): CInt
+214: "south"
+215: Func(2,26): AddMenuItem
+216: #
+if(objlist2)
+217: local #7
+218: if false goto 227
+AddMenuItem(menu, Cint(items2[1]), "east");
+219: local #11
+220: local #5
+221: 1L
+222: [] 1
+223: Func(0,0): CInt
+224: "east"
+225: Func(2,26): AddMenuItem
+226: #
+var choice := SelectMenuItem2(who, menu).index;
+227: decl local #12
+228: local #0
+229: local #11
+230: Func(2,27): SelectMenuItem2
+231: get member 'index'
+232: :=
+233: #
+if(!choice)
+234: local #12
+235: if true goto 238
+return;
+236: ""
+237: progend
+var xmods, ymods;
+238: decl local #13
+239: #
+240: decl local #14
+241: #
+var failed := 0;
+242: decl local #15
+243: 0L
+244: :=
+245: #
+var holder := {};
+246: decl local #16
+247: array
+248: :=
+249: #
+var tmp;
+250: decl local #17
+251: #
+case(choice)
+252: local #12
+253: casejmp
+	1: @254
+	2: @265
+	default: @275
+tmp    := items;
+254: local #4
+255: local17 := 
+xmods  := SplitWords(element.ObjXMod);
+256: local #3
+257: get member 'ObjXMod'
+258: Func(0,1): SplitWords
+259: local13 := 
+ymods  := SplitWords(element.ObjYMod);
+260: local #3
+261: get member 'ObjYMod'
+262: Func(0,1): SplitWords
+263: local14 := 
+264: goto275
+tmp    := items2;
+265: local #5
+266: local17 := 
+xmods  := SplitWords(element.ObjXMod2);
+267: local #3
+268: get member 'ObjXMod2'
+269: Func(0,1): SplitWords
+270: local13 := 
+ymods  := SplitWords(element.ObjYMod2);
+271: local #3
+272: get member 'ObjYMod2'
+273: Func(0,1): SplitWords
+274: local14 := 
+holder.append(Cint(tmp[1]));
+275: local #16
+276: local #17
+277: 1L
+278: [] 1
+279: Func(0,0): CInt
+280: Call Method append (1 params)
+281: #
+holder.append(Cint(tmp[2]));
+282: local #16
+283: local #17
+284: 2L
+285: [] 1
+286: Func(0,0): CInt
+287: Call Method append (1 params)
+288: #
+holder.append(Cint(tmp[3]));
+289: local #16
+290: local #17
+291: 3L
+292: [] 1
+293: Func(0,0): CInt
+294: Call Method append (1 params)
+295: #
+holder.append(Cint(tmp[4]));
+296: local #16
+297: local #17
+298: 4L
+299: [] 1
+300: Func(0,0): CInt
+301: Call Method append (1 params)
+302: #
+var obj, x_mod, y_mod, the_item, lockid, thekey;
+303: decl local #18
+304: #
+305: decl local #19
+306: #
+307: decl local #20
+308: #
+309: decl local #21
+310: #
+311: decl local #22
+312: #
+313: decl local #23
+314: #
+var i := 1;
+315: decl local #24
+316: 1L
+317: :=
+318: #
+foreach thing in holder
+319: local #16
+320: initforeach @454
+if(Cint(thing))
+321: local #25
+322: Func(0,0): CInt
+323: if false goto 454
+obj := thing;
+324: local #25
+325: local18 := 
+x_mod := CInt(xmods[i]);
+326: local #13
+327: local #24
+328: [] 1
+329: Func(0,0): CInt
+330: local19 := 
+y_mod := CInt(ymods[i]);
+331: local #14
+332: local #24
+333: [] 1
+334: Func(0,0): CInt
+335: local20 := 
+i := i + 1;
+336: local #24
+337: 1L
+338: +
+339: local24 := 
+the_item := CreateItemAtLocation(5886, 1179, 0, obj, 1);
+340: 5886L
+341: 1179L
+342: 0L
+343: local #18
+344: 1L
+345: Func(2,28): CreateItemAtLocation
+346: local21 := 
+the_item.movable := 1;
+347: local #21
+348: 1L
+349: set member 'movable' #
+the_item.graphic := 1;
+350: local #21
+351: 1L
+352: set member 'graphic' #
+if(!MoveItemToLocation(the_item, start.x + x_mod, start.y + y_mod, start.z, MOV
+353: local #21
+354: local #6
+355: get member 'x'
+356: local #19
+357: +
+358: local #6
+359: get member 'y'
+360: local #20
+361: +
+362: local #6
+363: get member 'z'
+364: 0L
+365: Func(2,29): MoveItemToLocation
+366: if true goto 380
+foreach thing in created
+367: local #8
+368: initforeach @372
+DestroyItem(thing);
+369: local #28
+370: Func(2,30): DestroyItem
+371: #
+372: stepforeach @369
+373: leave block(3)
+DestroyItem(the_item);
+374: local #21
+375: Func(2,30): DestroyItem
+376: #
+failed := 1;
+377: 1L
+378: local15 := 
+break;
+379: goto455
+if((the_item.multi.serial != who.multi.serial) and (who.cmdlevel < 2))
+380: local #21
+381: get member 'multi'
+382: get member 'serial'
+383: local #0
+384: get member 'multi'
+385: get member 'serial'
+386: <>
+387: local #0
+388: get member 'cmdlevel'
+389: 2L
+390: <
+391: &&
+392: if false goto 406
+foreach thing in created
+393: local #8
+394: initforeach @398
+DestroyItem(thing);
+395: local #28
+396: Func(2,30): DestroyItem
+397: #
+398: stepforeach @395
+399: leave block(3)
+DestroyItem(the_item);
+400: local #21
+401: Func(2,30): DestroyItem
+402: #
+failed := 2;
+403: 2L
+404: local15 := 
+break;
+405: goto455
+the_item.color   := deed.color;
+406: local #21
+407: local #1
+408: get member 'color'
+409: set member 'color' #
+if(itemname)
+410: local #10
+411: if false goto 421
+SetName(the_item, itemname);
+412: local #21
+413: local #10
+414: Func(2,31): SetName
+415: #
+SetObjProperty(the_item, "BaseName", itemname);
+416: local #21
+417: "BaseName"
+418: local #10
+419: Func(2,6): SetObjProperty
+420: #
+if((obj == Cint(holder[3])) or (obj == Cint(holder[4])))
+421: local #18
+422: local #16
+423: 3L
+424: [] 1
+425: Func(0,0): CInt
+426: ==
+427: local #18
+428: local #16
+429: 4L
+430: [] 1
+431: Func(0,0): CInt
+432: ==
+433: ||
+434: if false goto 447
+MoveItemToLocation(the_item, the_item.x, the_item.y, the_item.z + 20, MOVEITEM_
+435: local #21
+436: local #21
+437: get member 'x'
+438: local #21
+439: get member 'y'
+440: local #21
+441: get member 'z'
+442: 20L
+443: +
+444: 1073741824L
+445: Func(2,29): MoveItemToLocation
+446: #
+the_item.movable := 0;
+447: local #21
+448: 0L
+449: set member 'movable' #
+created.append(the_item);
+450: local #8
+451: local #21
+452: Call Method append (1 params)
+453: #
+454: stepforeach @321
+455: leave block(3)
+if(failed == 1)
+456: local #15
+457: 1L
+458: ==
+459: if false goto 469
+SendSysMessage(who, "Could not build that there");
+460: local #0
+461: "Could not build that there"
+462: 3L
+463: 1000L
+464: Func(2,21): SendSysMessage
+465: #
+return;
+466: ""
+467: progend
+468: goto481
+elseif(failed == 2)
+469: local #15
+470: 2L
+471: ==
+472: if false goto 481
+SendSysMessage(who, "You may only place this in a house you own");
+473: local #0
+474: "You may only place this in a house you own"
+475: 3L
+476: 1000L
+477: Func(2,21): SendSysMessage
+478: #
+return;
+479: ""
+480: progend
+foreach thing in created
+481: local #8
+482: initforeach @487
+thing.graphic := thing.objtype;
+483: local #25
+484: local #25
+485: get member 'objtype'
+486: set member 'graphic' #
+487: stepforeach @483
+488: leave block(3)
+var deed_objtype := deed.objtype;
+489: decl local #25
+490: local #1
+491: get member 'objtype'
+492: :=
+493: #
+var deed_price := deed.buyprice;
+494: decl local #26
+495: local #1
+496: get member 'buyprice'
+497: :=
+498: #
+var deed_color := deed.color;
+499: decl local #27
+500: local #1
+501: get member 'color'
+502: :=
+503: #
+if(DestroyItem(deed))
+504: local #1
+505: Func(2,30): DestroyItem
+506: if false goto 571
+if(YesNo(who, "Placed well?"))
+507: local #0
+508: "Placed well?"
+509: makelocal
+510: jmp userfunc @573
+511: if false goto 552
+var the_serials := {};
+512: decl local #0
+513: array
+514: :=
+515: #
+foreach part in created
+516: local #8
+517: initforeach @523
+the_serials.append(part.serial);
+518: local #28
+519: local #29
+520: get member 'serial'
+521: Call Method append (1 params)
+522: #
+523: stepforeach @518
+524: leave block(3)
+foreach part in created
+525: local #8
+526: initforeach @548
+if(part.objtype != UOBJ_COPPER_KEY)
+527: local #29
+528: get member 'objtype'
+529: 4110L
+530: <>
+531: if false goto 548
+SetObjProperty(part, "DeedOwnerSerial", who.serial);
+532: local #29
+533: "DeedOwnerSerial"
+534: local #0
+535: get member 'serial'
+536: Func(2,6): SetObjProperty
+537: #
+SetObjProperty(part, "ItemsCreatedSerials", the_serials);
+538: local #29
+539: "ItemsCreatedSerials"
+540: local #28
+541: Func(2,6): SetObjProperty
+542: #
+SetObjProperty(part, "FromDeed", deed_objtype);
+543: local #29
+544: "FromDeed"
+545: local #25
+546: Func(2,6): SetObjProperty
+547: #
+548: stepforeach @527
+549: leave block(3)
+550: leave block(1)
+551: goto571
+foreach part in created
+552: local #8
+553: initforeach @557
+DestroyItem(part);
+554: local #28
+555: Func(2,30): DestroyItem
+556: #
+557: stepforeach @554
+558: leave block(3)
+SendSysMessage(who, "Cancelled.");
+559: local #0
+560: "Cancelled."
+561: 3L
+562: 1000L
+563: Func(2,21): SendSysMessage
+564: #
+CreateItemInContainer(who.backpack, deed_objtype, 1);
+565: local #0
+566: get member 'backpack'
+567: local #25
+568: 1L
+569: Func(2,32): CreateItemInContainer
+570: #
+571: leave block(28)
+572: progend
+C:/pol2/scripts/include/yesNo.inc, Line 5
+function YesNo(me, prompt)
+573: pop param 'prompt'
+574: pop param 'me'
+var layout := array(
+575: decl local #2
+576: array
+577: "page 0"
+578: +=
+579: "nodispose"
+580: +=
+581: "gumppic 0 0 2070"
+582: +=
+583: "button 30 75 2130 2129 1 0 1"
+584: +=
+585: "button 90 75 2119 2120 1 0 0"
+586: +=
+587: "text 40 30 502 0"
+588: +=
+589: :=
+590: #
+var data := array(  prompt  );
+591: decl local #3
+592: array
+593: local #0
+594: +=
+595: :=
+596: #
+var res := SendDialogGump( me, layout, data );
+597: decl local #4
+598: local #1
+599: local #2
+600: local #3
+601: Func(2,18): SendDialogGump
+602: :=
+603: #
+if (res)
+604: local #4
+605: if false goto 609
+return 1;
+606: 1L
+607: return
+608: goto611
+return 0;
+609: 0L
+610: return
+611: 0L
+612: return

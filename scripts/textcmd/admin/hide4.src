@@ -1,0 +1,85 @@
+use uo;
+
+include "include/attributes";
+
+program hi(who)
+  if(who.concealed == 1)
+    who.concealed := 0;
+    PlayStationaryEffect(who.x+2 ,who.y,who.z, FX_FLAMESTRIKE, 7, 0x10 );
+    PlayStationaryEffect(who.x+2 ,who.y+1,who.z, FX_FLAMESTRIKE, 7, 0x10 );
+    PlayStationaryEffect(who.x+2 ,who.y+2,who.z, FX_FLAMESTRIKE, 7, 0x10 );
+    PlayStationaryEffect(who.x+1 ,who.y+2,who.z, FX_FLAMESTRIKE, 7, 0x10 );
+    PlayStationaryEffect(who.x ,who.y+2,who.z, FX_FLAMESTRIKE, 7, 0x10 );
+    PlayStationaryEffect(who.x-1 ,who.y+2,who.z, FX_FLAMESTRIKE, 7, 0x10 );
+PlayStationaryEffect(who.x-2 ,who.y+2,who.z, FX_FLAMESTRIKE, 7, 0x10 );
+PlayStationaryEffect(who.x-2 ,who.y+1,who.z, FX_FLAMESTRIKE, 7, 0x10 );
+PlayStationaryEffect(who.x-2 ,who.y,who.z, FX_FLAMESTRIKE, 7, 0x10 );
+PlayStationaryEffect(who.x-2 ,who.y-1,who.z, FX_FLAMESTRIKE, 7, 0x10 );
+PlayStationaryEffect(who.x-2 ,who.y-2,who.z, FX_FLAMESTRIKE, 7, 0x10 );
+PlayStationaryEffect(who.x-1 ,who.y-2,who.z, FX_FLAMESTRIKE, 7, 0x10 );
+PlayStationaryEffect(who.x ,who.y-2,who.z, FX_FLAMESTRIKE, 7, 0x10 );
+PlayStationaryEffect(who.x+1 ,who.y-2,who.z, FX_FLAMESTRIKE, 7, 0x10 );
+PlayStationaryEffect(who.x+2 ,who.y-2,who.z, FX_FLAMESTRIKE, 7, 0x10 );
+PlayStationaryEffect(who.x+2 ,who.y-1,who.z, FX_FLAMESTRIKE, 7, 0x10 );
+PlayStationaryEffect(who.x+2 ,who.y,who.z, FX_FLAMESTRIKE, 7, 0x10 );
+sleepms(1100);
+    PlayStationaryEffect(who.x+2 ,who.y,who.z, FX_FLAMESTRIKE, 7, 0x10 );
+    PlayStationaryEffect(who.x+2 ,who.y+1,who.z, FX_FLAMESTRIKE, 7, 0x10 );
+    PlayStationaryEffect(who.x+2 ,who.y+2,who.z, FX_FLAMESTRIKE, 7, 0x10 );
+    PlayStationaryEffect(who.x+1 ,who.y+2,who.z, FX_FLAMESTRIKE, 7, 0x10 );
+    PlayStationaryEffect(who.x ,who.y+2,who.z, FX_FLAMESTRIKE, 7, 0x10 );
+    PlayStationaryEffect(who.x-1 ,who.y+2,who.z, FX_FLAMESTRIKE, 7, 0x10 );
+PlayStationaryEffect(who.x-2 ,who.y+2,who.z, FX_FLAMESTRIKE, 7, 0x10 );
+PlayStationaryEffect(who.x-2 ,who.y+1,who.z, FX_FLAMESTRIKE, 7, 0x10 );
+PlayStationaryEffect(who.x-2 ,who.y,who.z, FX_FLAMESTRIKE, 7, 0x10 );
+PlayStationaryEffect(who.x-2 ,who.y-1,who.z, FX_FLAMESTRIKE, 7, 0x10 );
+PlayStationaryEffect(who.x-2 ,who.y-2,who.z, FX_FLAMESTRIKE, 7, 0x10 );
+PlayStationaryEffect(who.x-1 ,who.y-2,who.z, FX_FLAMESTRIKE, 7, 0x10 );
+PlayStationaryEffect(who.x ,who.y-2,who.z, FX_FLAMESTRIKE, 7, 0x10 );
+PlayStationaryEffect(who.x+1 ,who.y-2,who.z, FX_FLAMESTRIKE, 7, 0x10 );
+PlayStationaryEffect(who.x+2 ,who.y-2,who.z, FX_FLAMESTRIKE, 7, 0x10 );
+PlayStationaryEffect(who.x+2 ,who.y-1,who.z, FX_FLAMESTRIKE, 7, 0x10 );
+PlayStationaryEffect(who.x+2 ,who.y,who.z, FX_FLAMESTRIKE, 7, 0x10 );
+who.concealed := 0;
+  else
+    PlayStationaryEffect(who.x+2 ,who.y,who.z, FX_FLAMESTRIKE, 7, 0x10 );
+    PlayStationaryEffect(who.x+2 ,who.y+1,who.z, FX_FLAMESTRIKE, 7, 0x10 );
+    PlayStationaryEffect(who.x+2 ,who.y+2,who.z, FX_FLAMESTRIKE, 7, 0x10 );
+    PlayStationaryEffect(who.x+1 ,who.y+2,who.z, FX_FLAMESTRIKE, 7, 0x10 );
+    PlayStationaryEffect(who.x ,who.y+2,who.z, FX_FLAMESTRIKE, 7, 0x10 );
+    PlayStationaryEffect(who.x-1 ,who.y+2,who.z, FX_FLAMESTRIKE, 7, 0x10 );
+PlayStationaryEffect(who.x-2 ,who.y+2,who.z, FX_FLAMESTRIKE, 7, 0x10 );
+PlayStationaryEffect(who.x-2 ,who.y+1,who.z, FX_FLAMESTRIKE, 7, 0x10 );
+PlayStationaryEffect(who.x-2 ,who.y,who.z, FX_FLAMESTRIKE, 7, 0x10 );
+PlayStationaryEffect(who.x-2 ,who.y-1,who.z, FX_FLAMESTRIKE, 7, 0x10 );
+PlayStationaryEffect(who.x-2 ,who.y-2,who.z, FX_FLAMESTRIKE, 7, 0x10 );
+PlayStationaryEffect(who.x-1 ,who.y-2,who.z, FX_FLAMESTRIKE, 7, 0x10 );
+PlayStationaryEffect(who.x ,who.y-2,who.z, FX_FLAMESTRIKE, 7, 0x10 );
+PlayStationaryEffect(who.x+1 ,who.y-2,who.z, FX_FLAMESTRIKE, 7, 0x10 );
+PlayStationaryEffect(who.x+2 ,who.y-2,who.z, FX_FLAMESTRIKE, 7, 0x10 );
+PlayStationaryEffect(who.x+2 ,who.y-1,who.z, FX_FLAMESTRIKE, 7, 0x10 );
+PlayStationaryEffect(who.x+2 ,who.y,who.z, FX_FLAMESTRIKE, 7, 0x10 );
+sleepms(1100);
+    PlayStationaryEffect(who.x+2 ,who.y,who.z, FX_FLAMESTRIKE, 7, 0x10 );
+    PlayStationaryEffect(who.x+2 ,who.y+1,who.z, FX_FLAMESTRIKE, 7, 0x10 );
+    PlayStationaryEffect(who.x+2 ,who.y+2,who.z, FX_FLAMESTRIKE, 7, 0x10 );
+    PlayStationaryEffect(who.x+1 ,who.y+2,who.z, FX_FLAMESTRIKE, 7, 0x10 );
+    PlayStationaryEffect(who.x ,who.y+2,who.z, FX_FLAMESTRIKE, 7, 0x10 );
+    PlayStationaryEffect(who.x-1 ,who.y+2,who.z, FX_FLAMESTRIKE, 7, 0x10 );
+PlayStationaryEffect(who.x-2 ,who.y+2,who.z, FX_FLAMESTRIKE, 7, 0x10 );
+PlayStationaryEffect(who.x-2 ,who.y+1,who.z, FX_FLAMESTRIKE, 7, 0x10 );
+PlayStationaryEffect(who.x-2 ,who.y,who.z, FX_FLAMESTRIKE, 7, 0x10 );
+PlayStationaryEffect(who.x-2 ,who.y-1,who.z, FX_FLAMESTRIKE, 7, 0x10 );
+PlayStationaryEffect(who.x-2 ,who.y-2,who.z, FX_FLAMESTRIKE, 7, 0x10 );
+PlayStationaryEffect(who.x-1 ,who.y-2,who.z, FX_FLAMESTRIKE, 7, 0x10 );
+PlayStationaryEffect(who.x ,who.y-2,who.z, FX_FLAMESTRIKE, 7, 0x10 );
+PlayStationaryEffect(who.x+1 ,who.y-2,who.z, FX_FLAMESTRIKE, 7, 0x10 );
+PlayStationaryEffect(who.x+2 ,who.y-2,who.z, FX_FLAMESTRIKE, 7, 0x10 );
+PlayStationaryEffect(who.x+2 ,who.y-1,who.z, FX_FLAMESTRIKE, 7, 0x10 );
+PlayStationaryEffect(who.x+2 ,who.y,who.z, FX_FLAMESTRIKE, 7, 0x10 );
+
+
+    who.concealed := 1;
+  endif
+endprogram
+

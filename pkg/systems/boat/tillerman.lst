@@ -1,0 +1,66 @@
+C:\pol2\pkg\systems\boat\tillerman.src, Line 8
+program renameboat(you, tillerman)
+const KEYRING := 0x1011;
+0: get arg 'you'
+1: get arg 'tillerman'
+if((GetObjProperty(tillerman,"owner") != you.serial) &&(you.cmdlevel < 2))
+2: local #1
+3: "owner"
+4: Func(3,2): GetObjProperty
+5: local #0
+6: get member 'serial'
+7: <>
+8: local #0
+9: get member 'cmdlevel'
+10: 2L
+11: <
+12: &&
+13: if false goto 22
+PrintTextAbove(tillerman,"Stop that, or I'll throw ye overboard!");
+14: local #1
+15: "Stop that, or I'll throw ye overboard!"
+16: 3L
+17: 1000L
+18: Func(3,9): PrintTextAbove
+19: #
+return;
+20: ""
+21: progend
+var boatname := RequestInput(you, tillerman, "Enter a new name for this boat.(m
+22: decl local #2
+23: local #0
+24: local #1
+25: "Enter a new name for this boat.(max 40 characters)"
+26: Func(3,10): RequestInput
+27: :=
+28: #
+if(boatname)
+29: local #2
+30: if false goto 52
+if(len(boatname) <= 40)
+31: local #2
+32: Func(0,1): len
+33: 40L
+34: <=
+35: if false goto 46
+tillerman.name := boatname;
+36: local #1
+37: local #2
+38: set member 'name' #
+SendSysMessage(you, "Boat is renamed.");
+39: local #0
+40: "Boat is renamed."
+41: 3L
+42: 1000L
+43: Func(3,11): SendSysMessage
+44: #
+45: goto52
+SendSysMessage(you, "Too many characters in name.");
+46: local #0
+47: "Too many characters in name."
+48: 3L
+49: 1000L
+50: Func(3,11): SendSysMessage
+51: #
+52: leave block(3)
+53: progend

@@ -1,0 +1,88 @@
+use npc;
+use os;
+use uo;
+use cfgfile;
+use util;
+
+include "util/bank";
+include "include/eventID"; 
+include "include/sysEvent";
+include "include/client";
+include "include/anchors";
+////include "include/dist";
+include "include/begging";
+
+
+var bank;
+var me := Self();
+var equipt        := GetObjProperty(me, "Equipt");
+var npccfg        := ReadConfigFile("npcdesc");
+
+program banker();
+start_script("NPCKeeper", me);
+  EnableEvents( SYSEVENT_SPEECH, 3);
+  while(1)
+    var ev;
+  ev := os::wait_for_event(100);
+  if (ev)
+    case (ev.type)
+      SYSEVENT_SPEECH:
+      if(ev.text["banco"])
+	if(!ev.source.criminal)
+          OpenBank(ev.source);
+          
+	else
+	   TurnToward(ev.source);
+	  PrintTextAbove(me,"Saia daqui seu criminoso!",3,66);
+	endif
+
+      elseif(ev.text["saldo"])
+
+        if(!ev.source.criminal)    
+
+          var bankbox := FindBankBox(ev.source);
+          var contents := EnumerateItemsInContainer(bankbox);
+          var amt := 0;
+          foreach item in contents
+            if(item.objtype == 0xeed)
+              amt := (amt + item.amount);
+            endif
+          endforeach
+	   TurnToward(ev.source);
+          if(amt == 1)
+            PrintTextAbove(me,"Seu saldo e de: " + amt + " moeda de ouro.",3,66);
+          elseif(amt > 1)
+            PrintTextAbove(me,"Seu saldo e de: " + amt + " moedas de ouro.",3,66);
+	  elseif(amt < 1)
+	    PrintTextAbove(me,"Voce nao tem dinheiro. Saia daqui seu vagabundo!",3,33);
+          endif
+        
+	else
+ TurnToward(ev.source);
+	  PrintTextAbove(me,"Saia daqui seu criminoso!",3,66);
+	endif
+
+      endif
+    endcase
+  endif
+  endwhile
+endprogram
+
+function OpenBank(you)
+  TurnToward(you);
+  var bankbox := FindBankBox(you);
+  if(bankbox)
+    var contents := EnumerateItemsInContainer(bankbox);
+    var amt := 0;
+    foreach item in contents
+      if((item.container.objtype != 0xefa) && (item.container.objtype != 0xe3b))
+        amt := (amt + 1);
+      endif
+    endforeach
+   /// printtextaboveprivate(me, "Seu banco tem " + amt + " itens", you);
+    SendOpenSpecialContainer(you, bankbox);
+    SendSysMessage(you, "Voce abriu seu cofre bancario.",9,89);
+  else
+    say("Voce nao pode ver seu banco, "+ you.name);
+  endif
+endfunction

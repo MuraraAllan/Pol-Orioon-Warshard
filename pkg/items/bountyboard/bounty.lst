@@ -1,0 +1,1380 @@
+C:/pol2/scripts/include/bounty.inc, Line 3
+var bountyfile := DFOPenDataFile("BountySystem", 1);
+0: decl global #0
+1: "BountySystem"
+2: 1L
+3: 0L
+4: makelocal
+5: jmp userfunc @416
+6: :=
+7: #
+C:/pol2/scripts/include/datafile.inc, Line 57
+var DF_DEBUG_MODE	:= 1;
+8: decl global #1
+9: 1L
+10: :=
+11: #
+C:/pol2/pkg/foundations/gumps/gumps.inc, Line 225
+var GFref := struct;		// X- and Y-offsets for gump operations
+12: decl global #2
+13: struct
+14: :=
+15: #
+GFref.+x := 0;
+16: global #2
+17: "x"
+18: .+
+19: 0L
+20: := #
+GFref.+y := 0;
+21: global #2
+22: "y"
+23: .+
+24: 0L
+25: := #
+var GFlayout := array();// Main layout array for entire gump
+26: decl global #3
+27: array
+28: :=
+29: #
+var GFdata := array();	// Storage array for static-text and
+30: decl global #4
+31: array
+32: :=
+33: #
+var GFdtidx;		// ...text in GFdata (index)
+34: decl global #5
+35: #
+var GFtxtid;		// ...TeXT-entry returns (keyid)
+36: decl global #6
+37: #
+var GFbutid;		// ...'action' BUTtons (keyid)
+38: decl global #7
+39: #
+var GFcbxid;		// ...CheckBoXes (keyid)
+40: decl global #8
+41: #
+var GFradid;		// ...RADio buttons (keyid)
+42: decl global #9
+43: #
+XGFReset();
+44: makelocal
+45: jmp userfunc @1079
+46: #
+var aGFTlength := struct;
+47: decl global #10
+48: struct
+49: :=
+50: #
+aGFTlength.+charsf:=   // Space as Filler is not allowed
+51: global #10
+52: "charsf"
+53: .+
+54: "||||||||||||||`',.;:::::::::!!!!!!!!!!!!!!il1[]]]]]]]]]"bcejotî(){}===adfpqrszIÑ~~~~ghnuvyÅ <>----xJ578$?+++++++kCE2369^/*****mwABDFOPéô40%%GLNQSZ@#######HRT&__________KöUYYYYYYYYYYYXXXXXXXXXXXXXXVVVVVVVVVVVVVVMMMMMMMMMMMMMMWWWWWWWWWWWWWW"
+55: := #
+aGFTlength.+width:= array
+56: global #10
+57: "width"
+58: .+
+59: array
+60: 2L
+61: +=
+62: 3L
+63: +=
+64: 4L
+65: +=
+66: 5L
+67: +=
+68: 6L
+69: +=
+70: 7L
+71: +=
+72: 8L
+73: +=
+74: 9L
+75: +=
+76: 10L
+77: +=
+78: 11L
+79: +=
+80: 12L
+81: +=
+82: 13L
+83: +=
+84: 14L
+85: +=
+86: 15L
+87: +=
+88: 16L
+89: +=
+90: 18L
+91: +=
+92: 21L
+93: +=
+94: := #
+C:\pol2\pkg\items\bountyboard\bounty.src, Line 10
+program Assign_Bounty(parms)
+const SKILLID__HIGHEST          := 48;
+95: get arg 'parms'
+var who := parms[1];
+96: decl local #1
+97: local #0
+98: 1L
+99: [] 1
+100: :=
+101: #
+var data := parms[2];
+102: decl local #2
+103: local #0
+104: 2L
+105: [] 1
+106: :=
+107: #
+var bank := FindBankBox(who);
+108: decl local #3
+109: local #1
+110: makelocal
+111: jmp userfunc @475
+112: :=
+113: #
+foreach id in data
+114: local #2
+115: initforeach @229
+var holder := FindMyGold(bank);
+116: decl local #0
+117: local #3
+118: makelocal
+119: jmp userfunc @511
+120: :=
+121: #
+var mygold := Cint(holder[1]);
+122: decl local #1
+123: local #7
+124: 1L
+125: [] 1
+126: Func(0,1): CInt
+127: :=
+128: #
+var goldpiles := holder[2];
+129: decl local #2
+130: local #7
+131: 2L
+132: [] 1
+133: :=
+134: #
+if(mygold)
+135: local #8
+136: if false goto 222
+var mob := SystemFindObjectBySerial(id, SYSFIND_SEARCH_OFFLINE_MOBILES);
+137: decl local #0
+138: local #4
+139: 1L
+140: Func(2,7): SystemFindObjectBySerial
+141: :=
+142: #
+var bounty := GetBountyAmount(who, mygold, mob.name);
+143: decl local #1
+144: local #1
+145: local #8
+146: local #10
+147: get member 'name'
+148: makelocal
+149: jmp userfunc @556
+150: :=
+151: #
+if((bounty) and (bounty <= mygold))
+152: local #11
+153: local #11
+154: local #8
+155: <=
+156: &&
+157: if false goto 197
+AddBounty(mob, bounty);
+158: local #10
+159: local #11
+160: makelocal
+161: jmp userfunc @233
+162: #
+foreach thing in goldpiles
+163: local #9
+164: initforeach @194
+if(thing.amount < bounty)
+165: local #12
+166: get member 'amount'
+167: local #11
+168: <
+169: if false goto 179
+bounty := bounty - thing.amount;
+170: local #11
+171: local #12
+172: get member 'amount'
+173: -
+174: local11 := 
+DestroyItem(thing);
+175: local #12
+176: Func(2,8): DestroyItem
+177: #
+178: goto189
+elseif(thing.amount >= bounty)
+179: local #12
+180: get member 'amount'
+181: local #11
+182: >=
+183: if false goto 189
+SubtractAmount(thing, bounty);
+184: local #12
+185: local #11
+186: Func(2,9): SubtractAmount
+187: #
+break;
+188: goto195
+if(bounty <= 0)
+189: local #11
+190: 0L
+191: <=
+192: if false goto 194
+break;
+193: goto195
+194: stepforeach @165
+195: leave block(3)
+196: goto220
+elseif(bounty > mygold)
+197: local #11
+198: local #8
+199: >
+200: if false goto 208
+SendSysMessage(who, "You do not have that much gold.", 3, 40);
+201: local #1
+202: "You do not have that much gold."
+203: 3L
+204: 40L
+205: Func(2,10): SendSysMessage
+206: #
+207: goto220
+SendSysMessage(who, "You have declined to place a bounty on " + mob.killer.name
+208: local #1
+209: "You have declined to place a bounty on "
+210: local #10
+211: get member 'killer'
+212: get member 'name'
+213: +
+214: "'s head"
+215: +
+216: 3L
+217: 1000L
+218: Func(2,10): SendSysMessage
+219: #
+220: leave block(2)
+221: goto228
+SendSysMessage(who, "You have no gold in your bank from which to place a bounty
+222: local #1
+223: "You have no gold in your bank from which to place a bounty."
+224: 3L
+225: 40L
+226: Func(2,10): SendSysMessage
+227: #
+228: leave block(3)
+229: stepforeach @116
+230: leave block(3)
+231: leave block(4)
+232: progend
+C:/pol2/scripts/include/bounty.inc, Line 5
+function AddBounty(killer, amt)
+233: pop param 'amt'
+234: pop param 'killer'
+var entry := DFFindElement(bountyfile, Cstr(killer.serial), 1);
+235: decl local #2
+236: global #0
+237: local #1
+238: get member 'serial'
+239: Func(0,0): CStr
+240: 1L
+241: makelocal
+242: jmp userfunc @289
+243: :=
+244: #
+print(entry);
+245: local #2
+246: Func(1,0): print
+247: #
+entry.SetProp("Name", killer.name);
+248: local #2
+249: "Name"
+250: local #1
+251: get member 'name'
+252: Call Method setprop (2 params)
+253: #
+entry.SetProp("Bounty", Cint(DFGetProp(entry, "Bounty", 1, 0) + amt));
+254: local #2
+255: "Bounty"
+256: local #2
+257: "Bounty"
+258: 1L
+259: 0L
+260: makelocal
+261: jmp userfunc @354
+262: local #0
+263: +
+264: Func(0,1): CInt
+265: Call Method setprop (2 params)
+266: #
+entry.SetProp("Murders", Cint(DFGetProp(entry, "Murders", 1, 0) + 1));
+267: local #2
+268: "Murders"
+269: local #2
+270: "Murders"
+271: 1L
+272: 0L
+273: makelocal
+274: jmp userfunc @354
+275: 1L
+276: +
+277: Func(0,1): CInt
+278: Call Method setprop (2 params)
+279: #
+entry.SetProp("Expires", ReadGameClock() + 1209600);
+280: local #2
+281: "Expires"
+282: Func(2,0): ReadGameClock
+283: 1209600L
+284: +
+285: Call Method setprop (2 params)
+286: #
+287: 0L
+288: return
+C:/pol2/scripts/include/datafile.inc, Line 89
+function DFFindElement(byref file_ref, elem_name, create:=DF_NO_CREATE)
+289: pop param 'create'
+290: pop param 'elem_name'
+291: pop param byref 'file_ref'
+var temp := file_ref.FindElement( cstr(elem_name) );
+292: decl local #3
+293: local #2
+294: local #1
+295: Func(0,0): CStr
+296: Call Method findelement (1 params)
+297: :=
+298: #
+if (!temp && create)
+299: local #3
+300: !
+301: local #0
+302: &&
+303: if false goto 321
+DF_OutPut("Creating elem: " +  cstr(elem_name) );
+304: "Creating elem: "
+305: local #1
+306: Func(0,0): CStr
+307: +
+308: makelocal
+309: jmp userfunc @1134
+310: #
+file_ref.CreateElement( cstr(elem_name) );
+311: local #2
+312: local #1
+313: Func(0,0): CStr
+314: Call Method createelement (1 params)
+315: #
+temp := file_ref.FindElement( cstr(elem_name) );
+316: local #2
+317: local #1
+318: Func(0,0): CStr
+319: Call Method findelement (1 params)
+320: local3 := 
+if ( temp )
+321: local #3
+322: if false goto 326
+return temp;
+323: local #3
+324: return
+325: goto352
+elseif (create)
+326: local #0
+327: if false goto 352
+var errmsg := error;
+328: decl local #0
+329: error
+330: :=
+331: #
+errmsg.+errortext := "Could not open data elem " + elem_name + ":" + temp.error
+332: local #4
+333: "errortext"
+334: .+
+335: "Could not open data elem "
+336: local #1
+337: +
+338: ":"
+339: +
+340: local #3
+341: get member 'errortext'
+342: +
+343: := #
+DF_OutPut(errmsg.errortext);
+344: local #4
+345: get member 'errortext'
+346: makelocal
+347: jmp userfunc @1134
+348: #
+return errmsg;
+349: local #4
+350: return
+351: leave block(1)
+352: 0L
+353: return
+C:/pol2/scripts/include/datafile.inc, Line 119
+function DFGetProp(byref elem_ref, prop_name, create:=DF_NO_CREATE, assignval:=
+354: pop param 'assignval'
+355: pop param 'create'
+356: pop param 'prop_name'
+357: pop param byref 'elem_ref'
+var temp := elem_ref.GetProp(prop_name);
+358: decl local #4
+359: local #3
+360: local #2
+361: Call Method getprop (1 params)
+362: :=
+363: #
+if ( (!temp) && (create) )
+364: local #4
+365: !
+366: local #1
+367: &&
+368: if false goto 378
+elem_ref.SetProp(prop_name, assignval);
+369: local #3
+370: local #2
+371: local #0
+372: Call Method setprop (2 params)
+373: #
+temp := elem_ref.GetProp(prop_name);
+374: local #3
+375: local #2
+376: Call Method getprop (1 params)
+377: local4 := 
+if ( temp || (create) && (!assignval) )
+378: local #4
+379: local #1
+380: local #0
+381: !
+382: &&
+383: ||
+384: if false goto 388
+return temp;
+385: local #4
+386: return
+387: goto414
+elseif (create)
+388: local #1
+389: if false goto 414
+var errmsg := error;
+390: decl local #0
+391: error
+392: :=
+393: #
+errmsg.+errortext := "Could not read data file property " + prop_name + ":" + t
+394: local #5
+395: "errortext"
+396: .+
+397: "Could not read data file property "
+398: local #2
+399: +
+400: ":"
+401: +
+402: local #4
+403: get member 'errortext'
+404: +
+405: := #
+DF_OutPut(errmsg.errortext);
+406: local #5
+407: get member 'errortext'
+408: makelocal
+409: jmp userfunc @1134
+410: #
+return errmsg;
+411: local #5
+412: return
+413: leave block(1)
+414: 0L
+415: return
+C:/pol2/scripts/include/datafile.inc, Line 59
+function DFOpenDataFile(filename, create:=DF_NO_CREATE, flags:=DF_KEYTYPE_STRIN
+416: pop param 'flags'
+417: pop param 'create'
+418: pop param 'filename'
+var temp := OpenDataFile(filename);
+419: decl local #3
+420: local #2
+421: Func(4,0): OpenDataFile
+422: :=
+423: #
+if ( (!temp) && (create) )
+424: local #3
+425: !
+426: local #1
+427: &&
+428: if false goto 442
+DF_OutPut("Creating data file: " + filename);
+429: "Creating data file: "
+430: local #2
+431: +
+432: makelocal
+433: jmp userfunc @1134
+434: #
+CreateDataFile(filename, flags);
+435: local #2
+436: local #0
+437: Func(4,1): CreateDataFile
+438: #
+temp := OpenDataFile(filename);
+439: local #2
+440: Func(4,0): OpenDataFile
+441: local3 := 
+if ( temp )
+442: local #3
+443: if false goto 447
+return temp;
+444: local #3
+445: return
+446: goto473
+elseif ( create ) 
+447: local #1
+448: if false goto 473
+var errmsg := error;
+449: decl local #0
+450: error
+451: :=
+452: #
+errmsg.+errortext := "Could not open " + filename + ":" + temp.errortext;
+453: local #4
+454: "errortext"
+455: .+
+456: "Could not open "
+457: local #2
+458: +
+459: ":"
+460: +
+461: local #3
+462: get member 'errortext'
+463: +
+464: := #
+DF_OutPut(errmsg.errortext);
+465: local #4
+466: get member 'errortext'
+467: makelocal
+468: jmp userfunc @1134
+469: #
+return errmsg;
+470: local #4
+471: return
+472: leave block(1)
+473: 0L
+474: return
+C:/pol2/scripts/util/bank.inc, Line 14
+function FindBankBox( character )
+475: pop param 'character'
+var worldbank := OpenWorldBank();
+476: decl local #1
+477: makelocal
+478: jmp userfunc @1062
+479: :=
+480: #
+var bank_obj_name := "Bankbox of " + character.serial;
+481: decl local #2
+482: "Bankbox of "
+483: local #0
+484: get member 'serial'
+485: +
+486: :=
+487: #
+var bankbox := FindRootItemInStorageArea( worldbank, bank_obj_name );
+488: decl local #3
+489: local #1
+490: local #2
+491: Func(2,1): FindRootItemInStorageArea
+492: :=
+493: #
+if (!bankbox)
+494: local #3
+495: if true goto 501
+bankbox := CreateRootItemInStorageArea( worldbank, bank_obj_name, UOBJ_BANKBOX 
+496: local #1
+497: local #2
+498: 3648L
+499: Func(2,2): CreateRootItemInStorageArea
+500: local3 := 
+if(!bankbox)
+501: local #3
+502: if true goto 509
+syslog( "Unable to find or create bankbox for " + character.serial );
+503: "Unable to find or create bankbox for "
+504: local #0
+505: get member 'serial'
+506: +
+507: Func(3,1): syslog
+508: #
+return bankbox;
+509: local #3
+510: return
+C:\pol2\pkg\items\bountyboard\bounty.src, Line 70
+function FindMyGold(box)
+511: pop param 'box'
+var amt := 0;
+512: decl local #1
+513: 0L
+514: :=
+515: #
+var piles := array;
+516: decl local #2
+517: array
+518: :=
+519: #
+foreach item in EnumerateItemsInContainer(box)
+520: local #0
+521: Func(2,11): EnumerateItemsInContainer
+522: initforeach @537
+if(item.objtype == 0xeed)
+523: local #3
+524: get member 'objtype'
+525: 3821L
+526: ==
+527: if false goto 537
+amt := amt + item.amount;
+528: local #1
+529: local #3
+530: get member 'amount'
+531: +
+532: local1 := 
+piles.append(item);
+533: local #2
+534: local #3
+535: Call Method append (1 params)
+536: #
+537: stepforeach @523
+538: leave block(3)
+var holder := array;
+539: decl local #3
+540: array
+541: :=
+542: #
+holder.append(amt);
+543: local #3
+544: local #1
+545: Call Method append (1 params)
+546: #
+holder.append(piles);
+547: local #3
+548: local #2
+549: Call Method append (1 params)
+550: #
+print(holder);
+551: local #3
+552: Func(1,0): print
+553: #
+return holder;
+554: local #3
+555: return
+C:\pol2\pkg\items\bountyboard\bounty.src, Line 46
+function GetBountyAmount(who, mygold, name)
+556: pop param 'name'
+557: pop param 'mygold'
+558: pop param 'who'
+GFInitGump();
+559: 0L
+560: 0L
+561: makelocal
+562: jmp userfunc @780
+563: #
+GFPage(0);
+564: 0L
+565: makelocal
+566: jmp userfunc @810
+567: #
+GFResizePic(50,  50, 5120, 500, 200);
+568: 50L
+569: 50L
+570: 5120L
+571: 500L
+572: 200L
+573: makelocal
+574: jmp userfunc @828
+575: #
+GFResizePic(60,  60, 5054, 480, 180);
+576: 60L
+577: 60L
+578: 5054L
+579: 480L
+580: 180L
+581: makelocal
+582: jmp userfunc @828
+583: #
+GFTextLine(247,  68, 0, "Bounty Menu");
+584: 247L
+585: 68L
+586: 0L
+587: "Bounty Menu"
+588: makelocal
+589: jmp userfunc @1001
+590: #
+GFTextLine(250,  70, COLOR_YELLOW, "Bounty Menu");
+591: 250L
+592: 70L
+593: 53L
+594: "Bounty Menu"
+595: makelocal
+596: jmp userfunc @1001
+597: #
+GFTextLine( 80, 120, 0, "Your bank box contains " + mygold + " gold coins from 
+598: 80L
+599: 120L
+600: 0L
+601: "Your bank box contains "
+602: local #1
+603: +
+604: " gold coins from which you"
+605: +
+606: makelocal
+607: jmp userfunc @1001
+608: #
+GFTextLine( 80, 140, 0, "may place a bounty on " + name + "'s head.");
+609: 80L
+610: 140L
+611: 0L
+612: "may place a bounty on "
+613: local #0
+614: +
+615: "'s head."
+616: +
+617: makelocal
+618: jmp userfunc @1001
+619: #
+GFTextLine( 80, 160, 0, "Simply enter the bounty amount you wish to place below
+620: 80L
+621: 160L
+622: 0L
+623: "Simply enter the bounty amount you wish to place below."
+624: makelocal
+625: jmp userfunc @1001
+626: #
+GFResizePic(90, 185, 2620, 120, 30);
+627: 90L
+628: 185L
+629: 2620L
+630: 120L
+631: 30L
+632: makelocal
+633: jmp userfunc @828
+634: #
+var amt := GFTextEntry( 100, 190, 100, 20, 900, "0");
+635: decl local #3
+636: 100L
+637: 190L
+638: 100L
+639: 20L
+640: 900L
+641: "0"
+642: makelocal
+643: jmp userfunc @906
+644: :=
+645: #
+GFButtonID(380, 190, 2121, 2120, 0);
+646: 380L
+647: 190L
+648: 2121L
+649: 2120L
+650: 0L
+651: 0L
+652: makelocal
+653: jmp userfunc @696
+654: #
+GFButtonID(440, 190, 2130, 2129, 1, 1);
+655: 440L
+656: 190L
+657: 2130L
+658: 2129L
+659: 1L
+660: 1L
+661: makelocal
+662: jmp userfunc @696
+663: #
+var ret := GFSendGump(who);
+664: decl local #4
+665: local #2
+666: makelocal
+667: jmp userfunc @884
+668: :=
+669: #
+if(ret[0] == 1)
+670: local #4
+671: 0L
+672: [] 1
+673: 1L
+674: ==
+675: if false goto 686
+amt := Cint(SplitWords(ret[amt.keyid])[2]);
+676: local #4
+677: local #3
+678: get member 'keyid'
+679: [] 1
+680: Func(0,4): SplitWords
+681: 2L
+682: [] 1
+683: Func(0,1): CInt
+684: local3 := 
+685: goto694
+SendSysMessage(who, "Cancelled.", 3, 40);
+686: local #2
+687: "Cancelled."
+688: 3L
+689: 40L
+690: Func(2,10): SendSysMessage
+691: #
+amt := 0;
+692: 0L
+693: local3 := 
+return amt;
+694: local #3
+695: return
+C:/pol2/pkg/foundations/gumps/gumps.inc, Line 543
+function GFButtonID( x, y, release, press, close, id := 0 )
+696: pop param 'id'
+697: pop param 'close'
+698: pop param 'press'
+699: pop param 'release'
+700: pop param 'y'
+701: pop param 'x'
+var line := "button " + CStr(GFref.x + CInt(x)) + " " + CStr(GFref.y + CInt(y))
+702: decl local #6
+703: "button "
+704: global #2
+705: get member 'x'
+706: local #5
+707: Func(0,1): CInt
+708: +
+709: Func(0,0): CStr
+710: +
+711: " "
+712: +
+713: global #2
+714: get member 'y'
+715: local #4
+716: Func(0,1): CInt
+717: +
+718: Func(0,0): CStr
+719: +
+720: :=
+721: #
+line := line + " " + CStr(CInt(release)) + " " + CStr(CInt(press)) + " ";
+722: local #6
+723: " "
+724: +
+725: local #3
+726: Func(0,1): CInt
+727: Func(0,0): CStr
+728: +
+729: " "
+730: +
+731: local #2
+732: Func(0,1): CInt
+733: Func(0,0): CStr
+734: +
+735: " "
+736: +
+737: local6 := 
+if ( close == 0 )
+738: local #1
+739: 0L
+740: ==
+741: if false goto 747
+line := line + "0 0 ";
+742: local #6
+743: "0 0 "
+744: +
+745: local6 := 
+746: goto751
+line := line + "1 0 ";
+747: local #6
+748: "1 0 "
+749: +
+750: local6 := 
+id := CInt(id);		// Ensure it's an integer
+751: local #0
+752: Func(0,1): CInt
+753: local0 := 
+if ( id < 1 )		// Catch errors (0) and invalid (negative) values
+754: local #0
+755: 1L
+756: <
+757: if false goto 764
+id := GFbutid;
+758: global #7
+759: local0 := 
+GFbutid := GFbutid + 1;		// Update KeyID (butid) (only if used)
+760: global #7
+761: 1L
+762: +
+763: global7 := 
+line := line + CStr(id);
+764: local #6
+765: local #0
+766: Func(0,0): CStr
+767: +
+768: local6 := 
+GFlayout.append( line );
+769: global #3
+770: local #6
+771: Call Method append (1 params)
+772: #
+return XGFRetVal( GFlayout.size(), -1, id );
+773: global #3
+774: Call Method size (0 params)
+775: -1L
+776: local #0
+777: makelocal
+778: jmp userfunc @1095
+779: return
+C:/pol2/pkg/foundations/gumps/gumps.inc, Line 279
+function GFInitGump( sx := 0, sy := 0 )
+780: pop param 'sy'
+781: pop param 'sx'
+XGFReset();
+782: makelocal
+783: jmp userfunc @1079
+784: #
+GFSetRef( sx, sy );
+785: local #1
+786: local #0
+787: makelocal
+788: jmp userfunc @890
+789: #
+GFPage( 0 );
+790: 0L
+791: makelocal
+792: jmp userfunc @810
+793: #
+GFNoDispose();
+794: makelocal
+795: jmp userfunc @799
+796: #
+797: 0L
+798: return
+C:/pol2/pkg/foundations/gumps/gumps.inc, Line 314
+function GFNoDispose()
+GFlayout.append( "nodispose" );
+799: global #3
+800: "nodispose"
+801: Call Method append (1 params)
+802: #
+return XGFRetVal( GFlayout.size() );
+803: global #3
+804: Call Method size (0 params)
+805: -1L
+806: -1L
+807: makelocal
+808: jmp userfunc @1095
+809: return
+C:/pol2/pkg/foundations/gumps/gumps.inc, Line 292
+function GFPage( page )
+810: pop param 'page'
+page := CInt(page);
+811: local #0
+812: Func(0,1): CInt
+813: local0 := 
+GFlayout.append( "page " + CStr(page) );
+814: global #3
+815: "page "
+816: local #0
+817: Func(0,0): CStr
+818: +
+819: Call Method append (1 params)
+820: #
+return XGFRetVal( GFlayout.size(), -1, page );
+821: global #3
+822: Call Method size (0 params)
+823: -1L
+824: local #0
+825: makelocal
+826: jmp userfunc @1095
+827: return
+C:/pol2/pkg/foundations/gumps/gumps.inc, Line 370
+function GFResizePic( x, y, gumpid, w, h )
+828: pop param 'h'
+829: pop param 'w'
+830: pop param 'gumpid'
+831: pop param 'y'
+832: pop param 'x'
+var line := "resizepic " + CStr(GFref.x + CInt(x)) + " " + CStr(GFref.y + CInt(
+833: decl local #5
+834: "resizepic "
+835: global #2
+836: get member 'x'
+837: local #4
+838: Func(0,1): CInt
+839: +
+840: Func(0,0): CStr
+841: +
+842: " "
+843: +
+844: global #2
+845: get member 'y'
+846: local #3
+847: Func(0,1): CInt
+848: +
+849: Func(0,0): CStr
+850: +
+851: :=
+852: #
+line := line + " " + CStr(CInt(gumpid)) + " " + CStr(CInt(w)) + " " + CStr(CInt
+853: local #5
+854: " "
+855: +
+856: local #2
+857: Func(0,1): CInt
+858: Func(0,0): CStr
+859: +
+860: " "
+861: +
+862: local #1
+863: Func(0,1): CInt
+864: Func(0,0): CStr
+865: +
+866: " "
+867: +
+868: local #0
+869: Func(0,1): CInt
+870: Func(0,0): CStr
+871: +
+872: local5 := 
+GFlayout.append( line );
+873: global #3
+874: local #5
+875: Call Method append (1 params)
+876: #
+return XGFRetVal( GFlayout.size() );
+877: global #3
+878: Call Method size (0 params)
+879: -1L
+880: -1L
+881: makelocal
+882: jmp userfunc @1095
+883: return
+C:/pol2/pkg/foundations/gumps/gumps.inc, Line 808
+function GFSendGump( who )
+884: pop param 'who'
+return SendDialogGump( who, GFlayout, GFdata );
+885: local #0
+886: global #3
+887: global #4
+888: Func(2,6): SendDialogGump
+889: return
+C:/pol2/pkg/foundations/gumps/gumps.inc, Line 259
+function GFSetRef( x := 0, y := 0 )
+890: pop param 'y'
+891: pop param 'x'
+var oldref := GFref;
+892: decl local #2
+893: global #2
+894: :=
+895: #
+GFref.x := CInt(x);
+896: global #2
+897: local #1
+898: Func(0,1): CInt
+899: set member 'x' #
+GFref.y := CInt(y);
+900: global #2
+901: local #0
+902: Func(0,1): CInt
+903: set member 'y' #
+return oldref;
+904: local #2
+905: return
+C:/pol2/pkg/foundations/gumps/gumps.inc, Line 495
+function GFTextEntry( x, y, w, h, colour, text := "" )
+906: pop param 'text'
+907: pop param 'colour'
+908: pop param 'h'
+909: pop param 'w'
+910: pop param 'y'
+911: pop param 'x'
+if ( text == error )
+912: local #0
+913: error
+914: ==
+915: if false goto 919
+text := "";
+916: ""
+917: local0 := 
+918: goto922
+text := CStr(text);
+919: local #0
+920: Func(0,0): CStr
+921: local0 := 
+var line := "textentry " + CStr(GFref.x + CInt(x)) + " " + CStr(GFref.y + CInt(
+922: decl local #6
+923: "textentry "
+924: global #2
+925: get member 'x'
+926: local #5
+927: Func(0,1): CInt
+928: +
+929: Func(0,0): CStr
+930: +
+931: " "
+932: +
+933: global #2
+934: get member 'y'
+935: local #4
+936: Func(0,1): CInt
+937: +
+938: Func(0,0): CStr
+939: +
+940: :=
+941: #
+line := line + " " + CStr(CInt(w)) + " " + CStr(CInt(h)) + " " + CStr(CInt(colo
+942: local #6
+943: " "
+944: +
+945: local #3
+946: Func(0,1): CInt
+947: Func(0,0): CStr
+948: +
+949: " "
+950: +
+951: local #2
+952: Func(0,1): CInt
+953: Func(0,0): CStr
+954: +
+955: " "
+956: +
+957: local #1
+958: Func(0,1): CInt
+959: Func(0,0): CStr
+960: +
+961: local6 := 
+line := line + " " + CStr(GFtxtid) + " " + CStr(GFdtidx);
+962: local #6
+963: " "
+964: +
+965: global #6
+966: Func(0,0): CStr
+967: +
+968: " "
+969: +
+970: global #5
+971: Func(0,0): CStr
+972: +
+973: local6 := 
+GFlayout.append( line );
+974: global #3
+975: local #6
+976: Call Method append (1 params)
+977: #
+GFdtidx := GFdtidx + 1;		// Update index into GFdata[]
+978: global #5
+979: 1L
+980: +
+981: global5 := 
+GFdata[GFdtidx] := text;	// arrays start at #1... id#0 goes into [1]!!
+982: global #4
+983: global #5
+984: local #0
+985: [] := (1) #
+GFtxtid := GFtxtid + 1;		// Update KeyID (txtid)
+986: global #6
+987: 1L
+988: +
+989: global6 := 
+return XGFRetVal( GFlayout.size(), GFdtidx - 1, GFtxtid - 1 );
+990: global #3
+991: Call Method size (0 params)
+992: global #5
+993: 1L
+994: -
+995: global #6
+996: 1L
+997: -
+998: makelocal
+999: jmp userfunc @1095
+1000: return
+C:/pol2/pkg/foundations/gumps/gumps.inc, Line 418
+function GFTextLine(x, y, colour, text)
+1001: pop param 'text'
+1002: pop param 'colour'
+1003: pop param 'y'
+1004: pop param 'x'
+text := CStr(text);
+1005: local #0
+1006: Func(0,0): CStr
+1007: local0 := 
+var line := "text " + CStr(GFref.x + CInt(x)) + " " + CStr(GFref.y + CInt(y));
+1008: decl local #4
+1009: "text "
+1010: global #2
+1011: get member 'x'
+1012: local #3
+1013: Func(0,1): CInt
+1014: +
+1015: Func(0,0): CStr
+1016: +
+1017: " "
+1018: +
+1019: global #2
+1020: get member 'y'
+1021: local #2
+1022: Func(0,1): CInt
+1023: +
+1024: Func(0,0): CStr
+1025: +
+1026: :=
+1027: #
+line := line + " " + CStr(CInt(colour)) + " " + CStr(GFdtidx);
+1028: local #4
+1029: " "
+1030: +
+1031: local #1
+1032: Func(0,1): CInt
+1033: Func(0,0): CStr
+1034: +
+1035: " "
+1036: +
+1037: global #5
+1038: Func(0,0): CStr
+1039: +
+1040: local4 := 
+GFlayout.append( line );
+1041: global #3
+1042: local #4
+1043: Call Method append (1 params)
+1044: #
+GFdtidx := GFdtidx + 1;		// Update index into GFdata[]
+1045: global #5
+1046: 1L
+1047: +
+1048: global5 := 
+GFdata[GFdtidx] := text;	// arrays start at #1... id#0 goes into [1]!!
+1049: global #4
+1050: global #5
+1051: local #0
+1052: [] := (1) #
+return XGFRetVal( GFlayout.size(), GFdtidx - 1 );
+1053: global #3
+1054: Call Method size (0 params)
+1055: global #5
+1056: 1L
+1057: -
+1058: -1L
+1059: makelocal
+1060: jmp userfunc @1095
+1061: return
+C:/pol2/scripts/util/bank.inc, Line 34
+function OpenWorldBank()
+var bank := FindStorageArea( "World Bank" );
+1062: decl local #0
+1063: "World Bank"
+1064: Func(2,4): FindStorageArea
+1065: :=
+1066: #
+if (!bank)
+1067: local #0
+1068: if true goto 1072
+bank := CreateStorageArea( "World Bank" );
+1069: "World Bank"
+1070: Func(2,5): CreateStorageArea
+1071: local0 := 
+if (!bank)
+1072: local #0
+1073: if true goto 1077
+syslog( "Unable to open or create world bank!" );
+1074: "Unable to open or create world bank!"
+1075: Func(3,1): syslog
+1076: #
+return bank;
+1077: local #0
+1078: return
+C:/pol2/pkg/foundations/gumps/gumps.inc, Line 835
+function XGFReset( )
+GFlayout := array();
+1079: array
+1080: global3 := 
+GFdata := array();
+1081: array
+1082: global4 := 
+GFdtidx := GFINIT_TEXT;
+1083: 0L
+1084: global5 := 
+GFtxtid := GFINIT_TEXTENTRY;
+1085: 513L
+1086: global6 := 
+GFbutid := GFINIT_BUTTON;
+1087: 1025L
+1088: global7 := 
+GFcbxid := GFINIT_CHECKBOX;
+1089: 1537L
+1090: global8 := 
+GFradid := GFINIT_RADIO;
+1091: 2049L
+1092: global9 := 
+1093: 0L
+1094: return
+C:/pol2/pkg/foundations/gumps/gumps.inc, Line 851
+function XGFRetVal( lytidx := -1, dtidx := -1, keyid := -1 )
+1095: pop param 'keyid'
+1096: pop param 'dtidx'
+1097: pop param 'lytidx'
+var rvsl := struct;
+1098: decl local #3
+1099: struct
+1100: :=
+1101: #
+if ( lytidx > -1 )
+1102: local #2
+1103: -1L
+1104: >
+1105: if false goto 1111
+rvsl.+lytidx := lytidx;
+1106: local #3
+1107: "lytidx"
+1108: .+
+1109: local #2
+1110: := #
+if ( dtidx > -1 )
+1111: local #1
+1112: -1L
+1113: >
+1114: if false goto 1120
+rvsl.+dtidx := dtidx;
+1115: local #3
+1116: "dtidx"
+1117: .+
+1118: local #1
+1119: := #
+if ( keyid > -1 )
+1120: local #0
+1121: -1L
+1122: >
+1123: if false goto 1129
+rvsl.+keyid := keyid;
+1124: local #3
+1125: "keyid"
+1126: .+
+1127: local #0
+1128: := #
+sleepms(2);	// Will hopefully stop runaway script problem :/
+1129: 2L
+1130: Func(3,2): sleepms
+1131: #
+return rvsl;
+1132: local #3
+1133: return
+C:/pol2/scripts/include/datafile.inc, Line 140
+function DF_OutPut(text)
+1134: pop param 'text'
+if ( DF_DEBUG_MODE )
+1135: global #1
+1136: if false goto 1140
+SysLog(text);
+1137: local #0
+1138: Func(3,1): syslog
+1139: #
+1140: 0L
+1141: return

@@ -1,0 +1,94 @@
+use uo;
+use uo;
+use util;
+use http;
+include "include/accounts";
+
+program account_add()
+	WriteHTML ("<html><head><title>Painel Administrador do Sysco War Shard</title></head>");
+	WriteHTML ("<body text=#FF0000 bgcolor=#000000>");
+
+
+	var acctname := QueryParam ("acctname");
+	if (!acctname)
+		WriteHTML ("<form method=GET action=infoplayerson.ecl>");
+		WriteHTML ("<font size=4>Entre com seu login e senha para acessar o painel criador.");
+		WriteHTML ("<br><font size=4>Login: <input name=acctname>");
+		WriteHTML ("<br><font size=4>Senha: <input name=acctpass type=password>");
+		WriteHTML ("<br><input id=submit1 name=submit1 type=submit value=Ok>");
+		WriteHTML ("</body></html>");
+		return;
+	endif
+	var acct := FindAccount (acctname);
+	var acctpass := QueryParam ("acctpass");
+
+	WriteHTML ("<body bgcolor=#000000><font size=4>");
+	
+	if (!acct)
+	WriteHTML ("Seu login está incorreto.");
+	WriteHTML ("</body></html>");	
+	return;
+	endif	
+
+	if (!acctpass)
+	WriteHTML ("Você deve digitar a sua senha.");
+	WriteHTML ("</body></html>");
+	return;	
+	endif
+
+	if (acct.checkpassword(acctpass) == 0)
+	WriteHTML ("Senha incorreta.");
+	WriteHTML ("</body></html>");	
+	return;
+	endif
+
+	if((acct.enabled == 0) || (acct.banned == 1))
+	WriteHTML ("Sua conta esta Jailada ou Banida.");
+	WriteHTML ("<br>Acesso Negado!</br>");
+	WriteHTML ("</body></html>");
+	return;	
+	endif
+	
+
+var i;
+var privilegio:=1;
+for (i:=1; i<=5; i:= i + 1)
+if(acct.GetCharacter(i).cmdlevel > privilegio)
+privilegio:=acct.GetCharacter(i).cmdlevel;
+endif
+endfor
+
+	if(privilegio <= 2)
+	WriteHTML ("Sua conta nao tem priv suficiente para acessar este painel.");
+	WriteHTML ("<br>Acesso Negado!</br>");
+	WriteHTML ("</body></html>");
+	return;	
+	endif
+
+WriteHTML ("Você está logado usando o login: " +acct.name+ "");
+
+	if (!len (EnumerateOnlineCharacters()))
+		WriteHTML ("<br>Nao ha players logados.</br>");
+		WriteHTML ("<body></html>");
+		return;
+	endif
+
+
+	WriteHTML ("<br>Players Logados:</br>");
+	WriteHTML ("<table width=80% border=1");
+        WriteHTML ("<td><font size=4>Jogador</td>");
+	WriteHTML ("<td>Login</td>");
+	WriteHTML ("<td>Versão do Client</td>");
+	WriteHTML ("<td>Endereço de IP</td>");
+	WriteHTML ("<td>X,Y,Z</font></td>");
+	foreach chr in EnumerateOnlineCharacters()
+		WriteHTML ("<tr><td><font color=#FFFF00>" + chr.name + "</td>" );
+		WriteHtml ("<td><font color=#FFFF00>" + chr.acctname + "</td>");
+		WriteHTML ("<td><font color=#FFFF00>" + chr.clientversion + "</td>");
+		WriteHTML ("<td><font color=#FFFF00>" + chr.ip + "</td>" );
+		WriteHTML ("<td><font color=#FFFF00>" +chr.x+ ", " +chr.y+ ", " +chr.z+ "</td></tr>");
+	endforeach
+	WriteHtml( "</font></table>" );
+
+	WriteHTML ("</body></html>");
+endprogram

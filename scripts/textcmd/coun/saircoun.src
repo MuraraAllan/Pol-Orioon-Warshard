@@ -1,0 +1,9 @@
+use uo;
+use os;
+use util;
+
+include "include/client";
+
+program concealme( who )
+who.concealed := 0;
+endprogram

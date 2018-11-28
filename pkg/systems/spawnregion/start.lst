@@ -1,0 +1,7 @@
+C:\pol2\pkg\systems\spawnregion\start.src, Line 3
+start_script("spawnRegionManager");
+0: "spawnRegionManager"
+1: 0L
+2: Func(2,0): start_script
+3: #
+4: progend

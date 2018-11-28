@@ -1,0 +1,38 @@
+use uo;
+use os;
+
+include "include/spellRestrictions";
+include "include/attributes";
+
+program cast_invis( parms )
+
+var prevtime;
+prevtime := ReadGameClock() + 10;
+  var circle := 6;
+  var delivery := "direct";
+  var noto := "helpful";
+  var result := maincast(parms, delivery, circle, noto, 44);
+  if(result == 0)
+    return;
+  endif
+  var caster := result[1];
+   var cast_on := result[2];
+var  mana := GetMana(caster);
+var insc   := GetEffectiveSkill(caster, SKILLID_EVALINT);
+var mage   := GetEffectiveSkill(caster, SKILLID_MAGERY);
+if(Readgameclock() >=  prevtime)
+    SendSysMessage(caster, "Voce demorou demais e perdeu o focus",9,90);
+PlayStationaryEffect( caster.x, caster.y, caster.z, FX_SMOKE, 0xa, 0xa );     
+ playSoundEffect(caster,0x005d);
+setmana(caster, mana + 20);
+    return;
+  endif
+var inscc := insc / 20;
+
+
+  PlaySoundEffect(cast_on, SFX_SPELL_INVISIBILITY);
+  cast_on.hidden := 1;
+  Detach();
+   var tempo := sleep(120 + insc) ;
+  cast_on.hidden := 0;
+endprogram

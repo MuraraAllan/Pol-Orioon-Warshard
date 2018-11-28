@@ -1,0 +1,505 @@
+C:\pol2\pkg\systems\spawnregion\spawner.src, Line 8
+var regionscfg  := OpenDataFile("SpawnRegions");
+0: decl global #0
+1: "SpawnRegions"
+2: Func(5,0): OpenDataFile
+3: :=
+4: #
+var groupscfg   := OpenDataFile("SpawnGroups");
+5: decl global #1
+6: "SpawnGroups"
+7: Func(5,0): OpenDataFile
+8: :=
+9: #
+var regcfg      := dictionary;  // Regions config
+10: decl global #2
+11: dictionary
+12: :=
+13: #
+var grpcfg      := dictionary;  // Groups config.
+14: decl global #3
+15: dictionary
+16: :=
+17: #
+ReadRegions();
+18: makelocal
+19: jmp userfunc @173
+20: #
+ReadGroups();
+21: makelocal
+22: jmp userfunc @151
+23: #
+C:\pol2\pkg\systems\spawnregion\spawner.src, Line 38
+program spawner(parms)
+24: get arg 'parms'
+var region  := parms[1];
+25: decl local #1
+26: local #0
+27: 1L
+28: [] 1
+29: :=
+30: #
+var group   := parms[2];
+31: decl local #2
+32: local #0
+33: 2L
+34: [] 1
+35: :=
+36: #
+var npcs    := parms[3];
+37: decl local #3
+38: local #0
+39: 3L
+40: [] 1
+41: :=
+42: #
+var tospawn := parms[4];
+43: decl local #4
+44: local #0
+45: 4L
+46: [] 1
+47: :=
+48: #
+var nxt    := parms[5];
+49: decl local #5
+50: local #0
+51: 5L
+52: [] 1
+53: :=
+54: #
+var spawns  := parms[6];
+55: decl local #6
+56: local #0
+57: 6L
+58: [] 1
+59: :=
+60: #
+var template, sp;
+61: decl local #7
+62: #
+63: decl local #8
+64: #
+var steps := CInt(nxt - ReadGameClock());
+65: decl local #9
+66: local #5
+67: Func(2,2): ReadGameClock
+68: -
+69: Func(0,2): CInt
+70: :=
+71: #
+steps := steps * 1.00;
+72: local #9
+73: 1LF
+74: *
+75: local9 := 
+var npc := 0;
+76: decl local #10
+77: 0L
+78: :=
+79: #
+var sleeper := steps / tospawn;
+80: decl local #11
+81: local #9
+82: local #4
+83: /
+84: :=
+85: #
+for (sp := 1; sp <= tospawn; sp := sp + 1)
+86: local #8
+87: 1L
+88: :=
+89: #
+90: local #8
+91: local #4
+92: <=
+93: if false goto 130
+template := PickRandomNpc(npcs);
+94: local #3
+95: makelocal
+96: jmp userfunc @138
+97: local7 := 
+npc := SpawnNpc(region, group, template);
+98: local #1
+99: local #2
+100: local #7
+101: makelocal
+102: jmp userfunc @233
+103: local10 := 
+if(!npc)
+104: local #10
+105: if true goto 107
+continue;
+106: goto123
+npc := 0;
+107: 0L
+108: local10 := 
+spawns.append(npc.serial);
+109: local #6
+110: local #10
+111: get member 'serial'
+112: Call Method append (1 params)
+113: #
+SetGroupSpawns(region, group, spawns);
+114: local #1
+115: local #2
+116: local #6
+117: makelocal
+118: jmp userfunc @195
+119: #
+sleepms(sleeper);
+120: local #11
+121: Func(3,0): sleepms
+122: #
+123: local #8
+124: local #8
+125: 1L
+126: +
+127: :=
+128: #
+129: goto90
+SetGroupSpawns(region, group, spawns);
+130: local #1
+131: local #2
+132: local #6
+133: makelocal
+134: jmp userfunc @195
+135: #
+136: leave block(12)
+137: progend
+C:\pol2\pkg\systems\spawnregion\spawner.src, Line 64
+function PickRandomNpc(byref npcs)
+138: pop param byref 'npcs'
+var idx := RandomInt(npcs.size()) + 1;
+139: decl local #1
+140: local #0
+141: Call Method size (0 params)
+142: Func(4,0): RandomInt
+143: 1L
+144: +
+145: :=
+146: #
+return npcs[idx];
+147: local #0
+148: local #1
+149: [] 1
+150: return
+C:\pol2\pkg\systems\spawnregion\spawner.src, Line 29
+function ReadGroups()
+foreach grpname in (groupscfg.Keys())
+151: global #1
+152: Call Method keys (0 params)
+153: initforeach @169
+var grpelem := groupscfg.FindElement(grpname);
+154: decl local #0
+155: global #1
+156: local #0
+157: Call Method findelement (1 params)
+158: :=
+159: #
+if(!grpelem)
+160: local #3
+161: if true goto 164
+continue;
+162: leave block(1)
+163: goto169
+grpcfg[grpname] := grpelem;
+164: global #3
+165: local #0
+166: local #3
+167: [] := (1) #
+168: leave block(1)
+169: stepforeach @154
+170: leave block(3)
+171: 0L
+172: return
+C:\pol2\pkg\systems\spawnregion\spawner.src, Line 19
+function ReadRegions()
+foreach regname in (regionscfg.Keys())
+173: global #0
+174: Call Method keys (0 params)
+175: initforeach @191
+var regelem := regionscfg.FindElement(regname);
+176: decl local #0
+177: global #0
+178: local #0
+179: Call Method findelement (1 params)
+180: :=
+181: #
+if(!regelem)
+182: local #3
+183: if true goto 186
+continue;
+184: leave block(1)
+185: goto191
+regcfg[regname] := regelem;
+186: global #2
+187: local #0
+188: local #3
+189: [] := (1) #
+190: leave block(1)
+191: stepforeach @176
+192: leave block(3)
+193: 0L
+194: return
+C:\pol2\pkg\systems\spawnregion\spawner.src, Line 108
+function SetGroupSpawns(region, group, byref spawns)
+195: pop param byref 'spawns'
+196: pop param 'group'
+197: pop param 'region'
+set_critical(1);
+198: 1L
+199: Func(3,2): set_critical
+200: #
+var spawnregions := GetGlobalProperty("SpawnRegions");
+201: decl local #3
+202: "SpawnRegions"
+203: Func(2,5): GetGlobalProperty
+204: :=
+205: #
+if (!spawnregions)
+206: local #3
+207: if true goto 210
+spawnregions := dictionary;
+208: dictionary
+209: local3 := 
+if (!spawnregions.exists(region))
+210: local #3
+211: local #2
+212: Call Method exists (1 params)
+213: if true goto 218
+spawnregions[region] := dictionary;
+214: local #3
+215: local #2
+216: dictionary
+217: [] := (1) #
+spawnregions[region][group] := spawns;
+218: local #3
+219: local #2
+220: [] 1
+221: local #1
+222: local #0
+223: [] := (1) #
+SetGlobalProperty("SpawnRegions", spawnregions);
+224: "SpawnRegions"
+225: local #3
+226: Func(2,6): SetGlobalProperty
+227: #
+set_critical(0);
+228: 0L
+229: Func(3,2): set_critical
+230: #
+231: 0L
+232: return
+C:\pol2\pkg\systems\spawnregion\spawner.src, Line 69
+function SpawnNpc(region, group, template)
+233: pop param 'template'
+234: pop param 'group'
+235: pop param 'region'
+var coords := SplitWords(regcfg[region].GetProp("rect"));
+236: decl local #3
+237: global #2
+238: local #2
+239: [] 1
+240: "rect"
+241: Call Method getprop (1 params)
+242: Func(0,3): SplitWords
+243: :=
+244: #
+var x1 := CInt(coords[1]);
+245: decl local #4
+246: local #3
+247: 1L
+248: [] 1
+249: Func(0,2): CInt
+250: :=
+251: #
+var y1 := CInt(coords[2]);
+252: decl local #5
+253: local #3
+254: 2L
+255: [] 1
+256: Func(0,2): CInt
+257: :=
+258: #
+var x2 := CInt(coords[3]);
+259: decl local #6
+260: local #3
+261: 3L
+262: [] 1
+263: Func(0,2): CInt
+264: :=
+265: #
+var y2 := CInt(coords[4]);   
+266: decl local #7
+267: local #3
+268: 4L
+269: [] 1
+270: Func(0,2): CInt
+271: :=
+272: #
+var x, y, z;
+273: decl local #8
+274: #
+275: decl local #9
+276: #
+277: decl local #10
+278: #
+var tries := 0;
+279: decl local #11
+280: 0L
+281: :=
+282: #
+var sh;
+283: decl local #12
+284: #
+var info;
+285: decl local #13
+286: #
+var npc;
+287: decl local #14
+288: #
+var prop;
+289: decl local #15
+290: #
+x := RandomInt(x2-x1)+ x1;
+291: local #6
+292: local #4
+293: -
+294: Func(4,0): RandomInt
+295: local #4
+296: +
+297: local8 := 
+y := RandomInt(y2-y1)+ y1;
+298: local #7
+299: local #5
+300: -
+301: Func(4,0): RandomInt
+302: local #5
+303: +
+304: local9 := 
+z := GetMapInfo(x, y).z;
+305: local #8
+306: local #9
+307: Func(2,3): GetMapInfo
+308: get member 'z'
+309: local10 := 
+tries := tries + 1;
+310: local #11
+311: 1L
+312: +
+313: local11 := 
+sh := GetStandingHeight(x, y, z);
+314: local #8
+315: local #9
+316: local #10
+317: Func(2,4): GetStandingHeight
+318: local12 := 
+if (sh.multi || sh.multi.serial)
+319: local #12
+320: get member 'multi'
+321: local #12
+322: get member 'multi'
+323: get member 'serial'
+324: ||
+325: if false goto 329
+npc := 0;
+326: 0L
+327: local14 := 
+328: goto366
+info := Hex(GetMapInfo(x, y).landtile);
+329: local #8
+330: local #9
+331: Func(2,3): GetMapInfo
+332: get member 'landtile'
+333: Func(0,4): Hex
+334: local13 := 
+if ((info < 0x406) || (info > 0x455))
+335: local #13
+336: 1030L
+337: <
+338: local #13
+339: 1109L
+340: >
+341: ||
+342: if false goto 366
+npc := CreateNpc(template, x, y, z);
+343: local #0
+344: local #8
+345: local #9
+346: local #10
+347: 0L
+348: makelocal
+349: jmp userfunc @388
+350: local14 := 
+if (npc)
+351: local #14
+352: if false goto 366
+prop := region + " " + group;
+353: local #2
+354: " "
+355: +
+356: local #1
+357: +
+358: local15 := 
+SetObjProperty(npc, "SpawnRegion", prop);
+359: local #14
+360: "SpawnRegion"
+361: local #15
+362: Func(2,1): SetObjProperty
+363: #
+return npc;
+364: local #14
+365: return
+sleepms(20);
+366: 20L
+367: Func(3,0): sleepms
+368: #
+369: local #11
+370: 20L
+371: >
+372: if false goto 291
+if (tries > MAX_SPAWN_TRIES)
+373: local #11
+374: 20L
+375: >
+376: if false goto 386
+syslog("Exceeded max tries. Region = " + region + ", npc = " + template);
+377: "Exceeded max tries. Region = "
+378: local #2
+379: +
+380: ", npc = "
+381: +
+382: local #0
+383: +
+384: Func(3,1): syslog
+385: #
+return 0;
+386: 0L
+387: return
+C:/pol2/scripts/include/createNPC.inc, Line 4
+function CreateNpc(template, x, y, z, props := 0)
+388: pop param 'props'
+389: pop param 'z'
+390: pop param 'y'
+391: pop param 'x'
+392: pop param 'template'
+var npc := CreateNpcFromTemplate(template, x, y, z, props);
+393: decl local #5
+394: local #4
+395: local #3
+396: local #2
+397: local #1
+398: local #0
+399: Func(2,0): CreateNpcFromTemplate
+400: :=
+401: #
+SetObjProperty(npc, "AiSerial", npc.serial);
+402: local #5
+403: "AiSerial"
+404: local #5
+405: get member 'serial'
+406: Func(2,1): SetObjProperty
+407: #
+return npc;
+408: local #5
+409: return

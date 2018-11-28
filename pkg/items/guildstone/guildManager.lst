@@ -1,0 +1,296 @@
+c:\pol\pkg\items\guildstone\guildManager.src, Line 6
+var proc := GetProcess(GetPid());
+0: decl global #0
+1: Func(3,1): getpid
+2: Func(3,0): getprocess
+3: :=
+4: #
+var guilds;
+5: decl global #1
+6: #
+var stafflist := 0;
+7: decl global #2
+8: 0L
+9: :=
+10: #
+while(stafflist == 0)
+11: global #2
+12: 0L
+13: ==
+14: if false goto 26
+print("Guild Manager: Waiting for Stafflist to initialize");
+15: "Guild Manager: Waiting for Stafflist to initialize"
+16: Func(1,0): print
+17: #
+sleep(2);
+18: 2L
+19: Func(3,2): sleep
+20: #
+stafflist := GetProcess(GetGlobalProperty("#stafflist"));
+21: "#stafflist"
+22: Func(2,0): GetGlobalProperty
+23: Func(3,0): getprocess
+24: global2 := 
+25: goto11
+print("GuildManager Loaded");
+26: "GuildManager Loaded"
+27: Func(1,0): print
+28: #
+c:\pol\pkg\items\guildstone\guildManager.src, Line 17
+program GuildManager()
+SetGlobalProperty("#GuildManager", GetPid());
+29: "#GuildManager"
+30: Func(3,1): getpid
+31: Func(2,1): SetGlobalProperty
+32: #
+var ev;
+33: decl local #0
+34: #
+guilds := ListGuilds();
+35: Func(2,2): ListGuilds
+36: global1 := 
+if(!guilds)
+37: global #1
+38: if true goto 41
+guilds := {};
+39: array
+40: global1 := 
+sleep(5);
+41: 5L
+42: Func(3,2): sleep
+43: #
+while(1)
+44: 1L
+45: if false goto 69
+ev := os::wait_for_event(3600);
+46: 3600L
+47: Func(3,3): wait_for_event
+48: local0 := 
+if(ev)
+49: local #0
+50: if false goto 68
+case(ev.type)
+51: local #0
+52: get member 'type'
+53: casejmp
+	"orderchaos": @54
+	"disband": @59
+	"created": @64
+	default: @68
+OrderChaos(ev);
+54: local #0
+55: makelocal
+56: jmp userfunc @223
+57: #
+58: goto68
+GuildDisband(ev);
+59: local #0
+60: makelocal
+61: jmp userfunc @102
+62: #
+63: goto68
+GuildCreated(ev);
+64: local #0
+65: makelocal
+66: jmp userfunc @71
+67: #
+68: goto44
+69: leave block(1)
+70: progend
+c:\pol\pkg\items\guildstone\guildManager.src, Line 77
+function GuildCreated(ev)
+71: pop param 'ev'
+guilds     := ListGuilds();
+72: Func(2,2): ListGuilds
+73: global1 := 
+if(!guilds)
+74: global #1
+75: if true goto 78
+guilds := {};
+76: array
+77: global1 := 
+ev.type    := "gmbcast";
+78: local #0
+79: "gmbcast"
+80: set member 'type' #
+ev.+src := "GuildManager";
+81: local #0
+82: "src"
+83: .+
+84: "GuildManager"
+85: := #
+ev.+msg    := "Guild Manager: A guilda [" + ev.name + "]  foi criada.";
+86: local #0
+87: "msg"
+88: .+
+89: "Guild Manager: A guilda ["
+90: local #0
+91: get member 'name'
+92: +
+93: "]  foi criada."
+94: +
+95: := #
+stafflist.sendevent(ev);
+96: global #2
+97: local #0
+98: Call Method sendevent (1 params)
+99: #
+100: 0L
+101: return
+c:\pol\pkg\items\guildstone\guildManager.src, Line 40
+function GuildDisband(ev)
+102: pop param 'ev'
+var guild  := ev.guild;
+103: decl local #1
+104: local #0
+105: get member 'guild'
+106: :=
+107: #
+var gm     := ev.gm;
+108: decl local #2
+109: local #0
+110: get member 'gm'
+111: :=
+112: #
+var stone  := ev.gs;
+113: decl local #3
+114: local #0
+115: get member 'gs'
+116: :=
+117: #
+var name   := guild.GetProp("guildname");
+118: decl local #4
+119: local #1
+120: "guildname"
+121: Call Method getprop (1 params)
+122: :=
+123: #
+var abbv   := guild.GetProp("guildabv");
+124: decl local #5
+125: local #1
+126: "guildabv"
+127: Call Method getprop (1 params)
+128: :=
+129: #
+var holder := guild.allyguilds;
+130: decl local #6
+131: local #1
+132: get member 'allyguilds'
+133: :=
+134: #
+foreach ally in holder
+135: local #6
+136: initforeach @146
+stone.RemoveAllyGuild(ally, guild);
+137: local #3
+138: local #7
+139: local #1
+140: Call Method removeallyguild (2 params)
+141: #
+guild.removeallyguild(ally);
+142: local #1
+143: local #7
+144: Call Method removeallyguild (1 params)
+145: #
+146: stepforeach @137
+147: leave block(3)
+holder := guild.enemyguilds;
+148: local #1
+149: get member 'enemyguilds'
+150: local6 := 
+foreach enemy in holder
+151: local #6
+152: initforeach @162
+stone.RemoveAllyGuild(enemy, guild);
+153: local #3
+154: local #7
+155: local #1
+156: Call Method removeallyguild (2 params)
+157: #
+guild.removeenemyguild(enemy);
+158: local #1
+159: local #7
+160: Call Method removeenemyguild (1 params)
+161: #
+162: stepforeach @153
+163: leave block(3)
+stone.PurgeDeclarations(guild);
+164: local #3
+165: local #1
+166: Call Method purgedeclarations (1 params)
+167: #
+DestroyGuild(guild);
+168: local #1
+169: Func(2,3): DestroyGuild
+170: #
+guilds := ListGuilds();
+171: Func(2,2): ListGuilds
+172: global1 := 
+if(!guilds)
+173: global #1
+174: if true goto 177
+guilds := {};
+175: array
+176: global1 := 
+ev.type := "gmbcast";
+177: local #0
+178: "gmbcast"
+179: set member 'type' #
+ev.+src := "ScriptManager";
+180: local #0
+181: "src"
+182: .+
+183: "ScriptManager"
+184: := #
+ev.+msg := "Guild Manager: A guilda [" + name + "]  terminou.";
+185: local #0
+186: "msg"
+187: .+
+188: "Guild Manager: A guilda ["
+189: local #4
+190: +
+191: "]  terminou."
+192: +
+193: := #
+stafflist.SendEvent(ev);
+194: global #2
+195: local #0
+196: Call Method sendevent (1 params)
+197: #
+var chk := 0;
+198: decl local #7
+199: 0L
+200: :=
+201: #
+while(chk == 0)
+202: local #7
+203: 0L
+204: ==
+205: if false goto 216
+if(DestroyItem(stone))
+206: local #3
+207: Func(2,5): DestroyItem
+208: if false goto 212
+chk := 1;
+209: 1L
+210: local7 := 
+211: goto215
+sleep(10);
+212: 10L
+213: Func(3,2): sleep
+214: #
+215: goto202
+CreateItemInBackpack(gm, 0xa391, 1);
+216: local #2
+217: 41873L
+218: 1L
+219: Func(2,6): CreateItemInBackpack
+220: #
+221: 0L
+222: return
+c:\pol\pkg\items\guildstone\guildManager.src, Line 36
+function OrderChaos(ev)
+223: pop param 'ev'
+return;
+224: ""
+225: return

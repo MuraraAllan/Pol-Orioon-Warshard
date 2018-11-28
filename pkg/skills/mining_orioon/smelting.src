@@ -1,0 +1,134 @@
+use uo;
+use os;
+
+include "include/client";
+include "include/objtype";
+include "include/canAccess";
+
+program smelt_that_ore (who, ore)
+  EraseObjProperty(who, "IsMeditating");
+  EraseObjProperty(who, "HealTimer");
+  if(!can_access(who, ore))
+    return;
+  endif
+
+  if(ore.container != who.backpack)
+    SendSysMessage(who, "O item precisa estar em sua mochila.");
+    return;
+  endif
+
+  if(ore.movable == 0)
+    SendSysMessage(who, "Voce nao pode fundir minerios trancados ao chao.");
+    return;
+  endif
+  case(ore.objtype)
+    0x6300:  SmeltOre(who, ore, 0x6309,  15); ///Ferro
+    0x6302:  SmeltOre(who, ore, 0x630b,  45); ///Onyx
+    0x6303:  SmeltOre(who, ore, 0x630c,  55); ///Cobre
+    0x6307:  SmeltOre(who, ore, 0x6310,  85); ///Verite
+    0x6312:  SmeltOre(who, ore, 0x6313,  100); ///Esmeralda
+    0x6314:  SmeltOre(who, ore, 0x6315,  105); ///Quartzo
+    0x6327:  SmeltOre(who, ore, 0x6400,  100); ///Criptonita
+    0x6328:  SmeltOre(who, ore, 0x6401,  95); ///Manganes
+    0x6329:  SmeltOre(who, ore, 0x6402,  100); ///Cobalto 
+    0x6330:  SmeltOre(who, ore, 0x6403,  90); ///Silicio
+    0x6331:  SmeltOre(who, ore, 0x6404,  95); ///Bauxita
+
+default: SendSysMessage(who,"Voce nao pode fundir isto");
+  endcase
+endprogram
+
+function SmeltOre(who, ore, ingot, difficulty)
+setobjproperty(who, "ingott", ingot);
+  if(!ReserveItem(ore))
+    return;
+  endif
+var anvil_near := 0;
+  foreach item in ListItemsNearLocation(who.x, who.y, who.z, 3)
+    if(((item.objtype == 0xfb1) || (item.objtype == 0x197a) && (item.objtype <= 0x19a9)))
+      anvil_near := 1;
+      break;
+    endif
+  endforeach
+
+  if(anvil_near == 0)
+    SendSysMessage(who, "Voce precisa estar perto de uma forga para poder fundir minerios",9,89);
+    return;
+endif
+
+var counters := ore.amount;
+var mineriostotal := 0;
+
+var xx := who.x;
+var xy := who.y;
+
+while (counters >= 1)
+
+if(who.frozen)
+return;
+endif
+
+if(!CheckSkill(who, SKILLID_MINING, difficulty, ((difficulty ) + 10)))
+sleepms(350);
+Printtextabove(who, "Droga! Destrui o material",9,89);
+sendsysmessage(who, "Voce destroi o material",3,98);
+var a := subtractamount(ore, 1);
+var b := subtractamount(ore, 1);
+var c := subtractamount(ore, 1);
+if(!a)
+return;
+endif
+if((a) && (b) && (c))
+counters := counters - 3;
+mineriostotal := mineriostotal - 6;
+
+return;
+sleepms(550);
+endif
+if((a) && (b) && (!c))
+counters := counters - 2;
+mineriostotal := mineriostotal - 4;
+
+sleepms(550);
+endif
+if((a) && (!b) && (!c))
+counters := counters - 1;
+mineriostotal := mineriostotal - 2;
+
+sleepms(550);
+endif
+endif
+sleepms(350);
+var a := subtractamount(ore, 1);
+var b := subtractamount(ore, 1);
+var c := subtractamount(ore, 1);
+if(!a)
+return;
+endif
+if((a) && (b) && (c))
+
+sleepms(750);
+counters := counters - 3;
+mineriostotal := mineriostotal + 6;
+endif
+if((a) && (b) && (!c))
+sleepms(750);
+counters := counters - 2;
+mineriostotal := mineriostotal + 4;
+endif
+if((a) && (!b) && (!c))
+sleepms(750);
+counters := counters - 1;
+mineriostotal := mineriostotal + 2;
+endif
+if((who.x != xx) || (who.y != xy))
+ CreateItemInBackpack(who, ingot, mineriostotal);
+Sendsysmessage(who, "Voce para de fundir minerios.",9,89);
+
+return;
+endif
+
+endwhile 
+SendSysMessage(who, "Voce para de fundir minerios.",9,89);
+ CreateItemInBackpack(who, ingot, mineriostotal);
+endfunction

@@ -1,0 +1,310 @@
+use uo;
+use os;
+use util;
+use math;
+use cfgfile;
+use file;
+
+include "include/eventID";
+include "include/myUtil";
+include "include/attributes";
+include "../../pkg/systems/combat/equip";
+include "include/yesNo";
+include "include/canAccess";
+include ":gumps:gumps";
+include "include/webPage";
+include "include/help";
+
+program onlogon(who)
+  who.setlightlevel(0, 100 * 60);
+
+ var conta:=FindAccount(who.acctname);
+Verificar_Delete_Char(who);
+
+if(who.cmdlevel == 0) ///Se For Player
+ ///Limite/// 
+ if(GetGlobalProperty("#Jogadores") > 60)
+  sendsysmessage(who,"O limite de 60 Players ja foi atingido. Tente novamente mais tarde.");
+  setobjproperty(who,"derrubarchar",1);
+   if(getobjproperty(who,"LIMITEPEGO") > readgameclock())
+    sendsysmessage(who,"Voce ultrapassou o limite de 1 tentativa por char, e tomar blockeio de 10 minutos em sua conta!");
+    conta.setprop("tempojail", Cint(ReadGameClock() + 600 ) );
+    conta.disable();
+   endif
+  setobjproperty(who,"LIMITEPEGO",readgameclock()+15);
+  disconnectclient(who);
+  start_script(":scripts:misc:logofftest", who);
+  return;
+ endif
+ SetGlobalProperty("#Jogadores", GetGlobalProperty("#Jogadores")+1);
+ start_script("amlogon", who); ///Script de Anti Macro
+ who.title_suffix := ", "+getobjproperty(who, "titullo");
+elseif(who.cmdlevel > 0) ///Se for Staff
+///Ageitar Roupas do Staff de acordo com Level
+AparenciaStaff(who);
+
+endif
+
+
+///Logs de Logon
+var log:="Login: " +who.acct.name+ " logou com o ip: " +who.ip+ " - char: " +who.name+ " - serial : " + who.serial; 
+LogToFile("log/login.log", log );
+
+///Packet Para Montarias LBR
+SendPacket(who, "B90003");
+
+///Proteções para não ficar preso na arena de PVP
+if((who.x == 1) && (who.y == 45) && (who.z == 1))
+var whoo:= { who.serial, who };
+start_script("enviarpvp", whoo);
+endif
+if((who.x >= 4285) && (who.y >= 947) && (who.x <= 4335) && (who.y <= 962))
+Sendsysmessage(who, "Voce logou na area da arena de PVP. Para evitar BUGS voce foi teleportado.",2,95);
+MoveCharacterToLocation(who, 1, 45, 1, MOVECHAR_FORCELOCATION);
+var whoo:= { who.serial, who };
+start_script("enviarpvp", whoo);
+endif
+
+///Aux Gump, Assistente (MUITO PESADO)
+///start_script("auxgump/auxgump", who);
+
+
+///Verificar Nomes Duplicados///
+if(!getglobalproperty(lower(who.name)))
+setglobalproperty(lower(who.name), who.serial);
+endif
+if((getglobalproperty(lower(who.name)) != who.serial))
+eraseobjproperty(who,"verf_nome");
+setobjproperty(who,"derrubarchar",1);
+sendsysmessage(who,"Este nome ja fora escolhido antes, e voce devera deletar seu char!");
+DisconnectClient(who);
+return 0;
+endif
+
+////Sistema de Decay Longs
+if(GetObjProperty(who, "longmurders") > 0)
+var decayqts:=Cint(ReadGameClock()-GetObjProperty(who,"deslogouat"));
+    decayqts:=Cint(decayqts/72000);
+  if(decayqts > GetObjProperty(who, "longmurders"))
+  decayqts:=Cint(GetObjProperty(who, "longmurders"));
+  endif
+if(decayqts > 0)
+SendSysMessage(who,"Voce se sente menos culpado. Voce perdeu " +decayqts+ " long count.",9,33);
+SetObjProperty(who,"decaytime", ReadGameClock()+72000);
+SetObjProperty(who,"longmurders", Cint(GetObjProperty(who,"longmurders")-decayqts));
+endif
+endif
+if(GetObjProperty(who, "longmurders") < 5)
+   who.title_prefix:="";
+   who.setMurderer(0);
+   who.alignment := "good";
+endif
+if(GetObjProperty(who, "longmurders") >= 5)
+   who.setMurderer(1);
+   who.alignment := "evil";
+ if(who.graphic == 400)
+  who.title_prefix:="O Assassino ";
+ else
+  who.title_prefix:="A Assassina ";
+ endif
+endif
+////Fim do Sis. de Decay Longs
+
+///Setar que logou staff
+var staffsss:= Getglobalproperty("conon");
+if((who.cmdlevel >= 1) && (who.cmdlevel < 3) && (!staffsss))
+SetGlobalProperty("conon", 1);
+endif
+  if((who.cmdlevel > 0) && (who.cmdlevel < 3) )
+SetGlobalProperty("conon", (GetGlobalProperty("conon") + 1));
+endif
+var staffss:= Getglobalproperty("gmon");
+if((who.cmdlevel > 4) && (!staffss))
+SetGlobalProperty("gmon", 1);
+elseif(((who.cmdlevel > 3) && (staffss >= 1)))
+SetGlobalProperty("gmon", cint(staffss) + 1);
+endif
+
+///Sistema Anti ,Crash
+//start_script("anticrash", who);
+Sendsysmessage(who, "Sistema de 'Anti ,Crash' Ativado.");
+  
+
+
+  who.paralyzed := 0;
+  RestoreMods(who);
+  SetObjProperty(who,"logontime",ReadGameClock());
+  EraseObjProperty(who, "IsMeditating");
+  SetObjProperty(who,"LoggedIn", 1);
+  EraseObjProperty(who, "guarda");
+
+  start_script(":hooks:attributeCore", who);
+
+  var mount := GetEquipmentByLayer(who, 25 );
+  if(mount)
+    var animal := SystemFindObjectBySerial(CInt(GetObjProperty(mount,"serial")));
+    if(animal)
+      EraseObjProperty(animal,"onhold");
+    else
+      DestroyItem(mount);
+    endif
+  endif
+
+  SetObjProperty(who, "LastLog", ReadGameClock() );
+  if(GetObjProperty(who,"poly"))
+    Detach();
+    sleep(15);
+    who.graphic := who.objtype;
+    who.color := who.truecolor;
+    EraseObjProperty(who,"poly");
+  endif
+    foreach thing in ListEquippedItems(who)
+    if(Cint(GetObjProperty(thing, "#equipped")) != who.serial)
+    HandleMods(who, thing);
+    endif
+    endforeach
+  staffnotify(who);
+endprogram
+
+
+function staffnotify(who)
+  var pid := GetGlobalProperty("#stafflist");;
+  if (!pid)
+    syslog( "Stafflist not initialized!" );
+    return;
+  endif
+  var process := getprocess(pid);
+  if(!process)
+    syslog( "Can't find process for stafflist, pid=" + pid );
+    return;
+  endif
+  var k := struct;
+  if(who.cmdlevel < 2)
+    k.+player := who;
+    k.+type  := EVID_PLAYER_LOGIN;
+    process.sendevent(k);
+  else
+    k.+player := who;
+    k.+type   := EVID_STAFF_LOGIN;
+    process.sendevent(k);
+  endif
+endfunction
+
+function RestoreMods(who)
+  foreach thing in ListEquippedItems(who)
+    if(GetObjProperty(thing, "Pid"))
+      var holder := {};
+      var gain := GetObjProperty(thing, "gain");
+      if(!gain)
+        gain := 5;
+      endif
+      var type := GetObjProperty(thing, "type");
+      var tpe;
+      case(type)
+        "strength":     tpe := "str";
+        "invisibility": tpe := "inv";
+        "sight":        tpe := "vis";
+        "protection":   tpe := "pro";
+        "reflect":      tpe := "ref";
+        "bless":        tpe := "bls";
+      endcase
+      holder.append(thing.serial);
+      holder.append(tpe);
+      holder.append(gain);
+      SetObjProperty(thing, "equipped", who.serial);
+      var parms := {who, thing};
+      start_script(":combat:chargeUpkeep", parms);
+      print("upkeep started");
+    endif
+  endforeach
+endfunction
+
+function gmpage(who, thepage)
+var gmpages := GetGlobalProperty("gmpages");
+if(!gmpages)
+gmpages := {};
+endif
+while(1)
+if (!Icanpage(who))
+sleep(1);
+else
+break;
+endif
+endwhile
+var cserial := CInt(who.serial);
+foreach thing in gmpages
+if(thing[3] == who.serial)
+break;
+endif
+endforeach
+var newarry := {};
+newarry.append(who.name);
+newarry.append(thepage);
+newarry.append(who.serial);
+gmpages.append(newarry);
+SetGlobalProperty("gmpages", gmpages);
+endfunction
+
+function counpage(who, thepage)
+var cnpages := GetGlobalProperty("counpages");
+if(!cnpages)
+cnpages := {};
+endif
+while(1)
+if (!Icanpage(who))
+sleep(1);
+else
+break;
+endif
+endwhile
+var cserial := CInt(who.serial);
+foreach thing in cnpages
+if(thing[3] == who.serial)
+break;
+endif
+endforeach
+var newarry := {};
+newarry.append(who.name);
+newarry.append(thepage);
+newarry.append(who.serial);
+cnpages.append(newarry);
+SetGlobalProperty("counpages", cnpages);
+endfunction
+
+function AparenciaStaff(who)
+Sendsysmessage(who, "Arrumando Vestimenta!",0,95);
+DestroyItem(GetEquipmentByLayer(who, LAYER_HAIR ));
+DestroyItem(GetEquipmentByLayer(who, 22));
+DestroyItem(GetEquipmentByLayer(who, 2));
+DestroyItem(GetEquipmentByLayer(who, 1));
+var robe:=createiteminbackpack(who,8271);
+equipitem(who,robe);
+var bastao:=createiteminbackpack(who,3722);
+equipitem(who,bastao);
+GrantPrivilege(who, "invul");
+who.enable("invul");
+
+var robecolor,bastaocolor;
+case(who.cmdlevel)
+1: robecolor:=93;   bastaocolor:=24;
+2: robecolor:=66;   bastaocolor:=1151;
+3: robecolor:=1172; bastaocolor:=54;
+4: robecolor:=1175; bastaocolor:=1154;
+5: robecolor:=1153; bastaocolor:=1170;
+endcase
+robe.color:=robecolor;
+bastao.color:=bastaocolor;
+bastao.movable := 0;
+robe.movable:=0;
+robe.newbie:=1;
+bastao.newbie:=1;
+endfunction
+
+function Verificar_Delete_Char(who)
+ if(getobjproperty(who, "verf_nome") == "deletar")
+ Sendsysmessage(who, "Este char deve ser deletado! DELETE-O!" , 0,33);
+ setobjproperty(who,"derrubarchar",1);
+ DisconnectClient(who);
+ start_script(":scripts:misc:logofftest", who);
+ endif
+endfunction

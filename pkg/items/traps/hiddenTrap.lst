@@ -1,0 +1,66 @@
+C:\pol2\pkg\items\traps\hiddenTrap.src, Line 7
+program walk_on_trap( mobile, trap )
+use util;
+0: get arg 'mobile'
+1: get arg 'trap'
+var itemdesc := ReadConfigFile( "itemdesc" );
+2: decl local #2
+3: "itemdesc"
+4: Func(4,0): ReadConfigFile
+5: :=
+6: #
+var elem := FindConfigElem( itemdesc, trap.objtype );
+7: decl local #3
+8: local #2
+9: local #1
+10: get member 'objtype'
+11: Func(4,1): FindConfigElem
+12: :=
+13: #
+var effect := GetConfigInt( elem, "Effect" );
+14: decl local #4
+15: local #3
+16: "Effect"
+17: Func(4,2): GetConfigInt
+18: :=
+19: #
+var dieroll := GetConfigString( elem, "Damage" );
+20: decl local #5
+21: local #3
+22: "Damage"
+23: Func(4,3): GetConfigString
+24: :=
+25: #
+SendSysMessage( mobile, "You set off a trap!" );
+26: local #0
+27: "You set off a trap!"
+28: 3L
+29: 1000L
+30: Func(2,0): SendSysMessage
+31: #
+PlayStationaryEffect( trap.x, trap.y, trap.z, effect, 0xa, 0xb, 0 );
+32: local #1
+33: get member 'x'
+34: local #1
+35: get member 'y'
+36: local #1
+37: get member 'z'
+38: local #4
+39: 10L
+40: 11L
+41: 0L
+42: Func(2,1): PlayStationaryEffect
+43: #
+var dam := RandomDiceRoll( dieroll );
+44: decl local #6
+45: local #5
+46: Func(5,0): RandomDiceRoll
+47: :=
+48: #
+ApplyRawDamage( mobile, dam );
+49: local #0
+50: local #6
+51: Func(2,2): ApplyRawDamage
+52: #
+53: leave block(7)
+54: progend

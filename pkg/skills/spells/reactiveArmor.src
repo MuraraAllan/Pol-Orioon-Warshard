@@ -1,0 +1,39 @@
+use uo;
+use os;
+
+include "include/spellRestrictions";
+include "include/attributes";
+
+program cast_reactivearmor( parms )
+  var circle := 1;
+  var delivery := "direct";
+  var noto := "helpful";
+  var result := maincast(parms, delivery, circle, noto, 7);
+  if(result == 0)
+    return;
+  endif
+  var caster := result[1];
+  var cast_on := result[2];
+  var magery := GetEffectiveSkill(caster, SKILLID_MAGERY);
+  var insc   := GetEffectiveSkill(caster, SKILLID_INSCRIPTION);
+  var mod_amount := (GetModAmount(magery)/3 + GetModAmount(insc) /3 + RandomDiceRoll(1d5));;
+  var duration := GetModDuration(magery);
+  var itmcfg := ReadConfigFile(":*:itemdesc");
+  var arpoints := 0;
+  foreach thing in ListEquippedItems(cast_on)
+    arpoints := arpoints + (CInt(itmcfg[thing.objtype].AR) / 10);
+  endforeach
+  if(mod_amount > arpoints)
+    mod_amount := mod_amount - arpoints;
+  else
+    mod_amount := 0;
+  endif
+  if (!CanMod(cast_on, "ar"))
+	SendSysMessage(caster,"Devido a efeitos que falham a compreensao humana a magia falhou!");
+	return;
+  endif
+  DoTempMod(cast_on, "ar", mod_amount, duration);
+  PlaySoundEffect(cast_on, SFX_SPELL_REACTIVE_ARMOR);
+  PlayObjectCenteredEffect( cast_on, FX_SPARK_EFFECT, 7, 0x10 );
+
+endprogram

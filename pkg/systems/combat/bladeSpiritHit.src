@@ -1,0 +1,21 @@
+use uo;
+use util;
+use os;
+
+program macehit(param)
+  var attacker   := param[1];
+  var defender   := param[2];
+  var armor      := param[4];
+  var basedamage := param[5];
+  var rawdamage  := param[6];
+  if((attacker.dead) || (defender.dead))
+    return;
+  endif
+
+  if(armor.hp > armor.maxhp)
+    armor.hp := armor.maxhp;
+  endif
+  SetObjProperty(defender, "TempDamage", rawdamage);
+endprogram
+
+   

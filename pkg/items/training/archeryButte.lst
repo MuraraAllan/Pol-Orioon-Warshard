@@ -1,0 +1,431 @@
+C:\pol2\pkg\items\training\archeryButte.src, Line 14
+var projectile;
+0: decl global #0
+1: #
+var used_arrows;
+2: decl global #1
+3: #
+var used_bolts;
+4: decl global #2
+5: #
+C:\pol2\pkg\items\training\archeryButte.src, Line 20
+program training_archery( who, butte )
+const SKILLID__HIGHEST          := 48;
+6: get arg 'who'
+7: get arg 'butte'
+EraseObjProperty(who, "IsMeditating");
+8: local #0
+9: "IsMeditating"
+10: Func(2,0): EraseObjProperty
+11: #
+EraseObjProperty(who, "HealTimer");
+12: local #0
+13: "HealTimer"
+14: Func(2,0): EraseObjProperty
+15: #
+if (!CheckLineOfSight( who, butte ))
+16: local #0
+17: local #1
+18: Func(2,1): CheckLineOfSight
+19: if true goto 28
+SendSysMessage( who, "You don't have line of sight to that." );
+20: local #0
+21: "You don't have line of sight to that."
+22: 3L
+23: 1000L
+24: Func(2,2): SendSysMessage
+25: #
+return;
+26: ""
+27: progend
+used_arrows := GetObjProperty( butte, "arrows" );
+28: local #1
+29: "arrows"
+30: Func(2,3): GetObjProperty
+31: global1 := 
+if(!used_arrows)
+32: global #1
+33: if true goto 41
+used_arrows := 0;
+34: 0L
+35: global1 := 
+SetObjProperty( butte, "arrows", 0 );
+36: local #1
+37: "arrows"
+38: 0L
+39: Func(2,4): SetObjProperty
+40: #
+used_bolts := GetObjProperty( butte, "bolts" );
+41: local #1
+42: "bolts"
+43: Func(2,3): GetObjProperty
+44: global2 := 
+if(!used_bolts)
+45: global #2
+46: if true goto 54
+used_bolts := 0;
+47: 0L
+48: global2 := 
+SetObjProperty( butte, "bolts", 0 );
+49: local #1
+50: "bolts"
+51: 0L
+52: Func(2,4): SetObjProperty
+53: #
+if( Distance( who, butte ) == 1 )
+54: local #0
+55: local #1
+56: Func(2,5): Distance
+57: 1L
+58: ==
+59: if false goto 66
+GrabAmmo( who, butte );
+60: local #0
+61: local #1
+62: makelocal
+63: jmp userfunc @182
+64: #
+65: goto157
+var ammunitiontype;
+66: decl local #0
+67: #
+var panim;
+68: decl local #1
+69: #
+var effect;
+70: decl local #2
+71: #
+var cfg := ReadConfigFile(":combat:itemdesc");
+72: decl local #3
+73: ":combat:itemdesc"
+74: Func(4,0): ReadConfigFile
+75: :=
+76: #
+var objtype := who.weapon.objtype;
+77: decl local #4
+78: local #0
+79: get member 'weapon'
+80: get member 'objtype'
+81: :=
+82: #
+var skillid := cfg[objtype]."Attribute";
+83: decl local #5
+84: local #5
+85: local #6
+86: [] 1
+87: get member 'Attribute'
+88: :=
+89: #
+if(skillid == "Archery")
+90: local #7
+91: "Archery"
+92: ==
+93: if false goto 150
+if((objtype == 0x13b2) or (objtype == 0x9889))
+94: local #6
+95: 5042L
+96: ==
+97: local #6
+98: 39049L
+99: ==
+100: ||
+101: if false goto 109
+ammunitiontype := UOBJECT_ARROW;
+102: 3903L
+103: local2 := 
+panim := ANIM_ATTACK_BOW;
+104: 18L
+105: local3 := 
+effect := GFX_ARROW_FLIGHT;
+106: 3906L
+107: local4 := 
+108: goto123
+elseif ((objtype == 0xf4f ) || (objtype == 0x13fd ))
+109: local #6
+110: 3919L
+111: ==
+112: local #6
+113: 5117L
+114: ==
+115: ||
+116: if false goto 123
+ammunitiontype := UOBJECT_BOLT;
+117: 7163L
+118: local2 := 
+panim := ANIM_ATTACK_XBOW;
+119: 19L
+120: local3 := 
+effect := GFX_BOLT_FLIGHT;
+121: 7166L
+122: local4 := 
+var found := checkforammunition( who, ammunitiontype );
+123: decl local #0
+124: local #0
+125: local #2
+126: makelocal
+127: jmp userfunc @159
+128: :=
+129: #
+if( !found )
+130: local #8
+131: if true goto 141
+SendSysMessage( who, "You don't have any ammunition in the bag." );
+132: local #0
+133: "You don't have any ammunition in the bag."
+134: 3L
+135: 1000L
+136: Func(2,2): SendSysMessage
+137: #
+return;
+138: ""
+139: progend
+140: goto148
+theshot( who, panim, butte,effect );
+141: local #0
+142: local #3
+143: local #1
+144: local #4
+145: makelocal
+146: jmp userfunc @228
+147: #
+148: leave block(1)
+149: goto156
+SendSysMessage( who, "You must equip a bow or a crossbow." );
+150: local #0
+151: "You must equip a bow or a crossbow."
+152: 3L
+153: 1000L
+154: Func(2,2): SendSysMessage
+155: #
+156: leave block(6)
+157: leave block(2)
+158: progend
+C:\pol2\pkg\items\training\archeryButte.src, Line 69
+function checkforammunition( who, ammunitiontype )
+159: pop param 'ammunitiontype'
+160: pop param 'who'
+var mypack := EnumerateItemsInContainer( who.backpack );
+161: decl local #2
+162: local #1
+163: get member 'backpack'
+164: Func(2,6): EnumerateItemsInContainer
+165: :=
+166: #
+foreach item in mypack
+167: local #2
+168: initforeach @178
+if( item.objtype == ammunitiontype )
+169: local #3
+170: get member 'objtype'
+171: local #0
+172: ==
+173: if false goto 178
+projectile := item;
+174: local #3
+175: global0 := 
+return 1;
+176: 1L
+177: return
+178: stepforeach @169
+179: leave block(3)
+180: 0L
+181: return
+C:\pol2\pkg\items\training\archeryButte.src, Line 107
+function GrabAmmo( who, butte );
+182: pop param 'butte'
+183: pop param 'who'
+CreateItemInBackpack( who, UOBJECT_ARROW, used_arrows/2 );
+184: local #1
+185: 3903L
+186: global #1
+187: 2L
+188: /
+189: Func(2,12): CreateItemInBackpack
+190: #
+CreateItemInBackpack( who, UOBJECT_BOLT, used_bolts/2 );
+191: local #1
+192: 7163L
+193: global #2
+194: 2L
+195: /
+196: Func(2,12): CreateItemInBackpack
+197: #
+SendSysMessage( who, "You grab " + used_arrows/2 + " arrows and " + used_bolts/
+198: local #1
+199: "You grab "
+200: global #1
+201: 2L
+202: /
+203: +
+204: " arrows and "
+205: +
+206: global #2
+207: 2L
+208: /
+209: +
+210: " bolts from the butte."
+211: +
+212: 3L
+213: 1000L
+214: Func(2,2): SendSysMessage
+215: #
+SetObjProperty( butte, "arrows", 0 );
+216: local #0
+217: "arrows"
+218: 0L
+219: Func(2,4): SetObjProperty
+220: #
+SetObjProperty( butte, "bolts", 0 );
+221: local #0
+222: "bolts"
+223: 0L
+224: Func(2,4): SetObjProperty
+225: #
+226: 0L
+227: return
+C:\pol2\pkg\items\training\archeryButte.src, Line 79
+function theshot( who, panim, butte, effect )
+228: pop param 'effect'
+229: pop param 'butte'
+230: pop param 'panim'
+231: pop param 'who'
+if( CheckSkill( who, SKILLID_ARCHERY, 10, 40 ) )
+232: local #3
+233: 31L
+234: 10L
+235: 40L
+236: Func(2,7): CheckSkill
+237: if false goto 281
+PerformAction( who, panim );
+238: local #3
+239: local #2
+240: Func(2,8): PerformAction
+241: #
+sleep(1);
+242: 1L
+243: Func(3,0): sleep
+244: #
+PlayMovingEffectXYZ( who.x, who.y, who.z+9,
+245: local #3
+246: get member 'x'
+247: local #3
+248: get member 'y'
+249: local #3
+250: get member 'z'
+251: 9L
+252: +
+253: local #1
+254: get member 'x'
+255: local #1
+256: get member 'y'
+257: local #1
+258: get member 'z'
+259: 5L
+260: +
+261: local #0
+262: 10L
+263: 0L
+264: 0L
+265: Func(2,9): PlayMovingEffectXYZ
+266: #
+sleep(1);
+267: 1L
+268: Func(3,0): sleep
+269: #
+PlaySoundEffect( who, SFX_SHOT );
+270: local #3
+271: 565L
+272: Func(2,10): PlaySoundEffect
+273: #
+SendSysMessage( who, "A good shot." );
+274: local #3
+275: "A good shot."
+276: 3L
+277: 1000L
+278: Func(2,2): SendSysMessage
+279: #
+280: goto323
+PerformAction( who, panim );
+281: local #3
+282: local #2
+283: Func(2,8): PerformAction
+284: #
+sleep(1);
+285: 1L
+286: Func(3,0): sleep
+287: #
+PlayMovingEffectXYZ( who.x, who.y, who.z+9,
+288: local #3
+289: get member 'x'
+290: local #3
+291: get member 'y'
+292: local #3
+293: get member 'z'
+294: 9L
+295: +
+296: local #1
+297: get member 'x'
+298: local #1
+299: get member 'y'
+300: local #1
+301: get member 'z'
+302: 5L
+303: +
+304: local #0
+305: 10L
+306: 0L
+307: 0L
+308: Func(2,9): PlayMovingEffectXYZ
+309: #
+sleep(1);
+310: 1L
+311: Func(3,0): sleep
+312: #
+PlaySoundEffect( who, SFX_ARROWHIT1 );
+313: local #3
+314: 548L
+315: Func(2,10): PlaySoundEffect
+316: #
+SendSysMessage( who, "You miss." );
+317: local #3
+318: "You miss."
+319: 3L
+320: 1000L
+321: Func(2,2): SendSysMessage
+322: #
+SubtractAmount( projectile, 1 );
+323: global #0
+324: 1L
+325: Func(2,11): SubtractAmount
+326: #
+if( projectile.objtype == UOBJECT_ARROW )
+327: global #0
+328: get member 'objtype'
+329: 3903L
+330: ==
+331: if false goto 340
+SetObjProperty( butte, "arrows", used_arrows + 1 );
+332: local #1
+333: "arrows"
+334: global #1
+335: 1L
+336: +
+337: Func(2,4): SetObjProperty
+338: #
+339: goto352
+elseif( projectile.objtype == UOBJECT_BOLT )
+340: global #0
+341: get member 'objtype'
+342: 7163L
+343: ==
+344: if false goto 352
+SetObjProperty( butte, "bolts", used_bolts + 1 );
+345: local #1
+346: "bolts"
+347: global #2
+348: 1L
+349: +
+350: Func(2,4): SetObjProperty
+351: #
+352: 0L
+353: return

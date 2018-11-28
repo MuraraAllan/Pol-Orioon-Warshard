@@ -1,0 +1,2811 @@
+C:/pol2/scripts/include/spellRestrictions.inc, Line 15
+var caster;
+0: decl global #0
+1: #
+var npccfg := ReadConfigFile("::npcdesc");
+2: decl global #1
+3: "::npcdesc"
+4: Func(5,0): ReadConfigFile
+5: :=
+6: #
+C:\pol2\pkg\skills\tailoring\maconha.src, Line 6
+program cast_poly( parms )
+include "include/attributes";
+7: get arg 'parms'
+var circle := 7;
+8: decl local #1
+9: 7L
+10: :=
+11: #
+var delivery := "notarget";
+12: decl local #2
+13: "notarget"
+14: :=
+15: #
+var noto := "helpful";
+16: decl local #3
+17: "helpful"
+18: :=
+19: #
+var result := maincast(parms, delivery, circle, noto, 56);
+20: decl local #4
+21: local #0
+22: local #2
+23: local #1
+24: local #3
+25: 56L
+26: makelocal
+27: jmp userfunc @257
+28: :=
+29: #
+if(result == 0)
+30: local #4
+31: 0L
+32: ==
+33: if false goto 36
+return;
+34: ""
+35: progend
+var caster := result[1];
+36: decl local #5
+37: local #4
+38: 1L
+39: [] 1
+40: :=
+41: #
+var cast_on := result[2];
+42: decl local #6
+43: local #4
+44: 2L
+45: [] 1
+46: :=
+47: #
+var origform := caster.graphic;
+48: decl local #7
+49: local #5
+50: get member 'graphic'
+51: :=
+52: #
+var magery     := CInt(GetEffectiveSkill(caster, SKILLID_MAGERY));
+53: decl local #8
+54: local #5
+55: 25L
+56: makelocal
+57: jmp userfunc @249
+58: Func(0,1): CInt
+59: :=
+60: #
+var meditation := CInt(GetEffectiveSkill(caster, SKILLID_MEDITATION));
+61: decl local #9
+62: local #5
+63: 46L
+64: makelocal
+65: jmp userfunc @249
+66: Func(0,1): CInt
+67: :=
+68: #
+var evalint    := CInt(GetEffectiveSkill(caster, SKILLID_EVALINT));
+69: decl local #10
+70: local #5
+71: 16L
+72: makelocal
+73: jmp userfunc @249
+74: Func(0,1): CInt
+75: :=
+76: #
+var critgroup;
+77: decl local #11
+78: #
+var thecreature;
+79: decl local #12
+80: #
+if (magery < 70)
+81: local #8
+82: 70L
+83: <
+84: if false goto 89
+critgroup := RandomInt(1);
+85: 1L
+86: Func(2,0): RandomInt
+87: local11 := 
+88: goto111
+elseif (magery < 80)
+89: local #8
+90: 80L
+91: <
+92: if false goto 99
+critgroup := RandomInt(1)+1;
+93: 1L
+94: Func(2,0): RandomInt
+95: 1L
+96: +
+97: local11 := 
+98: goto111
+elseif (magery < 90)
+99: local #8
+100: 90L
+101: <
+102: if false goto 109
+critgroup := RandomInt(1)+2;
+103: 1L
+104: Func(2,0): RandomInt
+105: 2L
+106: +
+107: local11 := 
+108: goto111
+critgroup := 3;
+109: 3L
+110: local11 := 
+var critter := RandomInt(8);
+111: decl local #13
+112: 8L
+113: Func(2,0): RandomInt
+114: :=
+115: #
+case (critgroup)
+116: local #11
+117: casejmp
+	0: @118
+	1: @144
+	2: @170
+	3: @196
+	default: @221
+case (critter)
+118: local #13
+119: casejmp
+	0: @120
+	1: @123
+	2: @126
+	3: @129
+	4: @132
+	5: @135
+	6: @138
+	7: @141
+	default: @143
+thecreature := 6;	//bird
+120: 6L
+121: local12 := 
+122: goto143
+thecreature := 51;	//slime
+123: 51L
+124: local12 := 
+125: goto143
+thecreature := 5;	//eagle
+126: 5L
+127: local12 := 
+128: goto143
+thecreature := 39;	//mongbat
+129: 39L
+130: local12 := 
+131: goto143
+thecreature := 31;	//headless
+132: 31L
+133: local12 := 
+134: goto143
+thecreature := 29;	//gorilla
+135: 29L
+136: local12 := 
+137: goto143
+thecreature := 42;	//ratman
+138: 42L
+139: local12 := 
+140: goto143
+thecreature := 28;	//giant spider
+141: 28L
+142: local12 := 
+143: goto221
+case (critter)
+144: local #13
+145: casejmp
+	0: @146
+	1: @149
+	2: @152
+	3: @155
+	4: @158
+	5: @161
+	6: @164
+	7: @167
+	default: @169
+thecreature := 48;	//scorpion
+146: 48L
+147: local12 := 
+148: goto169
+thecreature := 7;	//orc
+149: 7L
+150: local12 := 
+151: goto169
+thecreature := 3;	//zombie
+152: 3L
+153: local12 := 
+154: goto169
+thecreature := 17;	//orc
+155: 17L
+156: local12 := 
+157: goto169
+thecreature := 33;	//lizardman
+158: 33L
+159: local12 := 
+160: goto169
+thecreature := 26;	//shade
+161: 26L
+162: local12 := 
+163: goto169
+thecreature := 21;	//giant serp
+164: 21L
+165: local12 := 
+166: goto169
+thecreature := 30;	//harpy
+167: 30L
+168: local12 := 
+169: goto221
+case (critter)
+170: local #13
+171: casejmp
+	0: @172
+	1: @175
+	2: @178
+	3: @181
+	4: @184
+	5: @187
+	6: @190
+	7: @193
+	default: @195
+thecreature := 18;	//ettin
+172: 18L
+173: local12 := 
+174: goto195
+thecreature := 8;	//corpser
+175: 8L
+176: local12 := 
+177: goto195
+thecreature := 22;	//beholder
+178: 22L
+179: local12 := 
+180: goto195
+thecreature := 14;	//earth elem
+181: 14L
+182: local12 := 
+183: goto195
+thecreature := 16;	//water elem
+184: 16L
+185: local12 := 
+186: goto195
+thecreature := 15;	//fire elem
+187: 15L
+188: local12 := 
+189: goto195
+thecreature := 13;	//air elem
+190: 13L
+191: local12 := 
+192: goto195
+thecreature := 47;	//ent
+193: 47L
+194: local12 := 
+195: goto221
+case (critter)
+196: local #13
+197: casejmp
+	0: @198
+	1: @201
+	2: @204
+	3: @207
+	4: @210
+	5: @213
+	6: @216
+	7: @219
+	default: @221
+thecreature := 1;	//ogre
+198: 1L
+199: local12 := 
+200: goto221
+thecreature := 4;	//gargoyle
+201: 4L
+202: local12 := 
+203: goto221
+thecreature := 24;	//lich
+204: 24L
+205: local12 := 
+206: goto221
+thecreature := 150;	//seaserp
+207: 150L
+208: local12 := 
+209: goto221
+thecreature := 9;	//demon
+210: 9L
+211: local12 := 
+212: goto221
+thecreature := 12;	//dragon
+213: 12L
+214: local12 := 
+215: goto221
+thecreature := 10;	//demon with sword
+216: 10L
+217: local12 := 
+218: goto221
+thecreature := 58;	//wisp
+219: 58L
+220: local12 := 
+caster.graphic := thecreature;
+221: local #5
+222: local #12
+223: set member 'graphic' #
+if ( thecreature == 150 )
+224: local #12
+225: 150L
+226: ==
+227: if false goto 232
+caster.color := 233;
+228: local #5
+229: 233L
+230: set member 'color' #
+231: goto235
+caster.color := 0;
+232: local #5
+233: 0L
+234: set member 'color' #
+caster.graphic := caster.objtype;
+235: local #5
+236: local #5
+237: get member 'objtype'
+238: set member 'graphic' #
+caster.color := caster.truecolor;
+239: local #5
+240: local #5
+241: get member 'truecolor'
+242: set member 'color' #
+EraseObjProperty(caster,"poly");
+243: local #5
+244: "poly"
+245: Func(3,24): EraseObjProperty
+246: #
+247: leave block(14)
+248: progend
+C:/pol2/scripts/include/attributes.inc, Line 431
+function GetEffectiveSkill(who, skillid)
+249: pop param 'skillid'
+250: pop param 'who'
+return GetAttribute(who, GetAttributeIdBySkillId(skillid));
+251: local #1
+252: local #0
+253: makelocal
+254: jmp userfunc @1471
+255: Func(3,11): GetAttribute
+256: return
+C:/pol2/scripts/include/spellRestrictions.inc, Line 19
+function maincast(parms, delivery, circle, noto, id);
+257: pop param 'id'
+258: pop param 'noto'
+259: pop param 'circle'
+260: pop param 'delivery'
+261: pop param 'parms'
+var cast_on;
+262: decl local #5
+263: #
+var spellscroll := 0;
+264: decl local #6
+265: 0L
+266: :=
+267: #
+var scroll;
+268: decl local #7
+269: #
+var tgtopt;
+270: decl local #8
+271: #
+if(parms[1] == "#MOB")
+272: local #4
+273: 1L
+274: [] 1
+275: "#MOB"
+276: ==
+277: if false goto 297
+caster := parms[2];
+278: local #4
+279: 2L
+280: [] 1
+281: global0 := 
+if(mobspellcast(caster, circle, spellscroll) == 0)
+282: global #0
+283: local #2
+284: local #6
+285: makelocal
+286: jmp userfunc @618
+287: 0L
+288: ==
+289: if false goto 292
+return 0;
+290: 0L
+291: return
+cast_on := parms[3];
+292: local #4
+293: 3L
+294: [] 1
+295: local5 := 
+296: goto559
+elseif (parms[1] == "#scroll")
+297: local #4
+298: 1L
+299: [] 1
+300: "#scroll"
+301: ==
+302: if false goto 434
+spellscroll := 1;
+303: 1L
+304: local6 := 
+caster := parms[2];
+305: local #4
+306: 2L
+307: [] 1
+308: global0 := 
+EraseObjProperty(caster, "IsMeditating");
+309: global #0
+310: "IsMeditating"
+311: Func(3,24): EraseObjProperty
+312: #
+EraseObjProperty(caster, "HealTimer");
+313: global #0
+314: "HealTimer"
+315: Func(3,24): EraseObjProperty
+316: #
+if(spellcast(caster, circle, spellscroll, id) == 0)
+317: global #0
+318: local #2
+319: local #6
+320: local #0
+321: makelocal
+322: jmp userfunc @864
+323: 0L
+324: ==
+325: if false goto 328
+return 0;
+326: 0L
+327: return
+scroll := parms[3];
+328: local #4
+329: 3L
+330: [] 1
+331: local7 := 
+if(!ReserveItem(scroll))
+332: local #7
+333: Func(3,25): ReserveItem
+334: if true goto 343
+SendSysMessage(caster,"You lost your concentration.", 3, 40);
+335: global #0
+336: "You lost your concentration."
+337: 3L
+338: 40L
+339: Func(3,20): SendSysMessage
+340: #
+return 0;
+341: 0L
+342: return
+if(delivery == "notarget")
+343: local #3
+344: "notarget"
+345: ==
+346: if false goto 356
+cast_on := caster;
+347: global #0
+348: local5 := 
+if(!can_cast(caster))
+349: global #0
+350: makelocal
+351: jmp userfunc @1233
+352: if true goto 355
+cast_on := 0;
+353: 0L
+354: local5 := 
+355: goto433
+elseif(delivery == "direct")
+356: local #3
+357: "direct"
+358: ==
+359: if false goto 411
+if(noto == "helpful")
+360: local #1
+361: "helpful"
+362: ==
+363: if false goto 377
+cast_on := CanTargetSpell(caster, circle, TGTOPT_HELPFUL + TGTOPT_CHECK_LOS);
+364: global #0
+365: local #2
+366: 5L
+367: makelocal
+368: jmp userfunc @1336
+369: local5 := 
+if(!can_cast(caster))
+370: global #0
+371: makelocal
+372: jmp userfunc @1233
+373: if true goto 376
+cast_on := 0;
+374: 0L
+375: local5 := 
+376: goto406
+elseif(noto == "neutral")
+377: local #1
+378: "neutral"
+379: ==
+380: if false goto 394
+cast_on := CanTargetSpell(caster, circle, TGTOPT_CHECK_LOS);
+381: global #0
+382: local #2
+383: 1L
+384: makelocal
+385: jmp userfunc @1336
+386: local5 := 
+if(!can_cast(caster))
+387: global #0
+388: makelocal
+389: jmp userfunc @1233
+390: if true goto 393
+cast_on := 0;
+391: 0L
+392: local5 := 
+393: goto406
+cast_on := CanTargetSpell(caster, circle, TGTOPT_HARMFUL + TGTOPT_CHECK_LOS);
+394: global #0
+395: local #2
+396: 3L
+397: makelocal
+398: jmp userfunc @1336
+399: local5 := 
+if(!can_cast(caster))
+400: global #0
+401: makelocal
+402: jmp userfunc @1233
+403: if true goto 406
+cast_on := 0;
+404: 0L
+405: local5 := 
+if(!cast_on)
+406: local #5
+407: if true goto 410
+return 0;
+408: 0L
+409: return
+410: goto433
+elseif(delivery == "indirect")
+411: local #3
+412: "indirect"
+413: ==
+414: if false goto 431
+cast_on := CanTargetArea(caster, circle);
+415: global #0
+416: local #2
+417: makelocal
+418: jmp userfunc @1278
+419: local5 := 
+if(!can_cast(caster))
+420: global #0
+421: makelocal
+422: jmp userfunc @1233
+423: if true goto 426
+cast_on := 0;
+424: 0L
+425: local5 := 
+if (!cast_on)
+426: local #5
+427: if true goto 430
+return 0;
+428: 0L
+429: return
+430: goto433
+return 0;
+431: 0L
+432: return
+433: goto559
+caster := parms;
+434: local #4
+435: global0 := 
+EraseObjProperty(caster, "IsMeditating");
+436: global #0
+437: "IsMeditating"
+438: Func(3,24): EraseObjProperty
+439: #
+EraseObjProperty(caster, "HealTimer");
+440: global #0
+441: "HealTimer"
+442: Func(3,24): EraseObjProperty
+443: #
+if (spellcast(caster, circle, spellscroll, id) == 0)
+444: global #0
+445: local #2
+446: local #6
+447: local #0
+448: makelocal
+449: jmp userfunc @864
+450: 0L
+451: ==
+452: if false goto 455
+return 0;
+453: 0L
+454: return
+if (!ConsumeReagents(caster, id+100))
+455: global #0
+456: local #0
+457: 100L
+458: +
+459: Func(3,26): ConsumeReagents
+460: if true goto 469
+SendSysMessage(caster, "You do not have the proper reagents.");
+461: global #0
+462: "You do not have the proper reagents."
+463: 3L
+464: 1000L
+465: Func(3,20): SendSysMessage
+466: #
+return 0;
+467: 0L
+468: return
+if(delivery == "notarget")
+469: local #3
+470: "notarget"
+471: ==
+472: if false goto 482
+cast_on := caster;
+473: global #0
+474: local5 := 
+if(!can_cast(caster))
+475: global #0
+476: makelocal
+477: jmp userfunc @1233
+478: if true goto 481
+cast_on := 0;
+479: 0L
+480: local5 := 
+481: goto559
+elseif(delivery == "direct")
+482: local #3
+483: "direct"
+484: ==
+485: if false goto 537
+if(noto == "helpful")
+486: local #1
+487: "helpful"
+488: ==
+489: if false goto 503
+cast_on := CanTargetSpell(caster, circle, TGTOPT_HELPFUL + TGTOPT_CHECK_LOS);
+490: global #0
+491: local #2
+492: 5L
+493: makelocal
+494: jmp userfunc @1336
+495: local5 := 
+if(!can_cast(caster))
+496: global #0
+497: makelocal
+498: jmp userfunc @1233
+499: if true goto 502
+cast_on := 0;
+500: 0L
+501: local5 := 
+502: goto532
+elseif(noto == "neutral")
+503: local #1
+504: "neutral"
+505: ==
+506: if false goto 520
+cast_on := CanTargetSpell(caster, circle, TGTOPT_CHECK_LOS);
+507: global #0
+508: local #2
+509: 1L
+510: makelocal
+511: jmp userfunc @1336
+512: local5 := 
+if(!can_cast(caster))
+513: global #0
+514: makelocal
+515: jmp userfunc @1233
+516: if true goto 519
+cast_on := 0;
+517: 0L
+518: local5 := 
+519: goto532
+cast_on := CanTargetSpell(caster, circle, TGTOPT_HARMFUL + TGTOPT_CHECK_LOS);
+520: global #0
+521: local #2
+522: 3L
+523: makelocal
+524: jmp userfunc @1336
+525: local5 := 
+if(!can_cast(caster))
+526: global #0
+527: makelocal
+528: jmp userfunc @1233
+529: if true goto 532
+cast_on := 0;
+530: 0L
+531: local5 := 
+if (!cast_on)
+532: local #5
+533: if true goto 536
+return 0;
+534: 0L
+535: return
+536: goto559
+elseif(delivery == "indirect")
+537: local #3
+538: "indirect"
+539: ==
+540: if false goto 557
+cast_on := CanTargetArea(caster, circle);
+541: global #0
+542: local #2
+543: makelocal
+544: jmp userfunc @1278
+545: local5 := 
+if(!can_cast(caster))
+546: global #0
+547: makelocal
+548: jmp userfunc @1233
+549: if true goto 552
+cast_on := 0;
+550: 0L
+551: local5 := 
+if (!cast_on)
+552: local #5
+553: if true goto 556
+return 0;
+554: 0L
+555: return
+556: goto559
+return 0;
+557: 0L
+558: return
+if(newusemana(caster, circle, cast_on, delivery) == 0)
+559: global #0
+560: local #2
+561: local #5
+562: local #3
+563: makelocal
+564: jmp userfunc @711
+565: 0L
+566: ==
+567: if false goto 580
+PlaySoundEffect(caster,0x005d);
+568: global #0
+569: 93L
+570: Func(3,22): PlaySoundEffect
+571: #
+PlayObjectCenteredEffect(caster, 0x3735,0x0a, 0x1e);
+572: global #0
+573: 14133L
+574: 10L
+575: 30L
+576: Func(3,27): PlayObjectCenteredEffect
+577: #
+return 0;
+578: 0L
+579: return
+if(spellscroll == 1)
+580: local #6
+581: 1L
+582: ==
+583: if false goto 590
+if(!SubtractAmount(scroll, 1))
+584: local #7
+585: 1L
+586: Func(3,28): SubtractAmount
+587: if true goto 590
+return 0;
+588: 0L
+589: return
+var points := getpoints(circle, spellscroll, SKILLID_MAGERY);
+590: decl local #9
+591: local #2
+592: local #6
+593: 25L
+594: makelocal
+595: jmp userfunc @1648
+596: :=
+597: #
+AwardRawSkillPoints(caster, SKILLID_MAGERY, points);
+598: global #0
+599: 25L
+600: local #9
+601: makelocal
+602: jmp userfunc @1221
+603: #
+var newparms := {};
+604: decl local #10
+605: array
+606: :=
+607: #
+newparms[1] := caster;
+608: local #10
+609: 1L
+610: global #0
+611: [] := (1) #
+newparms[2] := cast_on;
+612: local #10
+613: 2L
+614: local #5
+615: [] := (1) #
+return newparms;
+616: local #10
+617: return
+C:/pol2/scripts/include/spellRestrictions.inc, Line 438
+function mobspellcast(me, circle, scroll)
+618: pop param 'scroll'
+619: pop param 'circle'
+620: pop param 'me'
+var diff, points, umana;
+621: decl local #3
+622: #
+623: decl local #4
+624: #
+625: decl local #5
+626: #
+case(circle)
+627: local #1
+628: casejmp
+	1: @629
+	2: @636
+	3: @643
+	4: @650
+	5: @657
+	6: @664
+	7: @671
+	8: @678
+	default: @684
+diff := 10;     points :=  20;    umana :=   4;
+629: 10L
+630: local3 := 
+points :=  20;    umana :=   4;
+631: 20L
+632: local4 := 
+umana :=   4;
+633: 4L
+634: local5 := 
+635: goto684
+diff := 20;     points :=  40;    umana :=   6;
+636: 20L
+637: local3 := 
+points :=  40;    umana :=   6;
+638: 40L
+639: local4 := 
+umana :=   6;
+640: 6L
+641: local5 := 
+642: goto684
+diff := 30;     points :=  80;    umana :=   9;
+643: 30L
+644: local3 := 
+points :=  80;    umana :=   9;
+645: 80L
+646: local4 := 
+umana :=   9;
+647: 9L
+648: local5 := 
+649: goto684
+diff := 50;     points := 100;    umana :=  11;
+650: 50L
+651: local3 := 
+points := 100;    umana :=  11;
+652: 100L
+653: local4 := 
+umana :=  11;
+654: 11L
+655: local5 := 
+656: goto684
+diff := 60;     points := 130;    umana :=  14;
+657: 60L
+658: local3 := 
+points := 130;    umana :=  14;
+659: 130L
+660: local4 := 
+umana :=  14;
+661: 14L
+662: local5 := 
+663: goto684
+diff := 70;     points := 160;    umana :=  20;
+664: 70L
+665: local3 := 
+points := 160;    umana :=  20;
+666: 160L
+667: local4 := 
+umana :=  20;
+668: 20L
+669: local5 := 
+670: goto684
+diff := 85;     points := 190;    umana :=  40;
+671: 85L
+672: local3 := 
+points := 190;    umana :=  40;
+673: 190L
+674: local4 := 
+umana :=  40;
+675: 40L
+676: local5 := 
+677: goto684
+diff := 95;     points := 210;    umana :=  50;
+678: 95L
+679: local3 := 
+points := 210;    umana :=  50;
+680: 210L
+681: local4 := 
+umana :=  50;
+682: 50L
+683: local5 := 
+if(umana > GetMana(me))
+684: local #5
+685: local #2
+686: makelocal
+687: jmp userfunc @1641
+688: >
+689: if false goto 692
+return 0;
+690: 0L
+691: return
+if(can_cast(me))
+692: local #2
+693: makelocal
+694: jmp userfunc @1233
+695: if false goto 709
+if(CheckSkill(me, SKILLID_MAGERY, (diff - 10), points))
+696: local #2
+697: 25L
+698: local #3
+699: 10L
+700: -
+701: local #4
+702: Func(3,32): CheckSkill
+703: if false goto 707
+return 1;
+704: 1L
+705: return
+706: goto709
+return 0;
+707: 0L
+708: return
+709: 0L
+710: return
+C:/pol2/scripts/include/spellRestrictions.inc, Line 392
+function newusemana(who, circle, cast_on, delivery)
+711: pop param 'delivery'
+712: pop param 'cast_on'
+713: pop param 'circle'
+714: pop param 'who'
+if(delivery == "direct")
+715: local #0
+716: "direct"
+717: ==
+718: if false goto 732
+if(!CheckLineOfSight(who, cast_on))
+719: local #3
+720: local #1
+721: Func(3,34): CheckLineOfSight
+722: if true goto 731
+SendSysMessage(who, "You can't see that.", 3, 40);
+723: local #3
+724: "You can't see that."
+725: 3L
+726: 40L
+727: Func(3,20): SendSysMessage
+728: #
+return 0;
+729: 0L
+730: return
+731: goto753
+elseif(delivery == "indirect")
+732: local #0
+733: "indirect"
+734: ==
+735: if false goto 753
+if(!CheckLosAt(who, cast_on.x, cast_on.y, cast_on.z))
+736: local #3
+737: local #1
+738: get member 'x'
+739: local #1
+740: get member 'y'
+741: local #1
+742: get member 'z'
+743: Func(3,1): CheckLosAt
+744: if true goto 753
+SendSysMessage(who, "You can't see that.", 3, 40);
+745: local #3
+746: "You can't see that."
+747: 3L
+748: 40L
+749: Func(3,20): SendSysMessage
+750: #
+return 0;
+751: 0L
+752: return
+if(cdist(who.x, who.y, cast_on.x, cast_on.y) > 12)
+753: local #3
+754: get member 'x'
+755: local #3
+756: get member 'y'
+757: local #1
+758: get member 'x'
+759: local #1
+760: get member 'y'
+761: makelocal
+762: jmp userfunc @1383
+763: 12L
+764: >
+765: if false goto 794
+var check := 0;
+766: decl local #0
+767: 0L
+768: :=
+769: #
+foreach thing in EnumerateItemsInContainer(who.backpack)
+770: local #3
+771: get member 'backpack'
+772: Func(3,35): EnumerateItemsInContainer
+773: initforeach @781
+if(thing == cast_on)
+774: local #5
+775: local #1
+776: ==
+777: if false goto 781
+check := 1;
+778: 1L
+779: local4 := 
+break;
+780: goto782
+781: stepforeach @774
+782: leave block(3)
+if(!check)
+783: local #4
+784: if true goto 793
+SendSysMessage(who,"The target is out of range.", 3, 40);
+785: local #3
+786: "The target is out of range."
+787: 3L
+788: 40L
+789: Func(3,20): SendSysMessage
+790: #
+return 0;
+791: 0L
+792: return
+793: leave block(1)
+var umana;
+794: decl local #4
+795: #
+case (circle)
+796: local #2
+797: casejmp
+	1: @798
+	2: @801
+	3: @804
+	4: @807
+	5: @810
+	6: @813
+	7: @816
+	8: @819
+	default: @821
+umana :=  4;
+798: 4L
+799: local4 := 
+800: goto821
+umana :=  6;
+801: 6L
+802: local4 := 
+803: goto821
+umana :=  9;
+804: 9L
+805: local4 := 
+806: goto821
+umana := 11;
+807: 11L
+808: local4 := 
+809: goto821
+umana := 14;
+810: 14L
+811: local4 := 
+812: goto821
+umana := 20;
+813: 20L
+814: local4 := 
+815: goto821
+umana := 40;
+816: 40L
+817: local4 := 
+818: goto821
+umana := 50;
+819: 50L
+820: local4 := 
+var mana := GetMana(who);
+821: decl local #5
+822: local #3
+823: makelocal
+824: jmp userfunc @1641
+825: :=
+826: #
+if(mana >= umana)
+827: local #5
+828: local #4
+829: >=
+830: if false goto 842
+SetMana(who, Cint(mana - umana));
+831: local #3
+832: local #5
+833: local #4
+834: -
+835: Func(0,1): CInt
+836: makelocal
+837: jmp userfunc @852
+838: #
+return 1;
+839: 1L
+840: return
+841: goto850
+SendSysMessage(who,"You do not have enough mana to cast that.", 3, 40);
+842: local #3
+843: "You do not have enough mana to cast that."
+844: 3L
+845: 40L
+846: Func(3,20): SendSysMessage
+847: #
+return 0;
+848: 0L
+849: return
+850: 0L
+851: return
+C:/pol2/scripts/include/attributes.inc, Line 914
+function SetMana(who, amount)
+852: pop param 'amount'
+853: pop param 'who'
+SetVital(who, "Mana", cint(amount*100.0));
+854: local #1
+855: "Mana"
+856: local #0
+857: 100LF
+858: *
+859: Func(0,1): CInt
+860: Func(3,18): SetVital
+861: #
+862: 0L
+863: return
+C:/pol2/scripts/include/spellRestrictions.inc, Line 309
+function spellcast(me, circle, scroll, id)
+864: pop param 'id'
+865: pop param 'scroll'
+866: pop param 'circle'
+867: pop param 'me'
+var spellcfg := ReadConfigFile(":spells:spells");
+868: decl local #4
+869: ":spells:spells"
+870: Func(5,0): ReadConfigFile
+871: :=
+872: #
+var val := SplitWords(spellcfg[id].val);
+873: decl local #5
+874: local #4
+875: local #0
+876: [] 1
+877: get member 'val'
+878: Func(0,2): SplitWords
+879: :=
+880: #
+var times := CInt(val[1]);
+881: decl local #6
+882: local #5
+883: 1L
+884: [] 1
+885: Func(0,1): CInt
+886: :=
+887: #
+var slp   := CInt(val[2]);
+888: decl local #7
+889: local #5
+890: 2L
+891: [] 1
+892: Func(0,1): CInt
+893: :=
+894: #
+var mhp := GetHp(me);
+895: decl local #8
+896: local #3
+897: makelocal
+898: jmp userfunc @1633
+899: :=
+900: #
+var umana, diff, points;
+901: decl local #9
+902: #
+903: decl local #10
+904: #
+905: decl local #11
+906: #
+var n := 1;
+907: decl local #12
+908: 1L
+909: :=
+910: #
+if(scroll == 0)
+911: local #1
+912: 0L
+913: ==
+914: if false goto 967
+case (circle)
+915: local #2
+916: casejmp
+	1: @917
+	2: @922
+	3: @927
+	4: @932
+	5: @937
+	6: @942
+	7: @947
+	8: @952
+	9: @957
+	10: @962
+	default: @966
+umana :=   4;     diff :=  10;
+917: 4L
+918: local9 := 
+diff :=  10;
+919: 10L
+920: local10 := 
+921: goto966
+umana :=   6;     diff :=  20;
+922: 6L
+923: local9 := 
+diff :=  20;
+924: 20L
+925: local10 := 
+926: goto966
+umana :=   9;     diff :=  30;
+927: 9L
+928: local9 := 
+diff :=  30;
+929: 30L
+930: local10 := 
+931: goto966
+umana :=  11;     diff :=  50;
+932: 11L
+933: local9 := 
+diff :=  50;
+934: 50L
+935: local10 := 
+936: goto966
+umana :=  14;     diff :=  60;
+937: 14L
+938: local9 := 
+diff :=  60;
+939: 60L
+940: local10 := 
+941: goto966
+umana :=  20;     diff :=  70;
+942: 20L
+943: local9 := 
+diff :=  70;
+944: 70L
+945: local10 := 
+946: goto966
+umana :=  40;     diff :=  85;
+947: 40L
+948: local9 := 
+diff :=  85;
+949: 85L
+950: local10 := 
+951: goto966
+umana :=  50;     diff :=  95;
+952: 50L
+953: local9 := 
+diff :=  95;
+954: 95L
+955: local10 := 
+956: goto966
+umana :=  75;     diff := 100;
+957: 75L
+958: local9 := 
+diff := 100;
+959: 100L
+960: local10 := 
+961: goto966
+umana := 100;     diff := 100;
+962: 100L
+963: local9 := 
+diff := 100;
+964: 100L
+965: local10 := 
+966: goto1025
+elseif(scroll == 1)
+967: local #1
+968: 1L
+969: ==
+970: if false goto 1023
+case (circle)
+971: local #2
+972: casejmp
+	1: @973
+	2: @978
+	3: @983
+	4: @988
+	5: @993
+	6: @998
+	7: @1003
+	8: @1008
+	9: @1013
+	10: @1018
+	default: @1022
+umana :=   4;     diff := 10;
+973: 4L
+974: local9 := 
+diff := 10;
+975: 10L
+976: local10 := 
+977: goto1022
+umana :=   6;     diff := 10;
+978: 6L
+979: local9 := 
+diff := 10;
+980: 10L
+981: local10 := 
+982: goto1022
+umana :=   9;     diff := 10;
+983: 9L
+984: local9 := 
+diff := 10;
+985: 10L
+986: local10 := 
+987: goto1022
+umana :=  11;     diff := 20;
+988: 11L
+989: local9 := 
+diff := 20;
+990: 20L
+991: local10 := 
+992: goto1022
+umana :=  14;     diff := 30;
+993: 14L
+994: local9 := 
+diff := 30;
+995: 30L
+996: local10 := 
+997: goto1022
+umana :=  20;     diff := 50;
+998: 20L
+999: local9 := 
+diff := 50;
+1000: 50L
+1001: local10 := 
+1002: goto1022
+umana :=  40;     diff := 60;
+1003: 40L
+1004: local9 := 
+diff := 60;
+1005: 60L
+1006: local10 := 
+1007: goto1022
+umana :=  50;     diff := 70;
+1008: 50L
+1009: local9 := 
+diff := 70;
+1010: 70L
+1011: local10 := 
+1012: goto1022
+umana :=  75;     diff := 85;
+1013: 75L
+1014: local9 := 
+diff := 85;
+1015: 85L
+1016: local10 := 
+1017: goto1022
+umana := 100;     diff := 95;
+1018: 100L
+1019: local9 := 
+diff := 95;
+1020: 95L
+1021: local10 := 
+1022: goto1025
+return 0;
+1023: 0L
+1024: return
+if((mhp > GetHp(me)) && ((RandomInt(99)+1) > (GetEffectiveSkill(me, SKILLID_WRE
+1025: local #8
+1026: local #3
+1027: makelocal
+1028: jmp userfunc @1633
+1029: >
+1030: 99L
+1031: Func(2,0): RandomInt
+1032: 1L
+1033: +
+1034: local #3
+1035: 43L
+1036: makelocal
+1037: jmp userfunc @249
+1038: 2L
+1039: /
+1040: >
+1041: &&
+1042: if false goto 1051
+SendSysMessage(me,"You lost your concentration.", 3, 40);
+1043: local #3
+1044: "You lost your concentration."
+1045: 3L
+1046: 40L
+1047: Func(3,20): SendSysMessage
+1048: #
+return 0;
+1049: 0L
+1050: return
+if (umana > GetMana(me))
+1051: local #9
+1052: local #3
+1053: makelocal
+1054: jmp userfunc @1641
+1055: >
+1056: if false goto 1088
+me.frozen :=1;
+1057: local #3
+1058: 1L
+1059: set member 'frozen' #
+PerformAction(me,ANIM_CAST_DIR);
+1060: local #3
+1061: 16L
+1062: Func(3,33): PerformAction
+1063: #
+sleepms(1200);
+1064: 1200L
+1065: Func(4,4): sleepms
+1066: #
+me.frozen :=0;
+1067: local #3
+1068: 0L
+1069: set member 'frozen' #
+SendSysMessage(me,"You do not have enough mana to cast that.", 3, 40);
+1070: local #3
+1071: "You do not have enough mana to cast that."
+1072: 3L
+1073: 40L
+1074: Func(3,20): SendSysMessage
+1075: #
+PlaySoundEffect(me,0x005d);
+1076: local #3
+1077: 93L
+1078: Func(3,22): PlaySoundEffect
+1079: #
+PlayObjectCenteredEffect(me, 0x3735,0x0a, 0x1e);
+1080: local #3
+1081: 14133L
+1082: 10L
+1083: 30L
+1084: Func(3,27): PlayObjectCenteredEffect
+1085: #
+return 0;
+1086: 0L
+1087: return
+if(can_cast(me))
+1088: local #3
+1089: makelocal
+1090: jmp userfunc @1233
+1091: if false goto 1219
+me.frozen :=1;
+1092: local #3
+1093: 1L
+1094: set member 'frozen' #
+for (n:=1; n<=times; n:=n+1)
+1095: local #12
+1096: 1L
+1097: :=
+1098: #
+1099: local #12
+1100: local #6
+1101: <=
+1102: if false goto 1156
+if((mhp > GetHp(me)) && ((RandomInt(99)+1) > (GetEffectiveSkill(me, SKILLID_WRE
+1103: local #8
+1104: local #3
+1105: makelocal
+1106: jmp userfunc @1633
+1107: >
+1108: 99L
+1109: Func(2,0): RandomInt
+1110: 1L
+1111: +
+1112: local #3
+1113: 43L
+1114: makelocal
+1115: jmp userfunc @249
+1116: 2L
+1117: /
+1118: >
+1119: &&
+1120: if false goto 1142
+SendSysMessage(me,"You lost your concentration.", 3, 40);
+1121: local #3
+1122: "You lost your concentration."
+1123: 3L
+1124: 40L
+1125: Func(3,20): SendSysMessage
+1126: #
+PlaySoundEffect(me,0x005d);
+1127: local #3
+1128: 93L
+1129: Func(3,22): PlaySoundEffect
+1130: #
+PlayObjectCenteredEffect(me, 0x3735,0x0a, 0x1e);
+1131: local #3
+1132: 14133L
+1133: 10L
+1134: 30L
+1135: Func(3,27): PlayObjectCenteredEffect
+1136: #
+me.frozen :=0;
+1137: local #3
+1138: 0L
+1139: set member 'frozen' #
+return 0;
+1140: 0L
+1141: return
+PerformAction(me,ANIM_CAST_DIR);
+1142: local #3
+1143: 16L
+1144: Func(3,33): PerformAction
+1145: #
+sleepms(900);
+1146: 900L
+1147: Func(4,4): sleepms
+1148: #
+1149: local #12
+1150: local #12
+1151: 1L
+1152: +
+1153: :=
+1154: #
+1155: goto1099
+if(slp)
+1156: local #7
+1157: if false goto 1163
+sleepms(slp * 100);
+1158: local #7
+1159: 100L
+1160: *
+1161: Func(4,4): sleepms
+1162: #
+me.frozen :=0;
+1163: local #3
+1164: 0L
+1165: set member 'frozen' #
+if (CheckSkill(me,SKILLID_MAGERY, diff, 0))
+1166: local #3
+1167: 25L
+1168: local #10
+1169: 0L
+1170: Func(3,32): CheckSkill
+1171: if false goto 1201
+if((mhp > GetHp(me)) && ((RandomInt(99)+1) > (GetEffectiveSkill(me, SKILLID_WRE
+1172: local #8
+1173: local #3
+1174: makelocal
+1175: jmp userfunc @1633
+1176: >
+1177: 99L
+1178: Func(2,0): RandomInt
+1179: 1L
+1180: +
+1181: local #3
+1182: 43L
+1183: makelocal
+1184: jmp userfunc @249
+1185: 2L
+1186: /
+1187: >
+1188: &&
+1189: if false goto 1198
+SendSysMessage(me,"You lost your concentration.", 3, 40);
+1190: local #3
+1191: "You lost your concentration."
+1192: 3L
+1193: 40L
+1194: Func(3,20): SendSysMessage
+1195: #
+return 0;
+1196: 0L
+1197: return
+return 1;
+1198: 1L
+1199: return
+1200: goto1219
+SendSysMessage(me,"The spell fizzles.", 3, 40);
+1201: local #3
+1202: "The spell fizzles."
+1203: 3L
+1204: 40L
+1205: Func(3,20): SendSysMessage
+1206: #
+PlaySoundEffect(me,0x005d);
+1207: local #3
+1208: 93L
+1209: Func(3,22): PlaySoundEffect
+1210: #
+PlayObjectCenteredEffect(me, 0x3735,0x0a, 0x1e);
+1211: local #3
+1212: 14133L
+1213: 10L
+1214: 30L
+1215: Func(3,27): PlayObjectCenteredEffect
+1216: #
+return 0;
+1217: 0L
+1218: return
+1219: 0L
+1220: return
+C:/pol2/scripts/include/attributes.inc, Line 231
+function AwardRawSkillPoints(who, skillid, rawpoints)
+1221: pop param 'rawpoints'
+1222: pop param 'skillid'
+1223: pop param 'who'
+return AwardRawAttributePoints(who, GetAttributeIdBySkillId(skillid), rawpoints
+1224: local #2
+1225: local #1
+1226: makelocal
+1227: jmp userfunc @1471
+1228: local #0
+1229: local #1
+1230: makelocal
+1231: jmp userfunc @1803
+1232: return
+C:/pol2/scripts/include/spellRestrictions.inc, Line 145
+function can_cast(who)
+1233: pop param 'who'
+var hand1 := (GetEquipmentByLayer(who, 1));
+1234: decl local #1
+1235: local #0
+1236: 1L
+1237: Func(3,29): GetEquipmentByLayer
+1238: :=
+1239: #
+var hand2 := (GetEquipmentByLayer(who, 2));
+1240: decl local #2
+1241: local #0
+1242: 2L
+1243: Func(3,29): GetEquipmentByLayer
+1244: :=
+1245: #
+if(hand1)
+1246: local #1
+1247: if false goto 1261
+if(hand1.graphic != 0x0efa)
+1248: local #1
+1249: get member 'graphic'
+1250: 3834L
+1251: <>
+1252: if false goto 1261
+SendSysMessage(who,"You can't cast spells with things in your hands.", 3, 40);
+1253: local #0
+1254: "You can't cast spells with things in your hands."
+1255: 3L
+1256: 40L
+1257: Func(3,20): SendSysMessage
+1258: #
+return 0;
+1259: 0L
+1260: return
+if(hand2)
+1261: local #2
+1262: if false goto 1276
+if(hand2.graphic != 0x0efa)
+1263: local #2
+1264: get member 'graphic'
+1265: 3834L
+1266: <>
+1267: if false goto 1276
+SendSysMessage(who,"You can't cast spells with things in your hands.", 3, 40);
+1268: local #0
+1269: "You can't cast spells with things in your hands."
+1270: 3L
+1271: 40L
+1272: Func(3,20): SendSysMessage
+1273: #
+return 0;
+1274: 0L
+1275: return
+return 1;
+1276: 1L
+1277: return
+C:/pol2/scripts/include/spellRestrictions.inc, Line 182
+function CanTargetArea(caster, circle)
+1278: pop param 'circle'
+1279: pop param 'caster'
+if (!can_cast(caster))
+1280: local #1
+1281: makelocal
+1282: jmp userfunc @1233
+1283: if true goto 1286
+return 0;
+1284: 0L
+1285: return
+var cast_loc := TargetCoordinates(caster);
+1286: decl local #2
+1287: local #1
+1288: Func(3,19): TargetCoordinates
+1289: :=
+1290: #
+if (!cast_loc.x)
+1291: local #2
+1292: get member 'x'
+1293: if true goto 1296
+return 0;
+1294: 0L
+1295: return
+if (!CheckLosAt(caster, cast_loc.x, cast_loc.y, cast_loc.z))
+1296: local #1
+1297: local #2
+1298: get member 'x'
+1299: local #2
+1300: get member 'y'
+1301: local #2
+1302: get member 'z'
+1303: Func(3,1): CheckLosAt
+1304: if true goto 1313
+SendSysMessage(caster, "You can't see that.", 3, 40);
+1305: local #1
+1306: "You can't see that."
+1307: 3L
+1308: 40L
+1309: Func(3,20): SendSysMessage
+1310: #
+return 0;
+1311: 0L
+1312: return
+if(coordist(caster.x, caster.y, cast_loc.x, cast_loc.y) >= 12)
+1313: local #1
+1314: get member 'x'
+1315: local #1
+1316: get member 'y'
+1317: local #2
+1318: get member 'x'
+1319: local #2
+1320: get member 'y'
+1321: makelocal
+1322: jmp userfunc @1424
+1323: 12L
+1324: >=
+1325: if false goto 1334
+SendSysMessage(caster, "That is too far away.", 3, 40);
+1326: local #1
+1327: "That is too far away."
+1328: 3L
+1329: 40L
+1330: Func(3,20): SendSysMessage
+1331: #
+return 0;
+1332: 0L
+1333: return
+return cast_loc;
+1334: local #2
+1335: return
+C:/pol2/scripts/include/spellRestrictions.inc, Line 163
+function CanTargetSpell(caster, circle, targopt := TGTOPT_CHECK_LOS)
+1336: pop param 'targopt'
+1337: pop param 'circle'
+1338: pop param 'caster'
+if(!can_cast(caster))
+1339: local #2
+1340: makelocal
+1341: jmp userfunc @1233
+1342: if true goto 1345
+return 0;
+1343: 0L
+1344: return
+var cast_on := Target(caster, targopt);
+1345: decl local #3
+1346: local #2
+1347: local #0
+1348: Func(3,30): Target
+1349: :=
+1350: #
+if(!cast_on)
+1351: local #3
+1352: if true goto 1355
+return 0;
+1353: 0L
+1354: return
+if(cast_on.hidden)
+1355: local #3
+1356: get member 'hidden'
+1357: if false goto 1366
+SendSysMessage(caster,"You can't see that.", 3, 40);
+1358: local #2
+1359: "You can't see that."
+1360: 3L
+1361: 40L
+1362: Func(3,20): SendSysMessage
+1363: #
+return 0;
+1364: 0L
+1365: return
+if(dist(caster, cast_on) >= 12)
+1366: local #2
+1367: local #3
+1368: makelocal
+1369: jmp userfunc @1465
+1370: 12L
+1371: >=
+1372: if false goto 1381
+SendSysMessage(caster, "That is too far away.", 3, 40);
+1373: local #2
+1374: "That is too far away."
+1375: 3L
+1376: 40L
+1377: Func(3,20): SendSysMessage
+1378: #
+return 0;
+1379: 0L
+1380: return
+return cast_on;
+1381: local #3
+1382: return
+C:/pol2/scripts/include/spellRestrictions.inc, Line 535
+function cdist(x1, y1, x2, y2)
+1383: pop param 'y2'
+1384: pop param 'x2'
+1385: pop param 'y1'
+1386: pop param 'x1'
+var xd := x1 - x2;
+1387: decl local #4
+1388: local #3
+1389: local #1
+1390: -
+1391: :=
+1392: #
+var yd := y1 - y2;
+1393: decl local #5
+1394: local #2
+1395: local #0
+1396: -
+1397: :=
+1398: #
+if (xd < 0)
+1399: local #4
+1400: 0L
+1401: <
+1402: if false goto 1406
+xd := -xd;
+1403: local #4
+1404: unary -
+1405: local4 := 
+if (yd < 0)
+1406: local #5
+1407: 0L
+1408: <
+1409: if false goto 1413
+yd := -yd;
+1410: local #5
+1411: unary -
+1412: local5 := 
+if (xd > yd)
+1413: local #4
+1414: local #5
+1415: >
+1416: if false goto 1420
+return xd;
+1417: local #4
+1418: return
+1419: goto1422
+return yd;
+1420: local #5
+1421: return
+1422: 0L
+1423: return
+C:/pol2/scripts/include/dist.inc, Line 37
+function coordist( x1, y1, x2, y2 )
+1424: pop param 'y2'
+1425: pop param 'x2'
+1426: pop param 'y1'
+1427: pop param 'x1'
+var xd := x1 - x2;
+1428: decl local #4
+1429: local #3
+1430: local #1
+1431: -
+1432: :=
+1433: #
+var yd := y1 - y2;
+1434: decl local #5
+1435: local #2
+1436: local #0
+1437: -
+1438: :=
+1439: #
+if (xd < 0)
+1440: local #4
+1441: 0L
+1442: <
+1443: if false goto 1447
+xd := -xd;
+1444: local #4
+1445: unary -
+1446: local4 := 
+if (yd < 0)
+1447: local #5
+1448: 0L
+1449: <
+1450: if false goto 1454
+yd := -yd;
+1451: local #5
+1452: unary -
+1453: local5 := 
+if (xd > yd)
+1454: local #4
+1455: local #5
+1456: >
+1457: if false goto 1461
+return xd;
+1458: local #4
+1459: return
+1460: goto1463
+return yd;
+1461: local #5
+1462: return
+1463: 0L
+1464: return
+C:/pol2/scripts/include/dist.inc, Line 9
+function dist( obj1, obj2 )
+1465: pop param 'obj2'
+1466: pop param 'obj1'
+return Distance( obj1, obj2 );
+1467: local #1
+1468: local #0
+1469: Func(3,23): Distance
+1470: return
+C:/pol2/scripts/include/attributes.inc, Line 250
+function GetAttributeIdBySkillId(skillid)
+1471: pop param 'skillid'
+case(skillid)
+1472: local #0
+1473: casejmp
+	0: @1474
+	1: @1477
+	2: @1480
+	3: @1483
+	4: @1486
+	5: @1489
+	6: @1492
+	7: @1495
+	8: @1498
+	9: @1501
+	10: @1504
+	11: @1507
+	12: @1510
+	13: @1513
+	14: @1516
+	15: @1519
+	16: @1522
+	17: @1525
+	18: @1528
+	19: @1531
+	20: @1534
+	21: @1537
+	22: @1540
+	23: @1543
+	24: @1546
+	25: @1549
+	26: @1552
+	27: @1555
+	28: @1558
+	29: @1561
+	30: @1564
+	31: @1567
+	32: @1570
+	33: @1573
+	34: @1576
+	35: @1579
+	36: @1582
+	37: @1585
+	38: @1588
+	39: @1591
+	40: @1594
+	41: @1597
+	42: @1600
+	43: @1603
+	44: @1606
+	45: @1609
+	46: @1612
+	47: @1615
+	48: @1618
+	default: @1620
+return ATTRIBUTEID_ALCHEMY;
+1474: "alchemy"
+1475: return
+1476: goto1620
+return ATTRIBUTEID_ANATOMY;
+1477: "anatomy"
+1478: return
+1479: goto1620
+return ATTRIBUTEID_ANIMALLORE;
+1480: "animallore"
+1481: return
+1482: goto1620
+return ATTRIBUTEID_ITEMID;
+1483: "itemid"
+1484: return
+1485: goto1620
+return ATTRIBUTEID_ARMSLORE;
+1486: "armslore"
+1487: return
+1488: goto1620
+return ATTRIBUTEID_PARRY;
+1489: "parry"
+1490: return
+1491: goto1620
+return ATTRIBUTEID_BEGGING;
+1492: "begging"
+1493: return
+1494: goto1620
+return ATTRIBUTEID_BLACKSMITHY;
+1495: "blacksmithy"
+1496: return
+1497: goto1620
+return ATTRIBUTEID_BOWCRAFT;
+1498: "bowcraft"
+1499: return
+1500: goto1620
+return ATTRIBUTEID_PEACEMAKING;
+1501: "peacemaking"
+1502: return
+1503: goto1620
+return ATTRIBUTEID_CAMPING;
+1504: "camping"
+1505: return
+1506: goto1620
+return ATTRIBUTEID_CARPENTRY;
+1507: "carpentry"
+1508: return
+1509: goto1620
+return ATTRIBUTEID_CARTOGRAPHY;
+1510: "cartography"
+1511: return
+1512: goto1620
+return ATTRIBUTEID_COOKING;
+1513: "cooking"
+1514: return
+1515: goto1620
+return ATTRIBUTEID_DETECTINGHIDDEN;
+1516: "detectinghidden"
+1517: return
+1518: goto1620
+return ATTRIBUTEID_ENTICEMENT;
+1519: "enticement"
+1520: return
+1521: goto1620
+return ATTRIBUTEID_EVALINT;
+1522: "evaluatingintelligence"
+1523: return
+1524: goto1620
+return ATTRIBUTEID_HEALING;
+1525: "healing"
+1526: return
+1527: goto1620
+return ATTRIBUTEID_FISHING;
+1528: "fishing"
+1529: return
+1530: goto1620
+return ATTRIBUTEID_FORENSICS;
+1531: "forensicevaluation"
+1532: return
+1533: goto1620
+return ATTRIBUTEID_HERDING;
+1534: "herding"
+1535: return
+1536: goto1620
+return ATTRIBUTEID_HIDING;
+1537: "hiding"
+1538: return
+1539: goto1620
+return ATTRIBUTEID_PROVOCATION;
+1540: "provocation"
+1541: return
+1542: goto1620
+return ATTRIBUTEID_INSCRIPTION;
+1543: "inscription"
+1544: return
+1545: goto1620
+return ATTRIBUTEID_LOCKPICKING;
+1546: "lockpicking"
+1547: return
+1548: goto1620
+return ATTRIBUTEID_MAGERY;
+1549: "magery"
+1550: return
+1551: goto1620
+return ATTRIBUTEID_MAGICRESISTANCE;
+1552: "magicresistance"
+1553: return
+1554: goto1620
+return ATTRIBUTEID_TACTICS;
+1555: "tactics"
+1556: return
+1557: goto1620
+return ATTRIBUTEID_SNOOPING;
+1558: "snooping"
+1559: return
+1560: goto1620
+return ATTRIBUTEID_MUSICIANSHIP;
+1561: "musicianship"
+1562: return
+1563: goto1620
+return ATTRIBUTEID_POISONING;
+1564: "poisoning"
+1565: return
+1566: goto1620
+return ATTRIBUTEID_ARCHERY;
+1567: "archery"
+1568: return
+1569: goto1620
+return ATTRIBUTEID_SPIRITSPEAK;
+1570: "spiritspeak"
+1571: return
+1572: goto1620
+return ATTRIBUTEID_STEALING;
+1573: "stealing"
+1574: return
+1575: goto1620
+return ATTRIBUTEID_TAILORING;
+1576: "tailoring"
+1577: return
+1578: goto1620
+return ATTRIBUTEID_TAMING;
+1579: "animaltaming"
+1580: return
+1581: goto1620
+return ATTRIBUTEID_TASTEID;
+1582: "tasteidentification"
+1583: return
+1584: goto1620
+return ATTRIBUTEID_TINKERING;
+1585: "tinkering"
+1586: return
+1587: goto1620
+return ATTRIBUTEID_TRACKING;
+1588: "tracking"
+1589: return
+1590: goto1620
+return ATTRIBUTEID_VETERINARY;
+1591: "veterinary"
+1592: return
+1593: goto1620
+return ATTRIBUTEID_SWORDSMANSHIP;
+1594: "swordsmanship"
+1595: return
+1596: goto1620
+return ATTRIBUTEID_MACEFIGHTING;
+1597: "macefighting"
+1598: return
+1599: goto1620
+return ATTRIBUTEID_FENCING;
+1600: "fencing"
+1601: return
+1602: goto1620
+return ATTRIBUTEID_WRESTLING;
+1603: "wrestling"
+1604: return
+1605: goto1620
+return ATTRIBUTEID_LUMBERJACKING;
+1606: "lumberjacking"
+1607: return
+1608: goto1620
+return ATTRIBUTEID_MINING;
+1609: "mining"
+1610: return
+1611: goto1620
+return ATTRIBUTEID_MEDITATION;
+1612: "meditation"
+1613: return
+1614: goto1620
+return ATTRIBUTEID_STEALTH;
+1615: "stealth"
+1616: return
+1617: goto1620
+return ATTRIBUTEID_REMOVETRAP;
+1618: "removetrap"
+1619: return
+var ret        := error;
+1620: decl local #1
+1621: error
+1622: :=
+1623: #
+ret.+errortext := "No equivalent attributeid found for skillid " + skillid;
+1624: local #1
+1625: "errortext"
+1626: .+
+1627: "No equivalent attributeid found for skillid "
+1628: local #0
+1629: +
+1630: := #
+return ret;
+1631: local #1
+1632: return
+C:/pol2/scripts/include/attributes.inc, Line 448
+function GetHp(who)
+1633: pop param 'who'
+return Cint(GetVital(who, VITALID_LIFE)/ 100);
+1634: local #0
+1635: "Life"
+1636: Func(3,14): GetVital
+1637: 100L
+1638: /
+1639: Func(0,1): CInt
+1640: return
+C:/pol2/scripts/include/attributes.inc, Line 460
+function GetMana(who)
+1641: pop param 'who'
+return(GetVital(who, "Mana")/ 100);
+1642: local #0
+1643: "Mana"
+1644: Func(3,14): GetVital
+1645: 100L
+1646: /
+1647: return
+C:/pol2/scripts/include/spellRestrictions.inc, Line 462
+function getpoints(c, scroll, skillid)
+1648: pop param 'skillid'
+1649: pop param 'scroll'
+1650: pop param 'c'
+var points;
+1651: decl local #3
+1652: #
+var diff;
+1653: decl local #4
+1654: #
+if(scroll == 1)
+1655: local #1
+1656: 1L
+1657: ==
+1658: if false goto 1701
+case(c)
+1659: local #2
+1660: casejmp
+	1: @1661
+	2: @1666
+	3: @1671
+	4: @1676
+	5: @1681
+	6: @1686
+	7: @1691
+	8: @1696
+	default: @1700
+points :=  10; diff :=  0;
+1661: 10L
+1662: local3 := 
+diff :=  0;
+1663: 0L
+1664: local4 := 
+1665: goto1700
+points :=  20; diff := 10;
+1666: 20L
+1667: local3 := 
+diff := 10;
+1668: 10L
+1669: local4 := 
+1670: goto1700
+points :=  20; diff := 10;
+1671: 20L
+1672: local3 := 
+diff := 10;
+1673: 10L
+1674: local4 := 
+1675: goto1700
+points :=  40; diff := 20;
+1676: 40L
+1677: local3 := 
+diff := 20;
+1678: 20L
+1679: local4 := 
+1680: goto1700
+points :=  60; diff := 30;
+1681: 60L
+1682: local3 := 
+diff := 30;
+1683: 30L
+1684: local4 := 
+1685: goto1700
+points := 100; diff := 50;
+1686: 100L
+1687: local3 := 
+diff := 50;
+1688: 50L
+1689: local4 := 
+1690: goto1700
+points := 120; diff := 60;
+1691: 120L
+1692: local3 := 
+diff := 60;
+1693: 60L
+1694: local4 := 
+1695: goto1700
+points := 140; diff := 70;
+1696: 140L
+1697: local3 := 
+diff := 70;
+1698: 70L
+1699: local4 := 
+1700: goto1742
+case(c)
+1701: local #2
+1702: casejmp
+	1: @1703
+	2: @1708
+	3: @1713
+	4: @1718
+	5: @1723
+	6: @1728
+	7: @1733
+	8: @1738
+	default: @1742
+points :=  20; diff := 20;
+1703: 20L
+1704: local3 := 
+diff := 20;
+1705: 20L
+1706: local4 := 
+1707: goto1742
+points :=  40; diff := 30;
+1708: 40L
+1709: local3 := 
+diff := 30;
+1710: 30L
+1711: local4 := 
+1712: goto1742
+points :=  80; diff := 40;
+1713: 80L
+1714: local3 := 
+diff := 40;
+1715: 40L
+1716: local4 := 
+1717: goto1742
+points := 100; diff := 50;
+1718: 100L
+1719: local3 := 
+diff := 50;
+1720: 50L
+1721: local4 := 
+1722: goto1742
+points := 120; diff := 60;
+1723: 120L
+1724: local3 := 
+diff := 60;
+1725: 60L
+1726: local4 := 
+1727: goto1742
+points := 140; diff := 70;
+1728: 140L
+1729: local3 := 
+diff := 70;
+1730: 70L
+1731: local4 := 
+1732: goto1742
+points := 160; diff := 86;
+1733: 160L
+1734: local3 := 
+diff := 86;
+1735: 86L
+1736: local4 := 
+1737: goto1742
+points := 180; diff := 100;
+1738: 180L
+1739: local3 := 
+diff := 100;
+1740: 100L
+1741: local4 := 
+var skill := GetEffectiveSkill(caster, skillid);
+1742: decl local #5
+1743: global #0
+1744: local #0
+1745: makelocal
+1746: jmp userfunc @249
+1747: :=
+1748: #
+if(skill > (diff - 20))
+1749: local #5
+1750: local #4
+1751: 20L
+1752: -
+1753: >
+1754: if false goto 1801
+if((skill - diff) <= 5)
+1755: local #5
+1756: local #4
+1757: -
+1758: 5L
+1759: <=
+1760: if false goto 1764
+points := points;
+1761: local #3
+1762: local3 := 
+1763: goto1801
+elseif((skill - diff) <= 10)
+1764: local #5
+1765: local #4
+1766: -
+1767: 10L
+1768: <=
+1769: if false goto 1777
+points := (points * 3) / 4;
+1770: local #3
+1771: 3L
+1772: *
+1773: 4L
+1774: /
+1775: local3 := 
+1776: goto1801
+elseif((skill - diff) <= 15)
+1777: local #5
+1778: local #4
+1779: -
+1780: 15L
+1781: <=
+1782: if false goto 1788
+points := points / 2;
+1783: local #3
+1784: 2L
+1785: /
+1786: local3 := 
+1787: goto1801
+elseif((skill - diff) <= 15)
+1788: local #5
+1789: local #4
+1790: -
+1791: 15L
+1792: <=
+1793: if false goto 1799
+points := points / 4;
+1794: local #3
+1795: 4L
+1796: /
+1797: local3 := 
+1798: goto1801
+points := 0;
+1799: 0L
+1800: local3 := 
+return points;
+1801: local #3
+1802: return
+C:/pol2/scripts/include/attributes.inc, Line 167
+function AwardRawAttributePoints(who, attributeid, rawpoints, skillid)
+1803: pop param 'skillid'
+1804: pop param 'rawpoints'
+1805: pop param 'attributeid'
+1806: pop param 'who'
+if(!who.isA(POLCLASS_MOBILE))
+1807: local #3
+1808: 3L
+1809: Call Method isa (1 params)
+1810: if true goto 1827
+var ret := error;
+1811: decl local #0
+1812: error
+1813: :=
+1814: #
+ret.+errortext := "Invalid parameter type: " + who + " isn't a mobileref.";
+1815: local #4
+1816: "errortext"
+1817: .+
+1818: "Invalid parameter type: "
+1819: local #3
+1820: +
+1821: " isn't a mobileref."
+1822: +
+1823: := #
+return ret;
+1824: local #4
+1825: return
+1826: leave block(1)
+rawpoints := Cdbl(rawpoints);
+1827: local #1
+1828: Func(0,3): CDbl
+1829: local1 := 
+if(rawpoints == error)
+1830: local #1
+1831: error
+1832: ==
+1833: if false goto 1837
+return rawpoints;
+1834: local #1
+1835: return
+1836: goto1843
+elseif(rawpoints == 0.0)
+1837: local #1
+1838: 0LF
+1839: ==
+1840: if false goto 1843
+return 1;
+1841: 1L
+1842: return
+set_critical(1);
+1843: 1L
+1844: Func(4,0): set_critical
+1845: #
+var initial := GetAttributeBaseValue(who, attributeid);
+1846: decl local #4
+1847: local #3
+1848: local #2
+1849: Func(3,7): GetAttributeBaseValue
+1850: :=
+1851: #
+var current := initial;
+1852: decl local #5
+1853: local #4
+1854: :=
+1855: #
+if(rawpoints > 0)
+1856: local #1
+1857: 0L
+1858: >
+1859: if false goto 1895
+var to_increase := GetNeededRawPointsToIncrease(current);
+1860: decl local #0
+1861: local #5
+1862: makelocal
+1863: jmp userfunc @2059
+1864: :=
+1865: #
+while(rawpoints >= to_increase)
+1866: local #1
+1867: local #6
+1868: >=
+1869: if false goto 1883
+rawpoints  := rawpoints - to_increase;
+1870: local #1
+1871: local #6
+1872: -
+1873: local1 := 
+current    := current + 1;
+1874: local #5
+1875: 1L
+1876: +
+1877: local5 := 
+to_increase := GetNeededRawPointsToIncrease(current);
+1878: local #5
+1879: makelocal
+1880: jmp userfunc @2059
+1881: local6 := 
+1882: goto1866
+if(RandomInt(Cint(to_increase)) < rawpoints)
+1883: local #6
+1884: Func(0,1): CInt
+1885: Func(2,0): RandomInt
+1886: local #1
+1887: <
+1888: if false goto 1893
+current := current + 1;
+1889: local #5
+1890: 1L
+1891: +
+1892: local5 := 
+1893: leave block(1)
+1894: goto1941
+elseif(rawpoints < 0)
+1895: local #1
+1896: 0L
+1897: <
+1898: if false goto 1941
+var to_decrease  := GetNeededRawPointsToIncrease(current-1);
+1899: decl local #0
+1900: local #5
+1901: 1L
+1902: -
+1903: makelocal
+1904: jmp userfunc @2059
+1905: :=
+1906: #
+while(rawpoints >= to_decrease && current > 0)
+1907: local #1
+1908: local #6
+1909: >=
+1910: local #5
+1911: 0L
+1912: >
+1913: &&
+1914: if false goto 1930
+rawpoints  := rawpoints - to_decrease;
+1915: local #1
+1916: local #6
+1917: -
+1918: local1 := 
+current    := current - 1;
+1919: local #5
+1920: 1L
+1921: -
+1922: local5 := 
+to_decrease  := GetNeededRawPointsToIncrease(current-1);
+1923: local #5
+1924: 1L
+1925: -
+1926: makelocal
+1927: jmp userfunc @2059
+1928: local6 := 
+1929: goto1907
+if(RandomInt(Cint(to_decrease))< rawpoints)
+1930: local #6
+1931: Func(0,1): CInt
+1932: Func(2,0): RandomInt
+1933: local #1
+1934: <
+1935: if false goto 1940
+current := current - 1;
+1936: local #5
+1937: 1L
+1938: -
+1939: local5 := 
+1940: leave block(1)
+if(current != initial)
+1941: local #5
+1942: local #4
+1943: <>
+1944: if false goto 2032
+if(who.acctname)
+1945: local #3
+1946: get member 'acctname'
+1947: if false goto 2023
+if(current > CORE_SETTINGS_MAX_ATTRIBUTE)
+1948: local #5
+1949: 60000L
+1950: >
+1951: if false goto 1954
+current := CORE_SETTINGS_MAX_ATTRIBUTE;
+1952: 60000L
+1953: local5 := 
+var pid := getprocess(GetObjProperty(who, "cap_pid"));
+1954: decl local #0
+1955: local #3
+1956: "cap_pid"
+1957: Func(3,6): GetObjProperty
+1958: Func(4,1): getprocess
+1959: :=
+1960: #
+var k := struct;
+1961: decl local #1
+1962: struct
+1963: :=
+1964: #
+if((attributeid == ATTRIBUTEID_STRENGTH) or (attributeid == ATTRIBUTEID_DEXTERI
+1965: local #2
+1966: "strength"
+1967: ==
+1968: local #2
+1969: "dexterity"
+1970: ==
+1971: ||
+1972: local #2
+1973: "intelligence"
+1974: ==
+1975: ||
+1976: if false goto 2002
+k.+skid   := attributeid;
+1977: local #7
+1978: "skid"
+1979: .+
+1980: local #2
+1981: := #
+k.+skil   := skillid;
+1982: local #7
+1983: "skil"
+1984: .+
+1985: local #0
+1986: := #
+k.+type   := EVID_STATCAP;
+1987: local #7
+1988: "type"
+1989: .+
+1990: 4372L
+1991: := #
+k.+base   := current;
+1992: local #7
+1993: "base"
+1994: .+
+1995: local #5
+1996: := #
+pid.sendevent(k);
+1997: local #6
+1998: local #7
+1999: Call Method sendevent (1 params)
+2000: #
+2001: goto2021
+k.+skid   := attributeid;
+2002: local #7
+2003: "skid"
+2004: .+
+2005: local #2
+2006: := #
+k.+type   := EVID_SKILLCAP;
+2007: local #7
+2008: "type"
+2009: .+
+2010: 4371L
+2011: := #
+k.+base   := current;
+2012: local #7
+2013: "base"
+2014: .+
+2015: local #5
+2016: := #
+pid.sendevent(k);
+2017: local #6
+2018: local #7
+2019: Call Method sendevent (1 params)
+2020: #
+2021: leave block(2)
+2022: goto2028
+SetAttributeBaseValue(who, attributeid, current);
+2023: local #3
+2024: local #2
+2025: local #5
+2026: Func(3,9): SetAttributeBaseValue
+2027: #
+DoRecalcVitals(who);
+2028: local #3
+2029: makelocal
+2030: jmp userfunc @2037
+2031: #
+set_critical(0);
+2032: 0L
+2033: Func(4,0): set_critical
+2034: #
+return 1;
+2035: 1L
+2036: return
+C:/pol2/scripts/include/attributes.inc, Line 84
+Function DoRecalcVitals( mob )
+2037: pop param 'mob'
+set_critical(1);
+2038: 1L
+2039: Func(4,0): set_critical
+2040: #
+if(mob.acctname)
+2041: local #0
+2042: get member 'acctname'
+2043: if false goto 2051
+if(mob.ip)
+2044: local #0
+2045: get member 'ip'
+2046: if false goto 2050
+RecalcVitals(mob);
+2047: local #0
+2048: Func(3,5): RecalcVitals
+2049: #
+2050: goto2054
+RecalcVitals(mob);
+2051: local #0
+2052: Func(3,5): RecalcVitals
+2053: #
+set_critical(0);
+2054: 0L
+2055: Func(4,0): set_critical
+2056: #
+2057: 0L
+2058: return
+C:/pol2/scripts/include/attributes.inc, Line 476
+function GetNeededRawPointsToIncrease(basevalue)
+2059: pop param 'basevalue'
+if(basevalue < 200)
+2060: local #0
+2061: 200L
+2062: <
+2063: if false goto 2067
+return 20.48;
+2064: 20.48LF
+2065: return
+2066: goto2085
+elseif(basevalue >= 2800)
+2067: local #0
+2068: 2800L
+2069: >=
+2070: if false goto 2075
+return Cdbl(0x7fffffff);
+2071: 2147483647L
+2072: Func(0,3): CDbl
+2073: return
+2074: goto2085
+return Cdbl(Pow(2.0, Cint(basevalue/100))* 10.24);
+2075: 2LF
+2076: local #0
+2077: 100L
+2078: /
+2079: Func(0,1): CInt
+2080: Func(6,0): Pow
+2081: 10.24LF
+2082: *
+2083: Func(0,3): CDbl
+2084: return
+2085: 0L
+2086: return

@@ -1,0 +1,48 @@
+use uo;
+use os;
+include "include/attributes";
+include "../pkg/foundations/gumps/gumps";
+
+
+program arma(who)
+status(who); 
+endprogram
+
+
+function status(who)
+
+  GFInitGump( 250 , 100 );
+  GFNoMove();
+  GFResizePic(50, 5, 5120, 300, 250);
+  GFTextLine( 155 , 20, 1153 , "Comando De Viagem" );
+  var bt2 := GFButtonID( 70, 50, 0xa9a, 0xa9b, 1);
+  var bt3 := GFButtonID( 70, 80, 0xa9a, 0xa9b, 1);
+  var bt4 := GFButtonID( 70, 110, 0xa9a, 0xa9b, 1);
+  var bt5 := GFButtonID( 70, 140, 0xa9a, 0xa9b, 1);
+ 
+
+  GFTextLine(90, 50,  928, "Arena Brit"); 
+  GFTextLine(90, 80,  928, "Arena Yew"); 
+  GFTextLine(90, 110, 928, "Arena Arydras"); 
+  GFTextLine(90, 140, 928, "Arena Skara"); 
+ 
+
+  var res := GFSendGump(who);
+
+if(res[bt2.keyid]) 
+MoveCharacterToLocation( who, 1319,1815,0 );
+endif
+
+if(res[bt3.keyid]) 
+ MoveCharacterToLocation( who, 635,836,40 );
+endif
+
+if(res[bt4.keyid])
+ MoveCharacterToLocation( who, 2716,48,75 );
+endif
+
+if(res[bt5.keyid])
+ MoveCharacterToLocation( who, 618,2127,5 );
+endif
+
+endfunction

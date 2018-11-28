@@ -1,0 +1,471 @@
+C:\pol2\pkg\items\runebook\runeInsert.src, Line 4
+program on_insert(who, book, item);
+use os;
+0: get arg 'who'
+1: get arg 'book'
+2: get arg 'item'
+var vendorserial := GetObjProperty(book,"Vendor");
+3: decl local #3
+4: local #1
+5: "Vendor"
+6: Func(2,0): GetObjProperty
+7: :=
+8: #
+if(vendorserial)
+9: local #3
+10: if false goto 26
+SendSysMessage(who, "You can not insert runes while that is on a vendor.");
+11: local #0
+12: "You can not insert runes while that is on a vendor."
+13: 3L
+14: 1000L
+15: Func(2,1): SendSysMessage
+16: #
+MoveItemToContainer(item, who.backpack);
+17: local #2
+18: local #0
+19: get member 'backpack'
+20: -1L
+21: -1L
+22: Func(2,2): MoveItemToContainer
+23: #
+return;
+24: ""
+25: progend
+if(book.movable == 0)
+26: local #1
+27: get member 'movable'
+28: 0L
+29: ==
+30: if false goto 47
+SendSysMessage(who, "You cannot do that while the book is locked down.");
+31: local #0
+32: "You cannot do that while the book is locked down."
+33: 3L
+34: 1000L
+35: Func(2,1): SendSysMessage
+36: #
+MoveItemToContainer(item, who.backpack);
+37: local #2
+38: local #0
+39: get member 'backpack'
+40: -1L
+41: -1L
+42: Func(2,2): MoveItemToContainer
+43: #
+return 0;
+44: 0L
+45: progend
+46: goto84
+if(item.objtype == 0x1f14)
+47: local #2
+48: get member 'objtype'
+49: 7956L
+50: ==
+51: if false goto 59
+AddRune(who, book, item);
+52: local #0
+53: local #1
+54: local #2
+55: makelocal
+56: jmp userfunc @86
+57: #
+58: goto84
+elseif(item.objtype == 0x1f4c);
+59: local #2
+60: get member 'objtype'
+61: 8012L
+62: ==
+63: if false goto 71
+rechargebook(who, book, item);
+64: local #0
+65: local #1
+66: local #2
+67: makelocal
+68: jmp userfunc @251
+69: #
+70: goto84
+SendSysMessage(who, "You cant put that in a runebook.");
+71: local #0
+72: "You cant put that in a runebook."
+73: 3L
+74: 1000L
+75: Func(2,1): SendSysMessage
+76: #
+MoveItemToContainer(item, who.backpack);
+77: local #2
+78: local #0
+79: get member 'backpack'
+80: -1L
+81: -1L
+82: Func(2,2): MoveItemToContainer
+83: #
+84: leave block(4)
+85: progend
+C:\pol2\pkg\items\runebook\runeInsert.src, Line 54
+function AddRune(who, book, rune)
+86: pop param 'rune'
+87: pop param 'book'
+88: pop param 'who'
+var runedefs := GetObjProperty(book, "runedefs");
+89: decl local #3
+90: local #1
+91: "runedefs"
+92: Func(2,0): GetObjProperty
+93: :=
+94: #
+if(len(runedefs) >= 16)
+95: local #3
+96: Func(0,1): len
+97: 16L
+98: >=
+99: if false goto 115
+SendSysMessage(who,"this book cannot hold any more runes");
+100: local #2
+101: "this book cannot hold any more runes"
+102: 3L
+103: 1000L
+104: Func(2,1): SendSysMessage
+105: #
+MoveItemToContainer(rune, who.backpack);
+106: local #0
+107: local #2
+108: get member 'backpack'
+109: -1L
+110: -1L
+111: Func(2,2): MoveItemToContainer
+112: #
+return;
+113: ""
+114: return
+if(!ReserveItem(rune))
+115: local #0
+116: Func(2,8): ReserveItem
+117: if true goto 133
+SendSysMessage(who,"cancelled");
+118: local #2
+119: "cancelled"
+120: 3L
+121: 1000L
+122: Func(2,1): SendSysMessage
+123: #
+MoveItemToContainer(rune, who.backpack);
+124: local #0
+125: local #2
+126: get member 'backpack'
+127: -1L
+128: -1L
+129: Func(2,2): MoveItemToContainer
+130: #
+return;
+131: ""
+132: return
+if(!GetObjProperty(rune, "x"))
+133: local #0
+134: "x"
+135: Func(2,0): GetObjProperty
+136: if true goto 152
+SendSysMessage(who,"You can only add marked runes.");
+137: local #2
+138: "You can only add marked runes."
+139: 3L
+140: 1000L
+141: Func(2,1): SendSysMessage
+142: #
+MoveItemToContainer(rune, who.backpack);
+143: local #0
+144: local #2
+145: get member 'backpack'
+146: -1L
+147: -1L
+148: Func(2,2): MoveItemToContainer
+149: #
+return;
+150: ""
+151: return
+set_critical(1);
+152: 1L
+153: Func(3,0): set_critical
+154: #
+var x := GetObjProperty(rune, "x");
+155: decl local #4
+156: local #0
+157: "x"
+158: Func(2,0): GetObjProperty
+159: :=
+160: #
+var y := GetObjProperty(rune, "y");
+161: decl local #5
+162: local #0
+163: "y"
+164: Func(2,0): GetObjProperty
+165: :=
+166: #
+var z := GetObjProperty(rune, "z");
+167: decl local #6
+168: local #0
+169: "z"
+170: Func(2,0): GetObjProperty
+171: :=
+172: #
+var rname := rune.desc - "A recall rune for";
+173: decl local #7
+174: local #0
+175: get member 'desc'
+176: "A recall rune for"
+177: -
+178: :=
+179: #
+var new_rune_struct := { rname, x, y, z };
+180: decl local #8
+181: array
+182: local #7
+183: +=
+184: local #4
+185: +=
+186: local #5
+187: +=
+188: local #6
+189: +=
+190: :=
+191: #
+if(!runedefs)
+192: local #3
+193: if true goto 207
+var new_runedefs := {new_rune_struct};
+194: decl local #0
+195: array
+196: local #8
+197: +=
+198: :=
+199: #
+SetObjProperty(book, "runedefs", new_runedefs);
+200: local #1
+201: "runedefs"
+202: local #9
+203: Func(2,7): SetObjProperty
+204: #
+205: leave block(1)
+206: goto237
+elseif(runedefs.size() == 32)
+207: local #3
+208: Call Method size (0 params)
+209: 32L
+210: ==
+211: if false goto 228
+SendSysMessage(who, "That rune book is full.");
+212: local #2
+213: "That rune book is full."
+214: 3L
+215: 1000L
+216: Func(2,1): SendSysMessage
+217: #
+MoveItemToContainer(rune, who.backpack);
+218: local #0
+219: local #2
+220: get member 'backpack'
+221: -1L
+222: -1L
+223: Func(2,2): MoveItemToContainer
+224: #
+return;
+225: ""
+226: return
+227: goto237
+runedefs.append(new_rune_struct);
+228: local #3
+229: local #8
+230: Call Method append (1 params)
+231: #
+SetObjProperty(book, "runedefs", runedefs);
+232: local #1
+233: "runedefs"
+234: local #3
+235: Func(2,7): SetObjProperty
+236: #
+SendSysMessage(who, "You add the rune to the runebook.");
+237: local #2
+238: "You add the rune to the runebook."
+239: 3L
+240: 1000L
+241: Func(2,1): SendSysMessage
+242: #
+DestroyItem(rune);
+243: local #0
+244: Func(2,4): DestroyItem
+245: #
+set_critical(0);
+246: 0L
+247: Func(3,0): set_critical
+248: #
+249: 0L
+250: return
+C:\pol2\pkg\items\runebook\runeInsert.src, Line 27
+function rechargebook(who, book, scrolls)
+251: pop param 'scrolls'
+252: pop param 'book'
+253: pop param 'who'
+var charges    := CInt(GetObjProperty(book, "charges"));
+254: decl local #3
+255: local #1
+256: "charges"
+257: Func(2,0): GetObjProperty
+258: Func(0,0): CInt
+259: :=
+260: #
+var maxcharges := CInt(GetObjProperty(book, "maxcharges"));
+261: decl local #4
+262: local #1
+263: "maxcharges"
+264: Func(2,0): GetObjProperty
+265: Func(0,0): CInt
+266: :=
+267: #
+var maxamount  := CInt(maxcharges - charges);
+268: decl local #5
+269: local #4
+270: local #3
+271: -
+272: Func(0,0): CInt
+273: :=
+274: #
+var amount     := CInt(scrolls.amount);
+275: decl local #6
+276: local #0
+277: get member 'amount'
+278: Func(0,0): CInt
+279: :=
+280: #
+if(maxamount <= 0)
+281: local #5
+282: 0L
+283: <=
+284: if false goto 301
+SendSysMessage(who, "This runebook is full.");
+285: local #2
+286: "This runebook is full."
+287: 3L
+288: 1000L
+289: Func(2,1): SendSysMessage
+290: #
+MoveItemToContainer(scrolls, who.backpack);
+291: local #0
+292: local #2
+293: get member 'backpack'
+294: -1L
+295: -1L
+296: Func(2,2): MoveItemToContainer
+297: #
+return;
+298: ""
+299: return
+300: goto324
+elseif(amount >= maxamount)
+301: local #6
+302: local #5
+303: >=
+304: if false goto 317
+var to_substract := maxamount;
+305: decl local #0
+306: local #5
+307: :=
+308: #
+if(SubtractAmount(scrolls, to_substract))
+309: local #0
+310: local #7
+311: Func(2,3): SubtractAmount
+312: if false goto 315
+charges := maxcharges;
+313: local #4
+314: local3 := 
+315: leave block(1)
+316: goto324
+elseif(DestroyItem(scrolls))
+317: local #0
+318: Func(2,4): DestroyItem
+319: if false goto 324
+charges := charges + amount;
+320: local #3
+321: local #6
+322: +
+323: local3 := 
+if(scrolls && scrolls.amount)
+324: local #0
+325: local #0
+326: get member 'amount'
+327: &&
+328: if false goto 336
+MoveItemToContainer(scrolls, who.backpack);
+329: local #0
+330: local #2
+331: get member 'backpack'
+332: -1L
+333: -1L
+334: Func(2,2): MoveItemToContainer
+335: #
+PlaySoundEffect(who, 0x1f1);
+336: local #2
+337: 497L
+338: Func(2,5): PlaySoundEffect
+339: #
+PlayObjectCenteredEffect(who, 0x375a, 7, 0x10);
+340: local #2
+341: 14170L
+342: 7L
+343: 16L
+344: Func(2,6): PlayObjectCenteredEffect
+345: #
+SetObjProperty(book, "charges", charges);
+346: local #1
+347: "charges"
+348: local #3
+349: Func(2,7): SetObjProperty
+350: #
+SendSysMessage(who, "There's now " + charges + " charges in this runebook.");
+351: local #2
+352: "There's now "
+353: local #3
+354: +
+355: " charges in this runebook."
+356: +
+357: 3L
+358: 1000L
+359: Func(2,1): SendSysMessage
+360: #
+UpdateName(book, charges);
+361: local #1
+362: local #3
+363: makelocal
+364: jmp userfunc @368
+365: #
+366: 0L
+367: return
+C:\pol2\pkg\items\runebook\runeInsert.src, Line 93
+function UpdateName(runebook, charges)
+368: pop param 'charges'
+369: pop param 'runebook'
+var name := GetObjProperty(runebook, "name");
+370: decl local #2
+371: local #1
+372: "name"
+373: Func(2,0): GetObjProperty
+374: :=
+375: #
+if(!name)
+376: local #2
+377: if true goto 380
+name := "Runebook";
+378: "Runebook"
+379: local2 := 
+runebook.name := name + " [charges: " + charges + "]";
+380: local #1
+381: local #2
+382: " [charges: "
+383: +
+384: local #0
+385: +
+386: "]"
+387: +
+388: set member 'name' #
+389: 0L
+390: return

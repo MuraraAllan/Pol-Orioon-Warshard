@@ -1,0 +1,125 @@
+//transforma os graphics das plantas kuando cressem e verifica se existe espantalho pra mandar corvos!
+//verssaum 1.0
+//Plug
+//ICQ: 35165523
+//xxx@sercomtel.com.br
+
+use uo;
+use os;
+use util;
+
+var dono;
+
+program transforma(reags)
+var uq := GetObjProperty(reags, "planta");
+dono := GetObjProperty(reags, "dono");
+if (uq == "ns")
+reags.name:="Pe de Night Shade";
+sleep(30);
+SendSysMessage(dono, "Sua plantacao comeca a germinar!",9,90);
+sleep(60);
+reags.graphic := 6373;
+SendSysMessage(dono, "Voce ja pode colher!",9,90);
+if (!espantalho(reags))
+///corvos(reags);
+endif
+sleep(1300);
+DestroyItem(reags);
+
+elseif (uq == "mr")
+reags.name:="Pe de Mandrake Root";
+sleep(30);
+SendSysMessage(dono, "Sua plantacao comeca a germinar!",9,90);
+sleep(60);
+reags.graphic := 6367;
+SendSysMessage(dono, "Voce ja pode colher!",9,90);
+if (!espantalho(reags))
+///corvos(reags);
+endif
+sleep(1300);
+DestroyItem(reags);
+
+elseif (uq == "gs")
+reags.name:="Pe de Ginseng";
+sleep(30);
+SendSysMessage(dono, "Sua plantacao comeca a germinar!",9,90);
+sleep(60);
+reags.graphic := 6377;
+SendSysMessage(dono, "Voce ja pode colher!",9,90);
+if (!espantalho(reags))
+///corvos(reags);
+endif
+sleep(1300);
+DestroyItem(reags);
+
+elseif (uq == "ga")
+reags.name:="Pe de Garlic";
+sleep(30);
+SendSysMessage(dono, "Sua plantacao comeca a germinar!",9,90);
+sleep(60);
+reags.graphic := 6369;
+SendSysMessage(dono, "Voce ja pode colher!",9,90);
+if (!espantalho(reags))
+///corvos(reags);
+endif
+sleep(1300);
+DestroyItem(reags);
+
+elseif (uq == "al")
+reags.name:="Pe de Algodao";
+sleep(30);
+reags.graphic := 6810;
+SendSysMessage(dono, "Sua plantacao comeca a germinar!",9,90);
+sleep(60);
+reags.graphic := 6811;
+SendSysMessage(dono, "Voce ja pode colher!",9,90);
+if (!espantalho(reags))
+///corvos(reags);
+endif
+sleep(1300);
+DestroyItem(reags);
+
+elseif (uq == "milho")
+reags.name:="Pe de Milho";
+sleep(30);
+reags.graphic := 3198;
+SendSysMessage(dono, "Sua plantacao comeca a germinar!",9,90);
+sleep(60);
+reags.graphic := 3197;
+SendSysMessage(dono, "Voce ja pode colher!",9,90);
+if (!espantalho(reags))
+///corvos(reags);
+endif
+sleep(1300);
+DestroyItem(reags);
+endif
+endprogram
+
+function corvos(reags)
+var corvo := RandomInt(12);
+if (corvo <= 3)
+var destroi := RandomInt(11);
+var kuantos := GetObjProperty(reags, "kuantos");
+dono := GetObjProperty(reags, "dono");
+var corvo;
+corvo:=CreateNpcFromTemplate("bird", reags.x, reags.y, reags.z);
+corvo.name:="Corvo";
+corvo.color:=1107;
+CreateNpcFromTemplate("bird", (reags.x + 1), (reags.y + 1), reags.z);
+corvo.name:="Corvo";
+corvo.color:=1107;
+CreateNpcFromTemplate("bird", (reags.x - 1), (reags.y - 1), reags.z);
+corvo.name:="Corvo";
+corvo.color:=1107;
+SetObjProperty(reags, "kuantos", (Cint(kuantos) - Cint(destroi)));
+SendSysMessage(dono, "Os corvos destruiram parte de sua plantacao! Da proxima vez, use um espantalho!",9,90);
+endif
+endfunction
+
+function espantalho(reags)
+foreach coiza in ListItemsNearLocation(reags.x, reags.y, reags.z, 15)
+if ((coiza.graphic == 7732) or (coiza.graphic == 7733))
+return 1;
+endif
+endforeach
+endfunction

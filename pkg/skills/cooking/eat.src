@@ -1,0 +1,79 @@
+use uo;
+use os;
+use util;
+use cfgfile;
+
+include "include/canAccess";
+include "include/attributes";
+include ":poisonwatcher:poisons";
+
+program eat_food(who, food)
+	EraseObjProperty(who, "IsMeditating");
+	EraseObjProperty(who, "HealTimer");
+
+	if(!can_access(who, food))
+		return;
+	endif
+	if(food.movable == 0)
+		SendSysMessage(who, "Voce Nao Pode Usar Isto.",9,89);
+		return;
+	endif
+
+	var foodcfg := ReadConfigFile(":*:itemdesc");
+	var retval, themsg;
+	var poison := CInt(GetObjProperty(food, "poison_level"));
+	var foodvalue := foodcfg[food.objtype].foodvalue;
+	var hunger := CInt(GetObjProperty(who, "hunger"));
+	if(!foodvalue)
+		foodvalue := 0;
+	endif
+	
+	if(SubtractAmount(food, 1))
+		case(RandomInt(3) + 0)
+			1: PlaySoundEffect(who, 0x3b);
+			2: PlaySoundEffect(who, 0x3c);
+			3: PlaySoundEffect(who, 0x3d);
+		endcase
+		PerformAction(who, 0x22);
+		SetStamina(who, GetStamina(who) + (5));
+		if(GetStamina(who) > GetDexterity(who))
+			
+		endif
+		hunger := hunger;
+		case(hunger)
+              		0:  themsg := Sendsysmessage(who,"Voce esta totalmente saciado",9,89);
+			1:  themsg := Sendsysmessage(who,"Voce comeca a se sentir saciado",9,89);
+			2:  themsg := Sendsysmessage(who,"Voce esta a ponto de explodir",9,89);
+			3:  themsg := Sendsysmessage(who,"Voce comeca a se sentir mais gordo",9,89);
+			4:  themsg := Sendsysmessage(who,"To feliz :D",9,89);
+			5:  themsg := Sendsysmessage(who,"Ta enxendo bem",9,89);
+               		6:  themsg := Sendsysmessage(who,"to bem xeinho",9,89);
+			7:  themsg := Sendsysmessage(who,"Voce comeca a sentir sua barriga mais pesada",9,89);
+			8:  themsg := Sendsysmessage(who,"Voce comeca a sentir sua barriga mais pesada",9,89);
+			9:  themsg := Sendsysmessage(who,"Que delicia",9,89);
+			10: themsg := Sendsysmessage(who,"Ahh que delicia tava quase morrendo de fome",9,89);
+			endcase
+			if(hunger < 0)
+				themsg := Sendsysmessage(who,"Voce esta totalmente saciado",9,89);
+				hunger := 0;
+			endif
+			SetObjProperty(who, "hunger", hunger);
+		case (hunger)
+			0 : SetStaminaRegenRate(who, 3000);
+			1 : SetStaminaRegenRate(who, 3000);
+			2 : SetStaminaRegenRate(who, 3000);
+			3 : SetStaminaRegenRate(who, 4000);
+			4 : SetStaminaRegenRate(who, 5000);
+			5 : SetStaminaRegenRate(who, 6000);
+			6 : SetStaminaRegenRate(who, 7000);
+			7 : SetStaminaRegenRate(who, 8000);
+			8 : SetStaminaRegenRate(who, 9000);
+			9 : SetStaminaRegenRate(who, 10000);
+			10: SetStaminaRegenRate(who, 11000);
+		endcase
+		SendSysMessage(who, themsg);
+		if(poison > 0)
+			AddPoison(who, "defaultPoison", 120, who, poison);
+		endif
+	endif
+endprogram

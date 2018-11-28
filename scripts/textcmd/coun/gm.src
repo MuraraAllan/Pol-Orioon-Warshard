@@ -1,0 +1,29 @@
+use uo;
+
+include "include/client";
+
+program gm(who, help)
+
+if (help)
+        SendSysMessage(who, "Este comando lhe poe em forma de GM. Use .myform para voltar a sua forma normal.");
+else
+        who.graphic := 0x3db;
+	GrantPrivilege(who, "invul");
+        who.enable("invul");
+
+var hair := GetEquipmentByLayer(who, LAYER_HAIR );
+DestroyItem( hair );
+
+if(who.cmdlevel < 2)
+who.color:=34052;
+elseif(who.cmdlevel == 2)
+who.color:=34053;
+elseif(who.cmdlevel == 3)
+who.color:=33006;
+
+///elseif(who.cmdlevel == 4)
+
+endif
+
+endif
+endprogram

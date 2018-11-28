@@ -1,0 +1,71 @@
+////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////
+
+//
+
+//  SFX.SRC - ingame command
+
+//
+
+//  Plays the supplied soundeffect, if it's valid.
+
+//
+
+//  Author: Ignatius 1999/01/26
+
+//
+
+//  Recent Modifications:
+
+//
+
+////////////////////////////////////////////////////////////////////////////
+
+/////////////////////////////////////////////
+
+
+
+use uo;
+
+
+
+program textcmd_sfx( who, input )
+
+
+
+    if ( ! input )
+
+        SendSysMessage( who, "Utilize: .sfx [som].",0x9,90 );
+
+        return;
+
+    endif
+
+
+
+    var argarray := SplitWords( input ); // split the arguments.
+
+    var soundfx := CInt( argarray[ 1 ] );
+
+
+
+    if ( ! soundfx )
+
+        SendSysMessage( who, "Este som nao eh valido.",0x9,90 );
+
+        return;
+
+    endif
+
+
+
+    PlaySoundEffect( who, soundfx );
+
+
+
+    SendSysMessage( who, "Play: " + CStr( soundfx ) + " / " + Hex( soundfx ),0x9,90 );
+
+
+
+endprogram

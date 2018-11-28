@@ -1,0 +1,57 @@
+use uo;
+use os;
+use polsys;
+use datafile;
+
+include "include/clock";
+
+program abc (who,texto)
+var conta:=FindAccount(texto);
+
+var prop:=conta.getprop("codigo_ativacao");
+
+BroadCast(prop);
+
+
+return;
+//var casa:=Target(who);
+//BroadCast(casa.objtype);
+//SetObjProperty(who.multi, "ColocadaAt", Cint(texto));
+
+var dsAccountReference := OpenDataFile("accountReference");
+if (!dsAccountReference)
+   dsAccountReference := CreateDataFile("accountReference", DF_KEYTYPE_STRING);
+endif
+if (dsAccountReference.FindElement(texto) )
+   BroadCast("Erro: Ja existe uma conta registrada para " + CStr(texto) + ".");
+   return 0;
+endif
+
+var acctElem := dsAccountReference.CreateElement(texto);
+
+acctElem.SetProp("AccountName", "Login");
+acctElem.SetProp("AccountPass", "Senha");
+
+endprogram
+
+
+function IsNull(texto)
+foreach letra in CAscZ( texto )
+if (letra != 32)
+return 0; 
+endif
+endforeach
+return 1;
+endfunction
+
+
+function formar_frase_array2string(apartir_index,frase)
+var texto:="";
+while(frase[apartir_index])
+BroadCast(frase[apartir_index]);
+texto:=texto+""+Cstr(frase[apartir_index])+" ";
+apartir_index:=apartir_index+1;
+endwhile
+BroadCast(texto,3,33);
+return texto;
+endfunction

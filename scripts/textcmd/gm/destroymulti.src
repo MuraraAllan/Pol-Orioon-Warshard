@@ -1,0 +1,20 @@
+use uo;
+
+program destroy_multi( who )
+
+var items :=who.multi.items;
+//var mobi  :=who.multi.mobiles;
+
+foreach item in items
+DestroyItem(item);
+endforeach
+
+//foreach mob in mobi
+//endforeach
+
+var res := DestroyMulti( who.multi );
+
+if (!res)
+sendsysmessage(who, "Nao foi possivel destruir a Casa",0x9,90);
+endif
+endprogram

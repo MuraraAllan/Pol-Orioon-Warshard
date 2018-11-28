@@ -1,0 +1,12 @@
+use uo;
+use os;
+
+include ":poisonwatcher:poisons";
+
+program Logon(who)
+	SetObjProperty(who, "#Online", 1);
+  var potency :=  ListPoisonsByType(who, "defaultPoison").size;
+if(potency)
+	CurePoison(who, 100, "defaultPoison", 1500);
+	endif
+endprogram

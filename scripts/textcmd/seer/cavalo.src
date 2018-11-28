@@ -1,0 +1,13 @@
+use uo;
+use os;
+
+include "include/client";
+include "include/attributes";
+
+
+program darcavalo(who)
+var alvo := Target(who);
+var montaria := CreateItemAtLocation(who.x, who.y, who.z, 61473, 1);
+EquipItem(alvo, montaria);
+SetObjProperty(alvo, "mounted_on", 1);
+endprogram

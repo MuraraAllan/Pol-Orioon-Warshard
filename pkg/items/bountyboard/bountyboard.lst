@@ -1,0 +1,1539 @@
+C:/pol2/scripts/include/datafile.inc, Line 57
+var DF_DEBUG_MODE	:= 1;
+0: decl global #0
+1: 1L
+2: :=
+3: #
+C:/pol2/scripts/include/bounty.inc, Line 3
+var bountyfile := DFOPenDataFile("BountySystem", 1);
+4: decl global #1
+5: "BountySystem"
+6: 1L
+7: 0L
+8: makelocal
+9: jmp userfunc @112
+10: :=
+11: #
+C:/pol2/pkg/foundations/gumps/gumps.inc, Line 225
+var GFref := struct;		// X- and Y-offsets for gump operations
+12: decl global #2
+13: struct
+14: :=
+15: #
+GFref.+x := 0;
+16: global #2
+17: "x"
+18: .+
+19: 0L
+20: := #
+GFref.+y := 0;
+21: global #2
+22: "y"
+23: .+
+24: 0L
+25: := #
+var GFlayout := array();// Main layout array for entire gump
+26: decl global #3
+27: array
+28: :=
+29: #
+var GFdata := array();	// Storage array for static-text and
+30: decl global #4
+31: array
+32: :=
+33: #
+var GFdtidx;		// ...text in GFdata (index)
+34: decl global #5
+35: #
+var GFtxtid;		// ...TeXT-entry returns (keyid)
+36: decl global #6
+37: #
+var GFbutid;		// ...'action' BUTtons (keyid)
+38: decl global #7
+39: #
+var GFcbxid;		// ...CheckBoXes (keyid)
+40: decl global #8
+41: #
+var GFradid;		// ...RADio buttons (keyid)
+42: decl global #9
+43: #
+XGFReset();
+44: makelocal
+45: jmp userfunc @672
+46: #
+var aGFTlength := struct;
+47: decl global #10
+48: struct
+49: :=
+50: #
+aGFTlength.+charsf:=   // Space as Filler is not allowed
+51: global #10
+52: "charsf"
+53: .+
+54: "||||||||||||||`',.;:::::::::!!!!!!!!!!!!!!il1[]]]]]]]]]"bcejotî(){}===adfpqrszIÑ~~~~ghnuvyÅ <>----xJ578$?+++++++kCE2369^/*****mwABDFOPéô40%%GLNQSZ@#######HRT&__________KöUYYYYYYYYYYYXXXXXXXXXXXXXXVVVVVVVVVVVVVVMMMMMMMMMMMMMMWWWWWWWWWWWWWW"
+55: := #
+aGFTlength.+width:= array
+56: global #10
+57: "width"
+58: .+
+59: array
+60: 2L
+61: +=
+62: 3L
+63: +=
+64: 4L
+65: +=
+66: 5L
+67: +=
+68: 6L
+69: +=
+70: 7L
+71: +=
+72: 8L
+73: +=
+74: 9L
+75: +=
+76: 10L
+77: +=
+78: 11L
+79: +=
+80: 12L
+81: +=
+82: 13L
+83: +=
+84: 14L
+85: +=
+86: 15L
+87: +=
+88: 16L
+89: +=
+90: 18L
+91: +=
+92: 21L
+93: +=
+94: := #
+C:\pol2\pkg\items\bountyboard\bountyboard.src, Line 11
+var loop := 1;
+95: decl global #11
+96: 1L
+97: :=
+98: #
+C:\pol2\pkg\items\bountyboard\bountyboard.src, Line 13
+program board(who, board)
+99: get arg 'who'
+100: get arg 'board'
+while(loop == 1)
+101: global #11
+102: 1L
+103: ==
+104: if false goto 110
+GenerateBoard(who);
+105: local #0
+106: makelocal
+107: jmp userfunc @171
+108: #
+109: goto101
+110: leave block(2)
+111: progend
+C:/pol2/scripts/include/datafile.inc, Line 59
+function DFOpenDataFile(filename, create:=DF_NO_CREATE, flags:=DF_KEYTYPE_STRIN
+112: pop param 'flags'
+113: pop param 'create'
+114: pop param 'filename'
+var temp := OpenDataFile(filename);
+115: decl local #3
+116: local #2
+117: Func(4,0): OpenDataFile
+118: :=
+119: #
+if ( (!temp) && (create) )
+120: local #3
+121: !
+122: local #1
+123: &&
+124: if false goto 138
+DF_OutPut("Creating data file: " + filename);
+125: "Creating data file: "
+126: local #2
+127: +
+128: makelocal
+129: jmp userfunc @1072
+130: #
+CreateDataFile(filename, flags);
+131: local #2
+132: local #0
+133: Func(4,1): CreateDataFile
+134: #
+temp := OpenDataFile(filename);
+135: local #2
+136: Func(4,0): OpenDataFile
+137: local3 := 
+if ( temp )
+138: local #3
+139: if false goto 143
+return temp;
+140: local #3
+141: return
+142: goto169
+elseif ( create ) 
+143: local #1
+144: if false goto 169
+var errmsg := error;
+145: decl local #0
+146: error
+147: :=
+148: #
+errmsg.+errortext := "Could not open " + filename + ":" + temp.errortext;
+149: local #4
+150: "errortext"
+151: .+
+152: "Could not open "
+153: local #2
+154: +
+155: ":"
+156: +
+157: local #3
+158: get member 'errortext'
+159: +
+160: := #
+DF_OutPut(errmsg.errortext);
+161: local #4
+162: get member 'errortext'
+163: makelocal
+164: jmp userfunc @1072
+165: #
+return errmsg;
+166: local #4
+167: return
+168: leave block(1)
+169: 0L
+170: return
+C:\pol2\pkg\items\bountyboard\bountyboard.src, Line 19
+function generateBoard(byref who)
+171: pop param byref 'who'
+GFInitGump();
+172: 0L
+173: 0L
+174: makelocal
+175: jmp userfunc @541
+176: #
+GFPage(0);
+177: 0L
+178: makelocal
+179: jmp userfunc @571
+180: #
+GfGumpPic(0, 0, 2170);
+181: 0L
+182: 0L
+183: 2170L
+184: makelocal
+185: jmp userfunc @499
+186: #
+GFTextLine(197, 38, 0, "Bounty Board");
+187: 197L
+188: 38L
+189: 0L
+190: "Bounty Board"
+191: makelocal
+192: jmp userfunc @611
+193: #
+GFTextLine(200, 40, COLOR_YELLOW, "Bounty Board");
+194: 200L
+195: 40L
+196: 53L
+197: "Bounty Board"
+198: makelocal
+199: jmp userfunc @611
+200: #
+var data := ComposeBountyBoard();
+201: decl local #1
+202: makelocal
+203: jmp userfunc @727
+204: :=
+205: #
+data.reverse();
+206: local #1
+207: Call Method reverse (0 params)
+208: #
+var count := 0, page := 2, ct := 0;
+209: decl local #2
+210: 0L
+211: :=
+212: #
+213: decl local #3
+214: 2L
+215: :=
+216: #
+217: decl local #4
+218: 0L
+219: :=
+220: #
+var ymod  := 160;
+221: decl local #5
+222: 160L
+223: :=
+224: #
+GFPage(1);
+225: 1L
+226: makelocal
+227: jmp userfunc @571
+228: #
+GFTextLine(130, 345, 0, "Page: 1");
+229: 130L
+230: 345L
+231: 0L
+232: "Page: 1"
+233: makelocal
+234: jmp userfunc @611
+235: #
+foreach thing in data
+236: local #1
+237: initforeach @329
+if(ct >= 10)
+238: local #4
+239: 10L
+240: >=
+241: if false goto 281
+ct := 0;
+242: 0L
+243: local4 := 
+GFButtonPage(354, 319, 2085, 2085, page);
+244: 354L
+245: 319L
+246: 2085L
+247: 2085L
+248: local #3
+249: makelocal
+250: jmp userfunc @441
+251: #
+GFPage(page);
+252: local #3
+253: makelocal
+254: jmp userfunc @571
+255: #
+GFTextLine(130, 345, 0, "Page: " + page);
+256: 130L
+257: 345L
+258: 0L
+259: "Page: "
+260: local #3
+261: +
+262: makelocal
+263: jmp userfunc @611
+264: #
+GFButtonPage(355, 144, 2084, 2084, page-1);
+265: 355L
+266: 144L
+267: 2084L
+268: 2084L
+269: local #3
+270: 1L
+271: -
+272: makelocal
+273: jmp userfunc @441
+274: #
+ymod := 160;
+275: 160L
+276: local5 := 
+page := page + 1;
+277: local #3
+278: 1L
+279: +
+280: local3 := 
+if(count >= 50)
+281: local #2
+282: 50L
+283: >=
+284: if false goto 287
+break;
+285: goto330
+286: goto329
+GFButtonID(110, ymod+3, 0x1523, 0x1523, 1, thing[2]);
+287: 110L
+288: local #5
+289: 3L
+290: +
+291: 5411L
+292: 5411L
+293: 1L
+294: local #6
+295: 2L
+296: [] 1
+297: makelocal
+298: jmp userfunc @357
+299: #
+GFTextLine(130, ymod, 0, thing[1] + ":   " + thing[3] + " gold");
+300: 130L
+301: local #5
+302: 0L
+303: local #6
+304: 1L
+305: [] 1
+306: ":   "
+307: +
+308: local #6
+309: 3L
+310: [] 1
+311: +
+312: " gold"
+313: +
+314: makelocal
+315: jmp userfunc @611
+316: #
+count := count + 1;
+317: local #2
+318: 1L
+319: +
+320: local2 := 
+ct := ct + 1;
+321: local #4
+322: 1L
+323: +
+324: local4 := 
+ymod := ymod + 16;
+325: local #5
+326: 16L
+327: +
+328: local5 := 
+329: stepforeach @238
+330: leave block(3)
+var ret := GFSendGump(who);
+331: decl local #6
+332: local #0
+333: makelocal
+334: jmp userfunc @589
+335: :=
+336: #
+if(ret[0]);
+337: local #6
+338: 0L
+339: [] 1
+340: if false goto 351
+loop := 1;
+341: 1L
+342: global11 := 
+ComposeDetailPage(who, ret[0]);
+343: local #0
+344: local #6
+345: 0L
+346: [] 1
+347: makelocal
+348: jmp userfunc @794
+349: #
+350: goto355
+loop := 0;
+351: 0L
+352: global11 := 
+return;
+353: ""
+354: return
+355: 0L
+356: return
+C:/pol2/pkg/foundations/gumps/gumps.inc, Line 543
+function GFButtonID( x, y, release, press, close, id := 0 )
+357: pop param 'id'
+358: pop param 'close'
+359: pop param 'press'
+360: pop param 'release'
+361: pop param 'y'
+362: pop param 'x'
+var line := "button " + CStr(GFref.x + CInt(x)) + " " + CStr(GFref.y + CInt(y))
+363: decl local #6
+364: "button "
+365: global #2
+366: get member 'x'
+367: local #5
+368: Func(0,2): CInt
+369: +
+370: Func(0,0): CStr
+371: +
+372: " "
+373: +
+374: global #2
+375: get member 'y'
+376: local #4
+377: Func(0,2): CInt
+378: +
+379: Func(0,0): CStr
+380: +
+381: :=
+382: #
+line := line + " " + CStr(CInt(release)) + " " + CStr(CInt(press)) + " ";
+383: local #6
+384: " "
+385: +
+386: local #3
+387: Func(0,2): CInt
+388: Func(0,0): CStr
+389: +
+390: " "
+391: +
+392: local #2
+393: Func(0,2): CInt
+394: Func(0,0): CStr
+395: +
+396: " "
+397: +
+398: local6 := 
+if ( close == 0 )
+399: local #1
+400: 0L
+401: ==
+402: if false goto 408
+line := line + "0 0 ";
+403: local #6
+404: "0 0 "
+405: +
+406: local6 := 
+407: goto412
+line := line + "1 0 ";
+408: local #6
+409: "1 0 "
+410: +
+411: local6 := 
+id := CInt(id);		// Ensure it's an integer
+412: local #0
+413: Func(0,2): CInt
+414: local0 := 
+if ( id < 1 )		// Catch errors (0) and invalid (negative) values
+415: local #0
+416: 1L
+417: <
+418: if false goto 425
+id := GFbutid;
+419: global #7
+420: local0 := 
+GFbutid := GFbutid + 1;		// Update KeyID (butid) (only if used)
+421: global #7
+422: 1L
+423: +
+424: global7 := 
+line := line + CStr(id);
+425: local #6
+426: local #0
+427: Func(0,0): CStr
+428: +
+429: local6 := 
+GFlayout.append( line );
+430: global #3
+431: local #6
+432: Call Method append (1 params)
+433: #
+return XGFRetVal( GFlayout.size(), -1, id );
+434: global #3
+435: Call Method size (0 params)
+436: -1L
+437: local #0
+438: makelocal
+439: jmp userfunc @688
+440: return
+C:/pol2/pkg/foundations/gumps/gumps.inc, Line 524
+function GFButtonPage( x, y, release, press, page )
+441: pop param 'page'
+442: pop param 'press'
+443: pop param 'release'
+444: pop param 'y'
+445: pop param 'x'
+var line := "button " + CStr(GFref.x + CInt(x)) + " " + CStr(GFref.y + CInt(y))
+446: decl local #5
+447: "button "
+448: global #2
+449: get member 'x'
+450: local #4
+451: Func(0,2): CInt
+452: +
+453: Func(0,0): CStr
+454: +
+455: " "
+456: +
+457: global #2
+458: get member 'y'
+459: local #3
+460: Func(0,2): CInt
+461: +
+462: Func(0,0): CStr
+463: +
+464: :=
+465: #
+line := line + " " + CStr(CInt(release)) + " " + CStr(CInt(press));
+466: local #5
+467: " "
+468: +
+469: local #2
+470: Func(0,2): CInt
+471: Func(0,0): CStr
+472: +
+473: " "
+474: +
+475: local #1
+476: Func(0,2): CInt
+477: Func(0,0): CStr
+478: +
+479: local5 := 
+line := line + " 0 " + CStr(CInt(page));
+480: local #5
+481: " 0 "
+482: +
+483: local #0
+484: Func(0,2): CInt
+485: Func(0,0): CStr
+486: +
+487: local5 := 
+GFlayout.append( line );
+488: global #3
+489: local #5
+490: Call Method append (1 params)
+491: #
+return XGFRetVal( GFlayout.size(), -1, page );
+492: global #3
+493: Call Method size (0 params)
+494: -1L
+495: local #0
+496: makelocal
+497: jmp userfunc @688
+498: return
+C:/pol2/pkg/foundations/gumps/gumps.inc, Line 357
+function GFGumpPic( x, y, gumpid )
+499: pop param 'gumpid'
+500: pop param 'y'
+501: pop param 'x'
+var line := "gumppic " + CStr(GFref.x + CInt(x)) + " " + CStr(GFref.y + CInt(y)
+502: decl local #3
+503: "gumppic "
+504: global #2
+505: get member 'x'
+506: local #2
+507: Func(0,2): CInt
+508: +
+509: Func(0,0): CStr
+510: +
+511: " "
+512: +
+513: global #2
+514: get member 'y'
+515: local #1
+516: Func(0,2): CInt
+517: +
+518: Func(0,0): CStr
+519: +
+520: :=
+521: #
+line := line + " " + CStr(CInt(gumpid));
+522: local #3
+523: " "
+524: +
+525: local #0
+526: Func(0,2): CInt
+527: Func(0,0): CStr
+528: +
+529: local3 := 
+GFlayout.append( line );
+530: global #3
+531: local #3
+532: Call Method append (1 params)
+533: #
+return XGFRetVal( GFlayout.size() );
+534: global #3
+535: Call Method size (0 params)
+536: -1L
+537: -1L
+538: makelocal
+539: jmp userfunc @688
+540: return
+C:/pol2/pkg/foundations/gumps/gumps.inc, Line 279
+function GFInitGump( sx := 0, sy := 0 )
+541: pop param 'sy'
+542: pop param 'sx'
+XGFReset();
+543: makelocal
+544: jmp userfunc @672
+545: #
+GFSetRef( sx, sy );
+546: local #1
+547: local #0
+548: makelocal
+549: jmp userfunc @595
+550: #
+GFPage( 0 );
+551: 0L
+552: makelocal
+553: jmp userfunc @571
+554: #
+GFNoDispose();
+555: makelocal
+556: jmp userfunc @560
+557: #
+558: 0L
+559: return
+C:/pol2/pkg/foundations/gumps/gumps.inc, Line 314
+function GFNoDispose()
+GFlayout.append( "nodispose" );
+560: global #3
+561: "nodispose"
+562: Call Method append (1 params)
+563: #
+return XGFRetVal( GFlayout.size() );
+564: global #3
+565: Call Method size (0 params)
+566: -1L
+567: -1L
+568: makelocal
+569: jmp userfunc @688
+570: return
+C:/pol2/pkg/foundations/gumps/gumps.inc, Line 292
+function GFPage( page )
+571: pop param 'page'
+page := CInt(page);
+572: local #0
+573: Func(0,2): CInt
+574: local0 := 
+GFlayout.append( "page " + CStr(page) );
+575: global #3
+576: "page "
+577: local #0
+578: Func(0,0): CStr
+579: +
+580: Call Method append (1 params)
+581: #
+return XGFRetVal( GFlayout.size(), -1, page );
+582: global #3
+583: Call Method size (0 params)
+584: -1L
+585: local #0
+586: makelocal
+587: jmp userfunc @688
+588: return
+C:/pol2/pkg/foundations/gumps/gumps.inc, Line 808
+function GFSendGump( who )
+589: pop param 'who'
+return SendDialogGump( who, GFlayout, GFdata );
+590: local #0
+591: global #3
+592: global #4
+593: Func(2,1): SendDialogGump
+594: return
+C:/pol2/pkg/foundations/gumps/gumps.inc, Line 259
+function GFSetRef( x := 0, y := 0 )
+595: pop param 'y'
+596: pop param 'x'
+var oldref := GFref;
+597: decl local #2
+598: global #2
+599: :=
+600: #
+GFref.x := CInt(x);
+601: global #2
+602: local #1
+603: Func(0,2): CInt
+604: set member 'x' #
+GFref.y := CInt(y);
+605: global #2
+606: local #0
+607: Func(0,2): CInt
+608: set member 'y' #
+return oldref;
+609: local #2
+610: return
+C:/pol2/pkg/foundations/gumps/gumps.inc, Line 418
+function GFTextLine(x, y, colour, text)
+611: pop param 'text'
+612: pop param 'colour'
+613: pop param 'y'
+614: pop param 'x'
+text := CStr(text);
+615: local #0
+616: Func(0,0): CStr
+617: local0 := 
+var line := "text " + CStr(GFref.x + CInt(x)) + " " + CStr(GFref.y + CInt(y));
+618: decl local #4
+619: "text "
+620: global #2
+621: get member 'x'
+622: local #3
+623: Func(0,2): CInt
+624: +
+625: Func(0,0): CStr
+626: +
+627: " "
+628: +
+629: global #2
+630: get member 'y'
+631: local #2
+632: Func(0,2): CInt
+633: +
+634: Func(0,0): CStr
+635: +
+636: :=
+637: #
+line := line + " " + CStr(CInt(colour)) + " " + CStr(GFdtidx);
+638: local #4
+639: " "
+640: +
+641: local #1
+642: Func(0,2): CInt
+643: Func(0,0): CStr
+644: +
+645: " "
+646: +
+647: global #5
+648: Func(0,0): CStr
+649: +
+650: local4 := 
+GFlayout.append( line );
+651: global #3
+652: local #4
+653: Call Method append (1 params)
+654: #
+GFdtidx := GFdtidx + 1;		// Update index into GFdata[]
+655: global #5
+656: 1L
+657: +
+658: global5 := 
+GFdata[GFdtidx] := text;	// arrays start at #1... id#0 goes into [1]!!
+659: global #4
+660: global #5
+661: local #0
+662: [] := (1) #
+return XGFRetVal( GFlayout.size(), GFdtidx - 1 );
+663: global #3
+664: Call Method size (0 params)
+665: global #5
+666: 1L
+667: -
+668: -1L
+669: makelocal
+670: jmp userfunc @688
+671: return
+C:/pol2/pkg/foundations/gumps/gumps.inc, Line 835
+function XGFReset( )
+GFlayout := array();
+672: array
+673: global3 := 
+GFdata := array();
+674: array
+675: global4 := 
+GFdtidx := GFINIT_TEXT;
+676: 0L
+677: global5 := 
+GFtxtid := GFINIT_TEXTENTRY;
+678: 513L
+679: global6 := 
+GFbutid := GFINIT_BUTTON;
+680: 1025L
+681: global7 := 
+GFcbxid := GFINIT_CHECKBOX;
+682: 1537L
+683: global8 := 
+GFradid := GFINIT_RADIO;
+684: 2049L
+685: global9 := 
+686: 0L
+687: return
+C:/pol2/pkg/foundations/gumps/gumps.inc, Line 851
+function XGFRetVal( lytidx := -1, dtidx := -1, keyid := -1 )
+688: pop param 'keyid'
+689: pop param 'dtidx'
+690: pop param 'lytidx'
+var rvsl := struct;
+691: decl local #3
+692: struct
+693: :=
+694: #
+if ( lytidx > -1 )
+695: local #2
+696: -1L
+697: >
+698: if false goto 704
+rvsl.+lytidx := lytidx;
+699: local #3
+700: "lytidx"
+701: .+
+702: local #2
+703: := #
+if ( dtidx > -1 )
+704: local #1
+705: -1L
+706: >
+707: if false goto 713
+rvsl.+dtidx := dtidx;
+708: local #3
+709: "dtidx"
+710: .+
+711: local #1
+712: := #
+if ( keyid > -1 )
+713: local #0
+714: -1L
+715: >
+716: if false goto 722
+rvsl.+keyid := keyid;
+717: local #3
+718: "keyid"
+719: .+
+720: local #0
+721: := #
+sleepms(2);	// Will hopefully stop runaway script problem :/
+722: 2L
+723: Func(3,1): sleepms
+724: #
+return rvsl;
+725: local #3
+726: return
+C:/pol2/scripts/include/bounty.inc, Line 29
+function ComposeBountyBoard()
+var pnames := bountyfile.keys();
+727: decl local #0
+728: global #1
+729: Call Method keys (0 params)
+730: :=
+731: #
+var data := array;
+732: decl local #1
+733: array
+734: :=
+735: #
+Foreach thing in pnames
+736: local #0
+737: initforeach @787
+var elem := DFFindElement(bountyfile, thing);
+738: decl local #0
+739: global #1
+740: local #2
+741: 0L
+742: makelocal
+743: jmp userfunc @1080
+744: :=
+745: #
+var holder := array;
+746: decl local #1
+747: array
+748: :=
+749: #
+holder.append(DFGetProp(elem, "Name"));
+750: local #6
+751: local #5
+752: "Name"
+753: 0L
+754: 0L
+755: makelocal
+756: jmp userfunc @1145
+757: Call Method append (1 params)
+758: #
+holder.append(Cint(thing));
+759: local #6
+760: local #2
+761: Func(0,2): CInt
+762: Call Method append (1 params)
+763: #
+holder.append(DFGetProp(elem, "Bounty"));
+764: local #6
+765: local #5
+766: "Bounty"
+767: 0L
+768: 0L
+769: makelocal
+770: jmp userfunc @1145
+771: Call Method append (1 params)
+772: #
+holder.append(DFGetProp(elem, "Murders", 1, 1));
+773: local #6
+774: local #5
+775: "Murders"
+776: 1L
+777: 1L
+778: makelocal
+779: jmp userfunc @1145
+780: Call Method append (1 params)
+781: #
+data.append(holder);
+782: local #1
+783: local #6
+784: Call Method append (1 params)
+785: #
+786: leave block(2)
+787: stepforeach @738
+788: leave block(3)
+return bubble_sort_array(data, 3);
+789: local #1
+790: 3L
+791: makelocal
+792: jmp userfunc @1207
+793: return
+C:\pol2\pkg\items\bountyboard\bountyboard.src, Line 61
+function ComposeDetailPage(byref who, serial)
+794: pop param 'serial'
+795: pop param byref 'who'
+GFInitGump();
+796: 0L
+797: 0L
+798: makelocal
+799: jmp userfunc @541
+800: #
+GFPage(0);
+801: 0L
+802: makelocal
+803: jmp userfunc @571
+804: #
+GFGumpPic(83,  63, 0x820);
+805: 83L
+806: 63L
+807: 2080L
+808: makelocal
+809: jmp userfunc @499
+810: #
+GFGumpPic(100, 100, 0x821);
+811: 100L
+812: 100L
+813: 2081L
+814: makelocal
+815: jmp userfunc @499
+816: #
+GFGumpPic(100, 170, 0x822);
+817: 100L
+818: 170L
+819: 2082L
+820: makelocal
+821: jmp userfunc @499
+822: #
+GFGumpPic(100, 240, 0x821);
+823: 100L
+824: 240L
+825: 2081L
+826: makelocal
+827: jmp userfunc @499
+828: #
+GFGumpPic(100, 310, 0x822);
+829: 100L
+830: 310L
+831: 2082L
+832: makelocal
+833: jmp userfunc @499
+834: #
+GFGumpPic(100, 380, 0x823);
+835: 100L
+836: 380L
+837: 2083L
+838: makelocal
+839: jmp userfunc @499
+840: #
+GFGumpPic(120, 100, 0x82b);
+841: 120L
+842: 100L
+843: 2091L
+844: makelocal
+845: jmp userfunc @499
+846: #
+GFGumpPic(120, 365, 0x82b);
+847: 120L
+848: 365L
+849: 2091L
+850: makelocal
+851: jmp userfunc @499
+852: #
+GFGumpPic(120, 170, 0x39);
+853: 120L
+854: 170L
+855: 57L
+856: makelocal
+857: jmp userfunc @499
+858: #
+GFGumpPic(150, 170, 0x3a);
+859: 150L
+860: 170L
+861: 58L
+862: makelocal
+863: jmp userfunc @499
+864: #
+GFGumpPic(165, 170, 0x3a);
+865: 165L
+866: 170L
+867: 58L
+868: makelocal
+869: jmp userfunc @499
+870: #
+GFGumpPic(180, 170, 0x3a);
+871: 180L
+872: 170L
+873: 58L
+874: makelocal
+875: jmp userfunc @499
+876: #
+GFGumpPic(195, 170, 0x3a);
+877: 195L
+878: 170L
+879: 58L
+880: makelocal
+881: jmp userfunc @499
+882: #
+GFGumpPic(210, 170, 0x3a);
+883: 210L
+884: 170L
+885: 58L
+886: makelocal
+887: jmp userfunc @499
+888: #
+GFGumpPic(225, 170, 0x3a);
+889: 225L
+890: 170L
+891: 58L
+892: makelocal
+893: jmp userfunc @499
+894: #
+GFGumpPic(240, 170, 0x3a);
+895: 240L
+896: 170L
+897: 58L
+898: makelocal
+899: jmp userfunc @499
+900: #
+GFGumpPic(255, 170, 0x3a);
+901: 255L
+902: 170L
+903: 58L
+904: makelocal
+905: jmp userfunc @499
+906: #
+GFGumpPic(270, 170, 0x3a);
+907: 270L
+908: 170L
+909: 58L
+910: makelocal
+911: jmp userfunc @499
+912: #
+GFGumpPic(285, 170, 0x3a);
+913: 285L
+914: 170L
+915: 58L
+916: makelocal
+917: jmp userfunc @499
+918: #
+GFGumpPic(300, 170, 0x3b);
+919: 300L
+920: 170L
+921: 59L
+922: makelocal
+923: jmp userfunc @499
+924: #
+var elem := DFFindElement(bountyfile, Cstr(serial));
+925: decl local #2
+926: global #1
+927: local #0
+928: Func(0,0): CStr
+929: 0L
+930: makelocal
+931: jmp userfunc @1080
+932: :=
+933: #
+var name   := DFGetPRop(elem, "Name");
+934: decl local #3
+935: local #2
+936: "Name"
+937: 0L
+938: 0L
+939: makelocal
+940: jmp userfunc @1145
+941: :=
+942: #
+var murder := DFGetPRop(elem, "Murders");
+943: decl local #4
+944: local #2
+945: "Murders"
+946: 0L
+947: 0L
+948: makelocal
+949: jmp userfunc @1145
+950: :=
+951: #
+var bounty := DFGetPRop(elem, "Bounty");
+952: decl local #5
+953: local #2
+954: "Bounty"
+955: 0L
+956: 0L
+957: makelocal
+958: jmp userfunc @1145
+959: :=
+960: #
+GFTextLine(110, 110, 0, "Name:    " + name);
+961: 110L
+962: 110L
+963: 0L
+964: "Name:    "
+965: local #3
+966: +
+967: makelocal
+968: jmp userfunc @611
+969: #
+GFTextLine(110, 130, 0, "Murders: " + murder);
+970: 110L
+971: 130L
+972: 0L
+973: "Murders: "
+974: local #4
+975: +
+976: makelocal
+977: jmp userfunc @611
+978: #
+GFTextLine(110, 150, 0, "Bounty:  " + bounty);
+979: 110L
+980: 150L
+981: 0L
+982: "Bounty:  "
+983: local #5
+984: +
+985: makelocal
+986: jmp userfunc @611
+987: #
+GFTextLine(110, 190, 0, "The foul scum known as");
+988: 110L
+989: 190L
+990: 0L
+991: "The foul scum known as"
+992: makelocal
+993: jmp userfunc @611
+994: #
+GFTextLine(110, 210, 0, name + " cannot continue");
+995: 110L
+996: 210L
+997: 0L
+998: local #3
+999: " cannot continue"
+1000: +
+1001: makelocal
+1002: jmp userfunc @611
+1003: #
+GFTextLine(110, 230, 0, "to kill! For he is responsible");
+1004: 110L
+1005: 230L
+1006: 0L
+1007: "to kill! For he is responsible"
+1008: makelocal
+1009: jmp userfunc @611
+1010: #
+if(murder == 1)
+1011: local #4
+1012: 1L
+1013: ==
+1014: if false goto 1023
+GFTextLine(110, 250, 0, "for 1 murder. Lord British's");
+1015: 110L
+1016: 250L
+1017: 0L
+1018: "for 1 murder. Lord British's"
+1019: makelocal
+1020: jmp userfunc @611
+1021: #
+1022: goto1034
+GFTextLine(110, 250, 0, "for " + murder + " murders. Lord British's");
+1023: 110L
+1024: 250L
+1025: 0L
+1026: "for "
+1027: local #4
+1028: +
+1029: " murders. Lord British's"
+1030: +
+1031: makelocal
+1032: jmp userfunc @611
+1033: #
+GFTextLine(110, 270, 0, "bounty of " + bounty + " gold pieces");
+1034: 110L
+1035: 270L
+1036: 0L
+1037: "bounty of "
+1038: local #5
+1039: +
+1040: " gold pieces"
+1041: +
+1042: makelocal
+1043: jmp userfunc @611
+1044: #
+GFTextLine(110, 290, 0, "will be rewarded to the first");
+1045: 110L
+1046: 290L
+1047: 0L
+1048: "will be rewarded to the first"
+1049: makelocal
+1050: jmp userfunc @611
+1051: #
+GFTextLine(110, 310, 0, "citizen to bring his head to");
+1052: 110L
+1053: 310L
+1054: 0L
+1055: "citizen to bring his head to"
+1056: makelocal
+1057: jmp userfunc @611
+1058: #
+GFTextLine(110, 330, 0, "any of the city guards.");
+1059: 110L
+1060: 330L
+1061: 0L
+1062: "any of the city guards."
+1063: makelocal
+1064: jmp userfunc @611
+1065: #
+GFSendGump(who);
+1066: local #1
+1067: makelocal
+1068: jmp userfunc @589
+1069: #
+1070: 0L
+1071: return
+C:/pol2/scripts/include/datafile.inc, Line 140
+function DF_OutPut(text)
+1072: pop param 'text'
+if ( DF_DEBUG_MODE )
+1073: global #0
+1074: if false goto 1078
+SysLog(text);
+1075: local #0
+1076: Func(3,0): syslog
+1077: #
+1078: 0L
+1079: return
+C:/pol2/scripts/include/datafile.inc, Line 89
+function DFFindElement(byref file_ref, elem_name, create:=DF_NO_CREATE)
+1080: pop param 'create'
+1081: pop param 'elem_name'
+1082: pop param byref 'file_ref'
+var temp := file_ref.FindElement( cstr(elem_name) );
+1083: decl local #3
+1084: local #2
+1085: local #1
+1086: Func(0,0): CStr
+1087: Call Method findelement (1 params)
+1088: :=
+1089: #
+if (!temp && create)
+1090: local #3
+1091: !
+1092: local #0
+1093: &&
+1094: if false goto 1112
+DF_OutPut("Creating elem: " +  cstr(elem_name) );
+1095: "Creating elem: "
+1096: local #1
+1097: Func(0,0): CStr
+1098: +
+1099: makelocal
+1100: jmp userfunc @1072
+1101: #
+file_ref.CreateElement( cstr(elem_name) );
+1102: local #2
+1103: local #1
+1104: Func(0,0): CStr
+1105: Call Method createelement (1 params)
+1106: #
+temp := file_ref.FindElement( cstr(elem_name) );
+1107: local #2
+1108: local #1
+1109: Func(0,0): CStr
+1110: Call Method findelement (1 params)
+1111: local3 := 
+if ( temp )
+1112: local #3
+1113: if false goto 1117
+return temp;
+1114: local #3
+1115: return
+1116: goto1143
+elseif (create)
+1117: local #0
+1118: if false goto 1143
+var errmsg := error;
+1119: decl local #0
+1120: error
+1121: :=
+1122: #
+errmsg.+errortext := "Could not open data elem " + elem_name + ":" + temp.error
+1123: local #4
+1124: "errortext"
+1125: .+
+1126: "Could not open data elem "
+1127: local #1
+1128: +
+1129: ":"
+1130: +
+1131: local #3
+1132: get member 'errortext'
+1133: +
+1134: := #
+DF_OutPut(errmsg.errortext);
+1135: local #4
+1136: get member 'errortext'
+1137: makelocal
+1138: jmp userfunc @1072
+1139: #
+return errmsg;
+1140: local #4
+1141: return
+1142: leave block(1)
+1143: 0L
+1144: return
+C:/pol2/scripts/include/datafile.inc, Line 119
+function DFGetProp(byref elem_ref, prop_name, create:=DF_NO_CREATE, assignval:=
+1145: pop param 'assignval'
+1146: pop param 'create'
+1147: pop param 'prop_name'
+1148: pop param byref 'elem_ref'
+var temp := elem_ref.GetProp(prop_name);
+1149: decl local #4
+1150: local #3
+1151: local #2
+1152: Call Method getprop (1 params)
+1153: :=
+1154: #
+if ( (!temp) && (create) )
+1155: local #4
+1156: !
+1157: local #1
+1158: &&
+1159: if false goto 1169
+elem_ref.SetProp(prop_name, assignval);
+1160: local #3
+1161: local #2
+1162: local #0
+1163: Call Method setprop (2 params)
+1164: #
+temp := elem_ref.GetProp(prop_name);
+1165: local #3
+1166: local #2
+1167: Call Method getprop (1 params)
+1168: local4 := 
+if ( temp || (create) && (!assignval) )
+1169: local #4
+1170: local #1
+1171: local #0
+1172: !
+1173: &&
+1174: ||
+1175: if false goto 1179
+return temp;
+1176: local #4
+1177: return
+1178: goto1205
+elseif (create)
+1179: local #1
+1180: if false goto 1205
+var errmsg := error;
+1181: decl local #0
+1182: error
+1183: :=
+1184: #
+errmsg.+errortext := "Could not read data file property " + prop_name + ":" + t
+1185: local #5
+1186: "errortext"
+1187: .+
+1188: "Could not read data file property "
+1189: local #2
+1190: +
+1191: ":"
+1192: +
+1193: local #4
+1194: get member 'errortext'
+1195: +
+1196: := #
+DF_OutPut(errmsg.errortext);
+1197: local #5
+1198: get member 'errortext'
+1199: makelocal
+1200: jmp userfunc @1072
+1201: #
+return errmsg;
+1202: local #5
+1203: return
+1204: leave block(1)
+1205: 0L
+1206: return
+C:/pol2/scripts/include/sorting.inc, Line 5
+function bubble_sort_array(data, pos)
+1207: pop param 'pos'
+1208: pop param 'data'
+var i := 1;
+1209: decl local #2
+1210: 1L
+1211: :=
+1212: #
+var l := len(data);
+1213: decl local #3
+1214: local #1
+1215: Func(0,1): len
+1216: :=
+1217: #
+for(i:=1; i<=l; i:=i+1)
+1218: local #2
+1219: 1L
+1220: :=
+1221: #
+1222: local #2
+1223: local #3
+1224: <=
+1225: if false goto 1283
+var ind := data[i];
+1226: decl local #0
+1227: local #1
+1228: local #2
+1229: [] 1
+1230: :=
+1231: #
+var j := i;
+1232: decl local #1
+1233: local #2
+1234: :=
+1235: #
+while((j > 0) && (data[j-1][pos] > ind[pos]))
+1236: local #5
+1237: 0L
+1238: >
+1239: local #1
+1240: local #5
+1241: 1L
+1242: -
+1243: [] 1
+1244: local #0
+1245: [] 1
+1246: local #4
+1247: local #0
+1248: [] 1
+1249: >
+1250: &&
+1251: if false goto 1268
+data[j] := data[j-1];
+1252: local #1
+1253: local #5
+1254: local #1
+1255: local #5
+1256: 1L
+1257: -
+1258: [] 1
+1259: [] := (1) #
+j := j - 1;
+1260: local #5
+1261: 1L
+1262: -
+1263: local5 := 
+sleepms(1);
+1264: 1L
+1265: Func(3,1): sleepms
+1266: #
+1267: goto1236
+data[j] := ind;
+1268: local #1
+1269: local #5
+1270: local #4
+1271: [] := (1) #
+sleepms(1);
+1272: 1L
+1273: Func(3,1): sleepms
+1274: #
+1275: leave block(2)
+1276: local #2
+1277: local #2
+1278: 1L
+1279: +
+1280: :=
+1281: #
+1282: goto1222
+return data;
+1283: local #1
+1284: return

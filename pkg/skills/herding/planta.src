@@ -1,0 +1,77 @@
+//controle pra plantassaum!
+//verssaum 1.0
+//Plug
+//ICQ: 35165523
+//xxx@sercomtel.com.br
+
+use uo;
+use os;
+
+include "include/dist";
+
+program planta(who, item)
+if (item.container != who.backpack)
+SendSysMessage(who, "A semente precisa estar em sua mochila.",9,90);
+return;
+endif
+
+SendSysMessage(who, "Onde deseja plantar?",9,90);
+var lugar := TargetCoordinates(who);
+
+if(!lugar)
+SendSysMessage(who, "Cancelado.",9,90);
+return;
+endif
+
+var xx:=ListItemsNearLocation( lugar.x, lugar.y, lugar.z, 0);
+if(xx.size() > 0)
+SendSysMessage(who, "Voce precisa limpar o terreno.",9,90);
+return;
+endif
+
+var terreno:=(getmapinfo(lugar.x, lugar.y).landtile);
+
+if((terreno != 9) && (terreno != 10) && (terreno != 11) && (terreno != 12) && (terreno != 13) && (terreno != 14) && (terreno != 15) && (terreno != 16) && (terreno != 17) && (terreno != 18) && (terreno != 19) && (terreno != 20))
+SendSysMessage(who, "Voce precisa limpar o terreno.",9,90);
+return;
+endif
+
+var kuantosal := CInt(item.amount);
+var planta;
+if(item.objtype == 0x3fff) //mr
+planta := CreateItemAtLocation(lugar.x, lugar.y, lugar.z, 0x18df, 1);
+
+elseif(item.objtype == 0xb1a4) //gl
+planta := CreateItemAtLocation(lugar.x, lugar.y, lugar.z, 0x18e1, 1);
+
+elseif(item.objtype == 0x6fff) //ns
+planta := CreateItemAtLocation(lugar.x, lugar.y, lugar.z, 0x18e5, 1);
+
+elseif(item.objtype == 0x5fff) //gs
+planta := CreateItemAtLocation(lugar.x, lugar.y, lugar.z, 0x18e9, 1);
+
+elseif(item.objtype == 0x7fff) //algodao
+planta := CreateItemAtLocation(lugar.x, lugar.y, lugar.z, 0x1a9b, 1);
+
+elseif(item.objtype == 0x8fff) //milho
+planta := CreateItemAtLocation(lugar.x, lugar.y, lugar.z, 0x1ee1, 1);
+
+else
+SendSysMessage(who, "Semente com Bugs, Contate um ADMIN.",9,90);
+return;
+endif
+
+if(Distance( who, planta ) < 4)
+planta.name:="Terra Semeada";
+planta.movable:=0;
+SetObjProperty(planta, "dono", Cint(who.serial));
+Start_Script("transforma", planta);
+SendSysMessage(who, "Voce plantou a semente!",9,90);
+SubtractAmount(item, 1);
+else
+destroyitem(planta);
+SendSysMessage(who, "Voce esta muito longe!",9,90);
+endif
+
+
+endprogram

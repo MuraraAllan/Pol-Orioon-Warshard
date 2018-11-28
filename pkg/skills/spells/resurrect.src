@@ -1,0 +1,38 @@
+use os;
+use uo;
+
+include "include/eventID";
+include "include/attributes";
+include "include/spellRestrictions";
+include "include/res";
+include "include/resPenalty";
+
+program spell_resurrect( parms )
+  var circle := 8;
+  var delivery := "direct";
+  var noto := "neutral";
+  var result := maincast(parms, delivery, circle, noto, 59);
+  if(result == 0)
+    return;
+  endif
+  var caster := result[1];
+  var cast_on := result[2];
+if((cast_on.x > 5947 && cast_on.x < 5967 && cast_on.y > 1115 && cast_on.y < 1141))
+SendSysMessage(caster, "Nao e permitido usar esta magia neste local!",3,70);
+return 0;
+endif
+if((cast_on.x > 5946 && cast_on.x < 5965 && cast_on.y > 1149 && cast_on.y < 1172))
+SendSysMessage(caster, "Nao e permitido usar esta magia neste local!",3,70);
+return 0;
+endif
+PlaySoundEffect(caster, SFX_SPELL_RESSURECTION);
+  PlaySoundEffect(cast_on, SFX_SPELL_RESSURECTION);
+if (!cast_on.dead)
+	  SendSysMessage(caster,"That isn't dead!");
+	  return;
+    endif
+    if(cast_on.criminal)
+      caster.setCriminal(1);
+    endif
+Resurrect(cast_on);
+endprogram

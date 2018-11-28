@@ -1,0 +1,3097 @@
+C:\pol2\pkg\tools\gmtools\lever.src, Line 9
+var layout := array(
+0: decl global #0
+1: array
+2: "page 0                            "
+3: +=
+4: "gumppic   0   0  206              "
+5: +=
+6: "gumppic  44   0  201              "
+7: +=
+8: "gumppic 444   0  207              "
+9: +=
+10: "gumppic   0  40  202              "
+11: +=
+12: "gumppic  44  40 2604              "
+13: +=
+14: "gumppic 444  40  203              "
+15: +=
+16: "gumppic   0 350  204              "
+17: +=
+18: "gumppic  44 350  233              "
+19: +=
+20: "gumppic 444 350  205              "
+21: +=
+22: "text    155  20  900    0         "
+23: +=
+24: "page 1                            "
+25: +=
+26: "button   25  50 2117 2118 0  3  0 "
+27: +=
+28: "button   25  80 2117 2118 1  0  2 "
+29: +=
+30: "button   25 110 2117 2118 1  0  3 "
+31: +=
+32: "button   25 140 2117 2118 1  0  4 "
+33: +=
+34: "button   25 170 2117 2118 1  0  5 "
+35: +=
+36: "button   25 200 2117 2118 0  0  1 "
+37: +=
+38: "button   25 230 2117 2118 0  0  1 "
+39: +=
+40: "button   25 260 2117 2118 0  4  0 "
+41: +=
+42: "button   25 290 2117 2118 0  2  0 "
+43: +=
+44: "button   25 320 2117 2118 1  0 99 "
+45: +=
+46: "text     45  48  500    1         "
+47: +=
+48: "text     45  78  500    2         "
+49: +=
+50: "text     45 108  500    3         "
+51: +=
+52: "text     45 138  500    4         "
+53: +=
+54: "text     45 168  500    5         "
+55: +=
+56: "text     45 198  500    6         "
+57: +=
+58: "text     45 228  500    7         "
+59: +=
+60: "text     45 258  500    8         "
+61: +=
+62: "text     45 288  500    9         "
+63: +=
+64: "text     45 318  500   10         "
+65: +=
+66: "page 2                            "
+67: +=
+68: "text    155  50  900   11         "
+69: +=
+70: "tilepic 105 120 4237              "
+71: +=
+72: "tilepic 355 120 4244              "
+73: +=
+74: "tilepic 105 270 4240              "
+75: +=
+76: "tilepic 355 270 4241              "
+77: +=
+78: "button   85 130  210  211 1  0 20 "
+79: +=
+80: "button  345 130  210  211 1  0 21 "
+81: +=
+82: "button   85 270  210  211 1  0 22 "
+83: +=
+84: "button  345 270  210  211 1  0 23 "
+85: +=
+86: "button   45 350 2453 2454 0  1  0 "
+87: +=
+88: "page 3                            "
+89: +=
+90: "gumppic  25  58 1141              "
+91: +=
+92: "gumppic  25  88 1141              "
+93: +=
+94: "textentry 32 60  250 60 910 12 12 "
+95: +=
+96: "textentry 32 90  250 90 910 13 13 "
+97: +=
+98: "text    302  60  500   14         "
+99: +=
+100: "text    302  90  500   15         "
+101: +=
+102: "button  200 250 1149 1148 1  0 24 "
+103: +=
+104: "page 4                            "
+105: +=
+106: "text    155  50  900   16         "
+107: +=
+108: "tilepic 105 120 4347              "
+109: +=
+110: "tilepic 355 120 4414              "
+111: +=
+112: "tilepic 105 270 4401              "
+113: +=
+114: "tilepic 355 270 8128              "
+115: +=
+116: "button   85 130  210  211 1  0 15 "
+117: +=
+118: "button  345 130  210  211 1  0 16 "
+119: +=
+120: "button   85 270  210  211 1  0 17 "
+121: +=
+122: "button  345 270  210  211 1  0 18 "
+123: +=
+124: "button   45 350 2453 2454 0  1  0 "
+125: +=
+126: :=
+127: #
+var data := array(
+128: decl global #1
+129: array
+130: "Lever Control Interface"
+131: +=
+132: "SetObjProperty to other objects"
+133: +=
+134: "lock/unlock a door"
+135: +=
+136: "open/close secret passage"
+137: +=
+138: "Bind Lights to Switch"
+139: +=
+140: "Teleport Switch"
+141: +=
+142: "unused"
+143: +=
+144: "unused"
+145: +=
+146: "Create Trapped Switch"
+147: +=
+148: "change the lever's graphic"
+149: +=
+150: "Bypass Control Interface and Test"
+151: +=
+152: "Choose the new graphic"
+153: +=
+154: ""
+155: +=
+156: ""
+157: +=
+158: "Property Name"
+159: +=
+160: "Property value"
+161: +=
+162: "Choose the trap type"
+163: +=
+164: :=
+165: #
+C:\pol2\pkg\tools\gmtools\lever.src, Line 100
+program lever(who, item)
+166: get arg 'who'
+167: get arg 'item'
+if(GetObjProperty(item, "#inuse") == 1)
+168: local #1
+169: "#inuse"
+170: Func(2,0): GetObjProperty
+171: 1L
+172: ==
+173: if false goto 182
+SendSysMessage(who,"that switch is in use");
+174: local #0
+175: "that switch is in use"
+176: 3L
+177: 1000L
+178: Func(2,1): SendSysMessage
+179: #
+return;
+180: ""
+181: progend
+if(who.cmdlevel > 2)
+182: local #0
+183: get member 'cmdlevel'
+184: 2L
+185: >
+186: if false goto 292
+var res := SendDialogGump( who, layout, data );
+187: decl local #0
+188: local #0
+189: global #0
+190: global #1
+191: Func(2,2): SendDialogGump
+192: :=
+193: #
+case(res[0])
+194: local #2
+195: 0L
+196: [] 1
+197: casejmp
+	2: @198
+	3: @204
+	4: @210
+	5: @216
+	15: @222
+	16: @229
+	17: @236
+	18: @243
+	20: @250
+	21: @257
+	22: @264
+	23: @271
+	24: @278
+	99: @285
+	default: @290
+doorstatus(who, item);
+198: local #0
+199: local #1
+200: makelocal
+201: jmp userfunc @483
+202: #
+203: goto290
+createpassage(who, item);
+204: local #0
+205: local #1
+206: makelocal
+207: jmp userfunc @345
+208: #
+209: goto290
+bindlights(who, item);
+210: local #0
+211: local #1
+212: makelocal
+213: jmp userfunc @299
+214: #
+215: goto290
+linkteleport(who, item);
+216: local #0
+217: local #1
+218: makelocal
+219: jmp userfunc @530
+220: #
+221: goto290
+createtrap(who, item, "3");
+222: local #0
+223: local #1
+224: "3"
+225: makelocal
+226: jmp userfunc @468
+227: #
+228: goto290
+createtrap(who, item, "2");
+229: local #0
+230: local #1
+231: "2"
+232: makelocal
+233: jmp userfunc @468
+234: #
+235: goto290
+createtrap(who, item, "1");
+236: local #0
+237: local #1
+238: "1"
+239: makelocal
+240: jmp userfunc @468
+241: #
+242: goto290
+createtrap(who, item, "4");
+243: local #0
+244: local #1
+245: "4"
+246: makelocal
+247: jmp userfunc @468
+248: #
+249: goto290
+item.graphic := 0x108e;           // graphic 1
+250: local #1
+251: 4238L
+252: set member 'graphic' #
+item.name    := "a lever";
+253: local #1
+254: "a lever"
+255: set member 'name' #
+256: goto290
+item.graphic := 0x1095;           // graphic 2
+257: local #1
+258: 4245L
+259: set member 'graphic' #
+item.name    := "a lever";
+260: local #1
+261: "a lever"
+262: set member 'name' #
+263: goto290
+item.graphic := 0x108f;           // graphic 3
+264: local #1
+265: 4239L
+266: set member 'graphic' #
+item.name    := "a switch";
+267: local #1
+268: "a switch"
+269: set member 'name' #
+270: goto290
+item.graphic := 0x1092;           // graphic 4
+271: local #1
+272: 4242L
+273: set member 'graphic' #
+item.name    := "a switch";
+274: local #1
+275: "a switch"
+276: set member 'name' #
+277: goto290
+setprp(who, item, res);           // setobjproperty()
+278: local #0
+279: local #1
+280: local #2
+281: makelocal
+282: jmp userfunc @812
+283: #
+284: goto290
+normalusage(who, item);           // use item like normal
+285: local #0
+286: local #1
+287: makelocal
+288: jmp userfunc @599
+289: #
+290: leave block(1)
+291: goto297
+normalusage(who, item);
+292: local #0
+293: local #1
+294: makelocal
+295: jmp userfunc @599
+296: #
+297: leave block(2)
+298: progend
+C:\pol2\pkg\tools\gmtools\lever.src, Line 604
+function bindlights(who, item)
+299: pop param 'item'
+300: pop param 'who'
+var newarray := {};
+301: decl local #2
+302: array
+303: :=
+304: #
+SendSysMessage(who,"target the lights to link to the switch. cancel to end");
+305: local #1
+306: "target the lights to link to the switch. cancel to end"
+307: 3L
+308: 1000L
+309: Func(2,1): SendSysMessage
+310: #
+var trg;
+311: decl local #3
+312: #
+while(1)
+313: 1L
+314: if false goto 333
+trg := Target(who);
+315: local #1
+316: 1L
+317: Func(2,19): Target
+318: local3 := 
+if(!trg)
+319: local #3
+320: if true goto 322
+break;
+321: goto333
+SetObjProperty(trg,"switched", 1);
+322: local #3
+323: "switched"
+324: 1L
+325: Func(2,3): SetObjProperty
+326: #
+newarray.append(trg.serial);
+327: local #2
+328: local #3
+329: get member 'serial'
+330: Call Method append (1 params)
+331: #
+332: goto313
+SetObjProperty(item,"function", "lights");
+333: local #0
+334: "function"
+335: "lights"
+336: Func(2,3): SetObjProperty
+337: #
+SetObjProperty(item,"partsarray", newarray);
+338: local #0
+339: "partsarray"
+340: local #2
+341: Func(2,3): SetObjProperty
+342: #
+343: 0L
+344: return
+C:\pol2\pkg\tools\gmtools\lever.src, Line 625
+function createpassage(who, item)
+345: pop param 'item'
+346: pop param 'who'
+var newarray := {};
+347: decl local #2
+348: array
+349: :=
+350: #
+var linkarray := {};
+351: decl local #3
+352: array
+353: :=
+354: #
+linkarray.append(item.serial);
+355: local #3
+356: local #0
+357: get member 'serial'
+358: Call Method append (1 params)
+359: #
+SendSysMessage(who,"target the pieces to link to the switch. cancel to end");
+360: local #1
+361: "target the pieces to link to the switch. cancel to end"
+362: 3L
+363: 1000L
+364: Func(2,1): SendSysMessage
+365: #
+var trg;
+366: decl local #4
+367: #
+while(1)
+368: 1L
+369: if false goto 383
+trg := Target(who);
+370: local #1
+371: 1L
+372: Func(2,19): Target
+373: local4 := 
+if(!trg)
+374: local #4
+375: if true goto 377
+break;
+376: goto383
+newarray.append(trg.serial);
+377: local #2
+378: local #4
+379: get member 'serial'
+380: Call Method append (1 params)
+381: #
+382: goto368
+SendSysMessage(who,"target the item you wish sounds to originate from");
+383: local #1
+384: "target the item you wish sounds to originate from"
+385: 3L
+386: 1000L
+387: Func(2,1): SendSysMessage
+388: #
+var snd := Target(who);
+389: decl local #5
+390: local #1
+391: 1L
+392: Func(2,19): Target
+393: :=
+394: #
+var speaker := {};
+395: decl local #6
+396: array
+397: :=
+398: #
+speaker.append(snd.x);
+399: local #6
+400: local #5
+401: get member 'x'
+402: Call Method append (1 params)
+403: #
+speaker.append(snd.y);
+404: local #6
+405: local #5
+406: get member 'y'
+407: Call Method append (1 params)
+408: #
+speaker.append(snd.z);
+409: local #6
+410: local #5
+411: get member 'z'
+412: Call Method append (1 params)
+413: #
+SendSysMessage(who,"now target any other switches you wish to link together.");
+414: local #1
+415: "now target any other switches you wish to link together."
+416: 3L
+417: 1000L
+418: Func(2,1): SendSysMessage
+419: #
+while(1)
+420: 1L
+421: if false goto 435
+trg := Target(who);
+422: local #1
+423: 1L
+424: Func(2,19): Target
+425: local4 := 
+if(!trg)
+426: local #4
+427: if true goto 429
+break;
+428: goto435
+linkarray.append(trg.serial);
+429: local #3
+430: local #4
+431: get member 'serial'
+432: Call Method append (1 params)
+433: #
+434: goto420
+var it;
+435: decl local #7
+436: #
+foreach thing in linkarray
+437: local #3
+438: initforeach @464
+it := SystemFindObjectBySerial(CInt(thing));
+439: local #8
+440: Func(0,0): CInt
+441: 0L
+442: Func(2,4): SystemFindObjectBySerial
+443: local7 := 
+SetObjProperty(it, "links", linkarray);
+444: local #7
+445: "links"
+446: local #3
+447: Func(2,3): SetObjProperty
+448: #
+SetObjProperty(it, "speaker", speaker);
+449: local #7
+450: "speaker"
+451: local #6
+452: Func(2,3): SetObjProperty
+453: #
+SetObjProperty(it, "function", "passage");
+454: local #7
+455: "function"
+456: "passage"
+457: Func(2,3): SetObjProperty
+458: #
+SetObjProperty(it, "partsarray", newarray);
+459: local #7
+460: "partsarray"
+461: local #2
+462: Func(2,3): SetObjProperty
+463: #
+464: stepforeach @439
+465: leave block(3)
+466: 0L
+467: return
+C:\pol2\pkg\tools\gmtools\lever.src, Line 620
+function createtrap(who, item, type);
+468: pop param 'type'
+469: pop param 'item'
+470: pop param 'who'
+SetObjProperty(item,"function", "trap");
+471: local #1
+472: "function"
+473: "trap"
+474: Func(2,3): SetObjProperty
+475: #
+SetObjProperty(item,"trap_type", type);
+476: local #1
+477: "trap_type"
+478: local #0
+479: Func(2,3): SetObjProperty
+480: #
+481: 0L
+482: return
+C:\pol2\pkg\tools\gmtools\lever.src, Line 662
+function doorstatus(who, item)
+483: pop param 'item'
+484: pop param 'who'
+var newarray := {};
+485: decl local #2
+486: array
+487: :=
+488: #
+SendSysMessage(who,"target the door you wish to link this switch to. cancel to 
+489: local #1
+490: "target the door you wish to link this switch to. cancel to end"
+491: 3L
+492: 1000L
+493: Func(2,1): SendSysMessage
+494: #
+var trg;
+495: decl local #3
+496: #
+while(1)
+497: 1L
+498: if false goto 512
+trg := Target(who);
+499: local #1
+500: 1L
+501: Func(2,19): Target
+502: local3 := 
+if(!trg)
+503: local #3
+504: if true goto 506
+break;
+505: goto512
+newarray.append(trg.serial);
+506: local #2
+507: local #3
+508: get member 'serial'
+509: Call Method append (1 params)
+510: #
+511: goto497
+SetObjProperty(item,"function", "door");
+512: local #0
+513: "function"
+514: "door"
+515: Func(2,3): SetObjProperty
+516: #
+SetObjProperty(item,"ds", newarray);
+517: local #0
+518: "ds"
+519: local #2
+520: Func(2,3): SetObjProperty
+521: #
+SendSysMessage(who,"the switch has successfully been linked to the door(s)");
+522: local #1
+523: "the switch has successfully been linked to the door(s)"
+524: 3L
+525: 1000L
+526: Func(2,1): SendSysMessage
+527: #
+528: 0L
+529: return
+C:\pol2\pkg\tools\gmtools\lever.src, Line 700
+function linkteleport(who, item)
+530: pop param 'item'
+531: pop param 'who'
+SendSysMessage(who, "target the rune you wish this switch to teleport the user 
+532: local #1
+533: "target the rune you wish this switch to teleport the user to"
+534: 3L
+535: 1000L
+536: Func(2,1): SendSysMessage
+537: #
+var darray := {};
+538: decl local #2
+539: array
+540: :=
+541: #
+var trgd, trga;
+542: decl local #3
+543: #
+544: decl local #4
+545: #
+while(1)
+546: 1L
+547: if false goto 587
+SendSysMessage(who,"target the departure tile");
+548: local #1
+549: "target the departure tile"
+550: 3L
+551: 1000L
+552: Func(2,1): SendSysMessage
+553: #
+trgd := Target(who);
+554: local #1
+555: 1L
+556: Func(2,19): Target
+557: local3 := 
+SendSysMessage(who,"target the arrival tile");
+558: local #1
+559: "target the arrival tile"
+560: 3L
+561: 1000L
+562: Func(2,1): SendSysMessage
+563: #
+trga := Target(who);
+564: local #1
+565: 1L
+566: Func(2,19): Target
+567: local4 := 
+if((!trgd) ||(!trga))
+568: local #3
+569: !
+570: local #4
+571: !
+572: ||
+573: if false goto 575
+break;
+574: goto587
+SetObjProperty(trgd, "link", trga.serial);
+575: local #3
+576: "link"
+577: local #4
+578: get member 'serial'
+579: Func(2,3): SetObjProperty
+580: #
+darray.append(trgd.serial);
+581: local #2
+582: local #3
+583: get member 'serial'
+584: Call Method append (1 params)
+585: #
+586: goto546
+SetObjProperty(item, "tiled", darray);
+587: local #0
+588: "tiled"
+589: local #2
+590: Func(2,3): SetObjProperty
+591: #
+SetObjProperty(item,"function", "tele");
+592: local #0
+593: "function"
+594: "tele"
+595: Func(2,3): SetObjProperty
+596: #
+597: 0L
+598: return
+C:\pol2\pkg\tools\gmtools\lever.src, Line 130
+function normalusage(who, item)
+599: pop param 'item'
+600: pop param 'who'
+var funct  := GetObjProperty(item, "function");
+601: decl local #2
+602: local #0
+603: "function"
+604: Func(2,0): GetObjProperty
+605: :=
+606: #
+if(!funct)
+607: local #2
+608: if true goto 617
+SendSysMessage(who,"this switch seems to be broken");
+609: local #1
+610: "this switch seems to be broken"
+611: 3L
+612: 1000L
+613: Func(2,1): SendSysMessage
+614: #
+return;
+615: ""
+616: return
+var status := GetObjProperty(item, "status");
+617: decl local #3
+618: local #0
+619: "status"
+620: Func(2,0): GetObjProperty
+621: :=
+622: #
+if(!status)
+623: local #3
+624: if true goto 632
+status := "off";
+625: "off"
+626: local3 := 
+SetObjProperty( item, "status", status);
+627: local #0
+628: "status"
+629: local #3
+630: Func(2,3): SetObjProperty
+631: #
+var mid := 0;
+632: decl local #4
+633: 0L
+634: :=
+635: #
+var fin;
+636: decl local #5
+637: #
+var snd;
+638: decl local #6
+639: #
+var obj;
+640: decl local #7
+641: #
+var gfx;
+642: decl local #8
+643: #
+var la := GetObjProperty(item,"links");
+644: decl local #9
+645: local #0
+646: "links"
+647: Func(2,0): GetObjProperty
+648: :=
+649: #
+if(!la)
+650: local #9
+651: if true goto 664
+la := {};
+652: array
+653: local9 := 
+la.append(item.serial);
+654: local #9
+655: local #0
+656: get member 'serial'
+657: Call Method append (1 params)
+658: #
+SetObjProperty(item,"links", la);
+659: local #0
+660: "links"
+661: local #9
+662: Func(2,3): SetObjProperty
+663: #
+foreach entry in la
+664: local #9
+665: initforeach @747
+obj := SystemFindObjectBySerial(CInt(entry));
+666: local #10
+667: Func(0,0): CInt
+668: 0L
+669: Func(2,4): SystemFindObjectBySerial
+670: local7 := 
+gfx := obj.graphic;
+671: local #7
+672: get member 'graphic'
+673: local8 := 
+mid := 0;
+674: 0L
+675: local4 := 
+case(gfx)
+676: local #8
+677: casejmp
+	4236: @678
+	4238: @685
+	4243: @692
+	4245: @699
+	4239: @706
+	4240: @711
+	4241: @716
+	4242: @721
+	default: @725
+mid := 0x108d;
+678: 4237L
+679: local4 := 
+fin := 0x108e;
+680: 4238L
+681: local5 := 
+snd := 0x4c;
+682: 76L
+683: local6 := 
+684: goto725
+mid := 0x108d;
+685: 4237L
+686: local4 := 
+fin := 0x108c;
+687: 4236L
+688: local5 := 
+snd := 0x4c;
+689: 76L
+690: local6 := 
+691: goto725
+mid := 0x1094;
+692: 4244L
+693: local4 := 
+fin := 0x1095;
+694: 4245L
+695: local5 := 
+snd := 0x4c;
+696: 76L
+697: local6 := 
+698: goto725
+mid := 0x1094;
+699: 4244L
+700: local4 := 
+fin := 0x1093;
+701: 4243L
+702: local5 := 
+snd := 0x4c;
+703: 76L
+704: local6 := 
+705: goto725
+fin := 0x1090;
+706: 4240L
+707: local5 := 
+snd := 0x4b;
+708: 75L
+709: local6 := 
+710: goto725
+fin := 0x108f;
+711: 4239L
+712: local5 := 
+snd := 0x4b;
+713: 75L
+714: local6 := 
+715: goto725
+fin := 0x1092;
+716: 4242L
+717: local5 := 
+snd := 0x4b;
+718: 75L
+719: local6 := 
+720: goto725
+fin := 0x1091;
+721: 4241L
+722: local5 := 
+snd := 0x4b;
+723: 75L
+724: local6 := 
+if(mid == 0)
+725: local #4
+726: 0L
+727: ==
+728: if false goto 731
+mid := fin;
+729: local #5
+730: local4 := 
+sleepms(500);
+731: 500L
+732: Func(3,0): sleepms
+733: #
+PlaySoundEffect( obj, snd);
+734: local #7
+735: local #6
+736: Func(2,5): PlaySoundEffect
+737: #
+obj.graphic := mid;
+738: local #7
+739: local #4
+740: set member 'graphic' #
+sleepms(500);
+741: 500L
+742: Func(3,0): sleepms
+743: #
+obj.graphic := fin;
+744: local #7
+745: local #5
+746: set member 'graphic' #
+747: stepforeach @666
+748: leave block(3)
+var msg := GetObjProperty(obj, "msg");
+749: decl local #10
+750: local #7
+751: "msg"
+752: Func(2,0): GetObjProperty
+753: :=
+754: #
+if(!msg)
+755: local #10
+756: if true goto 759
+msg := "You hear a rumbling off in the distance...";
+757: "You hear a rumbling off in the distance..."
+758: local10 := 
+SendSysMessage(who, msg);
+759: local #1
+760: local #10
+761: 3L
+762: 1000L
+763: Func(2,1): SendSysMessage
+764: #
+case(funct)
+765: local #2
+766: casejmp
+	"setobj": @767
+	"door": @773
+	"passage": @779
+	"trap": @787
+	"lights": @796
+	"tele": @802
+	default: @810
+stobj(who, item);
+767: local #1
+768: local #0
+769: makelocal
+770: jmp userfunc @894
+771: #
+772: goto810
+linkdoor(who,item);
+773: local #1
+774: local #0
+775: makelocal
+776: jmp userfunc @2362
+777: #
+778: goto810
+alterpassage(who, item, gfx, snd);
+779: local #1
+780: local #0
+781: local #8
+782: local #6
+783: makelocal
+784: jmp userfunc @1755
+785: #
+786: goto810
+trappedswitch(who, item, mid, gfx, snd);
+787: local #1
+788: local #0
+789: local #4
+790: local #8
+791: local #6
+792: makelocal
+793: jmp userfunc @1569
+794: #
+795: goto810
+lightswitch(who, item);
+796: local #1
+797: local #0
+798: makelocal
+799: jmp userfunc @2279
+800: #
+801: goto810
+teleporter(who, item, mid, gfx, snd);
+802: local #1
+803: local #0
+804: local #4
+805: local #8
+806: local #6
+807: makelocal
+808: jmp userfunc @973
+809: #
+810: 0L
+811: return
+C:\pol2\pkg\tools\gmtools\lever.src, Line 678
+function setprp(who, item, result)
+812: pop param 'result'
+813: pop param 'item'
+814: pop param 'who'
+var newarray := {};
+815: decl local #3
+816: array
+817: :=
+818: #
+var note:=result[12];
+819: decl local #4
+820: local #0
+821: 12L
+822: [] 1
+823: :=
+824: #
+note[1, find(note, ": ", 1)+1]:="";
+825: local #4
+826: 1L
+827: local #4
+828: ": "
+829: 1L
+830: Func(0,1): find
+831: 1L
+832: +
+833: ""
+834: [,] :=
+835: #
+var subnote;
+836: decl local #5
+837: #
+var i;
+838: decl local #6
+839: #
+subnote:=result[13];
+840: local #0
+841: 13L
+842: [] 1
+843: local5 := 
+subnote[1, find(subnote, ": ", 1)+1]:="";
+844: local #5
+845: 1L
+846: local #5
+847: ": "
+848: 1L
+849: Func(0,1): find
+850: 1L
+851: +
+852: ""
+853: [,] :=
+854: #
+var trg;
+855: decl local #7
+856: #
+while(1)
+857: 1L
+858: if false goto 872
+trg := Target(who);
+859: local #2
+860: 1L
+861: Func(2,19): Target
+862: local7 := 
+if(!trg)
+863: local #7
+864: if true goto 866
+break;
+865: goto872
+newarray.append(trg.serial);
+866: local #3
+867: local #7
+868: get member 'serial'
+869: Call Method append (1 params)
+870: #
+871: goto857
+SetObjProperty(item, "note", note);
+872: local #1
+873: "note"
+874: local #4
+875: Func(2,3): SetObjProperty
+876: #
+SetObjProperty(item, "subnote", subnote);
+877: local #1
+878: "subnote"
+879: local #5
+880: Func(2,3): SetObjProperty
+881: #
+SetObjProperty(item,"function", "setobj");
+882: local #1
+883: "function"
+884: "setobj"
+885: Func(2,3): SetObjProperty
+886: #
+SetObjProperty(item,"il", newarray);
+887: local #1
+888: "il"
+889: local #3
+890: Func(2,3): SetObjProperty
+891: #
+892: 0L
+893: return
+C:\pol2\pkg\tools\gmtools\lever.src, Line 202
+function stobj(who, item)
+894: pop param 'item'
+895: pop param 'who'
+SetObjProperty(item, "#inuse", 1);
+896: local #0
+897: "#inuse"
+898: 1L
+899: Func(2,3): SetObjProperty
+900: #
+var il := GetObjProperty(item, "il");
+901: decl local #2
+902: local #0
+903: "il"
+904: Func(2,0): GetObjProperty
+905: :=
+906: #
+var note := GetObjProperty(item,"note");
+907: decl local #3
+908: local #0
+909: "note"
+910: Func(2,0): GetObjProperty
+911: :=
+912: #
+var subnote := GetObjProperty(item,"subnote");
+913: decl local #4
+914: local #0
+915: "subnote"
+916: Func(2,0): GetObjProperty
+917: :=
+918: #
+var itm;
+919: decl local #5
+920: #
+var oldnote;
+921: decl local #6
+922: #
+Detach();
+923: Func(2,6): Detach
+924: #
+foreach thingie in il
+925: local #2
+926: initforeach @944
+itm := SystemFindObjectBySerial(CInt(thingie));
+927: local #7
+928: Func(0,0): CInt
+929: 0L
+930: Func(2,4): SystemFindObjectBySerial
+931: local5 := 
+oldnote := SetObjProperty(itm,"oldnote", GetObjProperty(itm, note));
+932: local #5
+933: "oldnote"
+934: local #5
+935: local #3
+936: Func(2,0): GetObjProperty
+937: Func(2,3): SetObjProperty
+938: local6 := 
+SetObjProperty(itm, note, subnote);
+939: local #5
+940: local #3
+941: local #4
+942: Func(2,3): SetObjProperty
+943: #
+944: stepforeach @927
+945: leave block(3)
+sleep(120);
+946: 120L
+947: Func(3,1): sleep
+948: #
+foreach thingie in il
+949: local #2
+950: initforeach @965
+itm := SystemFindObjectBySerial(CInt(thingie));
+951: local #7
+952: Func(0,0): CInt
+953: 0L
+954: Func(2,4): SystemFindObjectBySerial
+955: local5 := 
+oldnote := GetObjProperty(itm,"oldnote");
+956: local #5
+957: "oldnote"
+958: Func(2,0): GetObjProperty
+959: local6 := 
+SetObjProperty(itm, note, oldnote);
+960: local #5
+961: local #3
+962: local #6
+963: Func(2,3): SetObjProperty
+964: #
+965: stepforeach @951
+966: leave block(3)
+EraseObjProperty(item, "#inuse");
+967: local #0
+968: "#inuse"
+969: Func(2,7): EraseObjProperty
+970: #
+971: 0L
+972: return
+C:\pol2\pkg\tools\gmtools\lever.src, Line 423
+function teleporter(who, item, mid, stt, snd)
+973: pop param 'snd'
+974: pop param 'stt'
+975: pop param 'mid'
+976: pop param 'item'
+977: pop param 'who'
+SetObjProperty(item, "#inuse", 1);
+978: local #3
+979: "#inuse"
+980: 1L
+981: Func(2,3): SetObjProperty
+982: #
+Detach();
+983: Func(2,6): Detach
+984: #
+var tiled := GetObjProperty( item, "tiled");
+985: decl local #5
+986: local #3
+987: "tiled"
+988: Func(2,0): GetObjProperty
+989: :=
+990: #
+var tile;
+991: decl local #6
+992: #
+var tilea;
+993: decl local #7
+994: #
+var visual;
+995: decl local #8
+996: #
+var origin1, origin2, origin3, origin4;
+997: decl local #9
+998: #
+999: decl local #10
+1000: #
+1001: decl local #11
+1002: #
+1003: decl local #12
+1004: #
+var destination1, destination2, destination3, destination4;
+1005: decl local #13
+1006: #
+1007: decl local #14
+1008: #
+1009: decl local #15
+1010: #
+1011: decl local #16
+1012: #
+foreach obj in tiled
+1013: local #5
+1014: initforeach @1090
+tile := SystemFindObjectBySerial(CInt(obj));
+1015: local #17
+1016: Func(0,0): CInt
+1017: 0L
+1018: Func(2,4): SystemFindObjectBySerial
+1019: local6 := 
+tilea := SystemFindObjectBySerial(CInt(GetObjProperty(tile,"link")));
+1020: local #6
+1021: "link"
+1022: Func(2,0): GetObjProperty
+1023: Func(0,0): CInt
+1024: 0L
+1025: Func(2,4): SystemFindObjectBySerial
+1026: local7 := 
+foreach person in ListMobilesNearLocation( tile.x, tile.y, tile.z, 0);
+1027: local #6
+1028: get member 'x'
+1029: local #6
+1030: get member 'y'
+1031: local #6
+1032: get member 'z'
+1033: 0L
+1034: Func(2,12): ListMobilesNearLocation
+1035: initforeach @1062
+visual := person.graphic;
+1036: local #20
+1037: get member 'graphic'
+1038: local8 := 
+SetObjProperty(person, "inside", 1);
+1039: local #20
+1040: "inside"
+1041: 1L
+1042: Func(2,3): SetObjProperty
+1043: #
+SetObjProperty(person, "visual", visual);
+1044: local #20
+1045: "visual"
+1046: local #8
+1047: Func(2,3): SetObjProperty
+1048: #
+SetObjProperty(person, "recallgraphic", person.objtype);
+1049: local #20
+1050: "recallgraphic"
+1051: local #20
+1052: get member 'objtype'
+1053: Func(2,3): SetObjProperty
+1054: #
+person.frozen :=1;
+1055: local #20
+1056: 1L
+1057: set member 'frozen' #
+PlaySoundEffect(person, 0x210);
+1058: local #20
+1059: 528L
+1060: Func(2,5): PlaySoundEffect
+1061: #
+1062: stepforeach @1036
+1063: leave block(3)
+origin1      := CreateItemAtLocation( tile.x,  tile.y,  tile.z, 0x373a, 1);
+1064: local #6
+1065: get member 'x'
+1066: local #6
+1067: get member 'y'
+1068: local #6
+1069: get member 'z'
+1070: 14138L
+1071: 1L
+1072: Func(2,14): CreateItemAtLocation
+1073: local9 := 
+destination1 := CreateItemAtLocation(tilea.x, tilea.y, tilea.z, 0x373a, 1);
+1074: local #7
+1075: get member 'x'
+1076: local #7
+1077: get member 'y'
+1078: local #7
+1079: get member 'z'
+1080: 14138L
+1081: 1L
+1082: Func(2,14): CreateItemAtLocation
+1083: local13 := 
+origin1.movable := 0;
+1084: local #9
+1085: 0L
+1086: set member 'movable' #
+destination1.movable := 0;
+1087: local #13
+1088: 0L
+1089: set member 'movable' #
+1090: stepforeach @1015
+1091: leave block(3)
+sleep(2);
+1092: 2L
+1093: Func(3,1): sleep
+1094: #
+foreach obj in tiled
+1095: local #5
+1096: initforeach @1135
+tile := SystemFindObjectBySerial(CInt(obj));
+1097: local #17
+1098: Func(0,0): CInt
+1099: 0L
+1100: Func(2,4): SystemFindObjectBySerial
+1101: local6 := 
+tilea := SystemFindObjectBySerial(CInt(GetObjProperty(tile,"link")));
+1102: local #6
+1103: "link"
+1104: Func(2,0): GetObjProperty
+1105: Func(0,0): CInt
+1106: 0L
+1107: Func(2,4): SystemFindObjectBySerial
+1108: local7 := 
+origin2      := CreateItemAtLocation( tile.x,  tile.y,  tile.z, 0x374a, 1);
+1109: local #6
+1110: get member 'x'
+1111: local #6
+1112: get member 'y'
+1113: local #6
+1114: get member 'z'
+1115: 14154L
+1116: 1L
+1117: Func(2,14): CreateItemAtLocation
+1118: local10 := 
+destination2 := CreateItemAtLocation(tilea.x, tilea.y, tilea.z, 0x374a, 1);
+1119: local #7
+1120: get member 'x'
+1121: local #7
+1122: get member 'y'
+1123: local #7
+1124: get member 'z'
+1125: 14154L
+1126: 1L
+1127: Func(2,14): CreateItemAtLocation
+1128: local14 := 
+origin2.movable := 0;
+1129: local #10
+1130: 0L
+1131: set member 'movable' #
+destination2.movable := 0;
+1132: local #14
+1133: 0L
+1134: set member 'movable' #
+1135: stepforeach @1097
+1136: leave block(3)
+sleep(2);
+1137: 2L
+1138: Func(3,1): sleep
+1139: #
+foreach obj in tiled
+1140: local #5
+1141: initforeach @1200
+tile := SystemFindObjectBySerial(CInt(obj));
+1142: local #17
+1143: Func(0,0): CInt
+1144: 0L
+1145: Func(2,4): SystemFindObjectBySerial
+1146: local6 := 
+tilea := SystemFindObjectBySerial(CInt(GetObjProperty(tile,"link")));
+1147: local #6
+1148: "link"
+1149: Func(2,0): GetObjProperty
+1150: Func(0,0): CInt
+1151: 0L
+1152: Func(2,4): SystemFindObjectBySerial
+1153: local7 := 
+foreach person in ListMobilesNearLocation( tile.x, tile.y, tile.z, 0);
+1154: local #6
+1155: get member 'x'
+1156: local #6
+1157: get member 'y'
+1158: local #6
+1159: get member 'z'
+1160: 0L
+1161: Func(2,12): ListMobilesNearLocation
+1162: initforeach @1172
+if(GetObjProperty(person, "inside") == 1)
+1163: local #20
+1164: "inside"
+1165: Func(2,0): GetObjProperty
+1166: 1L
+1167: ==
+1168: if false goto 1172
+person.graphic := 0x33;
+1169: local #20
+1170: 51L
+1171: set member 'graphic' #
+1172: stepforeach @1163
+1173: leave block(3)
+origin3      := CreateItemAtLocation( tile.x,  tile.y,  tile.z, 0x375a, 1);
+1174: local #6
+1175: get member 'x'
+1176: local #6
+1177: get member 'y'
+1178: local #6
+1179: get member 'z'
+1180: 14170L
+1181: 1L
+1182: Func(2,14): CreateItemAtLocation
+1183: local11 := 
+destination3 := CreateItemAtLocation(tilea.x, tilea.y, tilea.z, 0x375a, 1);
+1184: local #7
+1185: get member 'x'
+1186: local #7
+1187: get member 'y'
+1188: local #7
+1189: get member 'z'
+1190: 14170L
+1191: 1L
+1192: Func(2,14): CreateItemAtLocation
+1193: local15 := 
+origin3.movable := 0;
+1194: local #11
+1195: 0L
+1196: set member 'movable' #
+destination3.movable := 0;
+1197: local #15
+1198: 0L
+1199: set member 'movable' #
+1200: stepforeach @1142
+1201: leave block(3)
+sleep(2);
+1202: 2L
+1203: Func(3,1): sleep
+1204: #
+foreach obj in tiled
+1205: local #5
+1206: initforeach @1245
+tile := SystemFindObjectBySerial(CInt(obj));
+1207: local #17
+1208: Func(0,0): CInt
+1209: 0L
+1210: Func(2,4): SystemFindObjectBySerial
+1211: local6 := 
+tilea := SystemFindObjectBySerial(CInt(GetObjProperty(tile,"link")));
+1212: local #6
+1213: "link"
+1214: Func(2,0): GetObjProperty
+1215: Func(0,0): CInt
+1216: 0L
+1217: Func(2,4): SystemFindObjectBySerial
+1218: local7 := 
+origin4      := CreateItemAtLocation( tile.x,  tile.y,  tile.z, 0x3779, 1);
+1219: local #6
+1220: get member 'x'
+1221: local #6
+1222: get member 'y'
+1223: local #6
+1224: get member 'z'
+1225: 14201L
+1226: 1L
+1227: Func(2,14): CreateItemAtLocation
+1228: local12 := 
+destination4 := CreateItemAtLocation(tilea.x, tilea.y, tilea.z, 0x3779, 1);
+1229: local #7
+1230: get member 'x'
+1231: local #7
+1232: get member 'y'
+1233: local #7
+1234: get member 'z'
+1235: 14201L
+1236: 1L
+1237: Func(2,14): CreateItemAtLocation
+1238: local16 := 
+origin4.movable := 0;
+1239: local #12
+1240: 0L
+1241: set member 'movable' #
+destination4.movable := 0;
+1242: local #16
+1243: 0L
+1244: set member 'movable' #
+1245: stepforeach @1207
+1246: leave block(3)
+sleep(2);
+1247: 2L
+1248: Func(3,1): sleep
+1249: #
+PlaySoundEffect( item, snd);
+1250: local #3
+1251: local #0
+1252: Func(2,5): PlaySoundEffect
+1253: #
+item.graphic := mid;
+1254: local #3
+1255: local #2
+1256: set member 'graphic' #
+sleepms(500);
+1257: 500L
+1258: Func(3,0): sleepms
+1259: #
+item.graphic := stt;
+1260: local #3
+1261: local #1
+1262: set member 'graphic' #
+foreach obj in tiled
+1263: local #5
+1264: initforeach @1304
+tile := SystemFindObjectBySerial(CInt(obj));
+1265: local #17
+1266: Func(0,0): CInt
+1267: 0L
+1268: Func(2,4): SystemFindObjectBySerial
+1269: local6 := 
+tilea := SystemFindObjectBySerial(CInt(GetObjProperty(tile,"link")));
+1270: local #6
+1271: "link"
+1272: Func(2,0): GetObjProperty
+1273: Func(0,0): CInt
+1274: 0L
+1275: Func(2,4): SystemFindObjectBySerial
+1276: local7 := 
+foreach person in ListMobilesNearLocation( tile.x, tile.y, tile.z, 0);
+1277: local #6
+1278: get member 'x'
+1279: local #6
+1280: get member 'y'
+1281: local #6
+1282: get member 'z'
+1283: 0L
+1284: Func(2,12): ListMobilesNearLocation
+1285: initforeach @1302
+if(GetObjProperty(person, "inside") == 1)
+1286: local #20
+1287: "inside"
+1288: Func(2,0): GetObjProperty
+1289: 1L
+1290: ==
+1291: if false goto 1302
+MoveCharacterToLocation( person, tilea.x, tilea.y, tilea.z );
+1292: local #20
+1293: local #7
+1294: get member 'x'
+1295: local #7
+1296: get member 'y'
+1297: local #7
+1298: get member 'z'
+1299: 0L
+1300: Func(2,17): MoveCharacterToLocation
+1301: #
+1302: stepforeach @1286
+1303: leave block(3)
+1304: stepforeach @1265
+1305: leave block(3)
+sleep(2);
+1306: 2L
+1307: Func(3,1): sleep
+1308: #
+foreach obj in tiled
+1309: local #5
+1310: initforeach @1353
+tile := SystemFindObjectBySerial(CInt(obj));
+1311: local #17
+1312: Func(0,0): CInt
+1313: 0L
+1314: Func(2,4): SystemFindObjectBySerial
+1315: local6 := 
+tilea := SystemFindObjectBySerial(CInt(GetObjProperty(tile,"link")));
+1316: local #6
+1317: "link"
+1318: Func(2,0): GetObjProperty
+1319: Func(0,0): CInt
+1320: 0L
+1321: Func(2,4): SystemFindObjectBySerial
+1322: local7 := 
+foreach thingie in ListItemsNearLocationOfType(tile.x, tile.y, tile.z, 0, 0x373
+1323: local #6
+1324: get member 'x'
+1325: local #6
+1326: get member 'y'
+1327: local #6
+1328: get member 'z'
+1329: 0L
+1330: 14138L
+1331: Func(2,18): ListItemsNearLocationOfType
+1332: initforeach @1336
+DestroyItem(thingie);
+1333: local #20
+1334: Func(2,16): DestroyItem
+1335: #
+1336: stepforeach @1333
+1337: leave block(3)
+foreach thingie in ListItemsNearLocationOfType(tilea.x, tilea.y, tilea.z, 0, 0x
+1338: local #7
+1339: get member 'x'
+1340: local #7
+1341: get member 'y'
+1342: local #7
+1343: get member 'z'
+1344: 0L
+1345: 14138L
+1346: Func(2,18): ListItemsNearLocationOfType
+1347: initforeach @1351
+DestroyItem(thingie);
+1348: local #20
+1349: Func(2,16): DestroyItem
+1350: #
+1351: stepforeach @1348
+1352: leave block(3)
+1353: stepforeach @1311
+1354: leave block(3)
+sleep(2);
+1355: 2L
+1356: Func(3,1): sleep
+1357: #
+foreach obj in tiled
+1358: local #5
+1359: initforeach @1441
+tile := SystemFindObjectBySerial(CInt(obj));
+1360: local #17
+1361: Func(0,0): CInt
+1362: 0L
+1363: Func(2,4): SystemFindObjectBySerial
+1364: local6 := 
+tilea := SystemFindObjectBySerial(CInt(GetObjProperty(tile,"link")));
+1365: local #6
+1366: "link"
+1367: Func(2,0): GetObjProperty
+1368: Func(0,0): CInt
+1369: 0L
+1370: Func(2,4): SystemFindObjectBySerial
+1371: local7 := 
+foreach thingie in ListItemsNearLocationOfType(tile.x, tile.y, tile.z, 0, 0x374
+1372: local #6
+1373: get member 'x'
+1374: local #6
+1375: get member 'y'
+1376: local #6
+1377: get member 'z'
+1378: 0L
+1379: 14154L
+1380: Func(2,18): ListItemsNearLocationOfType
+1381: initforeach @1385
+DestroyItem(thingie);
+1382: local #20
+1383: Func(2,16): DestroyItem
+1384: #
+1385: stepforeach @1382
+1386: leave block(3)
+foreach person in ListMobilesNearLocation( tilea.x, tilea.y, tilea.z, 0);
+1387: local #7
+1388: get member 'x'
+1389: local #7
+1390: get member 'y'
+1391: local #7
+1392: get member 'z'
+1393: 0L
+1394: Func(2,12): ListMobilesNearLocation
+1395: initforeach @1424
+if(GetObjProperty(person, "inside") == 1)
+1396: local #20
+1397: "inside"
+1398: Func(2,0): GetObjProperty
+1399: 1L
+1400: ==
+1401: if false goto 1424
+EraseObjProperty(person, "inside");
+1402: local #20
+1403: "inside"
+1404: Func(2,7): EraseObjProperty
+1405: #
+PlaySoundEffect(person, 0x1fd);
+1406: local #20
+1407: 509L
+1408: Func(2,5): PlaySoundEffect
+1409: #
+person.graphic := GetObjProperty(person, "visual");
+1410: local #20
+1411: local #20
+1412: "visual"
+1413: Func(2,0): GetObjProperty
+1414: set member 'graphic' #
+if(person.dead)
+1415: local #20
+1416: get member 'dead'
+1417: if false goto 1424
+person.objtype := 0x192;
+1418: local #20
+1419: 402L
+1420: set member 'objtype' #
+person.graphic := 0x192;
+1421: local #20
+1422: 402L
+1423: set member 'graphic' #
+1424: stepforeach @1396
+1425: leave block(3)
+foreach thingie in ListItemsNearLocationOfType(tilea.x, tilea.y, tilea.z, 0, 0x
+1426: local #7
+1427: get member 'x'
+1428: local #7
+1429: get member 'y'
+1430: local #7
+1431: get member 'z'
+1432: 0L
+1433: 14154L
+1434: Func(2,18): ListItemsNearLocationOfType
+1435: initforeach @1439
+DestroyItem(thingie);
+1436: local #20
+1437: Func(2,16): DestroyItem
+1438: #
+1439: stepforeach @1436
+1440: leave block(3)
+1441: stepforeach @1360
+1442: leave block(3)
+sleep(2);
+1443: 2L
+1444: Func(3,1): sleep
+1445: #
+foreach obj in tiled
+1446: local #5
+1447: initforeach @1490
+tile := SystemFindObjectBySerial(CInt(obj));
+1448: local #17
+1449: Func(0,0): CInt
+1450: 0L
+1451: Func(2,4): SystemFindObjectBySerial
+1452: local6 := 
+tilea := SystemFindObjectBySerial(CInt(GetObjProperty(tile,"link")));
+1453: local #6
+1454: "link"
+1455: Func(2,0): GetObjProperty
+1456: Func(0,0): CInt
+1457: 0L
+1458: Func(2,4): SystemFindObjectBySerial
+1459: local7 := 
+foreach thingie in ListItemsNearLocationOfType(tile.x, tile.y, tile.z, 0, 0x375
+1460: local #6
+1461: get member 'x'
+1462: local #6
+1463: get member 'y'
+1464: local #6
+1465: get member 'z'
+1466: 0L
+1467: 14170L
+1468: Func(2,18): ListItemsNearLocationOfType
+1469: initforeach @1473
+DestroyItem(thingie);
+1470: local #20
+1471: Func(2,16): DestroyItem
+1472: #
+1473: stepforeach @1470
+1474: leave block(3)
+foreach thingie in ListItemsNearLocationOfType(tilea.x, tilea.y, tilea.z, 0, 0x
+1475: local #7
+1476: get member 'x'
+1477: local #7
+1478: get member 'y'
+1479: local #7
+1480: get member 'z'
+1481: 0L
+1482: 14170L
+1483: Func(2,18): ListItemsNearLocationOfType
+1484: initforeach @1488
+DestroyItem(thingie);
+1485: local #20
+1486: Func(2,16): DestroyItem
+1487: #
+1488: stepforeach @1485
+1489: leave block(3)
+1490: stepforeach @1448
+1491: leave block(3)
+sleep(2);
+1492: 2L
+1493: Func(3,1): sleep
+1494: #
+foreach obj in tiled
+1495: local #5
+1496: initforeach @1561
+tile := SystemFindObjectBySerial(CInt(obj));
+1497: local #17
+1498: Func(0,0): CInt
+1499: 0L
+1500: Func(2,4): SystemFindObjectBySerial
+1501: local6 := 
+tilea := SystemFindObjectBySerial(CInt(GetObjProperty(tile,"link")));
+1502: local #6
+1503: "link"
+1504: Func(2,0): GetObjProperty
+1505: Func(0,0): CInt
+1506: 0L
+1507: Func(2,4): SystemFindObjectBySerial
+1508: local7 := 
+foreach thingie in ListItemsNearLocationOfType(tile.x, tile.y, tile.z, 0, 0x377
+1509: local #6
+1510: get member 'x'
+1511: local #6
+1512: get member 'y'
+1513: local #6
+1514: get member 'z'
+1515: 0L
+1516: 14201L
+1517: Func(2,18): ListItemsNearLocationOfType
+1518: initforeach @1522
+DestroyItem(thingie);
+1519: local #20
+1520: Func(2,16): DestroyItem
+1521: #
+1522: stepforeach @1519
+1523: leave block(3)
+foreach thingie in ListItemsNearLocationOfType(tilea.x, tilea.y, tilea.z, 0, 0x
+1524: local #7
+1525: get member 'x'
+1526: local #7
+1527: get member 'y'
+1528: local #7
+1529: get member 'z'
+1530: 0L
+1531: 14201L
+1532: Func(2,18): ListItemsNearLocationOfType
+1533: initforeach @1537
+DestroyItem(thingie);
+1534: local #20
+1535: Func(2,16): DestroyItem
+1536: #
+1537: stepforeach @1534
+1538: leave block(3)
+foreach person in ListMobilesNearLocation( tilea.x, tilea.y, tilea.z, 0);
+1539: local #7
+1540: get member 'x'
+1541: local #7
+1542: get member 'y'
+1543: local #7
+1544: get member 'z'
+1545: 0L
+1546: Func(2,12): ListMobilesNearLocation
+1547: initforeach @1559
+EraseObjProperty(person, "recallgraphic");
+1548: local #20
+1549: "recallgraphic"
+1550: Func(2,7): EraseObjProperty
+1551: #
+EraseObjProperty(person, "visual");
+1552: local #20
+1553: "visual"
+1554: Func(2,7): EraseObjProperty
+1555: #
+person.frozen := 0;
+1556: local #20
+1557: 0L
+1558: set member 'frozen' #
+1559: stepforeach @1548
+1560: leave block(3)
+1561: stepforeach @1497
+1562: leave block(3)
+EraseObjProperty(item, "#inuse");
+1563: local #3
+1564: "#inuse"
+1565: Func(2,7): EraseObjProperty
+1566: #
+1567: 0L
+1568: return
+C:\pol2\pkg\tools\gmtools\lever.src, Line 224
+function trappedswitch(who, item, mid, stt, snd)
+1569: pop param 'snd'
+1570: pop param 'stt'
+1571: pop param 'mid'
+1572: pop param 'item'
+1573: pop param 'who'
+SetObjProperty(item, "#inuse", 1);
+1574: local #3
+1575: "#inuse"
+1576: 1L
+1577: Func(2,3): SetObjProperty
+1578: #
+Detach();
+1579: Func(2,6): Detach
+1580: #
+var traptype := CInt(GetObjProperty(item,"trap_type"));
+1581: decl local #5
+1582: local #3
+1583: "trap_type"
+1584: Func(2,0): GetObjProperty
+1585: Func(0,0): CInt
+1586: :=
+1587: #
+var trapstrength := CInt(RandomInt(99) + 1);
+1588: decl local #6
+1589: 99L
+1590: Func(5,0): RandomInt
+1591: 1L
+1592: +
+1593: Func(0,0): CInt
+1594: :=
+1595: #
+case traptype
+1596: local #5
+1597: casejmp
+	1: @1598
+	2: @1622
+	3: @1657
+	4: @1687
+	default: @1733
+PlaySoundEffect(who, SFX_224);
+1598: local #4
+1599: 548L
+1600: Func(2,5): PlaySoundEffect
+1601: #
+var dmg :=(RandomInt(20) + CInt(trapstrength));
+1602: decl local #0
+1603: 20L
+1604: Func(5,0): RandomInt
+1605: local #6
+1606: Func(0,0): CInt
+1607: +
+1608: :=
+1609: #
+SendSysMessage(who, "You set off a needle trap!");
+1610: local #4
+1611: "You set off a needle trap!"
+1612: 3L
+1613: 1000L
+1614: Func(2,1): SendSysMessage
+1615: #
+ApplyDamage(who, dmg);
+1616: local #4
+1617: local #7
+1618: Func(2,8): ApplyDamage
+1619: #
+1620: leave block(1)
+1621: goto1733
+PlaySoundEffect(who, SFX_232);
+1622: local #4
+1623: 562L
+1624: Func(2,5): PlaySoundEffect
+1625: #
+PrintTextAbovePrivate(who, "You set off a poison trap!", who);
+1626: local #4
+1627: "You set off a poison trap!"
+1628: local #4
+1629: 3L
+1630: 1000L
+1631: Func(2,9): PrintTextAbovePrivate
+1632: #
+PlayObjectCenteredEffect( who, FX_POISON_GAS, 10,10);
+1633: local #4
+1634: 4410L
+1635: 10L
+1636: 10L
+1637: Func(2,10): PlayObjectCenteredEffect
+1638: #
+var passparms := { who, who, "poison trap", trapstrength };
+1639: decl local #0
+1640: array
+1641: local #4
+1642: +=
+1643: local #4
+1644: +=
+1645: "poison trap"
+1646: +=
+1647: local #6
+1648: +=
+1649: :=
+1650: #
+start_script(":spells:poisonDamage", passparms);
+1651: ":spells:poisonDamage"
+1652: local #7
+1653: Func(3,2): start_script
+1654: #
+1655: leave block(1)
+1656: goto1733
+PlaySoundEffect(who, SFX_208);
+1657: local #4
+1658: 520L
+1659: Func(2,5): PlaySoundEffect
+1660: #
+SendSysMessage(who, "You set off an explosion trap!");
+1661: local #4
+1662: "You set off an explosion trap!"
+1663: 3L
+1664: 1000L
+1665: Func(2,1): SendSysMessage
+1666: #
+PlayObjectCenteredEffect( who, FX_EXPLODE_3, 10,10);
+1667: local #4
+1668: 14000L
+1669: 10L
+1670: 10L
+1671: Func(2,10): PlayObjectCenteredEffect
+1672: #
+var dmg :=(RandomInt(20) + CInt(trapstrength));
+1673: decl local #0
+1674: 20L
+1675: Func(5,0): RandomInt
+1676: local #6
+1677: Func(0,0): CInt
+1678: +
+1679: :=
+1680: #
+ApplyRawDamage(who, dmg);
+1681: local #4
+1682: local #7
+1683: Func(2,11): ApplyRawDamage
+1684: #
+1685: leave block(1)
+1686: goto1733
+var dmg;
+1687: decl local #0
+1688: #
+var victims := ListMobilesNearLocation( item.x, item.y, item.z, 5);
+1689: decl local #1
+1690: local #3
+1691: get member 'x'
+1692: local #3
+1693: get member 'y'
+1694: local #3
+1695: get member 'z'
+1696: 5L
+1697: Func(2,12): ListMobilesNearLocation
+1698: :=
+1699: #
+Detach();
+1700: Func(2,6): Detach
+1701: #
+foreach mob in victims
+1702: local #8
+1703: initforeach @1730
+var dmg :=(RandomInt(20) + CInt(trapstrength));
+1704: decl local #0
+1705: 20L
+1706: Func(5,0): RandomInt
+1707: local #6
+1708: Func(0,0): CInt
+1709: +
+1710: :=
+1711: #
+PlayLightningBoltEffect( mob );
+1712: local #9
+1713: Func(2,13): PlayLightningBoltEffect
+1714: #
+PlaySoundEffect(mob, SFX_SPELL_LIGHTNING);
+1715: local #9
+1716: 42L
+1717: Func(2,5): PlaySoundEffect
+1718: #
+ApplyRawDamage( mob, Resisted( mob, dmg) );
+1719: local #9
+1720: local #9
+1721: local #12
+1722: makelocal
+1723: jmp userfunc @2442
+1724: Func(2,11): ApplyRawDamage
+1725: #
+sleepms(600);
+1726: 600L
+1727: Func(3,0): sleepms
+1728: #
+1729: leave block(1)
+1730: stepforeach @1704
+1731: leave block(3)
+1732: leave block(2)
+sleepms(500);
+1733: 500L
+1734: Func(3,0): sleepms
+1735: #
+PlaySoundEffect( item, snd);
+1736: local #3
+1737: local #0
+1738: Func(2,5): PlaySoundEffect
+1739: #
+item.graphic := mid;
+1740: local #3
+1741: local #2
+1742: set member 'graphic' #
+sleepms(500);
+1743: 500L
+1744: Func(3,0): sleepms
+1745: #
+item.graphic := stt;
+1746: local #3
+1747: local #1
+1748: set member 'graphic' #
+EraseObjProperty(item, "#inuse");
+1749: local #3
+1750: "#inuse"
+1751: Func(2,7): EraseObjProperty
+1752: #
+1753: 0L
+1754: return
+C:\pol2\pkg\tools\gmtools\lever.src, Line 263
+function alterpassage(who, item, stt, snd);
+1755: pop param 'snd'
+1756: pop param 'stt'
+1757: pop param 'item'
+1758: pop param 'who'
+var la := GetObjProperty(item,"links");
+1759: decl local #4
+1760: local #2
+1761: "links"
+1762: Func(2,0): GetObjProperty
+1763: :=
+1764: #
+var obj;
+1765: decl local #5
+1766: #
+foreach entry in la
+1767: local #4
+1768: initforeach @1779
+obj := SystemFindObjectBySerial(CInt(entry));
+1769: local #6
+1770: Func(0,0): CInt
+1771: 0L
+1772: Func(2,4): SystemFindObjectBySerial
+1773: local5 := 
+SetObjProperty(obj, "#inuse", 1);
+1774: local #5
+1775: "#inuse"
+1776: 1L
+1777: Func(2,3): SetObjProperty
+1778: #
+1779: stepforeach @1769
+1780: leave block(3)
+Detach();
+1781: Func(2,6): Detach
+1782: #
+var newsound := CInt(GetObjProperty(item, "sound"));
+1783: decl local #6
+1784: local #2
+1785: "sound"
+1786: Func(2,0): GetObjProperty
+1787: Func(0,0): CInt
+1788: :=
+1789: #
+var speaker  := GetObjProperty(item, "speaker");
+1790: decl local #7
+1791: local #2
+1792: "speaker"
+1793: Func(2,0): GetObjProperty
+1794: :=
+1795: #
+var x := speaker[1];
+1796: decl local #8
+1797: local #7
+1798: 1L
+1799: [] 1
+1800: :=
+1801: #
+var y := speaker[2];
+1802: decl local #9
+1803: local #7
+1804: 2L
+1805: [] 1
+1806: :=
+1807: #
+var z := speaker[3];
+1808: decl local #10
+1809: local #7
+1810: 3L
+1811: [] 1
+1812: :=
+1813: #
+var speakr :=CreateItemAtLocation( x, y, z, 0xeed, 1);
+1814: decl local #11
+1815: local #8
+1816: local #9
+1817: local #10
+1818: 3821L
+1819: 1L
+1820: Func(2,14): CreateItemAtLocation
+1821: :=
+1822: #
+speakr.movable := 0;
+1823: local #11
+1824: 0L
+1825: set member 'movable' #
+speakr.graphic := 0x1;
+1826: local #11
+1827: 1L
+1828: set member 'graphic' #
+var pl := GetObjProperty(item,"partsarray");
+1829: decl local #12
+1830: local #2
+1831: "partsarray"
+1832: Func(2,0): GetObjProperty
+1833: :=
+1834: #
+var i;
+1835: decl local #13
+1836: #
+var stp;
+1837: decl local #14
+1838: #
+var a := 0;
+1839: decl local #15
+1840: 0L
+1841: :=
+1842: #
+if(GetObjProperty(item, "status") == "on")
+1843: local #2
+1844: "status"
+1845: Func(2,0): GetObjProperty
+1846: "on"
+1847: ==
+1848: if false goto 1920
+stp := 1;
+1849: 1L
+1850: local14 := 
+while(stp <= 11)
+1851: local #14
+1852: 11L
+1853: <=
+1854: if false goto 1905
+foreach entry in pl
+1855: local #12
+1856: initforeach @1880
+obj := SystemFindObjectBySerial(CInt(entry));
+1857: local #16
+1858: Func(0,0): CInt
+1859: 0L
+1860: Func(2,4): SystemFindObjectBySerial
+1861: local5 := 
+obj.movable := 1;
+1862: local #5
+1863: 1L
+1864: set member 'movable' #
+MoveItemToLocation(obj, obj.x, obj.y, obj.z - 2, MOVEITEM_FORCELOCATION);
+1865: local #5
+1866: local #5
+1867: get member 'x'
+1868: local #5
+1869: get member 'y'
+1870: local #5
+1871: get member 'z'
+1872: 2L
+1873: -
+1874: 1073741824L
+1875: Func(2,15): MoveItemToLocation
+1876: #
+obj.movable := 0;
+1877: local #5
+1878: 0L
+1879: set member 'movable' #
+1880: stepforeach @1857
+1881: leave block(3)
+if(a == 2)
+1882: local #15
+1883: 2L
+1884: ==
+1885: if false goto 1893
+PlaySoundEffect(speakr, newsound);
+1886: local #11
+1887: local #6
+1888: Func(2,5): PlaySoundEffect
+1889: #
+a := 0;
+1890: 0L
+1891: local15 := 
+1892: goto1897
+a := a + 1;
+1893: local #15
+1894: 1L
+1895: +
+1896: local15 := 
+stp := stp+1;
+1897: local #14
+1898: 1L
+1899: +
+1900: local14 := 
+sleep(1);
+1901: 1L
+1902: Func(3,1): sleep
+1903: #
+1904: goto1851
+foreach entry in la
+1905: local #4
+1906: initforeach @1917
+obj := SystemFindObjectBySerial(CInt(entry));
+1907: local #16
+1908: Func(0,0): CInt
+1909: 0L
+1910: Func(2,4): SystemFindObjectBySerial
+1911: local5 := 
+SetObjProperty(obj, "status", "off");
+1912: local #5
+1913: "status"
+1914: "off"
+1915: Func(2,3): SetObjProperty
+1916: #
+1917: stepforeach @1907
+1918: leave block(3)
+1919: goto1996
+elseif(GetObjProperty(item, "status") == "off")
+1920: local #2
+1921: "status"
+1922: Func(2,0): GetObjProperty
+1923: "off"
+1924: ==
+1925: if false goto 1996
+stp := 1;
+1926: 1L
+1927: local14 := 
+while(stp <= 11)
+1928: local #14
+1929: 11L
+1930: <=
+1931: if false goto 1982
+foreach entry in pl
+1932: local #12
+1933: initforeach @1957
+obj := SystemFindObjectBySerial(CInt(entry));
+1934: local #16
+1935: Func(0,0): CInt
+1936: 0L
+1937: Func(2,4): SystemFindObjectBySerial
+1938: local5 := 
+obj.movable := 1;
+1939: local #5
+1940: 1L
+1941: set member 'movable' #
+MoveItemToLocation(obj, obj.x, obj.y, obj.z + 2, MOVEITEM_FORCELOCATION);
+1942: local #5
+1943: local #5
+1944: get member 'x'
+1945: local #5
+1946: get member 'y'
+1947: local #5
+1948: get member 'z'
+1949: 2L
+1950: +
+1951: 1073741824L
+1952: Func(2,15): MoveItemToLocation
+1953: #
+obj.movable := 0;
+1954: local #5
+1955: 0L
+1956: set member 'movable' #
+1957: stepforeach @1934
+1958: leave block(3)
+if(a == 2)
+1959: local #15
+1960: 2L
+1961: ==
+1962: if false goto 1970
+PlaySoundEffect(speakr, newsound);
+1963: local #11
+1964: local #6
+1965: Func(2,5): PlaySoundEffect
+1966: #
+a := 0;
+1967: 0L
+1968: local15 := 
+1969: goto1974
+a := a + 1;
+1970: local #15
+1971: 1L
+1972: +
+1973: local15 := 
+stp := stp+1;
+1974: local #14
+1975: 1L
+1976: +
+1977: local14 := 
+sleep(1);
+1978: 1L
+1979: Func(3,1): sleep
+1980: #
+1981: goto1928
+foreach entry in la
+1982: local #4
+1983: initforeach @1994
+obj := SystemFindObjectBySerial(CInt(entry));
+1984: local #16
+1985: Func(0,0): CInt
+1986: 0L
+1987: Func(2,4): SystemFindObjectBySerial
+1988: local5 := 
+SetObjProperty(obj, "status", "on");
+1989: local #5
+1990: "status"
+1991: "on"
+1992: Func(2,3): SetObjProperty
+1993: #
+1994: stepforeach @1984
+1995: leave block(3)
+var timer := CInt(GetObjProperty(item, "timer"));
+1996: decl local #16
+1997: local #2
+1998: "timer"
+1999: Func(2,0): GetObjProperty
+2000: Func(0,0): CInt
+2001: :=
+2002: #
+if(timer > 0)
+2003: local #16
+2004: 0L
+2005: >
+2006: if false goto 2257
+sleep(timer);
+2007: local #16
+2008: Func(3,1): sleep
+2009: #
+var mid := 0;
+2010: decl local #0
+2011: 0L
+2012: :=
+2013: #
+var gfx;
+2014: decl local #1
+2015: #
+var fin;
+2016: decl local #2
+2017: #
+foreach entry in la
+2018: local #4
+2019: initforeach @2101
+obj := SystemFindObjectBySerial(CInt(entry));
+2020: local #20
+2021: Func(0,0): CInt
+2022: 0L
+2023: Func(2,4): SystemFindObjectBySerial
+2024: local5 := 
+gfx := obj.graphic;
+2025: local #5
+2026: get member 'graphic'
+2027: local18 := 
+mid := 0;
+2028: 0L
+2029: local17 := 
+case(gfx)
+2030: local #18
+2031: casejmp
+	4236: @2032
+	4238: @2039
+	4243: @2046
+	4245: @2053
+	4239: @2060
+	4240: @2065
+	4241: @2070
+	4242: @2075
+	default: @2079
+mid := 0x108d;
+2032: 4237L
+2033: local17 := 
+fin := 0x108e;
+2034: 4238L
+2035: local19 := 
+snd := 0x4c;
+2036: 76L
+2037: local0 := 
+2038: goto2079
+mid := 0x108d;
+2039: 4237L
+2040: local17 := 
+fin := 0x108c;
+2041: 4236L
+2042: local19 := 
+snd := 0x4c;
+2043: 76L
+2044: local0 := 
+2045: goto2079
+mid := 0x1094;
+2046: 4244L
+2047: local17 := 
+fin := 0x1095;
+2048: 4245L
+2049: local19 := 
+snd := 0x4c;
+2050: 76L
+2051: local0 := 
+2052: goto2079
+mid := 0x1094;
+2053: 4244L
+2054: local17 := 
+fin := 0x1093;
+2055: 4243L
+2056: local19 := 
+snd := 0x4c;
+2057: 76L
+2058: local0 := 
+2059: goto2079
+fin := 0x1090;
+2060: 4240L
+2061: local19 := 
+snd := 0x4b;
+2062: 75L
+2063: local0 := 
+2064: goto2079
+fin := 0x108f;
+2065: 4239L
+2066: local19 := 
+snd := 0x4b;
+2067: 75L
+2068: local0 := 
+2069: goto2079
+fin := 0x1092;
+2070: 4242L
+2071: local19 := 
+snd := 0x4b;
+2072: 75L
+2073: local0 := 
+2074: goto2079
+fin := 0x1091;
+2075: 4241L
+2076: local19 := 
+snd := 0x4b;
+2077: 75L
+2078: local0 := 
+if(mid == 0)
+2079: local #17
+2080: 0L
+2081: ==
+2082: if false goto 2085
+mid := fin;
+2083: local #19
+2084: local17 := 
+sleepms(500);
+2085: 500L
+2086: Func(3,0): sleepms
+2087: #
+PlaySoundEffect( obj, snd);
+2088: local #5
+2089: local #0
+2090: Func(2,5): PlaySoundEffect
+2091: #
+obj.graphic := mid;
+2092: local #5
+2093: local #17
+2094: set member 'graphic' #
+sleepms(500);
+2095: 500L
+2096: Func(3,0): sleepms
+2097: #
+obj.graphic := fin;
+2098: local #5
+2099: local #19
+2100: set member 'graphic' #
+2101: stepforeach @2020
+2102: leave block(3)
+if(GetObjProperty(item, "status") == "on")
+2103: local #2
+2104: "status"
+2105: Func(2,0): GetObjProperty
+2106: "on"
+2107: ==
+2108: if false goto 2180
+stp := 1;
+2109: 1L
+2110: local14 := 
+while(stp <= 11)
+2111: local #14
+2112: 11L
+2113: <=
+2114: if false goto 2165
+foreach entry in pl
+2115: local #12
+2116: initforeach @2140
+obj := SystemFindObjectBySerial(CInt(entry));
+2117: local #20
+2118: Func(0,0): CInt
+2119: 0L
+2120: Func(2,4): SystemFindObjectBySerial
+2121: local5 := 
+obj.movable := 1;
+2122: local #5
+2123: 1L
+2124: set member 'movable' #
+MoveItemToLocation(obj, obj.x, obj.y, obj.z - 2, MOVEITEM_FORCELOCATION);
+2125: local #5
+2126: local #5
+2127: get member 'x'
+2128: local #5
+2129: get member 'y'
+2130: local #5
+2131: get member 'z'
+2132: 2L
+2133: -
+2134: 1073741824L
+2135: Func(2,15): MoveItemToLocation
+2136: #
+obj.movable := 0;
+2137: local #5
+2138: 0L
+2139: set member 'movable' #
+2140: stepforeach @2117
+2141: leave block(3)
+if(a == 2)
+2142: local #15
+2143: 2L
+2144: ==
+2145: if false goto 2153
+PlaySoundEffect(speakr, newsound);
+2146: local #11
+2147: local #6
+2148: Func(2,5): PlaySoundEffect
+2149: #
+a := 0;
+2150: 0L
+2151: local15 := 
+2152: goto2157
+a := a + 1;
+2153: local #15
+2154: 1L
+2155: +
+2156: local15 := 
+stp := stp+1;
+2157: local #14
+2158: 1L
+2159: +
+2160: local14 := 
+sleep(1);
+2161: 1L
+2162: Func(3,1): sleep
+2163: #
+2164: goto2111
+foreach entry in la
+2165: local #4
+2166: initforeach @2177
+obj := SystemFindObjectBySerial(CInt(entry));
+2167: local #20
+2168: Func(0,0): CInt
+2169: 0L
+2170: Func(2,4): SystemFindObjectBySerial
+2171: local5 := 
+SetObjProperty(obj, "status", "off");
+2172: local #5
+2173: "status"
+2174: "off"
+2175: Func(2,3): SetObjProperty
+2176: #
+2177: stepforeach @2167
+2178: leave block(3)
+2179: goto2256
+elseif(GetObjProperty(item, "status") == "off")
+2180: local #2
+2181: "status"
+2182: Func(2,0): GetObjProperty
+2183: "off"
+2184: ==
+2185: if false goto 2256
+stp := 1;
+2186: 1L
+2187: local14 := 
+while(stp <= 11)
+2188: local #14
+2189: 11L
+2190: <=
+2191: if false goto 2242
+foreach entry in pl
+2192: local #12
+2193: initforeach @2217
+obj := SystemFindObjectBySerial(CInt(entry));
+2194: local #20
+2195: Func(0,0): CInt
+2196: 0L
+2197: Func(2,4): SystemFindObjectBySerial
+2198: local5 := 
+obj.movable := 1;
+2199: local #5
+2200: 1L
+2201: set member 'movable' #
+MoveItemToLocation(obj, obj.x, obj.y, obj.z + 2, MOVEITEM_FORCELOCATION);
+2202: local #5
+2203: local #5
+2204: get member 'x'
+2205: local #5
+2206: get member 'y'
+2207: local #5
+2208: get member 'z'
+2209: 2L
+2210: +
+2211: 1073741824L
+2212: Func(2,15): MoveItemToLocation
+2213: #
+obj.movable := 0;
+2214: local #5
+2215: 0L
+2216: set member 'movable' #
+2217: stepforeach @2194
+2218: leave block(3)
+if(a == 2)
+2219: local #15
+2220: 2L
+2221: ==
+2222: if false goto 2230
+PlaySoundEffect(speakr, newsound);
+2223: local #11
+2224: local #6
+2225: Func(2,5): PlaySoundEffect
+2226: #
+a := 0;
+2227: 0L
+2228: local15 := 
+2229: goto2234
+a := a + 1;
+2230: local #15
+2231: 1L
+2232: +
+2233: local15 := 
+stp := stp+1;
+2234: local #14
+2235: 1L
+2236: +
+2237: local14 := 
+sleep(1);
+2238: 1L
+2239: Func(3,1): sleep
+2240: #
+2241: goto2188
+foreach entry in la
+2242: local #4
+2243: initforeach @2254
+obj := SystemFindObjectBySerial(CInt(entry));
+2244: local #20
+2245: Func(0,0): CInt
+2246: 0L
+2247: Func(2,4): SystemFindObjectBySerial
+2248: local5 := 
+SetObjProperty(obj, "status", "on");
+2249: local #5
+2250: "status"
+2251: "on"
+2252: Func(2,3): SetObjProperty
+2253: #
+2254: stepforeach @2244
+2255: leave block(3)
+2256: leave block(3)
+DestroyItem(speakr);
+2257: local #11
+2258: Func(2,16): DestroyItem
+2259: #
+EraseObjProperty(item, "#inuse");
+2260: local #2
+2261: "#inuse"
+2262: Func(2,7): EraseObjProperty
+2263: #
+foreach entry in la
+2264: local #4
+2265: initforeach @2275
+obj := SystemFindObjectBySerial(CInt(entry));
+2266: local #17
+2267: Func(0,0): CInt
+2268: 0L
+2269: Func(2,4): SystemFindObjectBySerial
+2270: local5 := 
+EraseObjProperty(obj, "#inuse");
+2271: local #5
+2272: "#inuse"
+2273: Func(2,7): EraseObjProperty
+2274: #
+2275: stepforeach @2266
+2276: leave block(3)
+2277: 0L
+2278: return
+C:\pol2\pkg\tools\gmtools\lever.src, Line 581
+function lightswitch(who, item )
+2279: pop param 'item'
+2280: pop param 'who'
+SetObjProperty(item, "#inuse", 1);
+2281: local #0
+2282: "#inuse"
+2283: 1L
+2284: Func(2,3): SetObjProperty
+2285: #
+var cfg := ReadConfigFile(":*:itemdesc");
+2286: decl local #2
+2287: ":*:itemdesc"
+2288: Func(4,0): ReadConfigFile
+2289: :=
+2290: #
+Detach();
+2291: Func(2,6): Detach
+2292: #
+var pl := GetObjProperty(item,"partsarray");
+2293: decl local #3
+2294: local #0
+2295: "partsarray"
+2296: Func(2,0): GetObjProperty
+2297: :=
+2298: #
+var thing;
+2299: decl local #4
+2300: #
+foreach thingie in pl
+2301: local #3
+2302: initforeach @2354
+thing := SystemFindObjectBySerial(CInt(thingie));
+2303: local #5
+2304: Func(0,0): CInt
+2305: 0L
+2306: Func(2,4): SystemFindObjectBySerial
+2307: local4 := 
+if(thing.graphic == thing.objtype)
+2308: local #4
+2309: get member 'graphic'
+2310: local #4
+2311: get member 'objtype'
+2312: ==
+2313: if false goto 2336
+if(cfg[thing.objtype]."changesnd")
+2314: local #2
+2315: local #4
+2316: get member 'objtype'
+2317: [] 1
+2318: get member 'changesnd'
+2319: if false goto 2328
+PlaySoundEffect(who, cfg[thing.objtype]."changesnd");
+2320: local #1
+2321: local #2
+2322: local #4
+2323: get member 'objtype'
+2324: [] 1
+2325: get member 'changesnd'
+2326: Func(2,5): PlaySoundEffect
+2327: #
+thing.graphic := cfg[thing.objtype]."change";
+2328: local #4
+2329: local #2
+2330: local #4
+2331: get member 'objtype'
+2332: [] 1
+2333: get member 'change'
+2334: set member 'graphic' #
+2335: goto2354
+if(cfg[thing.objtype]."originsnd")
+2336: local #2
+2337: local #4
+2338: get member 'objtype'
+2339: [] 1
+2340: get member 'originsnd'
+2341: if false goto 2350
+PlaySoundEffect(who, cfg[thing.objtype]."originsnd");
+2342: local #1
+2343: local #2
+2344: local #4
+2345: get member 'objtype'
+2346: [] 1
+2347: get member 'originsnd'
+2348: Func(2,5): PlaySoundEffect
+2349: #
+thing.graphic := thing.objtype;
+2350: local #4
+2351: local #4
+2352: get member 'objtype'
+2353: set member 'graphic' #
+2354: stepforeach @2303
+2355: leave block(3)
+EraseObjProperty(item, "#inuse");
+2356: local #0
+2357: "#inuse"
+2358: Func(2,7): EraseObjProperty
+2359: #
+2360: 0L
+2361: return
+C:\pol2\pkg\tools\gmtools\lever.src, Line 557
+function linkdoor(who, item)
+2362: pop param 'item'
+2363: pop param 'who'
+SetObjProperty(item, "#inuse", 1);
+2364: local #0
+2365: "#inuse"
+2366: 1L
+2367: Func(2,3): SetObjProperty
+2368: #
+Detach();
+2369: Func(2,6): Detach
+2370: #
+var da := GetObjProperty(item, "ds");
+2371: decl local #2
+2372: local #0
+2373: "ds"
+2374: Func(2,0): GetObjProperty
+2375: :=
+2376: #
+var status := GetObjProperty(item, "status");
+2377: decl local #3
+2378: local #0
+2379: "status"
+2380: Func(2,0): GetObjProperty
+2381: :=
+2382: #
+var door;
+2383: decl local #4
+2384: #
+if(status == "off");
+2385: local #3
+2386: "off"
+2387: ==
+2388: if false goto 2411
+foreach dr in da
+2389: local #2
+2390: initforeach @2403
+door := SystemFindObjectBySerial(CInt(dr));
+2391: local #5
+2392: Func(0,0): CInt
+2393: 0L
+2394: Func(2,4): SystemFindObjectBySerial
+2395: local4 := 
+door.locked := 0;
+2396: local #4
+2397: 0L
+2398: set member 'locked' #
+PlaySoundEffect(door, 0x200);
+2399: local #4
+2400: 512L
+2401: Func(2,5): PlaySoundEffect
+2402: #
+2403: stepforeach @2391
+2404: leave block(3)
+SetObjProperty(item,"status", "on");
+2405: local #0
+2406: "status"
+2407: "on"
+2408: Func(2,3): SetObjProperty
+2409: #
+2410: goto2436
+elseif(status == "on")
+2411: local #3
+2412: "on"
+2413: ==
+2414: if false goto 2436
+foreach dr in da
+2415: local #2
+2416: initforeach @2429
+door := SystemFindObjectBySerial(CInt(dr));
+2417: local #5
+2418: Func(0,0): CInt
+2419: 0L
+2420: Func(2,4): SystemFindObjectBySerial
+2421: local4 := 
+door.locked := 1;
+2422: local #4
+2423: 1L
+2424: set member 'locked' #
+PlaySoundEffect(door, 0x1f5);
+2425: local #4
+2426: 501L
+2427: Func(2,5): PlaySoundEffect
+2428: #
+2429: stepforeach @2417
+2430: leave block(3)
+SetObjProperty(item,"status", "off");
+2431: local #0
+2432: "status"
+2433: "off"
+2434: Func(2,3): SetObjProperty
+2435: #
+EraseObjProperty(item, "#inuse");
+2436: local #0
+2437: "#inuse"
+2438: Func(2,7): EraseObjProperty
+2439: #
+2440: 0L
+2441: return
+C:\pol2\pkg\tools\gmtools\lever.src, Line 719
+function Resisted(who, amt)
+2442: pop param 'amt'
+2443: pop param 'who'
+var magery  := CInt(RandomInt(99)+1);
+2444: decl local #2
+2445: 99L
+2446: Func(5,0): RandomInt
+2447: 1L
+2448: +
+2449: Func(0,0): CInt
+2450: :=
+2451: #
+var evalint := CInt(RandomInt(99)+1);
+2452: decl local #3
+2453: 99L
+2454: Func(5,0): RandomInt
+2455: 1L
+2456: +
+2457: Func(0,0): CInt
+2458: :=
+2459: #
+var halfamt := amt/2;
+2460: decl local #4
+2461: local #0
+2462: 2L
+2463: /
+2464: :=
+2465: #
+var rezamt := CInt(((RandomInt(halfamt)+1) * evalint ) / 100);
+2466: decl local #5
+2467: local #4
+2468: Func(5,0): RandomInt
+2469: 1L
+2470: +
+2471: local #3
+2472: *
+2473: 100L
+2474: /
+2475: Func(0,0): CInt
+2476: :=
+2477: #
+if(CheckSkill(who,SKILLID_MAGICRESISTANCE, 70, 300))
+2478: local #1
+2479: 26L
+2480: 70L
+2481: 300L
+2482: Func(2,20): CheckSkill
+2483: if false goto 2514
+SendSysMessage(who, "You feel yourself resisting magical energy!");
+2484: local #1
+2485: "You feel yourself resisting magical energy!"
+2486: 3L
+2487: 1000L
+2488: Func(2,1): SendSysMessage
+2489: #
+PlaySoundEffect(who, SFX_SPELL_WEAKEN);
+2490: local #1
+2491: 487L
+2492: Func(2,5): PlaySoundEffect
+2493: #
+PlayObjectCenteredEffect( who, FX_CURSE_EFFECT, 5,5);
+2494: local #1
+2495: 14154L
+2496: 5L
+2497: 5L
+2498: Func(2,10): PlayObjectCenteredEffect
+2499: #
+if(evalint > 0)
+2500: local #3
+2501: 0L
+2502: >
+2503: if false goto 2509
+amt := rezamt + halfamt;
+2504: local #5
+2505: local #4
+2506: +
+2507: local0 := 
+2508: goto2511
+amt := halfamt;
+2509: local #4
+2510: local0 := 
+return amt;
+2511: local #0
+2512: return
+2513: goto2516
+return amt;
+2514: local #0
+2515: return
+2516: 0L
+2517: return

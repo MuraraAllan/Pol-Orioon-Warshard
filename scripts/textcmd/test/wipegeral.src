@@ -1,0 +1,50 @@
+use uo;
+use os;
+
+include "util/bank";
+include "util/bancoglobal";
+
+program limpaworld()
+
+var contas := listaccounts();
+var quantas := 1;
+var total := contas.size();
+
+
+while (quantas <= total)
+var act := findaccount(contas[quantas]);
+var acctname:=act.name;
+DeleteAccount(acctname, act);
+
+quantas := quantas+1;
+endwhile
+
+endprogram
+
+
+function DeleteAccount(acctname, act);
+  var characters := EnumerateOnlineCharacters();
+  act.ban();
+  var chr, mt, ms;
+  var i := 1;
+  while(i <= 5)
+    chr := act.GetCharacter(i);
+    if(chr)
+      WipeBankBox(chr);
+      WipeBancoGlobal( chr );
+      foreach thing in ListEquippedItems(chr)
+        if(thing != chr.backpack)
+          if(thing.objtype == 0xf021)
+            ms := GetObjProperty(thing, "serial");
+            mt := SystemFindObjectBySerial(ms);
+            ApplyRawDamage(mt, 2000);
+          endif
+          MoveItemToContainer(thing, chr.backpack);
+        endif
+      endforeach
+      destroyitem(chr.backpack);
+      act.DeleteCharacter(i);
+    endif
+    i := i + 1;
+  endwhile
+endfunction

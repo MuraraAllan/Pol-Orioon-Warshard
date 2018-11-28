@@ -1,0 +1,164 @@
+use uo;
+use basic;
+use os;
+
+include "include/client";
+include "include/attributes";
+include "include/skillPoints";
+
+program track(who)
+  EraseObjProperty(who, "IsMeditating");
+  EraseObjProperty(who, "HealTimer");
+  UnloadConfigFile(":tracking:tracking");
+  if(GetEffectiveSkill(who, SKILLID_TRACKING) == 100 )
+    var tracker := ReadGameClock();
+    SetObjProperty(who, "TrackingCounter", tracker);
+    var range := CInt(GetEffectiveSkill(who, SKILLID_TRACKING));
+    var nearby := ListMobilesNearLocation(who.x,who.y, who.z, range);
+    var track_list := CreateMenu("Escolha o tipo de criatura");
+    var track_menu := CreateMenu("Escolha a criatura");
+    var critter_ids := array;
+    var menucount := 0;
+    var config := ReadConfigFile("tracking");
+    var Animais, Monstros, Pessoas, tiletype;
+    foreach mobile in nearby
+      if((mobile != who) && (!mobile.dead))
+        var elem := FindConfigElem(config, mobile.graphic);
+        if(elem)
+          tiletype := GetConfigString(elem, "type");
+          case(tiletype)
+            "Animal"  : Animais   := 1;
+            "Monster" : Monstros := 1;
+            "Person"  : Pessoas   := 1;
+          endcase
+        endif
+      endif
+    endforeach
+      AddMenuItem(track_list, 0x20db, "Animais");
+      AddMenuItem(track_list, 0x20fa, "Monstros");
+      AddMenuItem(track_list, 0x2106, "Pessoas");
+
+
+
+
+
+    var thetarget := SelectMenuItem2(who, track_list);
+    var listtype := {};
+    case(thetarget.objtype)
+      0x2106: listtype := "Person";
+      0x20db: listtype := "Animal";
+      0x20fa: listtype := "Monster";
+
+    endcase
+if((listtype == "Animal") && (!animais))
+Sendsysmessage(who, "Voce nao encontra evidencias de animais nesta regiao",9,89);
+return;
+endif
+if((listtype == "Monster") && (!Monstros))
+Sendsysmessage(who, "Voce nao encontra evidencias de monstros nesta regiao",9,89);
+return;
+endif
+if((listtype == "Person") && (!Pessoas))
+Sendsysmessage(who, "Voce na encontra evidencias de pessoas nesta regiao",9,89);
+return;
+endif
+    var ttype;
+    foreach mobile in nearby
+      if((mobile != who) && (!mobile.dead))
+      
+        var elem := FindConfigElem(config, mobile.graphic);
+        if(elem)
+          ttype := GetConfigString(elem, "type");
+          if(ttype == listtype)
+            menucount := menucount + 1;
+            critter_ids[menucount] := mobile;
+            tiletype := GetConfigInt(elem, "tile");
+            AddMenuItem(track_menu, tiletype, mobile.name);
+           if(mobile.name == "Silver Bullet")
+            mobile.color := 1154;
+           endif
+          endif
+        endif
+      endif
+    endforeach
+    if(menucount > 0)
+      thetarget := SelectMenuItem2(who, track_menu);
+  
+      if(!thetarget)
+        SendSysMessage(who, "Cancelado.",9,89);
+        return;
+      endif
+      var critter := critter_ids[thetarget.index];
+      SetObjProperty( who, "#trackingtimeout", ReadGameClock()+20 );
+      Detach();
+      var timer := 0;
+      while((Distance(who, critter) <= range) && (critter.dead == 0) && (timer <= 12)&& (tracker == GetObjProperty(who,"TrackingCounter")))
+        timer := timer + 1;
+        var dir := Get_direction(who, critter);
+        if(dir == "nearby")
+           PrintTextAbovePrivate(who, " Voce encontrou o " + critter.name   ,who );
+          Return;
+        else
+          PrintTextAbovePrivate(who, critter.name + " esta para " + dir ,who);
+        endif
+        sleep(5);
+      endwhile
+      PrintTextAbovePrivate(who, "Voce perdeu o rastro",who );
+      EraseObjProperty(who, "#trackingtimeout");
+    endif
+  else
+    SendSysMessage(who, "Voce nao conseguiu achar nenhuma criatura.",9,89);
+  endif
+
+
+endprogram
+
+function Get_direction(who, critter)
+  var ns_desc := "";
+  var aa := "";
+  var ew_desc := "";
+  var thedesc;
+  if(critter.y < who.y)
+  if(who.y - critter.y >5)
+    ns_desc := "N";
+   aa := "Norte";
+    endif
+  elseif(critter.y > who.y)
+  if(critter.y - who.y  >5)
+    ns_desc := "S"; 
+    aa := "Sul";
+    endif
+  endif
+  if(critter.x < who.x)
+  if(who.x - critter.x >5)
+    ew_desc := "W";
+    aa := "Oeste";
+    endif
+  elseif(critter.x > who.x)
+  if(critter.x - who.x  >5)
+    ew_desc := "E";
+    aa := "Leste";
+    endif
+  endif
+  if(ns_desc == "" && ew_desc == "")
+    thedesc := "nearby";
+  else
+ if((ns_desc == "N") && (ew_desc == "W"))
+aa := "Noroeste";
+endif
+
+if((ns_desc == "S") && (ew_desc == "E"))
+aa := "Sudeste";
+endif
+
+ if((ns_desc == "N") && (ew_desc == "E"))
+aa := "Nordeste";
+endif
+
+if((ns_desc == "S") && (ew_desc == "W"))
+aa := "Sudoeste";
+endif
+    thedesc := aa + " (" + ns_desc + ew_desc + ")";
+  endif
+  return thedesc;
+endfunction

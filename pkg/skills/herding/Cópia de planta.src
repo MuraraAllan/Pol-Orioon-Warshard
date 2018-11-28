@@ -1,0 +1,124 @@
+//controle pra plantassaum!
+//verssaum 1.0
+//Plug
+//ICQ: 35165523
+//xxx@sercomtel.com.br
+
+use uo;
+use os;
+
+include "include/dist";
+
+program planta(who, item)
+if (item.container == who.backpack)
+SendSysMessage(who, "Onde deseja plantar?",9,90);
+var lugar := TargetCoordinates(who);
+var lonje := CheckLosAt(who, lugar.x, lugar.y, lugar.z);
+
+if (terra(getmapinfo(lugar.x, lugar.y).landtile))
+if (coordist(who.x, who.y, lugar.x, lugar.y) <= 3);
+if (lonje)
+if (item.color == 902)
+var kuantosmr := CInt(item.amount);
+var oimr := CreateItemAtLocation(lugar.x, lugar.y, lugar.z, "plantamr", 1);
+if (lugar)
+SetObjProperty(oimr, "dono", Cint(who.serial));
+Start_Script("transforma", oimr);
+SendSysMessage(who, "Voce plantou a semente!",9,90);
+SubtractAmount(item, 1);
+else
+SendSysMessage(who, "Cancelado",9,90);
+endif
+
+elseif (item.color == 49)
+var kuantosga := CInt(item.amount);
+var oiga := CreateItemAtLocation(lugar.x, lugar.y, lugar.z, "plantaga", 1);
+oiga.graphic := 6270;
+if (lugar)
+SetObjProperty(oiga, "dono", Cint(who.serial));
+Start_Script("transforma", oiga);
+SendSysMessage(who, "Voce plantou a semente!",9,90);
+SubtractAmount(item, 1);
+else
+SendSysMessage(who, "Cancelado",9,90);
+endif
+
+elseif (item.color == 452)
+var kuantosgs := CInt(item.amount);
+var oigs := CreateItemAtLocation(lugar.x, lugar.y, lugar.z, "plantags", 1);
+oigs.graphic := 6270;
+if (lugar)
+SetObjProperty(oigs, "dono", Cint(who.serial));
+Start_Script("transforma", oigs);
+SendSysMessage(who, "Voce plantou a semente!",9,90);
+SubtractAmount(item, 1);
+else
+SendSysMessage(who, "Cancelado",9,90);
+endif
+
+elseif (item.color == 5)
+var kuantosns := CInt(item.amount);
+var oins := CreateItemAtLocation(lugar.x, lugar.y, lugar.z, "plantans", 1);
+oins.graphic := 6270;
+if (lugar)
+SetObjProperty(oins, "dono", Cint(who.serial));
+Start_Script("transforma", oins);
+SendSysMessage(who, "Voce plantou a semente!",9,90);
+SubtractAmount(item, 1);
+else
+SendSysMessage(who, "Cancelado",9,90);
+endif
+
+elseif (item.color == 1153)
+var kuantosal := CInt(item.amount);
+var oial := CreateItemAtLocation(lugar.x, lugar.y, lugar.z, "plantaalgodaum", 1);
+oial.graphic := 6270;
+if (lugar)
+SetObjProperty(oial, "dono", Cint(who.serial));
+Start_Script("transforma", oial);
+SendSysMessage(who, "Voce plantou a semente!",9,90);
+SubtractAmount(item, 1);
+else
+SendSysMessage(who, "Cancelado",9,90);
+endif
+
+
+elseif (item.color == 0)
+var kuantosal := CInt(item.amount);
+var oiall := CreateItemAtLocation(lugar.x, lugar.y, lugar.z, "plantaalgodaum", 1);
+oiall.graphic := 6270;
+if (lugar)
+SetObjProperty(oiall, "dono", Cint(who.serial));
+Start_Script("transforma", oiall);
+SendSysMessage(who, "Voce plantou a semente!",9,90);
+SubtractAmount(item, 1);
+else
+SendSysMessage(who, "Cancelado",9,90);
+endif
+endif
+
+else
+SendSysMessage(who, "Voce nao pode plantar nesse lugar!",9,90);
+endif
+
+else
+SendSysMessage(who, "Voce esta muito longe!",9,90);
+endif
+
+else
+SendSysMessage(who, "Voce nao pode plantar neste lugar!",9,90);
+endif
+
+else
+SendSysMessage(who, "A semente tem que estar na sua mochila!",9,90);
+endif
+
+endprogram
+
+function terra(mole)
+if ((mole >= 0x9 and mole <= 0x15) or (mole >= 0x150 and mole <= 0x15c))
+return 1;
+else
+return 0;
+endif
+endfunction

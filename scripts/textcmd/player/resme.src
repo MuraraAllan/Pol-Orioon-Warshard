@@ -1,0 +1,87 @@
+use uo;
+use os;
+
+include "include/attributes";
+include "include/client";
+include ":poisonwatcher:poisons";
+
+
+program resme(who, texto)
+
+var text:=Cint(texto);
+
+if(!who.dead)
+return;
+endif
+
+if(!GetObjProperty(who, "cidade_natal"))
+Sendsysmessage(who, "Voce nao possui uma cidade natal...",9,66);
+gumpcidade(who);
+return;
+endif
+ 
+if(!text)
+Sendsysmessage(who, "Utilize '.resme 1' RESAR EM BRITAIN[PROT].",9,66);
+Sendsysmessage(who, "Utilize '.resme 2' RESAR EM BUCS[CIDADE RED].",9,66);
+Sendsysmessage(who, "Utilize '.resme 3' RESAR EM ARYDRAS[RPG].",9,66);
+return;
+endif
+
+if((who.x >= 4285) && (who.y >= 947) && (who.x <= 4335) && (who.y <= 962))
+Sendsysmessage(who, "Você não pode se ressucitar na Arena.");
+return;
+endif
+
+var casa := who.multi; 
+if((casa) && (text == 1))
+SendSYSMessage(who, "Voce nao pode se ressucitar dentro de uma casa."); 
+return; 
+endif
+
+if(text == 1)
+Sendsysmessage(who, "Voce sera ressucitado e enviado para Brit em 15 segundos.",9,54);
+sleep(15);
+ if(who.dead)
+   MoveCharacterToLocation( who, 1417,1545,30, MOVECHAR_FORCELOCATION );
+endif
+elseif(text == 2)
+Sendsysmessage(who, "Você sera Resado e Enviado a Bucs em 15 segundos.",9,54);
+sleep(15);
+ if(who.dead)
+   MoveCharacterToLocation( who, 2649,2196,4, MOVECHAR_FORCELOCATION );
+ endif
+elseif(text == 3)
+Sendsysmessage(who, "Você sera Resado e Enviado a Arydras em 15 segundos.",9,54);
+sleep(15);
+ if(who.dead)
+   MoveCharacterToLocation( who, 2735,92,72, MOVECHAR_FORCELOCATION );
+ endif
+
+Resurrect( who ); //// Ressucita o char
+DestroyItem(GetEquipmentByLayer(who, 22)); /// Destroi o item com o Layer 22, aqui no caso o robe.
+ endif
+
+endprogram
+
+
+function gumpcidade(who)
+
+var gump := CreateMenu("Selecione sua cidade natal...");
+
+AddMenuItem(gump, 3546, "Britain (Protegida)");
+AddMenuItem(gump, 3546, "Minoc (Protegida)");
+AddMenuItem(gump, 3546, "Cove (Desprotegida)");
+
+
+var thetarget := SelectMenuItem2(who, gump);
+      if(!thetarget)
+        gumpcidade(who);
+        return;
+      endif
+
+    case(thetarget.index)
+      1: SetObjProperty(who, "cidade_natal", "brit");
+      2: SetObjProperty(who, "cidade_natal", "minoc");
+      3: SetObjProperty(who, "cidade_natal", "cove");
+    endcase
+endfunction

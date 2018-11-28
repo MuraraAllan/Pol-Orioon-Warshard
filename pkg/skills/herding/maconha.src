@@ -1,0 +1,54 @@
+use util;
+
+include "include/spellRestrictions";
+include "include/attributes";
+
+program maconha( parms, who )
+ var circle := 7;
+who.movable := 0;
+destroyitem(who);
+Printtextabove(caster, "Voce comeca a se mecher sozinho");
+  var delivery := "notarget";
+  var noto := "helpful";
+  var result := maincast(parms, delivery, circle, noto, 56);
+  if(result == 0)
+    return;
+  endif
+  var caster := result[1];
+  var cast_on := result[2];
+Printtextabove(caster, "Arggggggggggggggggggg estou ficando zonzo zonzo ");
+sleep(1);
+  var origform := caster.graphic;
+var magery := GetEffectiveSkill(caster, SKILLID_MAGERY);
+who.movable := 0;
+  var origcolor := caster.color;
+var thecreature := 18;	//ettin
+var thecreature2 := 47;	//ent
+var thecreature3 := 10;	//demon with sword
+PrinttextabovePrivate(caster, "Voce comeca a Sentir alucinacoes...." ,caster);
+caster.graphic := thecreature;
+Printtextabove(caster, "OUCH!!!",9,1275);
+Printtextabove(caster, "OUCH!!!",9,1275);
+Printtextabove(caster, "OUCH!!!",9,1275);
+caster.color := 1175;
+sleep(3);
+caster.graphic := thecreature2;
+Printtextabove(caster, "OUCH!!!",9,1275);
+Printtextabove(caster, "OUCH!!!",9,1275);
+Printtextabove(caster, "OUCH!!!",9,1275);
+caster.color := 1;
+sleep(3);
+caster.graphic := thecreature3;
+Printtextabove(caster, "OUCH!!!",9,1275);
+Printtextabove(caster, "OUCH!!!",9,1275);
+Printtextabove(caster, "OUCH!!!",9,1275);
+caster.color := 1154;
+sleep(3);
+caster.color := origcolor;
+caster.graphic := origform;
+Printtextabove(caster, "O Efeito Da Droga Passa!!!");
+var mageryy:= GetEffectiveSkill(caster, SKILLID_MAGERY);
+ 
+destroyitem(who);
+
+endprogram

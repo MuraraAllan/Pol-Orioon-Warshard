@@ -1,0 +1,18 @@
+use os;
+use uo;
+use boat;
+
+include "include/attributes";
+
+program textcmd_setskill(who)
+var alvo := Target(who);
+if(!alvo)
+return;
+else
+SetBaseSkillBaseValue(alvo, SKILLID_BLACKSMITHY, 1000);
+SetBaseSkillBaseValue(alvo, SKILLID_ARMSLORE, 1000);
+SetBaseSkillBaseValue(alvo, SKILLID_TAMING, 1000);
+SetBaseSkillBaseValue(alvo, SKILLID_MAGERY, 100);
+SetBaseSkillBaseValue(alvo, SKILLID_MAGICRESISTANCE, 1000);
+endif
+endprogram

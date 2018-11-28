@@ -1,0 +1,1876 @@
+use uo;
+use os;
+
+include "include/yesNo";
+include "include/canAccess";
+include "guildData";
+include ":gumps:gumps";
+include "include/webPage";
+
+var guildstone;
+var gm, guild;
+var guildmanager := GetProcess(GetGlobalProperty("#GuildManager"));
+var stonemanager;
+
+program use_guild_stone(who, stone)
+  guildstone := stone;
+  EraseObjProperty(who, "IsMeditating");
+  EraseObjProperty(who, "HealTimer");
+  if(!ReserveItem(guildstone))
+    SendSysMessage(who, "Pedra de Guilda em uso.", 3, 40);
+    return;
+  endif
+  guild_id := GetObjProperty(guildstone, "guild_id");
+  stonemanager := GetProcess(GetGlobalProperty(CStr("#Guild" + guild_id)));
+  var guild_pl := GetObjProperty(who, "guild_id");
+  if((guild_id == 0)&&(!guild_pl.errortext))
+    PrintTextAbovePrivate(guildstone, "Voce ja e membro da " + FindGuild(guild_pl).getprop("guildname"), who);
+    return;
+  endif
+  guild := FindGuild(guild_id);
+  gm := guildstone.FindGM(guild);
+  var title := GetObjProperty(gm[3], "guildtitle");
+  if(!title)
+    title := "";
+  endif
+  var count := guild.members;
+  if(guild.errortext)
+    DestroyItem(guildstone);
+    return;
+  endif
+  if(((guild_pl != guild_id)||(!guild.ismember(who)))&&(who.cmdlevel < 3))
+    GFInitGump();
+    GFPage(0);
+    GFResizePic(150,  25, 5120, 460, 140);
+    GFResizePic(160,  35, 5054, 440, 120);
+    GFButtonID (165,  40, 4017, 4018, 1, 2000);
+    GFTextLine (205,  40,    0, "Guilda: " +guild.getprop("guildname"));
+    GFTextLine (205,  60,    0, "GM: " + gm[1]);
+///    GFTextLine (205,  60,    0, title + "   " + gm[1]);
+    GFTextLine (205,  80,    0, "Membros: " + count.size());
+    var type := guild.getprop("type");
+    if(type == "Order")
+      GFTextLine (205,  100,  0, "Tipo da guilda: Ordeira");
+    elseif(type == "Chaos")
+      GFTextLine (205,  100,  0, "Tipo da guilda: Caotica");
+    else
+      GFTextLine (205,  100,  0, "Tipo da guilda: Neutra");
+      guild.setprop("type", "Standard");
+    endif
+    if(!guild_pl.errortext)
+      var guild2 := FindGuild(guild_pl);
+      if(guild2.isallyguild(guild))
+        GFTextLine (205,  125,  940, "Esta guilda e aliada da sua.");
+      elseif(guild2.isenemyguild(guild))
+        GFTextLine (205,  125,  940, "Esta guilda e enimiga da sua.");
+      else
+        GFTextLine (205,  125,  940, "Esta guilda e neutra diante da sua.");
+      endif
+    else
+      GFTextLine (170,  125,  940, "Esta guilda e neutra diante de voce.");
+    endif
+    GFSendGump(who);
+    return;
+  endif
+  count:=0;
+  if(gm[1] == "In Vote")
+    if(SetFealty(who) == 0)
+      SendSysMessage(who, "Voce setou sua fidelidade.",9,89);
+      return;
+    endif
+    guildstone.FindNewGM(guild);
+    gm := guildstone.FindGM(guild);
+  endif
+  buildgump(who);
+endprogram
+
+function buildgump(who)
+  var guild;
+  var enemy;
+
+var minhags_id:=GetObjProperty(guildstone, "guild_id");
+var minhags:=FindGuild(minhags_id);
+
+///Setar GWS
+  if((gm[2] == who.serial) && (GetObjProperty(guildstone, "delayguerras") <= ReadGameClock()) )
+	var minhags_id:=GetObjProperty(guildstone, "guild_id");
+	var minhags:=FindGuild(minhags_id);
+	///stonemanager := GetProcess(GetGlobalProperty(CStr("#Guild" + guild_id)));
+foreach guilda in ListGuilds()
+
+  minhags.addenemyguild(guilda);
+  guilda.addenemyguild(minhags);
+
+  guildstone.RemoveDeclaration(minhags, guilda);
+  guildstone.AddEnemyGuild(minhags, guilda);
+sleepms(50);
+endforeach
+	SetObjProperty(guildstone, "delayguerras", ReadGameClock() + 72000 );
+    	SendSysMessage(who, "Guerras Atualizadas!",3,33);
+   endif
+var warpoints:=minhags.getprop("warpoints");
+
+if(!warpoints)
+minhags.setprop("warpoints", 0);
+endif
+
+if(warpoints < 0)
+minhags.setprop("warpoints", 0);
+endif
+ 
+  var title := GetObjProperty(gm[3], "guildtitle");
+  if(!title)
+    title := "";
+  endif
+  GFInitGump();
+  GFPage(0);
+///  GFResizePic(110,  25, 5120,  470, 470);
+ ///original > papel branco GFResizePic(120,  35, 3500,  450, 450);
+  GFResizePic(120,  35, 3500,  450, 200);
+///  GFResizePic(133, 415, 5120,  420,  45); 
+///  GFResizePic(137, 420, 5100,  410,  35);
+  GFTextLine(140,  45, 5, "Guilda: " +minhags.getprop("guildname")+ " - [" +minhags.getprop("guildabv")+ "]" );
+  GFTextLine(470,  45, 5, "WP´s: " +minhags.getprop("warpoints") );
+
+GFTextLine(140,  70, 5, "GM: " +gm[1] );
+///  GFButtonID(350, 426, 5042, 5043, 1);
+///  GFButtonID(240, 426, 5200, 5201, 1);
+  GFTextLine(165,  95,  0, "Recrutar jogador.");
+  GFTextLine(165, 115,  0, "Ver membros atuais.");
+  GFTextLine(165, 135,  0, "Ver regras da guilda.");
+////  GFTextLine(165, 155,  0, "Declarar sua fidelidade a guilda");
+///  var flty := GetObjProperty(who, "fealty");
+///  if(flty == who.serial)
+///  else
+///    foreach thing in (guild.members)
+///      if(thing.serial == flty)
+///        GFTextLine(165, 172, 0, thing.name + ".");
+///        break;
+///      endif
+///    endforeach
+///endif
+///Var nome := getobjproperty(who,"setarnome");
+///  GFTextLine (165, 175, 0, "Sigla da Guilda: ");
+///  if(GetObjProperty(who, "abv") == "0")
+///    GFTextLine (285, 175, 0, " Desligado.");
+///  endif
+///  if(GetObjProperty(who, "abv") == "1")
+///    GFTextLine (285, 175, 0, " Ligado.");
+//  endif
+
+///  GFTextLine (165, 195, 0, "Titulo da Guilda: ");
+///  if(GetObjProperty(who, "titulog") == "0")
+///    GFTextLine (285, 195, 0, " Desligado.");
+///  endif
+///  if(GetObjProperty(who, "titulog") == "1")
+///    GFTextLine (285, 195, 0, " Ligado.");
+///  endif
+
+///  GFTextLine (165, 215, 0, "Alterar seu Titulo de Guilda.");
+
+  GFTextLine (165, 155, 0, "Sair da guilda.");
+  GFTextLine (165, 175, 0, "Ver lista de Recrutas.");
+
+  GFTextLine (165, 195, 0, "Funcoes do GM da guilda.");
+///  GFTextLine (165, 215, 0, "Ver a lista de guilda aliadas.");
+///  GFTextLine (165, 235, 0, "Ver a lista de guildas inimigas.");
+///  GFTextLine (165, 255, 0, "Ver pedidos de Paz/Guerra.");
+
+  var recrutar:=GFButtonID(140,  98, 210, 211,1);
+  var membros:=GFButtonID(140, 118, 210, 211, 1);
+  var regras:=GFButtonID(140, 138, 210, 211, 1);
+////GFRadioButton(140, 158, 210, 211, 0);
+///  var siglags:=GFButtonID(140, 178, 210, 211, 1);
+///  var titulogs:=GFButtonID(140, 198, 210, 211, 1);
+///  var alterartitulo:=GFButtonID(140, 218, 210, 211, 1);
+  var resignar:=GFButtonID(140, 158, 210, 211,1);
+  var recrutas:=GFButtonID(140, 178, 210, 211, 1);
+  var funcoesgm:=GFButtonID(140, 198, 210, 211, 1);
+///  var aliadas:=GFButtonID(140, 218, 210, 211, 1);
+///  var inimigas:=GFButtonID(140, 238, 210, 211, 1);
+///  var pedidos:=GFButtonID(140, 258, 210, 211, 1);
+
+  var box := GFSendGump(who);
+
+if(box[recrutar.keyid]) 
+recruit(who);
+
+elseif(box[membros.keyid]) 
+viewmembers(who);
+
+elseif(box[regras.keyid])  
+viewcharter(who);
+buildgump(who);
+
+///elseif(box[siglags.keyid])  
+///titulo(who);
+///buildgump(who);
+
+///elseif(box[titulogs.keyid])  
+///titulogswho(who);
+///buildgump(who);
+
+///elseif(box[alterartitulo.keyid])  
+///setartitulogswho(who);
+
+elseif(box[resignar.keyid])  
+resign(who);
+
+elseif(box[recrutas.keyid])  
+viewrecruits(who);
+buildgump(who);
+
+elseif(box[funcoesgm.keyid])  
+gm_menu(who);
+
+///elseif(box[aliadas.keyid])  
+///yourallies(who);
+///buildgump(who);
+
+///elseif(box[inimigas.keyid])  
+///yourenemies(who);
+
+///elseif(box[pedidos.keyid])  
+///viewstatus(who);
+
+endif
+
+ 
+endfunction
+
+function gm_menu(who)
+  if((!(gm[2] == who.serial)) && (who.cmdlevel < 3))
+    SendSysMessage(who, "Somente o GM da guilda tem acesso.");
+    return;
+  endif
+  var title := GetObjProperty(gm[3], "guildtitle");
+  if(!title)
+    title := "[GM]";
+  endif
+  GFInitGump();
+  GFPage(0);
+///  GFResizePic(110,  25, 5120,  470, 470);
+///original papel branco  GFResizePic(120,  35, 3500,  450, 450);
+  GFResizePic(120,  35, 3500,  450, 290);
+///  GFResizePic(133, 415, 5120,  420,  45);
+///  GFResizePic(137, 420, 5100,  410,  35);
+    GFTextLine(140,  45, 5, "Guilda: " +guild.getprop("guildname")+ " - [" +guild.getprop("guildabv")+ "]" );
+  GFTextLine(140,  70, 5, "GM: " +gm[1] );
+///  var cancel := GFButtonID(240, 426, 5200, 5201, 1);
+///  var ok     := GFButtonID(350, 426, 5042, 5043, 1);
+  GFTextLine(165,  95, 0, "Trocar nome da guilda.");
+  GFTextLine(165, 115, 0, "Trocar sigla da guilda.");
+///  var type := guild.getprop("type");
+ /// if(type == "Order")
+ ///   GFTextLine(165, 135, 0, "Alinhamento. [Ordeira]");
+ /// elseif(type == "Chaos")
+ ///   GFTextLine(165, 135, 0, "Alinhamento. [Caotica]");
+ /// else
+ ///   GFTextLine(165, 135, 0, "Alinhamento. [Neutra]");
+ ///   guild.setprop("type", "Standard");
+ /// endif
+  GFTextLine(165, 135, 0, "Trocar cor da Pedra da Guilda.");
+  GFTextLine(165, 155, 0, "Setar regras da guilda.");
+  GFTextLine(165, 175, 0, "Demitir um membro.");
+ /// GFTextLine(165, 215, 0, "Declarar Guerra.");
+  ///GFTextLine(165, 235, 0, "Declarar Paz.");
+ /// GFTextLine(165, 255, 0, "Propor Alianca.");
+ /// GFTextLine(165, 275, 0, "Parar Alianca.");
+  GFTextLine(165, 195, 0, "Aceitar Recruta.");
+  GFTextLine(165, 215, 0, "Recusar Recruta.");
+  GFTextLine(165, 235, 0, "Transportar pedra da guilda.");
+  GFTextLine(165, 255, 0, "Alterar Titulo de um Membro.");
+  GFTextLine(165, 275, 0, "Voltar para o menu anterior.");
+
+var setarnome:=  GFButtonID(140,  95, 210, 211, 1);
+var setarabv:=  GFButtonID(140, 115, 210, 211, 1);
+///var alinhamento:=  GFButtonID(140, 135, 210, 211, 1);
+var cor:=  GFButtonID(140, 135, 210, 211, 1);
+var setarregras:=  GFButtonID(140, 155, 210, 211, 1);
+var demitir:=  GFButtonID(140, 175, 210, 211, 1);
+///var guerra:=  GFButtonID(140, 195, 210, 211, 1);
+///var paz:=  GFButtonID(140, 215, 210, 211, 1);
+///var iniciarali:=  GFButtonID(140, 235, 210, 211, 1);
+///var pararali:=  GFButtonID(140, 255, 210, 211, 1);
+var aceitarecruta:=  GFButtonID(140, 195, 210, 211, 1);
+var recusarecruta:=  GFButtonID(140, 215, 210, 211, 1);
+var transportar:=  GFButtonID(140, 235, 210, 211, 1);
+var alttitulo:=  GFButtonID(140, 255, 210, 211, 1);
+var voltar:=  GFButtonID(140, 275, 210, 211, 1);
+  var box := GFSendGump(who);
+
+if(box[setarnome.keyid]) 
+SetGuildName(who);
+
+elseif(box[setarabv.keyid]) 
+SetAbrevName(who);
+
+///elseif(box[alinhamento.keyid]) 
+///ToggleVirtue(who);
+
+elseif(box[cor.keyid]) 
+setstonecolor(who);
+
+elseif(box[setarregras.keyid]) 
+setcharter(who);
+
+elseif(box[demitir.keyid]) 
+Dismiss(who);
+
+///elseif(box[guerra.keyid]) 
+///setenemies(who);
+
+///elseif(box[paz.keyid]) 
+///remenemies(who);
+
+///elseif(box[iniciarali.keyid]) 
+///setallies(who);
+
+///elseif(box[pararali.keyid]) 
+///remallies(who);
+
+elseif(box[aceitarecruta.keyid]) 
+AcceptCandidate(who);
+
+elseif(box[recusarecruta.keyid]) 
+RefuseCandidate(who);
+
+elseif(box[transportar.keyid]) 
+Teleport(who);
+return;
+
+elseif(box[alttitulo.keyid])
+GrantTitle(who);
+///elseif(box[voltar.keyid])
+else
+buildgump(who);
+
+endif
+
+
+endfunction
+
+function ToggleVirtue(who);
+  if(ReadGameClock() < guild.getprop("virtuetime"))
+    SendSysMessage(who, "You can only change the guild virtue once a week.",9,89);
+    sleep(2);
+    return;
+  endif
+  GFInitGump();
+  GFPage(0);
+  GFResizePic(110,  25, 5120,  470, 470);
+  GFResizePic(120,  35, 3500,  450, 450);
+  GFResizePic(133, 415, 5120,  420,  45);
+  GFResizePic(137, 420, 5100,  410,  35);
+  GFResizePic(140, 110, 2620,  410, 280);
+  GFTextLine (240,  50,   0, "Menu de Guilda");
+  GFTextLine (160,  70, 900, "Dono: " + gm[1]);
+  var cancel := GFButtonID(240, 426, 5200, 5201, 1);
+  var ok     := GFButtonID(350, 426, 5042, 5043, 1);
+  GFSetRadioGroup(1);
+  var type := guild.getprop("type");
+  var order, chaos, standard;
+  if(type == "Standard")
+    standard := GFRadioButton(150, 122, 210, 211, 1, 1);
+    order    := GFRadioButton(150, 142, 210, 211, 0, 2);
+    chaos    := GFRadioButton(150, 162, 210, 211, 0, 3);
+  elseif(type == "Order")
+    standard := GFRadioButton(150, 122, 210, 211, 0, 1);
+    order    := GFRadioButton(150, 142, 210, 211, 1, 2);
+    chaos    := GFRadioButton(150, 162, 210, 211, 0, 3);
+  else
+    standard := GFRadioButton(150, 122, 210, 211, 0, 1);
+    order    := GFRadioButton(150, 142, 210, 211, 0, 2);
+    chaos    := GFRadioButton(150, 162, 210, 211, 1, 3);
+  endif
+  GFTextLine(175, 120, 300, "Neutra");
+  GFTextLine(175, 140, 300, "Ordereira");
+  GFTextLine(175, 160, 300, "Caotica");
+  var box := GFSendGump(who);
+  if(box[cancel.keyid])
+    return;
+  endif
+  var newtype;
+  if(box[standard.keyid])
+    newtype := "Standard";
+  elseif(box[order.keyid])
+    newtype := "Order";
+  else
+    newtype := "Chaos";
+  endif
+  if(type == newtype)
+    return;
+  endif
+  if(guildstone.OrderChaos(guild, newtype))
+    guild.setprop("virtuetime", ReadGameClock()+(7*24*3600));
+    var ev      := struct;
+    ev.+type    := "orderchaos";
+    ev.+message := "Guild type changed to: " + newtype + ".";
+    guildmanager.SendEvent(ev);
+    guildstone.guildchat(ev, guild);
+    var evnt := struct;
+    evnt.type := "gmbcast";
+    evnt.+src := "GuildManager";
+    evnt.+msg := "Guild Manager: guild [" + guild.getprop("guildname") + ", [" + guild.getprop("guildabv") + "]]  has switched to " + newtype + ".";
+    var stafflist := GetProcess(GetGlobalProperty("#stafflist"));
+    stafflist.SendEvent(evnt);
+    sleep(2);
+  endif
+endfunction
+
+function recruit(who)
+var count:=1;
+foreach member in (guild.members)
+  if(gm[2] != member.serial)
+      count := count + 1;
+  endif
+endforeach
+
+if(count >= 6)
+ SendSysMessage(who, "Esta guilda ja possui o numero maximo de membros.");
+ return;
+endif
+
+  SendSysMessage(who, "Selecione o jogador.");
+  var targ:=Target(who, TGTOPT_CHECK_LOS + TGTOPT_NEUTRAL);
+  if(!targ.acctname)
+    SendSysMessage(who, "Voce deve usar isto em jogadores.",9,89);
+    sleep(2);
+    return;
+  elseif(GetObjProperty(targ, "guild_id"))
+    SendSysMessage(who, "Este pessoa ja esta na guilda.",9,89);
+    sleep(2);
+    return;
+  endif
+  var guildname := guild.getprop("guildname");
+  SendSysMessage(targ, "Voce gostaria de se juntar a: " + guildname,9,89);
+  var answer := YesNo(targ, "Entrar na Guilda?");
+  if(!answer)
+    SendSysMessage(targ, "Voce recusou entrar na " + guildname + ".",9,89);
+    SendSysMessage(who, targ.name + " recusou entrar na guilda.",9,89);
+    sleep(2);
+    return;
+  endif
+  var recruits := guild.getprop("recruits");
+  if((!recruits) or (recruits[1] == "NONE"))
+    recruits := {};
+  endif
+  if(targ.serial in recruits)
+    SendSysMessage(who, targ.name + " voce foi recrutado.",9,89);
+    sleep(2);
+    return;
+  else
+    recruits.append(targ.serial);
+    guild.setprop("recruits", recruits);
+    SendSysMessage(who, targ.name + " foi recrutado para a guilda.");
+    SendSysMessage(targ, "Voce foi recrutado para entrar na guilda " + guild.getprop("guildname") + ".");
+    if(who != gm[3])
+      SendSysMessage(gm[3], targ.name + " foi recrutado para entrar na guilda.",9,89);
+    endif
+    sleep(2);
+  endif
+endfunction
+
+function viewmembers(who)
+  var count := 0;
+  var rc := 120;
+  var pc := 0;
+  GFInitGump();
+  GFPage(pc);
+  pc := pc + 1;
+///  GFResizePic(110,  25, 5120,  470, 470);
+  GFResizePic(120,  35, 3500,  450, 450);
+///  GFResizePic(133, 415, 5120,  420,  45);
+///  GFResizePic(137, 420, 5100,  410,  35);
+  GFResizePic(140, 110, 2620,  410, 280);
+///  GFTextLine (240,  50,   0, "Guild Roster");
+ GFTextLine (160,  70, 900, "              Ver Membros");
+  GFTextLine (140,  90,   0, "Membros");
+ /// var ok := GFButtonID (285, 425, 5042, 5043, 1);
+  GFPage(pc);
+  pc := pc + 1;
+  foreach member in (guild.members)
+    if(gm[2] != member.serial)
+      count := count + 1;
+      if(count > 13)
+        count := 1;
+        rc := 120;
+        GFButtonPage(315, 393, 5540, 5541, pc);
+        if(pc > 2)
+          GFButtonPage(275, 393, 5537, 5538,(pc - 2));
+        endif
+        GFPage(pc);
+        pc := pc + 1;
+      endif
+   ///   var title := GetObjProperty(member, "guildtitle");
+   ///   if(!title)
+    ///    title := "";
+    ///  endif
+      ///GFTextLine(150, rc, 300, member.name + ":  " + title);
+      GFTextLine(150, rc, 300, member.name);
+      rc := rc + 20;
+    endif
+  endforeach
+  if(count == 0)
+    GFTextLine(150, rc, 940, "Nao ha membros");
+  endif
+  var box := GFSendGump(who);
+  ///if(box[ok.keyid])
+  ///  buildgump(who);
+  ///endif
+endfunction
+
+function viewcharter(who)
+  GFInitGump();
+  GFPage(0);
+///  GFResizePic( 40, 40, 5120, 560, 400);
+  GFResizePic( 50, 50, 3500, 540, 380);
+  GFResizePic( 60, 90, 2620, 520, 270);
+  GFTextLine(200, 70, 5, "Regras da "+guild.getprop("guildname"));
+  var message := guild.getprop("gc");
+  if(message[1]=="NONE")
+    message:={"", "Nao ha regras setadas.", ""};
+  endif
+  var i;
+  var line := 3;
+  for(i:=4; i<=15; i:=i+1)
+    if(message[i-3]!=error)
+      GFTextLine(70, (82+((line-2)*20)), 300, message[i-3]);
+      line:=line+1;
+    endif
+  endfor
+  GFTextLine(200, 360, 70, "GM: " + gm[1]);
+  var wp := guild.getprop("webpage");
+  if(wp == error)
+    GFTextLine(170, 390, 0, "Pagina da Guilda: Nao Setada");
+  else
+    GFTextLine(170, 390, 0, "Pagina da Guilda: " + wp);
+  endif
+  GFTextLine( 60, 390, 0, "Visitar:");
+  var goweb := GFButtonID(130, 390, 4023, 4025, 1);
+  var res := GFSendGump(who);
+  if(res[goweb.keyid])
+      if(wp == error)
+        OpenWebSite(who, "www.sysco.rg3.net");
+      else
+        OpenWebSite(who, wp);
+      endif
+  endif
+endfunction
+
+function SetFealty(who)
+  var guildmembers := guild.members;
+  var count := 0;
+  var rc := 120;
+  var pc := 0;
+  GFInitGump();
+  GFPage(pc);
+  pc := pc + 1;
+  GFResizePic(110,  25, 5120,  470, 470);
+  GFResizePic(120,  35, 3500,  450, 450);
+  GFResizePic(133, 415, 5120,  420,  45);
+  GFResizePic(137, 420, 5100,  410,  35);
+  GFResizePic(140, 110, 2620,  410, 280);
+  GFTextLine (240,  50,   0, "Declare Fealty");
+  GFTextLine (160,  70, 900, "Guild Master: " + gm[1]);
+  GFTextLine (140,  90,   0, "Member Name");
+  var cancel := GFButtonID(240, 426, 5200, 5201, 1);
+  var ok     := GFButtonID(350, 426, 5042, 5043, 1);
+  GFPage(pc);
+  pc := pc + 1;
+  var rg := 1;
+  GFSetRadioGroup(rg);
+  rg := rg + 1;
+  foreach member in guildmembers
+    count := count + 1;
+    if(count > 13)
+      count := 1;
+      rc := 120;
+      GFButtonPage(315, 393, 3500, 5541, pc);
+      if(pc > 2)
+        GFButtonPage(275, 393, 5537, 5538, (pc - 2));
+      endif
+      GFPage(pc);
+      pc := pc + 1;
+      rg := rg + 1;
+      GFSetRadioGroup(rg);
+    endif
+    GFRadioButton(150, rc + 2, 2103, 2104, 0, member.serial);
+    if(gm[2] == member.serial)
+      GFTextLine(185, rc, 940, "GM: " + member.name);
+    else
+      GFTextLine(185, rc, 940, member.name);
+    endif
+    rc := rc + 20;
+  endforeach
+  var choose;
+  var box := GFSendGump(who);
+  if(box[ok.keyid])
+    foreach k in(box.keys)
+      if((k != ok.keyid) and (k != 0))
+        choose := k;
+        break;
+      endif
+    endforeach
+    SetObjProperty(who, "fealty", choose);
+    SendSysMessage(who, "You declare your fealty.");
+    sleep(2);
+    return 1;
+  else
+    SendSysMessage(who, "Cancelled",9,89);
+    sleep(2);
+    return 0;
+  endif
+endfunction
+
+function resign(who)
+  SendSysMessage(who, "Voce esta certo?");
+  var answer := YesNo(who, "Sair da Guilda?");
+  if(!answer)
+    SendSysMessage(who, "Cancelado.");
+    return;
+endif
+  who.title_guild:="";
+  EraseObjProperty(who, "titullo");
+  EraseObjProperty(who, "abv");
+  EraseObjProperty(who, "titulogs");
+
+
+     who.title_suffix := "";
+
+ SetObjProperty(who, "abv", "0" );
+  var ev := struct;
+  ev.+source := who;
+  ev.+guild  := guild;
+  ev.+type   := "resign";
+  ev.+gm     := gm[3];
+  ev.+gs     := guildstone;
+
+  stonemanager.SendEvent(ev);
+
+endfunction
+
+function viewrecruits(who)
+  var count := 0;
+  var rc := 120;
+  var pc := 0;
+  GFInitGump();
+  GFPage(pc);
+  pc := pc + 1;
+ /// GFResizePic(110,  25, 5120,  470, 470);
+  GFResizePic(120,  35, 3500,  450, 450);
+ /// GFResizePic(133, 415, 5120,  420,  45);
+ /// GFResizePic(137, 420, 5100,  410,  35);
+  GFResizePic(140, 110, 2620,  410, 280);
+  ///GFTextLine (240,  50,   0, "Guild Recruitment Status Page");
+ GFTextLine (160,  70, 900, "                  Lista de Recrutas");
+  GFTextLine (140,  90,   0, "Recrutas");
+ /// var ok := GFButtonID (285, 425, 5042, 5043, 1);
+  var total := 0;
+  foreach gstatus in (guild.getprop("recruits"))
+    var enemy := SystemFindObjectBySerial(gstatus, SYSFIND_SEARCH_OFFLINE_MOBILES);
+    if(enemy)
+      count := count + 1;
+      if(count > 13)
+        count := 1;
+        rc := 120;
+        GFButtonPage(315, 396, 5540, 5541, pc);
+        if(pc > 2)
+          GFButtonPage(275, 396, 5537, 5538, (pc - 2));
+        endif
+        GFPage(pc);
+        pc := pc + 1;
+      endif
+      GFTextLine(150, rc, 300, enemy.name);
+      rc := rc + 20;
+      total := total + 1;
+    endif
+  endforeach
+  if(total == 0)
+    GFTextLine(150, rc, 300, "Nao ha recrutas.");
+  endif
+  ////GFTextLine (340,  90,   0, "total recruits: " + total);
+  var res := GFSendGump(who);
+  var a;
+  if(!res[a.keyid]);
+    buildgump(who);
+  endif
+endfunction
+
+function Dismiss(who)
+  var count := 0;
+  var rc := 120;
+  var pc := 0;
+  GFInitGump();
+  GFPage(pc);
+  pc := pc + 1;
+ /// GFResizePic(110,  25, 5120,  470, 470);
+  GFResizePic(120,  35, 3500,  450, 450);
+ /// GFResizePic(133, 415, 5120,  420,  45);
+ /// GFResizePic(137, 420, 5100,  410,  35);
+  GFResizePic(140, 110, 2620,  410, 280);
+  ///GFTextLine (240,  50,   0, "Guild Roster");
+  GFTextLine (160,  70, 900, "                Demitir Membros");
+  GFTextLine (140,  90,   0, "Membros");
+  ////var ok := GFButtonID (285, 425, 5042, 5043, 1);
+  GFPage(pc);
+  pc := pc + 1;
+  var rg := 1;
+  GFSetRadioGroup(rg);
+  foreach member in (guild.members)
+    if(gm[2] != member.serial)
+      count := count + 1;
+      if(count > 13)
+        count := 1;
+        rc := 120;
+        GFButtonPage(315, 393, 5540, 5541, pc);
+        if(pc > 2)
+          GFButtonPage(275, 393, 5537, 5538,(pc - 2));
+        endif
+        GFPage(pc);
+        pc := pc + 1;
+        rg := rg + 1;
+        ////GFSetRadioGroup(rg);
+      endif
+    ///  var title := GetObjProperty(member, "guildtitle");
+     /// if(!title)
+     ///   title := "";
+     /// endif
+    ///  GFTextLine(175, rc, 300, member.name + ":  " + title);
+      GFTextLine(175, rc, 300, member.name);
+      GFButtonID(150, rc, 210, 211, 1, member.serial);
+      ///GFRadioButton(150, rc, 210, 211, 0, member.serial);
+      rc := rc + 20;
+    endif
+  endforeach
+  if(count == 0)
+    GFTextLine(150, rc, 940, "No Members");
+  endif
+  var box := GFSendGump(who);
+  var choose := 0;
+ /// if(!box[ok.keyid])
+  var a;
+  if(!box[a.keyid])
+    foreach k in(box.keys)
+      if((k > 1) and (k != a.keyid))
+        choose := k;
+        break;
+      endif
+    endforeach
+    foreach thing in (guild.members)
+      if(thing.serial == choose)
+        guild.removemember(thing);
+        EraseObjProperty(thing, "guild_id");
+        EraseObjProperty(thing, "fealty");
+        EraseObjProperty(thing, "abv");
+        thing.title_guild := "";
+        SendSysMessage(thing, "Voce foi removido da guilda.",9,89);
+        SendSysMessage(who, "Jogador removido.", 3,70);
+        var evnt      := struct;
+        evnt.+status  := 1;
+        evnt.+message := thing.name + " foi removido da guilda.";
+        guildstone.guildchat(evnt, guild);
+        break;
+      endif
+    endforeach
+    sleep(2);
+  else
+    SendSysMessage(who, "Cancelled.",9,89);
+    sleep(2);
+    gm_menu(who);
+    return;
+  endif
+endfunction
+
+function setallies(who)
+  var count := 0;
+  var rc := 120;
+  var pc := 0;
+  GFInitGump();
+  GFPage(pc);
+  pc := pc + 1;
+  GFResizePic(110,  25, 5120,  470, 470);
+  GFResizePic(120,  35, 3500,  450, 450);
+  GFResizePic(133, 415, 5120,  420,  45);
+  GFResizePic(137, 420, 5100,  410,  35);
+  GFResizePic(140, 110, 2620,  410, 280);
+  GFTextLine (240,  50,   0, "Declarar Paz(Aliado)");
+  GFTextLine (160,  70, 900, "Guild Master: " + gm[1]);
+  GFTextLine (140,  90,   0, "Guild Name");
+  var cancel := GFButtonID(240, 426, 5200, 5201, 1);
+  var ok     := GFButtonID(350, 426, 5042, 5043, 1);
+  GFPage(pc);
+  pc := pc + 1;
+  var rg := 1;
+  GFSetRadioGroup(rg);
+  var orderguilds := GetGlobalProperty("OrderGuilds");
+  var chaosguilds := GetGlobalProperty("ChaosGuilds");
+  foreach gstatus in ListGuilds()
+    if((VirtueChecking(guild, gstatus)) and (!guild.isallyguild(gstatus)) and (guild.guildid != gstatus.guildid) and (!guild.isenemyguild(gstatus)) and (guildstone.Pending(guild, gstatus, "RE")))
+      count := count + 1;
+      if(count > 13)
+        count := 1;
+        rc := 120;
+        GFButtonPage(315, 393, 5540, 5541, pc);
+        if(pc > 2)
+          GFButtonPage(275, 393, 5537, 5538, (pc - 2));
+        endif
+        GFPage(pc);
+        rg := rg + 1;
+        GFSetRadioGroup(rg);
+        pc := pc + 1;
+      endif
+      GFTextLine(175, rc, 300, gstatus.getprop("guildname") + " [" + gstatus.getprop("guildabv") + "]");
+      GFRadioButton(150, rc, 210, 211, 0, gstatus.guildid);
+      rc := rc + 20;
+    endif
+  endforeach
+  var choose:=0;
+  var box := GFSendGump(who);
+  if(box[ok.keyid])
+    foreach k in(box.keys)
+      if(k > 1)
+        choose := k;
+        break;
+      endif
+    endforeach
+  else
+    SendSysMessage(who, "Cancelled.",9,89);
+    sleep(2);
+    gm_menu(who);
+    return;
+  endif
+  if(!choose || choose==0)
+    SendSysMessage(who, "Cancelled.",9,89);
+    sleep(2);
+    gm_menu(who);
+    return;
+  endif
+  box := FindGuild(choose);
+  var ev := struct;
+  ev.+type  := "declareally";
+  ev.+who   := who;
+  ev.+guild := guild;
+  ev.+enemy := box;
+  stonemanager.SendEvent(ev);
+endfunction
+
+function remallies(who)
+  var count := 0;
+  var rc := 120;
+  var pc := 0;
+  GFInitGump();
+  GFPage(pc);
+  pc := pc + 1;
+  GFResizePic(110,  25, 5120,  470, 470);
+  GFResizePic(120,  35, 3500,  450, 450);
+  GFResizePic(133, 415, 5120,  420,  45);
+  GFResizePic(137, 420, 5100,  410,  35);
+  GFResizePic(140, 110, 2620,  410, 280);
+  GFTextLine (240,  50,   0, "Fim da Paz(Aliado)");
+  GFTextLine (160,  70, 900, "Guild Master: " + gm[1]);
+  GFTextLine (140,  90,   0, "Guild Name");
+  var cancel := GFButtonID(240, 426, 5200, 5201, 1);
+  var ok     := GFButtonID(350, 426, 5042, 5043, 1);
+  GFPage(pc);
+  pc := pc + 1;
+  var rg := 1;
+  GFSetRadioGroup(rg);
+  var orderguilds := GetGlobalProperty("OrderGuilds");
+  var chaosguilds := GetGlobalProperty("ChaosGuilds");
+  foreach gstatus in ListGuilds()
+    if((VirtueChecking(guild, gstatus)) and (guild.isallyguild(gstatus)) and (guild.guildid != gstatus.guildid))
+      count := count + 1;
+      if(count > 13)
+        count := 1;
+        rc := 120;
+        GFButtonPage(315, 393, 5540, 5541, pc);
+        if(pc > 2)
+          GFButtonPage(275, 393, 5537, 5538, (pc - 2));
+        endif
+        GFPage(pc);
+        rg := rg + 1;
+        GFSetRadioGroup(rg);
+        pc := pc + 1;
+      endif
+      GFTextLine(175, rc, 300, gstatus.getprop("guildname") + " [" + gstatus.getprop("guildabv") + "]");
+      GFRadioButton(150, rc, 210, 211, 0, gstatus.guildid);
+      rc := rc + 20;
+    endif
+  endforeach
+  var choose:=0;
+  var box := GFSendGump(who);
+  if(box[ok.keyid])
+    foreach k in(box.keys)
+      if(k > 1)
+        choose := k;
+        break;
+      endif
+    endforeach
+  else
+    SendSysMessage(who, "Cancelled.",9,89);
+    sleep(2);
+    gm_menu(who);
+    return;
+  endif
+  if((!choose) || (choose == 0))
+    SendSysMessage(who, "Cancelled.",9,89);
+    sleep(2);
+    gm_menu(who);
+    return;
+  endif
+  box := FindGuild(choose);
+  var ev := struct;
+  ev.+type  := "removeally";
+  ev.+who   := who;
+  ev.+guild := guild;
+  ev.+enemy := box;
+  stonemanager.SendEvent(ev);
+endfunction
+
+function setenemies(who)
+  var count := 0;
+  var rc := 120;
+  var pc := 0;
+  GFInitGump();
+  GFPage(pc);
+  pc := pc + 1;
+  GFResizePic(110,  25, 5120,  470, 470);
+  GFResizePic(120,  35, 3500,  450, 450);
+  GFResizePic(133, 415, 5120,  420,  45);
+  GFResizePic(137, 420, 5100,  410,  35);
+  GFResizePic(140, 110, 2620,  410, 280);
+  GFTextLine (240,  50,   0, "Declarar Guerra(GW)");
+  GFTextLine (160,  70, 900, "Guild Master: " + gm[1]);
+  GFTextLine (140,  90,   0, "Guild Name");
+  var cancel := GFButtonID(240, 426, 5200, 5201, 1);
+  var ok     := GFButtonID(350, 426, 5042, 5043, 1);
+  GFPage(pc);
+  pc := pc + 1;
+  var rg := 1;
+  GFSetRadioGroup(rg);
+  var orderguilds := GetGlobalProperty("OrderGuilds");
+  var chaosguilds := GetGlobalProperty("ChaosGuilds");
+  foreach gstatus in ListGuilds()
+    if((VirtueChecking(guild, gstatus)) and (!guild.isallyguild(gstatus)) and (guild.guildid != gstatus.guildid) and (!guild.isenemyguild(gstatus)) and (guildstone.Pending(guild, gstatus, "RA")))
+      count := count + 1;
+      if(count > 13)
+        count := 1;
+        rc := 120;
+        GFButtonPage(315, 393, 5540, 5541, pc);
+        if(pc > 2)
+          GFButtonPage(275, 393, 5537, 5538, (pc - 2));
+        endif
+        GFPage(pc);
+        GFSetRadioGroup(rg);
+        pc := pc + 1;
+        rg := rg + 1;
+        GFSetRadioGroup(rg);
+      endif
+      GFTextLine(175, rc, 300, gstatus.getprop("guildname") + " [" + gstatus.getprop("guildabv") + "]");
+      GFRadioButton(150, rc, 210, 211, 0, gstatus.guildid);
+      rc := rc + 20;
+    endif
+  endforeach
+  var choose:=0;
+  var box := GFSendGump(who);
+  if(box[ok.keyid])
+    foreach k in(box.keys)
+      if(k > 1)
+        choose := k;
+        break;
+      endif
+    endforeach
+  else
+    SendSysMessage(who, "Cancelled.",9,89);
+    sleep(2);
+    gm_menu(who);
+    return;
+  endif
+  if(!choose || choose==0)
+    SendSysMessage(who, "Cancelled.",9,89);
+    sleep(2);
+    gm_menu(who);
+    return;
+  endif
+  box := FindGuild(choose);
+  var ev := struct;
+  ev.+type  := "declarewar";
+  ev.+who   := who;
+  ev.+guild := guild;
+  ev.+enemy := box;
+  stonemanager.SendEvent(ev);
+endfunction
+
+function remenemies(who)
+  var count := 0;
+  var rc := 120;
+  var pc := 0;
+  GFInitGump();
+  GFPage(pc);
+  pc := pc + 1;
+  GFResizePic(110,  25, 5120,  470, 470);
+  GFResizePic(120,  35, 3500,  450, 450);
+  GFResizePic(133, 415, 5120,  420,  45);
+  GFResizePic(137, 420, 5100,  410,  35);
+  GFResizePic(140, 110, 2620,  410, 280);
+  GFTextLine (240,  50,   0, "Fim Guerra: (End GW)");
+  GFTextLine (160,  70, 900, "Guild Master: " + gm[1]);
+  GFTextLine (140,  90,   0, "Guild Name");
+  var cancel := GFButtonID(240, 426, 5200, 5201, 1);
+  var ok     := GFButtonID(350, 426, 5042, 5043, 1);
+  GFPage(pc);
+  pc := pc + 1;
+  var rg := 1;
+  GFSetRadioGroup(rg);
+  var orderguilds := GetGlobalProperty("OrderGuilds");
+  var chaosguilds := GetGlobalProperty("ChaosGuilds");
+  foreach gstatus in ListGuilds()
+    if((VirtueChecking(guild, gstatus)) and (guild.isenemyguild(gstatus)) and (guild.guildid != gstatus.guildid))
+      count := count + 1;
+      if(count > 13)
+        count := 1;
+        rc := 120;
+        GFButtonPage(315, 393, 5540, 5541, pc);
+        if(pc > 2)
+          GFButtonPage(275, 393, 5537, 5538, (pc - 2));
+        endif
+        GFPage(pc);
+        rg := rg + 1;
+        GFSetRadioGroup(rg);
+        pc := pc + 1;
+      endif
+      GFTextLine(175, rc, 300, gstatus.getprop("guildname") + " [" + gstatus.getprop("guildabv") + "]");
+      GFRadioButton(150, rc, 210, 211, 0, gstatus.guildid);
+      rc := rc + 20;
+    endif
+  endforeach
+  var choose:=0;
+  var box := GFSendGump(who);
+  if(box[ok.keyid])
+    foreach k in(box.keys)
+      if(k > 1)
+        choose := k;
+        break;
+      endif
+    endforeach
+  else
+    SendSysMessage(who, "Cancelled.",9,89);
+    sleep(2);
+    gm_menu(who);
+    return;
+  endif
+  if((!choose) || (choose == 0))
+    SendSysMessage(who, "Cancelled.",9,89);
+    sleep(2);
+    gm_menu(who);
+    return;
+  endif
+  box := FindGuild(choose);
+  var ev := struct;
+  ev.+type  := "removeenemy";
+  ev.+who   := who;
+  ev.+guild := guild;
+  ev.+enemy := box;
+  stonemanager.SendEvent(ev);
+endfunction
+
+function yourallies(who)
+  var count := 0;
+  var rc := 120;
+  var pc := 0;
+  GFInitGump();
+  GFPage(pc);
+  pc := pc + 1;
+ /// GFResizePic(110,  25, 5120,  470, 470);
+  GFResizePic(120,  35, 3500,  450, 450);
+ /// GFResizePic(133, 415, 5120,  420,  45);
+ /// GFResizePic(137, 420, 5100,  410,  35);
+  GFResizePic(140, 110, 2620,  410, 280);
+  ///GFTextLine (240,  50,   0, "Guild Ally Status Page");
+  GFTextLine (160,  70, 900, "             Lista de Guildas Aliadas");
+  GFTextLine (140,  90,   0, "Guildas");
+ /// var ok := GFButtonID (285, 425, 5042, 5043, 1);
+  var total := 0;
+  var orderguilds := GetGlobalProperty("OrderGuilds");
+  var chaosguilds := GetGlobalProperty("ChaosGuilds");
+  foreach gstatus in (guild.getprop("guildallies"))
+    var enemy := FindGuild(gstatus);
+    if((enemy) and (VirtueChecking(guild, enemy)))
+      count := count + 1;
+      if(count > 13)
+        count := 1;
+        rc := 120;
+        GFButtonPage(315, 396, 5540, 5541, pc);
+        if(pc > 2)
+          GFButtonPage(275, 396, 5537, 5538, (pc - 2));
+        endif
+        GFPage(pc);
+        pc := pc + 1;
+      endif
+      GFTextLine(150, rc, 300, enemy.GetProp("guildname") + "  " + enemy.GetProp("guildabv"));
+      rc := rc + 20;
+      total := total + 1;
+    endif
+  endforeach
+  if(total == 0)
+    GFTextLine(150, rc, 300, "Nao ha guildas aliadas.");
+  endif
+ /// GFTextLine (340,  90,   0, "total requests: " + total);
+  var res := GFSendGump(who);
+var a;
+  if(!res[a.keyid]);
+    buildgump(who);
+  endif
+endfunction
+
+function yourenemies(who)
+  var count := 0;
+  var rc := 120;
+  var pc := 0;
+  GFInitGump();
+  GFPage(pc);
+  pc := pc + 1;
+  GFResizePic(110,  25, 5120,  470, 470);
+  GFResizePic(120,  35, 3500,  450, 450);
+  GFResizePic(133, 415, 5120,  420,  45);
+  GFResizePic(137, 420, 5100,  410,  35);
+  GFResizePic(140, 110, 2620,  410, 280);
+  GFTextLine (240,  50,   0, "Guild Enemy Status Page");
+  GFTextLine (160,  70, 900, "Guild Master: " + gm[1]);
+  GFTextLine (140,  90,   0, "Guild Listing");
+  var ok := GFButtonID (285, 425, 5042, 5043, 1);
+  var total := 0;
+  var orderguilds := GetGlobalProperty("OrderGuilds");
+  var chaosguilds := GetGlobalProperty("ChaosGuilds");
+  foreach gstatus in (guild.getprop("guildenemies"))
+    var enemy := FindGuild(gstatus);
+    if((enemy) and (VirtueChecking(guild, enemy)))
+      count := count + 1;
+      if(count > 13)
+        count := 1;
+        rc := 120;
+        GFButtonPage(315, 396, 5540, 5541, pc);
+        if(pc > 2)
+          GFButtonPage(275, 396, 5537, 5538, (pc - 2));
+        endif
+        GFPage(pc);
+        pc := pc + 1;
+      endif
+      GFTextLine(150, rc, 300, enemy.GetProp("guildname") + "  " + enemy.GetProp("guildabv"));
+      rc := rc + 20;
+      total := total + 1;
+    endif
+  endforeach
+  if(total == 0)
+    GFTextLine(150, rc, 300, "No Current Requests");
+  endif
+  GFTextLine (340,  90,   0, "total requests: " + total);
+  var res := GFSendGump(who);
+  if(res[ok.keyid]);
+    buildgump(who);
+  endif
+endfunction
+
+function viewstatus(who)
+  var count := 0;
+  var rc := 120;
+  var pc := 0;
+  GFInitGump();
+  GFPage(pc);
+  pc := pc + 1;
+  GFResizePic(110,  25, 5120,  470, 470);
+  GFResizePic(120,  35, 3500,  450, 450);
+  GFResizePic(133, 415, 5120,  420,  45);
+  GFResizePic(137, 420, 5100,  410,  35);
+  GFResizePic(140, 110, 2620,  410, 280);
+  GFTextLine (240,  50,   0, "Guild Relation Status Page");
+  GFTextLine (160,  70, 900, "Guild Master: " + gm[1]);
+  GFTextLine (140,  90,   0, "Guild Listing");
+  var ok := GFButtonID (285, 425, 5042, 5043, 1);
+  var total := 0;
+  var orderguilds := GetGlobalProperty("OrderGuilds");
+  var chaosguilds := GetGlobalProperty("ChaosGuilds");
+  foreach gstatus in (guild.getprop("GuildDeclareStatus"))
+    var chk := gstatus[1];
+    if(chk == guild.guildid)
+      chk := gstatus[2];
+    endif
+    chk := FindGuild(chk);
+    if(chk)
+      if(VirtueChecking(guild, chk))
+        count := count + 1;
+        if(count > 13)
+          count := 1;
+          rc := 120;
+          GFButtonPage(315, 396, 5540, 5541, pc);
+          if(pc > 2)
+            GFButtonPage(275, 396, 5537, 5538, (pc - 2));
+          endif
+          GFPage(pc);
+          pc := pc + 1;
+        endif
+        var gname := chk.GetProp("guildname");
+        if(gstatus[3] == "RA")
+          GFTextLine(150, rc, 300, gname + " (pending alliance)");
+        elseif(gstatus[3] == "RE")
+          GFTextLine(150, rc, 300, gname + " (pending war)");
+        endif
+        rc := rc + 20;
+        total := total + 1;
+      endif
+    endif
+  endforeach
+  if(total == 0)
+    GFTextLine(150, rc, 300, "No Current Requests");
+  endif
+  GFTextLine (340,  90,   0, "total requests: " + total);
+  var res := GFSendGump(who);
+  if(res[ok.keyid]);
+    buildgump(who);
+  endif
+endfunction
+
+function VirtueChecking(guild, enemy)
+  var type := guild.getprop("type");
+  var ret := 1;
+  if(type != "Standard")
+    var holder := enemy.getprop("type");
+    if(holder != "Standard")
+      ret := 0;;
+    endif
+  endif
+  return ret;
+endfunction
+
+function SetGuildName(who)
+  if(ReadGameClock() < guild.getprop("nametime"))
+    SendSysMessage(who, "Voce pode mudar o nome da guilda somente 1 vez por semana.",9,89);
+    sleep(2);
+    return;
+  endif
+  var tname := SendTextEntryGump(who, "Qual o novo nome?",0,1,MAX_GUILD_NAME_SIZE, "");
+  if(!tname)
+    return;
+  elseif(len(tname) > MAX_GUILD_NAME_SIZE)
+    SendSysMessage(who, "Voce ultrapassou " + MAX_GUILD_NAME_SIZE + " letras.",9,89);
+    sleep(2);
+    return;
+  endif
+  if(!guildstone.Name_Validation(tname))
+    PrintTextAbovePrivate(guildstone, "Este nome ja existe.",who);
+    sleep(2);
+    return;
+  elseif(!guildstone.Character_Validation(tname))
+    SendSysMessage(who, "Voce usou letras invalidas",9,89);
+    sleep(2);
+    return;
+  endif
+if(IsNull(tname))
+    SendSysMessage(who, "Nome Invalido!");
+    return 0;
+  endif
+  guildstone.name := "Pedra de Guilda da "+tname;
+  guild.setprop("guildname", tname);
+  guild.setprop("nametime", ReadGameClock()+(7*24*3600));
+  var ev      := struct;
+  ev.+status  := 1;
+  ev.+message := "Nome da guilda mudado para: " + tname + ".";
+  guildstone.guildchat(ev, guild);
+  sleep(2);
+endfunction
+
+function SetAbrevName(who)
+  if(ReadGameClock() < guild.getprop("abrvtime"))
+    SendSysMessage(who, "A abreviacao da guilda pode ser mudado somente 1 vez por semana.",9,89);
+    sleep(2);
+    return;
+  endif
+  var tname:=SendTextEntryGump(who, "Qual a nova abreviacao?",0,1,MAX_GUILD_ABREV_SIZE, "");
+  if(!tname)
+    return;
+  elseif(len(tname)>MAX_GUILD_ABREV_SIZE)
+    SendSysMessage(who, "Voce ultrapassou "+MAX_GUILD_ABREV_SIZE+" letras.",9,89);
+    sleep(2);
+    return;
+  endif
+  if(!guildstone.Abreviation_Validation(tname))
+    PrintTextAbovePrivate(guildstone, "Este nome ja existe.",who);
+    sleep(2);
+    return;
+  elseif(!guildstone.Character_Validation(tname))
+    SendSysMessage(who, "Voce usou letras invalidas.",9,89);
+    sleep(2);
+    return;
+  endif
+if(IsNull(tname))
+    SendSysMessage(who, "Abreviacao Invalida!");
+    return 0;
+  endif
+  guild.setprop("guildabv", tname);
+  guild.setprop("abrvtime", ReadGameClock()+(7*24*3600));
+  foreach member in (guild.members)
+    var abv := GetObjProperty(member, "abv");
+    if(!abv)
+      SetObjProperty(member, "abv", "0");
+    else
+      SetObjProperty(member, "abv", "0");
+    endif
+    
+    guildstone.Toggle_Showing(who, guild);
+  endforeach
+  var ev      := struct;
+  ev.+status  := 1;
+  ev.+message := "Abreviacao da guilda mudado para: [" + tname + "].";
+  guildstone.guildchat(ev, guild);
+  sleep(2);
+endfunction
+
+function setcharter(who)
+  SetNotes(guild);
+  var box := GFSendGump(who);
+  if(box[0]!=2)
+    SendSysMessage(who, "Canceled.",9,89);
+    sleep(2);
+    return;
+  endif
+  var subnote, i, message:= {};
+  foreach thing in (box.keys)
+    if(thing == 525)
+      subnote := box[thing];
+      subnote[1, find(subnote, ": ", 1)+1] := "";
+      if(subnote != "")
+        guild.setprop("webpage", subnote);
+      endif
+    elseif((thing != 0) and (thing != 2))
+      subnote := box[thing];
+      subnote[1, find(subnote, ": ", 1)+1] := "";
+      if(subnote != "")
+        message.append(subnote + " ");
+      endif
+    endif
+  endforeach
+  guild.setprop("gc", message);
+  SendSysMessage(who, "Charter saved.", 3,70);
+endfunction
+
+function SetNotes(guild)
+  GFInitGump();
+  GFPage(0);
+  GFResizePic( 20,   0, 5120, 560, 340);
+  GFResizePic( 30,  30, 2620, 540, 260);
+  GFResizePic( 30, 300, 3500, 540,  30);
+  GFTextLine ( 30,  5,  910, "Adcione as Regras da Guilda:");
+  GFTextLine (382,  5,  910, "Salvar Alteracoes:");
+  GFButtonID(508, 5, 4011, 4013, 1, 2);
+  var i;
+  var message := guild.getprop("gc");
+  var y := 40;
+  if(message[1] == "NONE")
+    for(i:=3; i<=14; i:=i+1)
+      GFTextEntry(40, y, 500, 20, 910, "");
+      y := y + 20;
+    endfor
+  else
+    for(i:=3; i<=14; i:=i+1)
+      if(message[i-2] != error)
+        GFTextEntry(40, y, 500, 20, 910, message[i-2]);
+      else
+        GFTextEntry(40, y, 500, 20, 910, "");
+      endif
+      y := y + 20;
+    endfor
+  endif
+  GFTextLine( 40, 305, 0, "Pagina da Guilda:");
+  var wp := guild.getprop("webpage");
+  GFTextEntry(180, 305, 400, 30, 900, wp);
+endfunction
+
+function setstonecolor(who)
+var color := SelectColor(who, guildstone);
+///  var i,textline,maxcolor:=52,firstrow:=20,secondrow:=40,newcolor:=0;
+///  var res:=SendDialogGump(who,dyelayout,dyedata);
+///  var basecolor:=res[0];
+///  if(!basecolor)
+///    SendSysMessage(who, "Canceled.",9,89);
+///    return;
+///  elseif(basecolor==1101)
+///    maxcolor:=47;
+///  elseif(basecolor==2000)
+///    maxcolor:=18;
+///    firstrow:=18;
+///    secondrow:=18;
+///  endif
+///  if(basecolor==1)
+///    newcolor:=0;
+///  else
+///    for(i:=1;i<=firstrow;i:=i+1)
+///      textline:="button 20 "+CStr(65+(20*i)) + " 2104 2103 1 0 "+CStr(basecolor+i);
+///      dyelayout2[CInt(len(dyelayout2)+1)]:=textline;
+///    endfor
+///    for(i:=21;i<=secondrow;i:=i+1)
+///      textline:="button 100 "+CStr(65+(20*(i-20))) + " 2104 2103 1 0 "+CStr(basecolor+i);
+///      dyelayout2[CInt(len(dyelayout2)+1)]:=textline;
+///    endfor
+///    for(i:=41;i<=maxcolor;i:=i+1)
+///      textline:="button 180 "+CStr(65+(20*(i-40))) + " 2104 2103 1 0 "+CStr(basecolor+i);
+///      dyelayout2[CInt(len(dyelayout2)+1)]:=textline;
+///    endfor
+///    basecolor:=basecolor-1;
+///    for(i:=1;i<=firstrow;i:=i+1)
+///      textline:="text 40 "+CStr(60+(20*i)) + " "+CStr(basecolor+i) + " "+CStr(i);
+///      dyelayout2[CInt(len(dyelayout2)+1)]:=textline;
+///    endfor
+///    for(i:=21;i<= secondrow;i:=i+1)
+///      textline:="text 120 "+CStr(60+(20*(i-20))) + " "+CStr(basecolor+i) + " "+CStr(i);
+///      dyelayout2[CInt(len(dyelayout2)+1)]:=textline;
+///    endfor
+///    for(i:=41;i<= maxcolor;i:=i+1)
+///      textline:="text 200 "+CStr(60+(20*(i-40))) + " "+CStr(basecolor + i) + " "+CStr(i);
+///      dyelayout2[CInt(len(dyelayout2)+1)]:=textline;
+///    endfor
+///    dyelayout2[len(dyelayout2)+1]:="button 220 440 2119 2120 1 0 0";
+///    res:=SendDialogGump(who,dyelayout2,dyedata2);
+///    newcolor:=res[0];
+///    if(!newcolor)
+///      SendSysMessage(who, "Canceled.",9,89);
+///      return;
+///    endif
+///  endif
+  if(( color > 1001 ) || ( color == 1 ))
+
+    guildstone.color := 0;
+  else
+    guildstone.color := color;
+  endif
+ /// guildstone.color:=newcolor;
+endfunction
+
+function Teleport(who)
+  if(ReadGameClock()<guild.getprop("movetime"))
+    SendSysMessage(who, "Voce pode so pode mover a GS 1 vez por semana.",9,89);
+    return;
+  endif
+  guild.setprop("movetime", ReadGameClock() + (7*24*3600));
+  guildstone.movable := 1;
+  guildstone.newbie := 1;
+  MoveItemToContainer(guildstone, who.backpack);
+  guildstone.graphic := 3804;
+  guildstone.usescript := ":guildstone:guildMove";
+  SendSysMessage(who, "De 2 cliques na pedra para ela vir pra sua mochila.",9,89);
+  guildstone.movable := 0;
+endfunction
+
+function AcceptCandidate(who)
+  var count := 0;
+  var rc := 120;
+  var pc := 0;
+  GFInitGump();
+  GFPage(pc);
+  pc := pc + 1;
+  ///GFResizePic(110,  25, 5120,  470, 470);
+  GFResizePic(120,  35, 3500,  450, 450);
+  ///GFResizePic(133, 415, 5120,  420,  45);
+  ///GFResizePic(137, 420, 5100,  410,  35);
+  GFResizePic(140, 110, 2620,  410, 280);
+  ///GFTextLine (240,  50,   0, "Guild Recruit Acceptance Page");
+  ///GFTextLine (160,  70, 900, "Guild Master: " + gm[1]);
+  GFTextLine (290,  70, 900, "Aceitar Recrutas");
+  GFTextLine (140,  90,   0, "Lista de Recrutas");
+  ///var ok := GFButtonID (285, 425, 0x99e, 0x99d, 1);
+  var total := 0;
+  var rg := 1;
+  GFSetRadioGroup(rg);
+  foreach gstatus in (guild.getprop("recruits"))
+    var enemy := SystemFindObjectBySerial(gstatus, SYSFIND_SEARCH_OFFLINE_MOBILES);
+    if(enemy)
+      count := count + 1;
+      if(count > 13)
+        count := 1;
+        rc := 120;
+        GFButtonPage(315, 396, 5540, 5541, pc);
+        if(pc > 2)
+          GFButtonPage(275, 396, 5537, 5538, (pc - 2));
+        endif
+        GFPage(pc);
+        pc := pc + 1;
+        rg := rg + 1;
+        ////GFSetRadioGroup(rg);
+      endif
+      GFTextLine(175, rc, 300, enemy.name);
+      GFButtonID(150, rc, 210, 211, 1, enemy.serial);
+      ///GFRadioButton(150, rc, 210, 211, 0, enemy.serial);
+      rc := rc + 20;
+      total := total + 1;
+    endif
+  endforeach
+  if(total == 0)
+    GFTextLine(150, rc, 300, "Nao ha recrutas.");
+  endif
+  ///GFTextLine (340,  90,   0, "Total de Recrutas: " + total);
+  var res := GFSendGump(who);
+  var a;
+  if(!res[a.keyid]);
+    if(total == 0)
+      sleep(2);
+      return;
+    endif
+    var choose := 0;
+    foreach k in (res.keys)
+      if((k >= 1) and (k != a.keyid))
+        choose := SystemFindObjectBySerial(k, SYSFIND_SEARCH_OFFLINE_MOBILES);
+      endif
+    endforeach
+
+var count:=1;
+foreach member in (guild.members)
+  if(gm[2] != member.serial)
+      count := count + 1;
+  endif
+endforeach
+
+if(count >= 6)
+ SendSysMessage(who, "Esta guilda ja possui o numero maximo de membros.");
+ return;
+endif
+
+
+    if(choose)
+      if(GetObjProperty(choose, "guild_id"))
+        SendSysMessage(who, choose.name + " ja esta na guilda.",9,89);
+      else
+        SendSysMessage(choose, "Voce foi aceito para a guilda " + guild.getprop("guildname") + ".");
+        guild.addmember(choose);
+        SetObjProperty(choose, "guild_id", guild_id);
+        SetObjProperty(choose, "fealty", gm[2]);
+        SetObjProperty(choose, "abv", "0");
+        guildstone.Toggle_Showing(choose, guild);
+        ///choose.title_suffix := "";
+        var ev := struct;
+        ev.+status := 1;
+        ev.+message := choose.name + " entrou para a guilda.";
+        guildstone.guildchat(ev, guild);
+      endif
+    endif
+    var holder := {};
+    foreach person in (guild.getprop("recruits"))
+      if(person != choose.serial)
+        holder.append(person);
+      endif
+    endforeach
+    guild.setprop("recruits", holder);
+  endif
+endfunction
+
+function RefuseCandidate(who)
+  var count := 0;
+  var rc := 120;
+  var pc := 0;
+  GFInitGump();
+  GFPage(pc);
+  pc := pc + 1;
+///  GFResizePic(110,  25, 5120,  470, 470);
+  GFResizePic(120,  35, 3500,  450, 450);
+///  GFResizePic(133, 415, 5120,  420,  45);
+///  GFResizePic(137, 420, 5100,  410,  35);
+  GFResizePic(140, 110, 2620,  410, 280);
+  ///GFTextLine (240,  50,   0, "Guild Recruit Rejection Page");
+  ///GFTextLine (160,  70, 900, "Guild Master: " + gm[1]);
+  GFTextLine (290,  70, 900, "Recusar Recrutas");
+  GFTextLine (140,  90,   0, "Lista de Recrutas");
+  ///var ok := GFButtonID (285, 425, 5042, 5043, 1);
+  var total := 0;
+  var rg := 1;
+  ///GFSetRadioGroup(rg);
+  foreach gstatus in (guild.getprop("recruits"))
+    var enemy := SystemFindObjectBySerial(gstatus, SYSFIND_SEARCH_OFFLINE_MOBILES);
+    if(enemy)
+      count := count + 1;
+      if(count > 13)
+        count := 1;
+        rc := 120;
+        GFButtonPage(315, 396, 5540, 5541, pc);
+        if(pc > 2)
+          GFButtonPage(275, 396, 5537, 5538, (pc - 2));
+        endif
+        GFPage(pc);
+        pc := pc + 1;
+        rg := rg + 1;
+        ///GFSetRadioGroup(rg);
+      endif
+      GFTextLine(175, rc, 300, enemy.name);
+      GFButtonID(150, rc, 210, 211, 1, enemy.serial);
+      ///GFRadioButton(150, rc, 210, 211, 0, enemy.serial);
+      rc := rc + 20;
+      total := total + 1;
+    endif
+  endforeach
+  if(total == 0)
+    GFTextLine(150, rc, 300, "Nao ha recrutas.");
+  endif
+  ///GFTextLine (340,  90,   0, "total recruits: " + total);
+  var res := GFSendGump(who);
+  var a;
+  if(!res[a.keyid]);
+    if(total == 0)
+      sleep(2);
+      return;
+    endif
+    var choose := 0;
+    foreach k in (res.keys)
+      if((k >= 1) and (k != a.keyid))
+        choose := SystemFindObjectBySerial(k, SYSFIND_SEARCH_OFFLINE_MOBILES);
+      endif
+    endforeach
+    if(choose)
+      SendSysMessage(choose, "You have been denied entry to the guild " + guild.getprop("guildname") + ".");
+      var holder := {};
+      foreach person in (guild.getprop("recruits"))
+        if(person != choose.serial)
+          holder.append(person);
+        endif
+      endforeach
+      guild.setprop("recruits", holder);
+      var ev := struct;
+      ev.+status := 1;
+      ev.+message := choose.name + " has been denied access to the guild.";
+      guildstone.guildchat(ev, guild);
+    endif
+  endif
+endfunction
+
+function SetGMTitle(who)
+var gname := guild.getprop("guildname");   
+var tname := SendTextEntryGump(who, "Qual o titulo do GM?",0,1,MAX_GM_TITLE_SIZE, "Type the name");
+  if(!tname)
+    return;
+  endif
+  if(len(tname)>MAX_GM_TITLE_SIZE)
+    SendSysMessage(who, "Your title can't have more than " + MAX_GM_TITLE_SIZE + " characters.",9,89);
+    sleep(2);
+    return;
+  endif
+  if(!guildstone.Character_Validation(tname))
+    SendSysMessage(who, "You are using invalid characters.",9,89);
+    sleep(2);
+    return;
+  endif
+  var abv := "[" + gname + "]";
+  SetObjProperty(gm[3], "guildtitle", tname);
+  gm[3].title_guild := "";
+  SetObjProperty(who, "abv", "1");
+endfunction
+
+function GrantTitle(who)
+var gname := guild.getprop("guildname");
+  
+var guildmembers := guild.members;
+  var count := 0;
+  var rc := 120;
+  var pc := 0;
+  GFInitGump();
+  GFPage(pc);
+  pc := pc + 1;
+///  GFResizePic(110,  25, 5120,  470, 470);
+  GFResizePic(120,  35, 3500,  450, 450);
+///  GFResizePic(133, 415, 5120,  420,  45);
+///  GFResizePic(137, 420, 5100,  410,  35);
+  GFResizePic(140, 110, 2620,  410, 280);
+  GFTextLine (240,  50,   0, "Alterar Titulo");
+  //GFTextLine (160,  70, 900, "Guild Master: " + gm[1]);
+  GFTextLine (140,  90,   0, "Membro:");
+  //var cancel := GFButtonID(240, 426, 5200, 5201, 1);
+  //var ok     := GFButtonID(350, 426, 5042, 5043, 1);
+  GFPage(pc);
+  pc := pc + 1;
+  var rg := 1;
+  GFSetRadioGroup(rg);
+  rg := rg + 1;
+  foreach member in guildmembers
+    ///if(member != gm[3])
+      count := count + 1;
+      if(count > 13)
+        count := 1;
+        rc := 120;
+        GFButtonPage(315, 393, 5540, 5541, pc);
+        if(pc > 2)
+          GFButtonPage(275, 393, 5537, 5538, (pc - 2));
+        endif
+        GFPage(pc);
+        pc := pc + 1;
+        rg := rg + 1;
+        GFSetRadioGroup(rg);
+      endif
+      GFButtonID(150, rc + 2, 210, 211, 1, member.serial);
+      GFTextLine(185, rc, 940, member.name);
+      count := count + 1;
+      rc := rc + 20;
+    ///endif
+  endforeach
+  if(count == 0)
+    GFTextLine(150, rc, 300, "Nao ha membros");
+  endif
+  var choose;
+  var box := GFSendGump(who);
+  if(count == 0)
+    return;
+  endif
+  ///if(box[ok.keyid])
+    foreach k in(box.keys)
+      if((k != 0))
+        choose := k;
+        break;
+      endif
+    endforeach
+     if(!choose)
+      SendSysMessage(who, "Cancelado!",9,89);
+      return;
+     endif
+    var tname := SendTextEntryGump(who, "Qual o titulo do membro?" , 0, 1, MAX_GUILD_TITLE_SIZE, "");
+    if(!tname)
+      SendSysMessage(who, "Cancelado!",9,89);
+      return;
+    elseif(len(tname) > MAX_GUILD_TITLE_SIZE)
+      SendSysMessage(who, "O titulo pode ter no maximo "+MAX_GUILD_TITLE_SIZE+" letras.",9,89);
+      return;
+    endif
+    if(!guildstone.Character_Validation(tname))
+      SendSysMessage(who, "Voce usou caracteres invalidos!",9,89);
+      return;
+    endif
+
+  if(IsNull(tname))
+    SendSysMessage(who, "Titulo Invalido!");
+    return 0;
+  endif
+
+    foreach member in (guild.members)
+      if(member.serial == choose)
+        ///var abv := "[" + gname + "]";
+        ///SetObjProperty(who, "abv", "1");
+	choose:=SystemFindObjectBySerial(choose, SYSFIND_SEARCH_OFFLINE_MOBILES);
+	SetObjProperty(choose, "titulogs", tname+ " ["+guild.getprop("guildabv")+"]");
+        SendSysMessage(choose, "Seu titulo de Guilda foi alterado, utilize '.titulo' para ativa-lo!",3,95);
+        break;
+      endif
+    endforeach
+endfunction
+
+function titulo(who)
+var titulogs:=GetObjProperty(who, "titulogs");
+var titulog:=GetObjProperty(who, "titulog");
+
+var abv:=GetObjProperty(who, "abv");
+var abreviatura:= guild.getprop("guildabv");
+var abreviatura1:=GetObjProperty(who, "abv");
+
+  if((titulog == "0") && (abv == "0"))
+    SetObjProperty(who, "abv", "1");
+    SetObjProperty( who, "titullo", ", [" +abreviatura+"]");
+    who.title_suffix := ", [" +abreviatura+"]";
+    return;
+  endif
+
+  if((titulog == "0") && (abv == "1"))
+    SetObjProperty(who, "abv", "0");
+     var classe:=GetObjProperty(who, "classe");
+       if(classe == "guerreiro")
+        SetObjProperty( who, "titullo", ", Player Do Sysco WS (Guerreiro)");
+        who.title_suffix := ", Player Do Sysco WS (Guerreiro)";
+       endif
+       if(classe == "trabalhador")
+        SetObjProperty( who, "titullo", ", Player Do Sysco WS (Trabalhador)");
+        who.title_suffix := ", Player Do Sysco WS (Trabalhador)";
+       endif
+    return;
+  endif
+
+  if((titulog == "1") && (abv == "0"))
+    SetObjProperty(who, "abv", "1");
+    who.title_suffix := ", " +titulogs+ " [" +abreviatura+ "]" ;
+    SetObjProperty( who, "titullo", ", " +titulogs+ " [" +abreviatura+ "]");
+    return;
+  endif
+
+  if((titulog == "1") && (abv == "1"))
+    SetObjProperty(who, "abv", "0");
+    who.title_suffix := ", " +titulogs;
+    SetObjProperty( who, "titullo", ", " +titulogs);
+    return;
+  endif
+
+endfunction
+
+function titulogswho(who)
+var abreviatura:= guild.getprop("guildabv");
+var titulogs:=GetObjProperty(who, "titulogs");
+var titulog:=GetObjProperty(who, "titulog");
+var abv:=GetObjProperty(who, "abv");
+
+  if((titulogs == "") || (titulogs == " ") || (titulogs == "  ") || (titulogs == "   ") || (titulogs == "    ") || (titulogs == "     ") || (titulogs == "      ") || (titulogs == "       ") || (titulogs == "        ") || (titulogs == "         ") || (titulogs == "          ") || (titulogs == "           ") || (titulogs == "            ") || (titulogs == "             ") || (titulogs == "              ") || (titulogs == "               ") || (titulogs == "                ") || (titulogs == "                 ") || (titulogs == "                  ") || (titulogs == "                   ") || (titulogs == "                    "))
+  SendSysMessage(who, "Primeiro sete seu titulo!",9,89);
+  return;
+  endif
+
+  if((titulog == "0") && (abv == "0"))
+    SetObjProperty(who, "titulog", "1");
+    who.title_suffix := ", " +titulogs;
+    SetObjProperty( who, "titullo", titulogs);
+    return;
+  endif
+
+  if((titulog == "0") && (abv == "1"))
+    SetObjProperty(who, "titulog", "1");
+    who.title_suffix := ", " +titulogs+ " [" +abreviatura+ "]" ;
+    SetObjProperty( who, "titullo", ", " +titulogs+ " [" +abreviatura+ "]");
+    return;
+  endif
+
+  if((titulog == "1") && (abv == "0"))
+    SetObjProperty(who, "titulog", "0");
+      var classe:=GetObjProperty(who, "classe");
+       if(classe == "guerreiro")
+        SetObjProperty( who, "titullo", ", Player Do Sysco WS (Guerreiro)");
+        who.title_suffix := ", Player Do Sysco WS (Guerreiro)";
+       endif
+       if(classe == "trabalhador")
+        SetObjProperty( who, "titullo", ", Player Do Sysco WS (Trabalhador)");
+        who.title_suffix := ", Player Do Sysco WS (Trabalhador)";
+       endif
+    return;
+  endif  
+
+  if((titulog == "1") && (abv == "1"))
+    SetObjProperty(who, "titulog", "0");
+    SetObjProperty( who, "titullo", ", [" +abreviatura+"]");
+    who.title_suffix := ", [" +abreviatura+"]";
+    return;
+  endif 
+ 
+
+
+endfunction
+
+function setartitulogswho(who)
+  var titulogs := SendTextEntryGump(who, "Qual o seu Titulo?", 0, 1, 26, "Digite seu titulo...");
+
+if(IsNull(titulogs))
+    SendSysMessage(who, "Titulo Invalido!");
+    return 0;
+  endif
+SendSysMessage(who, "Titulo alterado!");
+SetObjProperty(who, "titulogs", titulogs);
+SendSysMessage(who, "Seu novo titulo e: " +titulogs);
+
+titulogswho(who);
+buildgump(who);
+endfunction
+
+function IsNull(texto)
+foreach letra in CAscZ( texto )
+if (letra != 32)
+return 0;
+endif
+endforeach
+return 1;
+endfunction

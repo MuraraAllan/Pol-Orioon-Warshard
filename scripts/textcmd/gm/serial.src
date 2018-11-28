@@ -1,0 +1,215 @@
+use uo;
+use os;
+use util;
+include "include/eventID";
+program wiparcasas(who,text)
+if(!text)
+sendsysmessage(who,"Voce precisa entrar com um numero De jogadores para sortear.");
+return;
+endif
+var aa := cint(text);
+if((aa <= 0) || (aa > 16))
+sendsysmessage(who,"Voce deve especificar um valor de 1 a 16");
+return;
+endif
+eraseobjproperty(who,"a");
+eraseobjproperty(who,"b");
+eraseobjproperty(who,"c");
+eraseobjproperty(who,"d");
+eraseobjproperty(who,"e");
+eraseobjproperty(who,"f");
+eraseobjproperty(who,"g");
+eraseobjproperty(who,"h");
+eraseobjproperty(who,"i");
+eraseobjproperty(who,"j");
+eraseobjproperty(who,"k");
+eraseobjproperty(who,"l");
+eraseobjproperty(who,"m");
+eraseobjproperty(who,"n");
+eraseobjproperty(who,"o");
+eraseobjproperty(who,"p");
+var contador := 0;
+while(contador < aa)
+contador := cint(contador) + 1;
+var lutador := target(who);
+
+
+if(!lutador)
+Sendsysmessage(who,"Sorteio Cancelado");
+return;
+endif
+
+Sendsysmessage(who,"Lutador Selecionado : " + lutador.name + " Seu Login : " + lutador.acctname + " Anote-o caso ele desista sem avisar");
+Sendsysmessage(who,"Voce foi adicionado ao sorteio como o lutador : " + contador);
+var contar;
+case(contador)
+1:contar := "a";
+2:contar := "b";
+3:contar := "c";
+4:contar := "d";
+5:contar := "e";
+6:contar := "f";
+7:contar := "g";
+8:contar := "h";
+9:contar := "i";
+10:contar := "j";
+11:contar := "k";
+12:contar := "l";
+13:contar := "m";
+14:contar := "n";
+15:contar := "o";
+16:contar := "p";
+endcase
+setobjproperty(who,contar,lutador.name);
+
+
+endwhile
+
+var a := getobjproperty(who,"a");
+if(!a)
+a := "";
+endif
+var b := getobjproperty(who,"b");
+if(!b)
+b := "";
+endif
+var c := getobjproperty(who,"c");
+if(!c)
+c := "";
+endif
+var d := getobjproperty(who,"d");
+if(!d)
+d := "";
+endif
+var e := getobjproperty(who,"e");
+if(!e)
+e := "";
+endif
+var f := getobjproperty(who,"f");
+if(!f)
+f := "";
+endif
+var g := getobjproperty(who,"g");
+if(!g)
+g := "";
+endif
+var h := getobjproperty(who,"h");
+if(!h)
+h := "";
+endif
+var i := getobjproperty(who,"i");
+if(!i)
+i := "";
+endif
+var j := getobjproperty(who,"j");
+if(!j)
+j := "";
+endif
+var k := getobjproperty(who,"k");
+if(!k)
+k := "";
+endif
+var l := getobjproperty(who,"l");
+if(!l)
+l := "";
+endif
+var m := getobjproperty(who,"m");
+if(!m)
+m := "";
+endif
+var n := getobjproperty(who,"n");
+if(!n)
+n := "";
+endif
+var o := getobjproperty(who,"o");
+if(!o)
+o := "";
+endif
+var p := getobjproperty(who,"p");
+if(!p)
+p := "";
+endif
+
+sendsysmessage(who,"Players No Sorteio :");
+var players := 0;
+eraseobjproperty(who,"players");
+sendsysmessage(who," 1 - " + a);
+setobjproperty(who,"players", cint(getobjproperty(who,"players") + 1));
+if(b)
+sendsysmessage(who," 2 - " + b);
+setobjproperty(who,"players", cint(getobjproperty(who,"players") + 1));
+endif
+if(c)
+sendsysmessage(who," 3 - " + c);
+setobjproperty(who,"players", cint(getobjproperty(who,"players") + 1));
+endif
+if(d)
+sendsysmessage(who," 4 - " + d);
+setobjproperty(who,"players", cint(getobjproperty(who,"players") + 1));
+endif
+if(e)
+sendsysmessage(who," 5 - " + e);
+setobjproperty(who,"players", cint(getobjproperty(who,"players") + 1));
+endif
+if(f)
+sendsysmessage(who," 6 - " + f);
+setobjproperty(who,"players", cint(getobjproperty(who,"players") + 1));
+endif
+if(g)
+sendsysmessage(who," 7 - " + g);
+setobjproperty(who,"players", cint(getobjproperty(who,"players") + 1));
+endif
+if(h)
+sendsysmessage(who," 8 - " + h);
+setobjproperty(who,"players", cint(getobjproperty(who,"players") + 1));
+endif
+if(i)
+sendsysmessage(who," 9 - " + i);
+setobjproperty(who,"players", cint(getobjproperty(who,"players") + 1));
+endif
+if(j)
+sendsysmessage(who," 10 - " + j);
+setobjproperty(who,"players", cint(getobjproperty(who,"players") + 1));
+endif
+if(k)
+sendsysmessage(who," 11 - " + k);
+setobjproperty(who,"players", cint(getobjproperty(who,"players") + 1));
+endif
+if(l)
+sendsysmessage(who," 12 - " + l);
+setobjproperty(who,"players", cint(getobjproperty(who,"players") + 1));
+endif
+if(m)
+sendsysmessage(who," 13 - " + m);
+setobjproperty(who,"players", cint(getobjproperty(who,"players") + 1));
+endif
+if(n)
+sendsysmessage(who," 14 - " + n);
+setobjproperty(who,"players", cint(getobjproperty(who,"players") + 1));
+endif
+if(o)
+sendsysmessage(who," 15 - " + o);
+setobjproperty(who,"players", cint(getobjproperty(who,"players") + 1));
+endif
+if(p)
+sendsysmessage(who," 16 - " + p);
+setobjproperty(who,"players", cint(getobjproperty(who,"players") + 1));
+endif
+var select;
+players := cint(getobjproperty(who,"players"));
+var selecionados := 0;
+
+
+
+sendsysmessage(who,"Primeira Luta : " + a + " x " + d);
+sendsysmessage(who,"Segunda Luta : " + b + " x " + c);
+sendsysmessage(who,"Terceira Luta : " + e + " x " + g);
+sendsysmessage(who,"Quarta Luta : " + f + " x " + h);
+sendsysmessage(who,"Quinta Luta : " + j + " x " + l);
+sendsysmessage(who,"Sexta Luta : " + k + " x " + i);
+sendsysmessage(who,"Setima Luta : " + n + " x " + i);
+sendsysmessage(who,"Oitava Luta : " + p + " x " + m);
+
+
+
+endprogram

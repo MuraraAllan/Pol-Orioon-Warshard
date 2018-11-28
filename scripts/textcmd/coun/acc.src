@@ -1,0 +1,60 @@
+use uo;
+program criacon(who)
+
+var layout:=array("page 0",
+"nodispose",
+"gumppic 0 0 0007",
+"gumppic 40 50 0462",
+"text 18 20 77 0",
+"text 10 40 77 2",
+"text 10 70 77 2",
+"text 10 100 77 2",
+"text 10 115 77 3",
+"text 19 125 77 4",
+"text 20 60 77 7",
+"text 20 85 77 8",
+"textentry 70 60 200 30 33 2 1",
+"textentry 70 85 200 30 33 6 1",
+"button 150 150 2130 2129 1 0 1",
+"button 210 150 2119 2120 1 0 0"
+);
+var dado:={"Criador de Contas Novas",
+"",
+" -------------------------------",
+"",
+"",
+"|",
+"",
+"Login:",
+"Senha",
+""
+};
+
+
+var conta:=SendDialogGump(who,layout, dado);
+if((!conta[1]) or (!conta[6]) or (!conta[2]))
+PrintTextAbovePrivate( who, "Cancelado!!", who );
+return;
+else
+var login := CStr(CStr(conta[2]) - "2: ");
+var senha:= CStr(CStr(conta[6]) - "6: ");
+
+SendSysMessage(who,CStr(login),CStr(senha));
+if (FindAccount(login))
+PrintTextAbovePrivate( who,"Ja existe uma conta com este nome.",who);
+return;
+endif
+
+cria_conta(who,login,senha);
+
+endif
+endprogram
+
+function cria_conta(who,login,senha )
+var act := CreateAccount(login, senha, 1);
+if(!act)
+PrintTextAbovePrivate( who, act.errortext,who);
+return;
+endif
+PrintTextAbovePrivate(who, "Conta criada com sucesso.",who);
+endfunction

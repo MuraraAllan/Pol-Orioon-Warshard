@@ -1,0 +1,45 @@
+use os;
+use uo;
+use boat;
+
+include "include/attributes";
+
+program textcmd_setskill( who, text )
+
+	text := SplitWords(text);
+	if( !text[1] )
+		SendSysMessage( who, "Utilize : .setskill [ID da skill] [Quantidade]",0x9,90 );
+		return 0;
+	elseif( !text[2] )
+		SendSysMessage( who, "Utilize : .setskill [ID da skill] [Quantidade]",0x9,90 );
+		return 0;
+	endif
+		
+	var skillid := Cint(text[1]);
+	if( skillid == error )
+		SendSysMessage( who, "Nao foi possivel setar a skill.",0x9,90 );
+		return 0;
+	endif
+	
+	var level := Cdbl(text[2]);
+	if( level == error )
+		SendSysMessage( who, "Nao foi possivel setar a skill.",0x9,90 );
+		return 0;
+	endif
+	
+	SendSysMessage( who, "Setar " + skillid + " e " + level + " em quem?",0x9,90 );
+	var mobile := Target(who);
+	if( !mobile )
+		return 0;
+	elseif( !mobile.IsA(POLCLASS_MOBILE) )
+		SendSysMessage( who, "You must target a mobile." );
+		return 0;
+	endif
+	
+	if( SetBaseSkillBaseValue( mobile, skillid, Cint(level*10.0) ) )
+		SendSysMessage( who, "Nova " + GetTrueEffectiveSkill( mobile, skillid ),0x9,90 );
+	else
+		SendSysMessage( who, "Nao foi possivel setar a skill.",0x9,90 );
+	endif
+	
+endprogram

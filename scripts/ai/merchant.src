@@ -1,0 +1,282 @@
+use npc;
+use basic;
+use os;
+use uo;
+
+include "include/eventID";
+include "include/attributes";
+include "include/sysEvent";
+include "include/randName";
+include "include/utility";
+include "include/mrcSpawn2";
+include "include/vetement";
+include "include/NPCBackpacks";
+include "include/client";
+include "include/findCity";
+include "include/skillLists";
+include "include/dist";
+include "include/begging";
+
+
+
+const MAX_SKILLS      := 48;
+const RESPAWN_MINUTES := 3;    
+const UOBJ_METALCHEST := 0x0E7C; 
+
+var me := Self();
+var storage, inv_fs, inv_pb, inv_1c;
+
+var equipt        := GetObjProperty(me, "Equipt");
+var npccfg        := ReadConfigFile("npcdesc");
+
+set_priority( 50 );
+
+var merchant_type := GetObjProperty( Self(), "MerchantType" );
+
+if( !merchant_type )
+    SetObjProperty( Self(), "MerchantGroup", "Mage" );
+    merchant_type := "Mage";
+endif
+
+start_script("NPCKeeper", me);
+storage := FindStorageArea( "Merchant Storage" );
+if (!storage)
+    exit;
+endif
+
+inv_fs := find_or_create_item( storage, me.serial + " FS", UOBJ_METALCHEST );
+inv_pb := find_or_create_item( storage, me.serial + " PB", UOBJ_METALCHEST );
+inv_1c := find_or_create_item( storage, me.serial + " 1C", UOBJ_METALCHEST );
+
+if (!inv_fs or !inv_pb or !inv_1c)
+    exit;
+endif
+  
+  RestockInventory( merchant_type, inv_fs );
+  var next_restock := ReadGameClock() + RESPAWN_MINUTES*60;
+
+
+  EnableEvents( SYSEVENT_ITEM_GIVEN);
+  // 1 = Range, cada Range = 1 tile 
+  EnableEvents( SYSEVENT_SPEECH, 1);
+  EnableEvents(SYSEVENT_ENGAGED + SYSEVENT_DISENGAGED + SYSEVENT_DAMAGED);
+  EnableEvents(SYSEVENT_ENTEREDAREA, 3);
+
+  if (GetObjProperty(me, "frozen"))
+    me.frozen := 1;
+  endif
+
+
+while (1)
+    var ev;
+    ev := os::wait_for_event( 5 );
+      if(ev)
+      case (ev.type)
+      
+        SYSEVENT_SPEECH: var txt := lower(ev.text);
+                if((ev.source.cmdlevel > 2) && (txt["showinventory"]))
+                  SendOpenSpecialContainer(ev.source, inv_fs);
+                  else
+                  if(txt["comprar"])
+                  TurnToward(ev.source);
+                    var res;
+                    res := SendBuyWindow( ev.source, inv_fs, self(), inv_pb );
+                    if (!res)
+                        print( "SendBuyWindow failed: " + res.errortext );
+                    endif
+                elseif (txt["salve os admins!"])
+                    TurnToward( ev.source );
+                    ModifyPCSellList(merchant_type, (ev.source).backpack);
+                    local res := SendSellWindow( ev.source, self(), inv_fs, inv_pb, inv_1c );
+                    if (res)
+                        PrintTextAbovePrivate( self(), "No que posso ajuda-lo?", ev.source );
+                    else
+                        print( "SendSellWindow failed: " + res.errortext );
+                    endif
+
+                elseif (txt["treinar"])
+                                  TurnToward(ev.source);
+                                  MerchantTrain(me, ev.source, ev.text);
+                                  endif
+             
+            endif
+            SYSEVENT_MERCHANT_BOUGHT:
+                TurnToward( ev.source );
+                PrintTextAbovePrivate( self(), "Ok, aqui esta' suas " + ev.amount, ev.source );
+                foreach item in EnumerateItemsInContainer( inv_pb )
+                    DestroyItem( item );
+                endforeach
+
+            SYSEVENT_MERCHANT_SOLD:
+       
+                TurnToward( ev.source );
+                PrintTextAbovePrivate( self(), "O total de sua compra foi de " + ev.amount, ev.source );
+                PrintTextAbovePrivate( self(), "Volte sempre amigo", ev.source );
+
+   SYSEVENT_ITEM_GIVEN:      TrainSkill(me, ev.source, ev.item);
+SYSEVENT_ENGAGED: if((ev.source) && (!ev.source.dead));
+
+if(ev.source.cmdlevel == 0)
+ var pessoa:=ev.source;
+			 chamarguarda ( pessoa );
+endif
+endif
+// Fim   
+       endcase
+    elseif (ReadGameClock() > next_restock)
+        RestockInventory( merchant_type, inv_fs );
+        next_restock := ReadGameClock() + RESPAWN_MINUTES*60;
+    endif
+
+    endwhile
+
+function Lookiehere(who, npc)
+  var ev;
+  ev := array;
+  ev.+ type;
+  ev.+ source;
+  ev.type := SYSEVENT_SPEECH;
+  ev.source := npc;
+PrintTextAbove(who, ev);
+endfunction
+
+function MerchantTrain(me, who, text)
+  var totaltrain := 0;
+  var words := SplitWords(text);
+  var skill := words[2];
+  if(words[4])
+    skill := skill + " " + words[3];
+  endif
+  if(!skill)
+    var trainable := "";
+    var holder := "";
+    foreach thing in getskilllist(me)
+      if(holder == "")
+        holder := thing;
+      else
+        holder := holder + ", " + thing;
+      endif
+      totaltrain := totaltrain + 1;
+    endforeach
+    trainable  := trainable + holder;
+    if(totaltrain > 0)
+      say("Eu posso treinar voce nas seguintes habilidades:");
+      say(trainable);
+    else
+      say("Eu nao posso treinar voce.");
+    endif
+  else
+    skill := lower(skill);
+    var npclevel := 33;
+    var pclevel;
+    var holder;
+    foreach thing in getskilllist(me)
+      if(lower(thing) == skill)
+        holder := FindSkillId(thing);
+        pclevel := GetEffectiveSkill(who, holder);
+        if(pclevel >= npclevel)
+          say("Voce ja sabe tudo que eu sei nesta habilidade.");
+          return;
+        else
+          var trainmaxcost := GoldForSkillGain(npclevel, pclevel, holder);
+          say("Eu posso treinar voce em " + thing + " por " + trainmaxcost + " moedas de ouro.");
+          SetObjProperty(who, "TrainMaxCost", trainmaxcost);
+          SetObjProperty(who, "TrainSkillID", holder);
+          return;
+        endif
+      endif
+    endforeach
+    say("Eu nao sei nada dessa habilidade.");
+  endif
+endfunction
+
+function TrainSkill(me, who, item)
+  var variance := 0;
+  var npc_level := 0;
+  var pc_level := 0;
+  var goldreceived := 0;
+  var new_level := 0;
+  var currentnpccost := 0;
+  if((item.objtype == 0xeed) && (item.amount != 0))
+    var trainmaxcost := GetObjProperty(who, "TrainMaxCost");
+    var trainskillid := GetObjProperty(who, "TrainSkillID");
+    if((!trainmaxcost || !trainskillid) && trainskillid != 0)
+      say("Eu nao sei o porque disto mas obrigado!");
+      DestroyItem(item);
+      return;
+    endif
+    npc_level    := 33;
+    pc_level     := GetEffectiveSkill(who, trainskillid);
+    goldreceived := item.amount;
+    variance     := npc_level - pc_level;
+    currentnpccost := GoldForSkillGain(npc_level, pc_level, trainskillid);
+    if(pc_level < npc_level)
+      if(currentnpccost != trainmaxcost)
+        if(currentnpccost > trainmaxcost)
+          npc_level := SkillGainForGold(npc_level, pc_level, trainskillid, trainmaxcost);
+          variance  := npc_level - pc_level;
+        else
+          if(goldreceived > currentnpccost)
+            say("Eu nao posso treinar voce naquele nivel.");
+            MoveItemToContainer(who.backpack, item);
+            return;
+          else
+            trainmaxcost := currentnpccost;
+          endif
+        endif
+      endif
+      if(trainmaxcost <= goldreceived)
+        new_level := (npc_level * 10);
+        EraseObjProperty( who, "TrainMaxCost" );
+        EraseObjProperty( who, "TrainSkillID" );
+      else
+        new_level := ((pc_level + CInt((CDbl(variance) * (CDbl(goldreceived) / CDbl(trainmaxcost))))) * 10);
+        SetObjProperty( who, "TrainMaxCost", trainmaxcost-goldreceived );
+      endif
+      say("Deixe-me mostrar como se faz...");
+      SetBaseSkillBaseValue(who, trainskillid, new_level);
+      DestroyItem(item);
+      SendSysMessage(who, "Suas habilidades aumentaram.");
+    else
+      say("Eu nao sou um bom treinador, procure outro.");
+      MoveItemToContainer(who.backpack, item);
+    endif
+  else
+    say("Bah, eu nao tenho uso para isto.");
+    MoveItemToContainer(who.backpack, item);
+  endif
+endfunction
+
+function GoldForSkillGain( npc_skill, pc_skill, skillid )
+  var maxskill := npc_skill - pc_skill;
+  return maxskill*10;
+endfunction
+
+function SkillGainForGold(npc_level, pc_level, trainskillid, goldreceived)
+  return (goldreceived/10) + pc_level;
+endfunction
+
+
+function GetwarNPC(byref npc)
+var elem := FindConfigElem(npccfg, npc.npctemplate);
+if(elem.alignment == "evil" or npc.master.criminal or elem.alignment == "neutral")
+return 1;
+endif
+return 0;
+endfunction
+
+
+
+function chamarguarda(pessoa);
+
+PrintTextAbove(me,"Guardas!!",3,95);
+if(pessoa)
+TurnToward( pessoa );
+SetObjProperty(pessoa,"guarda", 1);
+pessoa.hidden := 0;
+var guarda := CreateNpcFromTemplate( "guarda", me.x, me.y, me.z );
+SetObjProperty(guarda, "atacar", pessoa.serial);
+movecharactertolocation(guarda,pessoa.x, pessoa.y, pessoa.z, MOVECHAR_FORCELOCATION);
+endif
+endfunction
+

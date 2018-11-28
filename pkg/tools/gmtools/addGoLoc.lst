@@ -1,0 +1,151 @@
+C:\pol2\pkg\tools\gmtools\addGoLoc.src, Line 9
+var  cfg;
+0: decl global #0
+1: #
+var colors;
+2: decl global #1
+3: #
+var num_colors;
+4: decl global #2
+5: #
+C:\pol2\pkg\tools\gmtools\addGoLoc.src, Line 13
+program addgoloc(who)
+6: get arg 'who'
+var where := TargetCoordinates(who);
+7: decl local #1
+8: local #0
+9: Func(3,0): TargetCoordinates
+10: :=
+11: #
+var desc := RequestInput(who, who.backpack, "How would you like to refer to thi
+12: decl local #2
+13: local #0
+14: local #0
+15: get member 'backpack'
+16: "How would you like to refer to this location?"
+17: Func(3,1): RequestInput
+18: :=
+19: #
+var locs    := ReadConfigFile("golocs");
+20: decl local #3
+21: "golocs"
+22: Func(5,0): ReadConfigFile
+23: :=
+24: #
+var locvalue := GetConfigMaxIntKey(locs)+1;
+25: decl local #4
+26: local #3
+27: Func(5,1): GetConfigMaxIntKey
+28: 1L
+29: +
+30: :=
+31: #
+var elemkey := "" + lower(desc);
+32: decl local #5
+33: ""
+34: local #2
+35: Func(0,0): lower
+36: +
+37: :=
+38: #
+var props:= array;
+39: decl local #6
+40: array
+41: :=
+42: #
+var prop:= array;
+43: decl local #7
+44: array
+45: :=
+46: #
+prop .+ pname;
+47: local #7
+48: "pname"
+49: .+
+50: #
+prop .+ pvalue;
+51: local #7
+52: "pvalue"
+53: .+
+54: #
+prop.pname := "Name";
+55: local #7
+56: "Name"
+57: set member 'pname' #
+prop.pvalue := elemkey;
+58: local #7
+59: local #5
+60: set member 'pvalue' #
+props[1] := prop;
+61: local #6
+62: 1L
+63: local #7
+64: [] := (1) #
+prop.pname := "Type";
+65: local #7
+66: "Type"
+67: set member 'pname' #
+prop.pvalue := "all";
+68: local #7
+69: "all"
+70: set member 'pvalue' #
+props[2] := prop;
+71: local #6
+72: 2L
+73: local #7
+74: [] := (1) #
+prop.pname := "x";
+75: local #7
+76: "x"
+77: set member 'pname' #
+prop.pvalue := where.x;
+78: local #7
+79: local #1
+80: get member 'x'
+81: set member 'pvalue' #
+props[3] := prop;
+82: local #6
+83: 3L
+84: local #7
+85: [] := (1) #
+prop.pname := "y";
+86: local #7
+87: "y"
+88: set member 'pname' #
+prop.pvalue := where.y;
+89: local #7
+90: local #1
+91: get member 'y'
+92: set member 'pvalue' #
+props[4] := prop;
+93: local #6
+94: 4L
+95: local #7
+96: [] := (1) #
+prop.pname := "z";
+97: local #7
+98: "z"
+99: set member 'pname' #
+prop.pvalue := where.z;
+100: local #7
+101: local #1
+102: get member 'z'
+103: set member 'pvalue' #
+props[5] := prop;
+104: local #6
+105: 5L
+106: local #7
+107: [] := (1) #
+AppendConfigFileElem( "golocs", "goloc", locvalue, props );
+108: "golocs"
+109: "goloc"
+110: local #4
+111: local #6
+112: Func(5,2): AppendConfigFileElem
+113: #
+UnloadConfigFile("golocs");
+114: "golocs"
+115: Func(5,3): UnloadConfigFile
+116: #
+117: leave block(8)
+118: progend

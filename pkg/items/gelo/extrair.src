@@ -1,0 +1,20 @@
+use uo;
+use os;
+use util;
+
+
+include "include/client";
+
+
+program extrair(who, reags)
+reags.graphic := 4970;
+SendSysMessage(who, "Voce esta raspando o gelo.",0x9,90);
+sleep(2);
+SendSysMessage(who, "Voce pegou 4 minerios de Gelo e pos na BAG",3,70);  
+var bandage := CreateItemInBackpack(who,0x6328, 4);
+    var i;
+    for (i := 0x1f2d; i <= 0x1f6c; i := i + 1)
+        CreateItemInContainer(bandage,  i, 1);
+    endfor
+DestroyItem(reags);
+endprogram

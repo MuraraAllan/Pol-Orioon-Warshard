@@ -1,0 +1,56 @@
+use uo;
+use os;
+
+program can_remove(who, corpo, item)
+var criminoso :=Cint(GetObjProperty(corpo, "criminoso"));
+///var pessoa:=SystemFindObjectBySerial( GetObjProperty( corpo, "serial" ));
+
+///Ids das Guildas
+var guildacorpoA := GetObjProperty(corpo,"guild_id");
+var guildawhoA := GetObjProperty(who,"guild_id"); 
+
+///Dar Find nas Guildas.
+var guildacorpo := FindGuild( guildacorpoA );
+var guildawho   := FindGuild( guildawhoA );
+
+///Itens bugados
+var itembugados := { 60, 16034, 16043, 15, 16036, 16035 };
+
+///Impedir Emptycontainer do Injection
+if(GetObjProperty(who,"delaypraloot") > ReadGameClock())
+return 0;
+endif
+
+///Item bugado de montaria (A SHIP)
+if(item.graphic in itembugados)
+DestroyItem(item);
+SendSysMessage(who, "Item BUGADO. Destruido!",9,33);
+return 0;
+endif
+
+var permicao:=0;
+
+///Ver se eh o dono
+if(who.serial == Cint(GetObjProperty(corpo, "serial")))
+permicao:=1;
+///ver se eh gw
+elseif(guildacorpo.isenemyguild(guildawho))
+permicao:=1;
+elseif(guildacorpo.isallyguild(guildawho))
+permicao:=1;
+elseif((guildacorpoA) && (guildawhoA) && (guildacorpoA == guildawhoA))
+permicao:=1;
+endif
+
+///Deixar Gray caso necessario
+if((criminoso == 0) && (permicao == 0))
+who.SetCriminal(1);
+endif
+
+who.hidden := 0;
+SetObjProperty(who,"delaypraloot", Cint(ReadGameClock()+1));
+
+set_critical(0);
+return 1;
+
+endprogram

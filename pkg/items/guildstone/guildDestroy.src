@@ -1,0 +1,6 @@
+use uo;
+use os;
+
+program guildDestroy(stone)
+  return 1;
+endprogram

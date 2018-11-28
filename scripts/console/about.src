@@ -1,0 +1,14 @@
+use uo;
+
+include "include/clock";
+
+program about( cmd )
+
+    var system := polcore();
+    print(" ---------------------------------------" );
+    print("|System Message: About                  |" );
+    print("|POL:            " + system.verstr+ "      |");
+    print("|Shard:          -=- Sysco War Shard -=-|");
+    print("|IRC:            #Sysco @ BrasNet.org   |");
+    print(" ---------------------------------------" );
+endprogram

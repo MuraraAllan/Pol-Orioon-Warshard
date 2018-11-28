@@ -1,0 +1,175 @@
+use uo;
+use os;
+use util;
+use cfgfile;
+
+include "include/objtype";
+///include "include/canAccess";
+
+const UOBJ_POTIONKEG := 0xf022;
+const POTION_START   := 0xdc01;
+const POTION_END     := 0xdce6;
+
+program use_potionkeg(who, keg)
+  EraseObjProperty(who, "IsMeditating");
+  EraseObjProperty(who, "HealTimer");
+  ///if(!can_access(who, keg))
+  ///  return;
+  ///endif
+
+  var type := GetObjProperty(keg, "PotionType");
+
+  var amt  := GetObjProperty(keg, "pots");
+
+  if(amt == 0)
+    SendSysMessage(who, "O Barril esta vazio.");
+    return;
+  endif
+
+  if(!amt)
+    SendSysMessage(who, "O Barril esta vazio.");
+    return;
+  endif
+
+  if(keg.movable == 0)
+   var casa:= keg.multi;
+    
+    if(!casa)
+      SendSysMessage(who, "Este Barril esta trancado fora de uma casa. Contate um Staff.");
+      return;
+    endif
+     var placa:=achaplaca(keg);
+    
+    if(!placa)
+      SendSysMessage(who, "Esta casa nao possui uma placa? Contate um Staff.");
+      return;
+    endif
+
+     var dono := GetObjProperty(casa, "owneracct"); 
+     var socios := { };
+      socios[1] := GetObjProperty(placa, "socio1"); 
+      socios[2] := GetObjProperty(placa, "socio2"); 
+      socios[3] := GetObjProperty(placa, "socio3"); 
+      socios[4] := GetObjProperty(placa, "socio4"); 
+      socios[5] := GetObjProperty(placa, "socio5"); 
+     var ssocio:=sousocio(who, socios);
+      if((!ssocio) && (dono != who.acctname))
+        SendSysMessage(who, "Voce Precisa ser dono ou socio da casa para poder pegar pocoes!",9,89); 
+        return;  
+      endif
+
+  endif
+
+  var potvazia := 0;
+  foreach item in EnumerateItemsInContainer(who.backpack)
+      if(item.objtype == 0xf0e)
+        potvazia := item;
+        break;
+      endif
+  endforeach
+
+  if(potvazia == 0)
+    SendSysMessage(who, "Voce esta sem garrafas vazias.");
+    return;
+  endif
+
+SubtractAmount(potvazia, 1);
+PlaySoundEffect(who, 0x241);
+var potion := CreateItemInBackpack(who, type, 1);
+//SetName(the_potion, lower(GetObjProperty(keg, "PotionName")));
+
+SetObjProperty(keg, "pots", Cint(amt -1));
+amt := GetObjProperty(keg, "pots");
+SendSysMessage(who, "Voce enche a garrafa com o liquido.");
+
+var str:=PegarNome( keg );
+renomear(keg, potion, str);
+
+
+endprogram
+
+
+function PegarNome( keg )
+  var amt := Cint(GetObjProperty(keg, "pots"));
+
+  var str;
+var texto := "pocoes";
+  if (amt == 0)
+    str := "Vazio";
+  elseif ((amt >= 1) && (amt <= 4))
+if(amt == 1)
+texto := "pocao";
+endif
+    str := "Quase Vazio"+ "[" + amt + texto + "]" ;
+  elseif ((amt >= 5) && (amt <= 19))
+    str := "Menos de 1/4 Cheio"+ "[" + amt + texto + "]";
+  elseif ((amt >= 20) && (amt <= 29))
+    str := "1/4 Cheio"+ "[" + amt + texto + "]";
+  elseif ((amt >= 30) && (amt <= 39))
+    str := "1/3 Cheio"+ "[" + amt + texto + "]";
+  elseif ((amt >= 40) && (amt <= 46))
+    str := "Menos da Metade Cheio"+ "[" + amt + texto + "]";
+  elseif ((amt >= 47) && (amt <= 53))
+    str := "Aproximadamente Metade Cheio"+ "[" + amt + texto + "]";
+  elseif ((amt >= 54) && (amt <= 69))
+    str := "Mais da Metade Cheio"+ "[" + amt + texto + "]";
+  elseif ((amt >= 70) && (amt <= 79))
+    str := "3/4 Cheio"+ "[" + amt + texto + "]";
+  elseif ((amt >= 80) && (amt <= 95))
+    str := "Bastante Cheio"+ "[" + amt + texto + "]";
+  elseif ((amt >= 96) && (amt <= 99))
+    str := "Com liquido quase ao topo"+ "[" + amt + texto + "]";
+  else
+    str := "Completamente Cheio"+ "[" + amt + texto + "]";
+  endif
+  return str;
+endfunction
+
+function xxxxxxxx(potion)
+  if((potion.objtype >= 0xdc01) && (potion.objtype <= 0xdc20))
+    return 1;
+  endif
+  return 0;
+endfunction
+
+function renomear(keg, potion, str)
+var amt:=GetObjProperty(keg, "pots");
+var nomekeg:=GetObjProperty(potion, "nomekeg");
+if(amt <= 0)
+  SetName(keg, "Barril Para Guardar Pocoes");
+  EraseObjProperty(keg, "PotionType");
+  keg.color:=0;
+elseif(amt > 0)
+  var nomereal :=("Barril de " + nomekeg + ". O Barril esta " +str);
+  SetName(keg, nomereal);
+endif
+
+return;
+endfunction
+
+
+///placa house..
+function achaplaca(keg)
+  var casa := keg.multi.components;
+
+  foreach placa in casa
+if ((placa.objtype >= 3000) && (placa.objtype <= 3086)) 
+return placa;
+endif
+  endforeach
+return 0;
+endfunction
+
+
+///socio ?
+function sousocio(who, socios)
+
+foreach ssocio in socios
+
+if(ssocio == who.serial)
+return ssocio;
+endif
+
+endforeach
+
+endfunction

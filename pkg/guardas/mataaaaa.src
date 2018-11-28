@@ -1,0 +1,117 @@
+use uo;
+use os;
+use npc;
+use util;
+
+include "include/client";
+include "include/attributes";
+
+var guarda := Self();
+EquipFromTemplate(guarda , "guarda");
+ReadConfigFile("npcdesc");
+GetObjProperty(guarda, "Equipt");
+sleepms(200);
+var feio := GetProperty("target");
+
+program mataaaaa()
+feio := SystemFindObjectBySerial(feio);
+if(!feio)
+dieguard();
+else
+diediedie();
+dieguard();
+endif
+endprogram
+
+function diediedie()
+PlayStationaryEffect(guarda.x, guarda.y, guarda.z, FX_SMOKE, 10, 10);
+if (feio.hidden)
+PrintTextAbove(guarda, "Wis Quas");
+feio.hidden := 0;
+SendSysMessage(feio, "Voce foi revelado!",9,89);
+endif
+var coco := RandomInt(8);
+case coco
+0: magicarrow();
+1: harm();
+2: fireball();
+3: lightning();
+4: mindblast();
+5: energybolt();
+6: explosion();
+7: flamestrike();
+endcase
+sleepms(100);
+EraseObjProperty(feio, "LastHit");
+var hp := GetHp(feio);
+SetObjProperty(feio, "guardkill", 1);
+Damage(feio, Cint(hp * 2));
+DestroyItem(feio);
+endfunction
+
+function magicarrow()
+PrintTextAbove(guarda, "Magic Arrow");
+sleepms(300);
+PlayMovingEffect(guarda, feio, FX_MAGIC_ARROW, 5, 1);
+PlaySoundEffect(feio, SFX_SPELL_MAGIC_ARROW);
+endfunction
+
+function harm()
+PrintTextAbove(guarda, "Harm");
+sleepms(300);
+PlaySoundEffect(feio, SFX_SPELL_HARM);
+PlayObjectCenteredEffect(feio, FX_GLOW_SPIKE, 0x0a,0x1e);
+endfunction
+
+function fireball()
+PrintTextAbove(guarda, "Fire Ball");
+sleepms(300);
+PlayMovingEffect(guarda, feio, FX_FIREBALL, 5, 1);
+PlaySoundEffect(feio, 0x15f);
+endfunction
+
+function lightning()
+PrintTextAbove(guarda, "Por Ort Grav");
+sleepms(300);
+PlayLightningBoltEffect(feio);
+PlaySoundEffect(feio, SFX_2A);
+endfunction
+
+function mindblast()
+PrintTextAbove(guarda, "Mind Blast");
+sleepms(300);
+PlaySoundEffect(feio, SFX_SPELL_MIND_BLAST);
+PlayObjectCenteredEffect(feio, FX_CURSE_EFFECT, 7, 0x10);
+endfunction
+
+function energybolt()
+PrintTextAbove(guarda, "Energy Bolt");
+sleepms(300);
+PlayMovingEffect(guarda, feio, FX_ENERGY_BOLT, 0xa, 0x1e);
+PlaySoundEffect(feio, SFX_SPELL_ENERGY_BOLT);
+endfunction
+
+function explosion()
+PrintTextAbove(guarda, "Explosion");
+sleepms(300);
+PlaySoundEffect(feio, SFX_SPELL_EXPLOSION);
+PlayStationaryEffect(feio.x, feio.y, feio.z, FX_EXPLODE_3, 7, 0x10);
+endfunction
+
+function flamestrike()
+PrintTextAbove(guarda, "Flame Strike");
+sleepms(300);
+PlayObjectCenteredEffect(feio, 0x3709, 0x0a, 0x1e);
+PlaySoundEffect(feio, SFX_SPELL_FLAME_STRIKE);
+endfunction
+
+function dieguard()
+sleep(5);
+PlayStationaryEffect(guarda.x, guarda.y, guarda.z, FX_SMOKE, 10, 10);
+guarda.hidden := 1;
+MoveCharacterToLocation(guarda, 5283, 1184, 0, MOVECHAR_FORCELOCATION);
+EraseObjProperty(guarda, "LastHit");
+RevokePrivilege(guarda, "invul");
+ApplyRawDamage(guarda, 600);
+endfunction
+

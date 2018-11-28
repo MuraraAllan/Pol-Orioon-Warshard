@@ -1,0 +1,17 @@
+use uo;
+
+
+program textcmd_setusescript( who, text )
+
+	SendSysMessage(who, "Selecione o que voce deseja setar o e-script.",0x9,90);
+	var targ := Target(who);
+
+	if (!targ.isA(POLCLASS_MOBILE))
+		SendSysMessage(who, "Cancelado.",0x9,90);
+		return;
+	endif
+
+	targ.script := text;
+	RestartScript(targ);
+   
+endprogram

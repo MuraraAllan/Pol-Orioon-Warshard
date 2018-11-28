@@ -1,0 +1,602 @@
+C:\pol2\pkg\items\drinking\drink.src, Line 13
+program Drink_Booz( character, drink )
+const ACTION_BOW     := 0x0020;
+0: get arg 'character'
+1: get arg 'drink'
+if(!can_access(character, drink))
+2: local #0
+3: local #1
+4: 0L
+5: makelocal
+6: jmp userfunc @345
+7: if true goto 10
+return;
+8: ""
+9: progend
+EraseObjProperty(character, "IsMeditating");
+10: local #0
+11: "IsMeditating"
+12: Func(2,7): EraseObjProperty
+13: #
+if(drink.movable == 0)
+14: local #1
+15: get member 'movable'
+16: 0L
+17: ==
+18: if false goto 27
+SendSysMessage(character, "You cannot drink that.");
+19: local #0
+20: "You cannot drink that."
+21: 3L
+22: 1000L
+23: Func(2,1): SendSysMessage
+24: #
+return;
+25: ""
+26: progend
+var cfgfile := ReadConfigFile( "itemdesc" );
+27: decl local #2
+28: "itemdesc"
+29: Func(3,0): ReadConfigFile
+30: :=
+31: #
+var elem := FindConfigElem( cfgfile, drink.objtype );
+32: decl local #3
+33: local #2
+34: local #1
+35: get member 'objtype'
+36: Func(3,1): FindConfigElem
+37: :=
+38: #
+var proof := GetConfigInt( elem, "Proof" );
+39: decl local #4
+40: local #3
+41: "Proof"
+42: Func(3,2): GetConfigInt
+43: :=
+44: #
+var poison := CInt(GetObjProperty(drink, "poison_level"));
+45: decl local #5
+46: local #1
+47: "poison_level"
+48: Func(2,0): GetObjProperty
+49: Func(0,0): CInt
+50: :=
+51: #
+if (poison > 0 )
+52: local #5
+53: 0L
+54: >
+55: if false goto 64
+AddPoison(character, "defaultPoison", 120, character, poison);
+56: local #0
+57: "defaultPoison"
+58: 120L
+59: local #0
+60: local #5
+61: makelocal
+62: jmp userfunc @292
+63: #
+SubtractAmount( drink, 1 );
+64: local #1
+65: 1L
+66: Func(2,8): SubtractAmount
+67: #
+PerformAction( character, ACTION_DRINK );
+68: local #0
+69: 34L
+70: Func(2,9): PerformAction
+71: #
+PlaySoundEffect( character, SOUND_EFFECT_DRINK1 );
+72: local #0
+73: 50L
+74: Func(2,10): PlaySoundEffect
+75: #
+sleep(2);
+76: 2L
+77: Func(5,4): sleep
+78: #
+var currentproof := GetObjProperty( character, "Proof" );
+79: decl local #6
+80: local #0
+81: "Proof"
+82: Func(2,0): GetObjProperty
+83: :=
+84: #
+if (proof)
+85: local #4
+86: if false goto 102
+if(!currentproof)
+87: local #6
+88: if true goto 95
+SetObjProperty( character, "Proof", proof );
+89: local #0
+90: "Proof"
+91: local #4
+92: Func(2,11): SetObjProperty
+93: #
+94: goto102
+SetObjProperty( character, "Proof", proof+currentproof );
+95: local #0
+96: "Proof"
+97: local #4
+98: local #6
+99: +
+100: Func(2,11): SetObjProperty
+101: #
+Detach();
+102: Func(2,12): Detach
+103: #
+if (proof)
+104: local #4
+105: if false goto 290
+if( GetObjProperty( character, "Proof" ) > 4 )
+106: local #0
+107: "Proof"
+108: Func(2,0): GetObjProperty
+109: 4L
+110: >
+111: if false goto 242
+SendSysMessage( character, "You become drunk and stumble about." );
+112: local #0
+113: "You become drunk and stumble about."
+114: 3L
+115: 1000L
+116: Func(2,1): SendSysMessage
+117: #
+var i;
+118: decl local #0
+119: #
+for( i := GetObjProperty( character, "Proof" ); i >= 0; i := i-1 )
+120: local #7
+121: local #0
+122: "Proof"
+123: Func(2,0): GetObjProperty
+124: :=
+125: #
+126: local #7
+127: 0L
+128: >=
+129: if false goto 240
+if( !GetObjProperty( character, "Proof" ) && GetObjProperty( character, "Proof"
+130: local #0
+131: "Proof"
+132: Func(2,0): GetObjProperty
+133: !
+134: local #0
+135: "Proof"
+136: Func(2,0): GetObjProperty
+137: 0L
+138: <>
+139: &&
+140: if false goto 153
+EraseObjProperty( character, "Proof" );
+141: local #0
+142: "Proof"
+143: Func(2,7): EraseObjProperty
+144: #
+SendSysMessage( character, "You feel sober." );
+145: local #0
+146: "You feel sober."
+147: 3L
+148: 1000L
+149: Func(2,1): SendSysMessage
+150: #
+break;
+151: goto240
+152: goto157
+i := GetObjProperty( character, "Proof" );
+153: local #0
+154: "Proof"
+155: Func(2,0): GetObjProperty
+156: local7 := 
+PerformAction( character, ACTION_BOW );
+157: local #0
+158: 32L
+159: Func(2,9): PerformAction
+160: #
+PrintTextAbove( character, "*hic*" );
+161: local #0
+162: "*hic*"
+163: 3L
+164: 1000L
+165: Func(2,6): PrintTextAbove
+166: #
+character.facing := RandomDiceRoll( "1d8" );
+167: local #0
+168: "1d8"
+169: Func(4,0): RandomDiceRoll
+170: set member 'facing' #
+sleep(2);
+171: 2L
+172: Func(5,4): sleep
+173: #
+PerformAction( character, ACTION_BOW );
+174: local #0
+175: 32L
+176: Func(2,9): PerformAction
+177: #
+character.facing := RandomDiceRoll( "1d8" );
+178: local #0
+179: "1d8"
+180: Func(4,0): RandomDiceRoll
+181: set member 'facing' #
+sleep(1);
+182: 1L
+183: Func(5,4): sleep
+184: #
+PerformAction( character, ACTION_BOW );
+185: local #0
+186: 32L
+187: Func(2,9): PerformAction
+188: #
+character.facing := RandomDiceRoll( "1d8" );
+189: local #0
+190: "1d8"
+191: Func(4,0): RandomDiceRoll
+192: set member 'facing' #
+sleep(10);
+193: 10L
+194: Func(5,4): sleep
+195: #
+if( GetObjProperty( character, "Proof" ) >= 1 )
+196: local #0
+197: "Proof"
+198: Func(2,0): GetObjProperty
+199: 1L
+200: >=
+201: if false goto 212
+SetObjProperty( character, "Proof", GetObjProperty( character, "Proof" ) -1 );
+202: local #0
+203: "Proof"
+204: local #0
+205: "Proof"
+206: Func(2,0): GetObjProperty
+207: 1L
+208: -
+209: Func(2,11): SetObjProperty
+210: #
+211: goto233
+elseif( GetObjProperty( character, "Proof" ) == 0 )
+212: local #0
+213: "Proof"
+214: Func(2,0): GetObjProperty
+215: 0L
+216: ==
+217: if false goto 231
+EraseObjProperty( character, "Proof" );
+218: local #0
+219: "Proof"
+220: Func(2,7): EraseObjProperty
+221: #
+SendSysMessage( character, "You feel sober." );
+222: local #0
+223: "You feel sober."
+224: 3L
+225: 1000L
+226: Func(2,1): SendSysMessage
+227: #
+return;
+228: ""
+229: progend
+230: goto233
+return;
+231: ""
+232: progend
+233: local #7
+234: local #7
+235: 1L
+236: -
+237: :=
+238: #
+239: goto126
+240: leave block(1)
+241: goto290
+SendSysMessage( character, "You'll probably get drunk if you have anymore." );
+242: local #0
+243: "You'll probably get drunk if you have anymore."
+244: 3L
+245: 1000L
+246: Func(2,1): SendSysMessage
+247: #
+var j;
+248: decl local #0
+249: #
+for( j := GetObjProperty( character, "Proof" ); j > 0; j := j-1 )
+250: local #7
+251: local #0
+252: "Proof"
+253: Func(2,0): GetObjProperty
+254: :=
+255: #
+256: local #7
+257: 0L
+258: >
+259: if false goto 279
+SetObjProperty( character, "Proof", GetObjProperty( character, "Proof" ) -1 );
+260: local #0
+261: "Proof"
+262: local #0
+263: "Proof"
+264: Func(2,0): GetObjProperty
+265: 1L
+266: -
+267: Func(2,11): SetObjProperty
+268: #
+sleep(15);
+269: 15L
+270: Func(5,4): sleep
+271: #
+272: local #7
+273: local #7
+274: 1L
+275: -
+276: :=
+277: #
+278: goto256
+EraseObjProperty( character, "Proof" );
+279: local #0
+280: "Proof"
+281: Func(2,7): EraseObjProperty
+282: #
+SendSysMessage( character, "Your body is free of alcohol.");
+283: local #0
+284: "Your body is free of alcohol."
+285: 3L
+286: 1000L
+287: Func(2,1): SendSysMessage
+288: #
+289: leave block(1)
+290: leave block(7)
+291: progend
+C:/pol2/pkg/systems/poisonwatcher/poisons.inc, Line 54
+function AddPoison(mobile, poison_name, amount, attacker, level := 1)
+292: pop param 'level'
+293: pop param 'attacker'
+294: pop param 'amount'
+295: pop param 'poison_name'
+296: pop param 'mobile'
+var event := struct;
+297: decl local #5
+298: struct
+299: :=
+300: #
+event.+ type;
+301: local #5
+302: "type"
+303: .+
+304: #
+event.+ name;
+305: local #5
+306: "name"
+307: .+
+308: #
+event.+ amount;
+309: local #5
+310: "amount"
+311: .+
+312: #
+event.+ level;
+313: local #5
+314: "level"
+315: .+
+316: #
+event.+ attacker;
+317: local #5
+318: "attacker"
+319: .+
+320: #
+event.type := EVENT_ADD_POISON;
+321: local #5
+322: 1L
+323: set member 'type' #
+event.name := poison_name;
+324: local #5
+325: local #3
+326: set member 'name' #
+event.amount := amount;
+327: local #5
+328: local #2
+329: set member 'amount' #
+event.attacker := attacker;
+330: local #5
+331: local #1
+332: set member 'attacker' #
+event.level := level;
+333: local #5
+334: local #0
+335: set member 'level' #
+GetScript(mobile).SendEvent(event);
+336: local #4
+337: 0L
+338: makelocal
+339: jmp userfunc @452
+340: local #5
+341: Call Method sendevent (1 params)
+342: #
+343: 0L
+344: return
+C:/pol2/scripts/include/canAccess.inc, Line 2
+function can_access(who, item, flags := 0)
+345: pop param 'flags'
+346: pop param 'item'
+347: pop param 'who'
+var owner := Cint(GetObjProperty(item, "Owner"));
+348: decl local #3
+349: local #1
+350: "Owner"
+351: Func(2,0): GetObjProperty
+352: Func(0,0): CInt
+353: :=
+354: #
+if((owner) and (owner != who.serial))
+355: local #3
+356: local #3
+357: local #2
+358: get member 'serial'
+359: <>
+360: &&
+361: if false goto 371
+SendSysMessage(who, "You cannot use that.");
+362: local #2
+363: "You cannot use that."
+364: 3L
+365: 1000L
+366: Func(2,1): SendSysMessage
+367: #
+return 0;
+368: 0L
+369: return
+370: goto450
+elseif(GetObjProperty(item, "Vendored"))
+371: local #1
+372: "Vendored"
+373: Func(2,0): GetObjProperty
+374: if false goto 384
+SendSysMessage(who, "You cannot use that.");
+375: local #2
+376: "You cannot use that."
+377: 3L
+378: 1000L
+379: Func(2,1): SendSysMessage
+380: #
+return 0;
+381: 0L
+382: return
+383: goto450
+elseif(!Accessible(who, item))
+384: local #2
+385: local #1
+386: Func(2,2): Accessible
+387: if true goto 397
+SendSysMessage(who, "You cannot use that.");
+388: local #2
+389: "You cannot use that."
+390: 3L
+391: 1000L
+392: Func(2,1): SendSysMessage
+393: #
+return 0;
+394: 0L
+395: return
+396: goto450
+elseif((!flags["distance"]) and ((Distance(who, item) > 2)))
+397: local #0
+398: "distance"
+399: [] 1
+400: !
+401: local #2
+402: local #1
+403: Func(2,3): Distance
+404: 2L
+405: >
+406: &&
+407: if false goto 417
+SendSysMessage(who, "That item is too far away.");
+408: local #2
+409: "That item is too far away."
+410: 3L
+411: 1000L
+412: Func(2,1): SendSysMessage
+413: #
+return 0;
+414: 0L
+415: return
+416: goto450
+elseif((!flags["unmovable"]) and (item.movable == 0))
+417: local #0
+418: "unmovable"
+419: [] 1
+420: !
+421: local #1
+422: get member 'movable'
+423: 0L
+424: ==
+425: &&
+426: if false goto 436
+SendSysMessage(who, "You cannot use that while locked down.");
+427: local #2
+428: "You cannot use that while locked down."
+429: 3L
+430: 1000L
+431: Func(2,1): SendSysMessage
+432: #
+return 0;
+433: 0L
+434: return
+435: goto450
+elseif(!ReserveItem(item))
+436: local #1
+437: Func(2,4): ReserveItem
+438: if true goto 448
+SendSysMessage(who, "That item is already in use.");
+439: local #2
+440: "That item is already in use."
+441: 3L
+442: 1000L
+443: Func(2,1): SendSysMessage
+444: #
+return 0;
+445: 0L
+446: return
+447: goto450
+return 1;
+448: 1L
+449: return
+450: 0L
+451: return
+C:/pol2/pkg/systems/poisonwatcher/poisons.inc, Line 125
+function GetScript(mobile, no_start:=0)
+452: pop param 'no_start'
+453: pop param 'mobile'
+var poison_pid := CInt(GetObjProperty(mobile, "#PoisonPID"));
+454: decl local #2
+455: local #1
+456: "#PoisonPID"
+457: Func(2,0): GetObjProperty
+458: Func(0,0): CInt
+459: :=
+460: #
+syslog("poisonwatcher script PID: " + poison_pid);
+461: "poisonwatcher script PID: "
+462: local #2
+463: +
+464: Func(5,1): syslog
+465: #
+var poison_watcher := GetProcess(poison_pid);
+466: decl local #3
+467: local #2
+468: Func(5,2): getprocess
+469: :=
+470: #
+if ( !poison_watcher && !no_start ) 
+471: local #3
+472: !
+473: local #0
+474: !
+475: &&
+476: if false goto 495
+poison_watcher := start_script(":poisonwatcher:poisonwatcher", {mobile});
+477: ":poisonwatcher:poisonwatcher"
+478: array
+479: local #1
+480: +=
+481: Func(5,3): start_script
+482: local3 := 
+if ( poison_watcher.errortext )
+483: local #3
+484: get member 'errortext'
+485: if false goto 495
+PrintTextAbove(mobile, "Poison Watcher GetScript() " + poison_watcher.errortext
+486: local #1
+487: "Poison Watcher GetScript() "
+488: local #3
+489: get member 'errortext'
+490: +
+491: 3L
+492: 1000L
+493: Func(2,6): PrintTextAbove
+494: #
+return poison_watcher;
+495: local #3
+496: return

@@ -1,0 +1,45 @@
+use uo;
+use os;
+include "../pkg/foundations/gumps/gumps";
+
+program abc (who)
+
+
+
+if(GetObjProperty(who, "auxgumpRESOLUCAO") == "640x480")
+  GFInitGump( 0 , 485 );
+elseif(GetObjProperty(who, "auxgumpRESOLUCAO") == "800x600")
+  GFInitGump( 0 , 605 );
+else
+  GFInitGump( 0 , 485 );
+endif
+  GFNoMove();
+  GFNoClose();
+///  GFResizePic(0, 0, 0x23F0, 642, 50);
+//botões
+  var options:=GFButtonID( 600, 5, 0x25ff, 0x2600, 1);
+
+
+
+//desenhos
+ //reags
+  GFTilePic(1,5, 3962); 	//bp
+  GFTilePic(71,5, 3963);	//bm
+  GFTilePic(141,5, 3981);	//ss
+  GFTilePic(211,5, 3980);	//sa
+  GFTilePic(281,5, 3974);	//mr
+  GFTilePic(351,5, 3976);	//ns
+  GFTilePic(421,5, 3973);	//gs
+  GFTilePic(491,5, 3972);	//gl
+ //poções
+  GFTilePic(10,24 , 3852);	//gh
+  GFTilePic(100,26, 3625);	//mana
+  GFTilePic(190,24, 3851);	//stam
+ //comida
+  GFTilePic(280,28, 3202);	//milho
+
+var res := GFSendGump(who);
+if(res[options.keyid]) 
+start_script("auxgump/auxgumpopenopcoes", who);
+endif
+endprogram

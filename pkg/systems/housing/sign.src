@@ -1,0 +1,1093 @@
+
+use uo;
+use os;
+use basic;
+
+include "util/key";
+include "include/yesNo";
+include "util/bank";
+include "../pkg/foundations/gumps/gumps";
+
+
+const UOBJECT_DOORS_START := 0x0675;
+const UOBJECT_DOORS_END   := 0x06f4;
+const KEYSTART := 0x100e;
+const KEYEND := 0x1013;
+const KEYRING := 0x1011;
+
+program placa_casa(who,placa)
+ var casa := SystemFindObjectBySerial(CInt(GetObjProperty(placa, "house_serial")));
+
+if(!casa)
+SendSysMessage(who, "Casa com problemas, contate um Staff!",3,33);  
+return;
+endif
+if(VerificarNivel(who,placa) == 0)
+SendSysMessage(who, "Voce nao pode mecher na casa dos outros."); 
+return;
+endif
+
+if(!GetObjProperty(casa, "socios").size())
+SetObjProperty(casa, "socios" , array);
+endif
+if(!GetObjProperty(casa, "amigos").size())
+SetObjProperty(casa, "amigos" , array);
+endif
+
+if((VerificarNivel(who,placa) >= 1) && (VerificarNivel(who,placa) <= 3))
+SendSysMessage(who, "Voce deu refresh na casa.");
+SetObjProperty(placa,"decay", Cint(ReadGameClock() + 864000));
+placa.name := GetObjProperty(placa,"signname")  + ", [9 dias para decair]";
+endif
+if(VerificarNivel(who,placa) >= 2)
+ if(!ReserveItem(placa))
+  SendSysMessage(who, "Alguem ja esta mechendo na casa.", 3, 40);
+  return;
+ endif
+pagina_principal(who,placa,casa);
+endif
+endprogram
+
+function pagina_principal(who,placa,casa)
+
+  GFInitGump( 50 , 30 );
+  //GFNoClose();
+  GFResizePic(0, 0, 5120, 450, 280);
+  GFResizePic(5, 20, 5120, 440, 30);
+
+  var btamigos:=GFButtonID(185, 28, 0x29f5, 0x29f6, 1);
+  GFTextLine( 200 , 25, 66 , "Amigos" );
+
+  var btopcoes:=GFButtonID(350, 28, 0x29f5, 0x29f6, 1);
+  GFTextLine( 365 , 25, 66 , "Opcoes" );
+
+  var btgumpstaff;
+ if(who.cmdlevel >= 3)
+  btgumpstaff:=GFButtonID(30, 223, 0x29f5, 0x29f6, 1);
+  GFTextLine( 45 , 220, 33 , "Abrir Gump Staff" );
+ endif 
+
+  var btfechar:=GFButtonID(190, 250, 0x2ee6, 0x2ee7, 1);
+
+  GFGumpPic(20, 28, 0x29f4);
+  GFTextLine( 35 , 25, 66 , "Principal" );
+
+  GFTextLine( 45 , 80, 55 , "Proprietario: " );
+  GFTextLine( 140 , 80, 95 , SystemFindObjectBySerial(GetObjProperty(casa, "ownerserial"), SYSFIND_SEARCH_OFFLINE_MOBILES).name );
+
+  GFTextLine( 45 , 120, 55 , "Numero de itens trancados restantes: " );
+  GFTextLine( 310 , 120, 95 , GetObjProperty(casa, "numlockdowns") );
+
+  GFTextLine( 45 , 150, 55 , "Numero de Cofre Seguros restantes: " );
+  GFTextLine( 310 , 150, 95 , GetObjProperty(Casa, "numsecure") );
+
+  GFTextLine( 45 , 180, 55 , "Casa construida a: " );
+  GFTextLine( 180 , 180, 95 , TempoConstrucao(casa) );
+
+
+  
+  var res := GFSendGump( who );
+
+if(res[btamigos.keyid])
+pagina_amigos(who,placa,casa);
+endif
+
+
+if(res[btopcoes.keyid])
+pagina_opcoes(who,placa,casa);
+endif
+
+if(res[btgumpstaff.keyid])
+GumpStaff(who,casa,placa);
+endif
+
+if(res[btfechar.keyid])
+
+endif
+
+endfunction
+
+
+
+
+function pagina_amigos(who,placa,casa)
+  GFInitGump( 50 , 30 );
+  //GFNoClose();
+  GFResizePic(0, 0, 5120, 450, 280);
+  GFResizePic(5, 20, 5120, 440, 30);
+
+  GFGumpPic(185, 28, 0x29f4);
+  GFTextLine( 200 , 25, 66 , "Amigos" );
+
+  var btopcoes:=GFButtonID(350, 28, 0x29f5, 0x29f6, 1);
+  GFTextLine( 365 , 25, 66 , "Opcoes" );
+
+  var btfechar:=GFButtonID(190, 250, 0x2ee6, 0x2ee7, 1);
+
+  var btprincipal:=GFButtonID(20, 28, 0x29f5, 0x29f6, 1);
+  GFTextLine( 35 , 25, 66 , "Principal" );
+
+  var btlistasocios:=GFButtonID(48, 93, 0x3, 0x4, 1);
+  GFTextLine( 65 , 90, 55 , "Lista de Socios" );
+  
+  var btaddsocio:=GFButtonID(48, 163, 0x3, 0x4, 1);
+  GFTextLine( 65 , 160, 55 , "Adcionar Socio" );
+
+  var btlistaamigos:=GFButtonID(283, 93, 0x3, 0x4, 1);
+  GFTextLine( 300 , 90, 55 , "Lista de Amigos" );
+  
+  var btaddamigo:=GFButtonID(283, 163, 0x3, 0x4, 1);
+  GFTextLine( 300 , 160, 55 , "Adcionar Amigo" );
+
+  
+  var res := GFSendGump( who );
+
+if(res[btprincipal.keyid])
+pagina_principal(who,placa,casa);
+endif
+
+
+if(res[btopcoes.keyid])
+pagina_opcoes(who,placa,casa);
+endif
+
+
+if(res[btfechar.keyid])
+
+endif
+
+if(res[btaddsocio.keyid])
+AdcionarSocio(who,placa);
+endif
+
+if(res[btaddamigo.keyid])
+AdcionarAmigo(who,placa);
+endif
+
+if(res[btlistasocios.keyid])
+ListaSocios(who,placa);
+endif
+
+if(res[btlistaamigos.keyid])
+ListaAmigos(who,placa);
+endif
+
+endfunction
+
+
+
+function ListaSocios(who,placa)
+var casa:=SystemFindObjectBySerial(Cint(GetObjProperty(placa, "house_serial")));
+
+if(!casa)
+SendSysMessage(who, "Casa com problemas, contate um Staff!",3,33);  
+return;
+endif
+
+if(!GetObjProperty(casa, "socios").size())
+SetObjProperty(casa, "socios" , array);
+endif
+
+  GFInitGump( 250 , 200 );
+  //GFNoClose();
+  GFResizePic(0, 0, 5120, 200, 260);
+
+  GFTextLine( 85 , 5, 95 , "Socios:" );
+
+var socios:=GetObjProperty(casa, "socios");
+var altura:=40;
+
+
+foreach socio in socios
+GFButtonID(22, altura+3, 0x3, 0x4, 1);
+GFTextLine( 40 , altura, 66 , SystemFindObjectBySerial(socio, SYSFIND_SEARCH_OFFLINE_MOBILES).name );
+altura:=altura+30;
+endforeach
+
+
+var btremovertodos;
+if(socios.size() >=1)
+btremovertodos:=GFButtonID(22, 193, 0x3, 0x4, 1);
+GFTextLine( 40 , 190, 33 , "Remover Todos");
+endif
+
+var btfechar:=GFButtonID(70, 230, 0x2ee6, 0x2ee7, 1);
+
+var res := GFSendGump( who );
+
+if(res[btfechar.keyid])
+pagina_amigos(who,placa,casa);
+return;
+endif
+
+if(res[btremovertodos.keyid])
+SendSysMessage(who, "Socios removidos.");
+SetObjProperty(casa, "socios", array);
+pagina_amigos(who,placa,casa);
+return;
+endif
+
+case(res[0])
+1025:SendSysMessage(who, SystemFindObjectBySerial(socios[1], SYSFIND_SEARCH_OFFLINE_MOBILES).name+ " removido da lista de socios." ); socios.erase(1);
+1026:SendSysMessage(who, SystemFindObjectBySerial(socios[2], SYSFIND_SEARCH_OFFLINE_MOBILES).name+ " removido da lista de socios." ); socios.erase(2);
+1027:SendSysMessage(who, SystemFindObjectBySerial(socios[3], SYSFIND_SEARCH_OFFLINE_MOBILES).name+ " removido da lista de socios." ); socios.erase(3);
+1028:SendSysMessage(who, SystemFindObjectBySerial(socios[4], SYSFIND_SEARCH_OFFLINE_MOBILES).name+ " removido da lista de socios." ); socios.erase(4);
+1029:SendSysMessage(who, SystemFindObjectBySerial(socios[5], SYSFIND_SEARCH_OFFLINE_MOBILES).name+ " removido da lista de socios." ); socios.erase(5);
+endcase
+
+SetObjProperty(casa, "socios", socios);
+pagina_amigos(who,placa,casa);
+endfunction
+
+
+
+function AdcionarSocio(who,placa)
+var casa:=SystemFindObjectBySerial(Cint(GetObjProperty(placa, "house_serial")));
+
+if(!casa)
+SendSysMessage(who, "Casa com problemas, contate um Staff!",3,33);  
+return;
+endif
+
+if(!GetObjProperty(casa, "socios").size())
+SetObjProperty(casa, "socios" , array);
+endif
+
+if(GetObjProperty(casa, "socios").size() >= 5)
+Sendsysmessage(who, "Sua lista de socios esta cheia.");
+pagina_amigos(who,placa,casa);
+return;
+endif
+
+SendSysMessage(who,"Selecione o novo socio...");
+var targetchr := Target(who);
+if((!targetchr) || (!targetchr.acct) || (targetchr.acctname == GetObjProperty(casa,"owneracct")))
+SendSysMessage(who,"Cancelado.");
+pagina_amigos(who,placa,casa);
+return;
+endif
+
+var socios:=GetObjProperty(casa, "socios");
+foreach socio in socios
+if(socio == targetchr.serial)
+Sendsysmessage(who, "Esta pessoa ja esta na lista de socios.");
+pagina_amigos(who,placa,casa);
+return;
+endif
+endforeach
+
+Sendsysmessage(who, targetchr.name + " foi adcionado como socio da casa.");
+
+socios.append(targetchr.serial);
+SetObjProperty(casa, "socios",socios);
+pagina_amigos(who,placa,casa);
+endfunction
+
+
+
+
+function ListaAmigos(who,placa)
+var casa:=SystemFindObjectBySerial(Cint(GetObjProperty(placa, "house_serial")));
+
+if(!casa)
+SendSysMessage(who, "Casa com problemas, contate um Staff!",3,33);  
+return;
+endif
+
+if(!GetObjProperty(casa, "amigos").size())
+SetObjProperty(casa, "amigos" , array);
+endif
+
+  GFInitGump( 250 , 200 );
+  //GFNoClose();
+  GFResizePic(0, 0, 5120, 200, 260);
+
+  GFTextLine( 85 , 5, 95 , "Amigos:" );
+
+var amigos:=GetObjProperty(casa, "amigos");
+var altura:=40;
+
+
+foreach amigo in amigos
+GFButtonID(22, altura+3, 0x3, 0x4, 1);
+GFTextLine( 40 , altura, 66 , SystemFindObjectBySerial(amigo, SYSFIND_SEARCH_OFFLINE_MOBILES).name );
+altura:=altura+30;
+endforeach
+
+
+var btremovertodos;
+if(amigos.size() >=1)
+btremovertodos:=GFButtonID(22, 193, 0x3, 0x4, 1);
+GFTextLine( 40 , 190, 33 , "Remover Todos");
+endif
+
+var btfechar:=GFButtonID(70, 230, 0x2ee6, 0x2ee7, 1);
+
+var res := GFSendGump( who );
+
+if(res[btfechar.keyid])
+pagina_amigos(who,placa,casa);
+return;
+endif
+
+if(res[btremovertodos.keyid])
+SendSysMessage(who, "Amigos removidos.");
+SetObjProperty(casa, "amigos", array);
+pagina_amigos(who,placa,casa);
+return;
+endif
+
+case(res[0])
+1025:SendSysMessage(who, SystemFindObjectBySerial(amigos[1], SYSFIND_SEARCH_OFFLINE_MOBILES).name+ " removido da lista de amigos." ); amigos.erase(1);
+1026:SendSysMessage(who, SystemFindObjectBySerial(amigos[2], SYSFIND_SEARCH_OFFLINE_MOBILES).name+ " removido da lista de amigos." ); amigos.erase(2);
+1027:SendSysMessage(who, SystemFindObjectBySerial(amigos[3], SYSFIND_SEARCH_OFFLINE_MOBILES).name+ " removido da lista de amigos." ); amigos.erase(3);
+1028:SendSysMessage(who, SystemFindObjectBySerial(amigos[4], SYSFIND_SEARCH_OFFLINE_MOBILES).name+ " removido da lista de amigos." ); amigos.erase(4);
+1029:SendSysMessage(who, SystemFindObjectBySerial(amigos[5], SYSFIND_SEARCH_OFFLINE_MOBILES).name+ " removido da lista de amigos." ); amigos.erase(5);
+endcase
+
+SetObjProperty(casa, "amigos", amigos);
+pagina_amigos(who,placa,casa);
+endfunction
+
+
+
+function AdcionarAmigo(who,placa)
+var casa:=SystemFindObjectBySerial(Cint(GetObjProperty(placa, "house_serial")));
+
+if(!casa)
+SendSysMessage(who, "Casa com problemas, contate um Staff!",3,33);  
+return;
+endif
+
+if(!GetObjProperty(casa, "amigos").size())
+SetObjProperty(casa, "amigos" , array);
+endif
+
+if(GetObjProperty(casa, "amigos").size() >= 5)
+Sendsysmessage(who, "Sua lista de amigos esta cheia.");
+pagina_amigos(who,placa,casa);
+return;
+endif
+
+SendSysMessage(who,"Selecione o novo amigo...");
+var targetchr := Target(who);
+if((!targetchr) || (!targetchr.acct) || (targetchr.acctname == GetObjProperty(casa,"owneracct")))
+SendSysMessage(who,"Cancelado.");
+pagina_amigos(who,placa,casa);
+return;
+endif
+
+var amigos:=GetObjProperty(casa, "amigos");
+foreach amigo in amigos
+if(amigo == targetchr.serial)
+Sendsysmessage(who, "Esta pessoa ja esta na lista de amigos.");
+pagina_amigos(who,placa,casa);
+return;
+endif
+endforeach
+
+Sendsysmessage(who, targetchr.name + " foi adcionado como amigo da casa.");
+
+amigos.append(targetchr.serial);
+SetObjProperty(casa, "amigos",amigos);
+pagina_amigos(who,placa,casa);
+endfunction
+
+
+function pagina_opcoes(who,placa,casa)
+  GFInitGump( 50 , 30 );
+  //GFNoClose();
+  GFResizePic(0, 0, 5120, 450, 280);
+  GFResizePic(5, 20, 5120, 440, 30);
+
+  var btamigos:=GFButtonID(185, 28, 0x29f5, 0x29f6, 1);
+  GFTextLine( 200 , 25, 66 , "Amigos" );
+
+  GFGumpPic(350, 28, 0x29f4);
+  GFTextLine( 365 , 25, 66 , "Opcoes" );
+
+  var btfechar:=GFButtonID(190, 250, 0x2ee6, 0x2ee7, 1);
+
+  var btprincipal:=GFButtonID(20, 28, 0x29f5, 0x29f6, 1);
+  GFTextLine( 35 , 25, 66 , "Principal" );
+
+
+  var bttransferir:=GFButtonID(47, 83, 0x3, 0x4, 1);
+  GFTextLine( 65 , 80, 55 , "Transferir Casa" );
+  
+  var btdemolir:=GFButtonID(47, 113, 0x3, 0x4, 1);
+  GFTextLine( 65 , 110, 55 , "Transformar Casa em Escritura" );
+
+  var btfechadura:=GFButtonID(47, 143, 0x3, 0x4, 1);
+  GFTextLine( 65 , 140, 55 , "Trocar Fechaduras" );
+  
+  var btaltnome:=GFButtonID(47, 173, 0x3, 0x4, 1);
+  GFTextLine( 65 , 170, 55 , "Alterar Nome da Casa" );
+
+  var btaltcor:=GFButtonID(47, 203, 0x3, 0x4, 1);
+  GFTextLine( 65 , 200, 55 , "Alterar Cor da Placa" );
+
+
+  var res := GFSendGump( who );
+
+if(res[btprincipal.keyid])
+pagina_principal(who,placa,casa);
+endif
+
+
+if(res[btamigos.keyid])
+pagina_amigos(who,placa,casa);
+endif
+
+
+if(res[btfechar.keyid])
+
+endif
+
+if(res[bttransferir.keyid])
+Transferir_Casa(who,placa);
+endif
+
+if(res[btdemolir.keyid])
+Transformar_Deed(who,placa);
+endif
+
+if(res[btfechadura.keyid])
+Trocar_Fechaduras(who,placa);
+endif
+
+if(res[btaltnome.keyid])
+Alterar_Nome(who,placa);
+endif
+
+if(res[btaltcor.keyid])
+Alterar_Cor(who,placa);
+endif
+endfunction
+
+
+
+////Constuida a quanto tempo
+function TempoConstrucao(casa)
+ if(!GetObjProperty(casa, "ColocadaAt"))
+  SetObjProperty(casa, "ColocadaAt", ReadGameClock());
+ endif
+
+var seg:=ReadGameClock()-GetObjProperty(casa, "ColocadaAt");
+var min:=seg/60;
+var hora:=min/60;
+var dia:=hora/24;
+var semana:=dia/7;
+var mes:=semana/4;
+var ano:=mes/12;
+var retornar;
+
+if(ano > 0)
+semana:=Cint(semana-(mes*4));
+mes:=Cint(mes-(ano*12));
+retornar:=""+Cint(ano)+" ano(s), "+Cint(mes)+" mes(es) e "+Cint(semana)+" sem.";
+
+elseif(mes > 0)
+dia:=Cint(dia-(semana*7));
+semana:=Cint(semana-(mes*4));
+retornar:=""+Cint(mes)+" mes(es), "+Cint(semana)+" sem. e "+Cint(dia)+" dia(s).";
+
+elseif(semana > 0)
+hora:=Cint(hora-(dia*24));
+dia:=Cint(dia-(semana*7));
+retornar:=""+Cint(semana)+" sem., "+Cint(dia)+" dia(s) e "+Cint(hora)+" hr.";
+
+elseif(dia > 0)
+hora:=Cint(hora-(dia*24));
+retornar:=""+Cint(dia)+" dia(s) e "+Cint(hora)+" hr.";
+
+elseif(hora > 0)
+min:=Cint(min-(hora*60));
+retornar:=""+Cint(hora)+" hr. e "+Cint(min)+" min.";
+
+elseif(min > 0)
+seg:=Cint(seg-(min*60));
+retornar:=""+Cint(min)+" min. e "+Cint(seg)+" seg.";
+
+
+elseif(seg > 0)
+retornar:=""+Cint(seg)+" seg.";
+
+else
+retornar:="menos de 1 segundo";
+
+endif
+
+return retornar;
+endfunction
+
+
+
+function VerificarNivel(who,placa)
+var casa:=SystemFindObjectBySerial(Cint(GetObjProperty(placa, "house_serial")));
+
+if (who.cmdlevel >= 3)
+return 4;
+endif
+
+if (GetObjProperty(casa, "owneracct") == who.acctname)
+return 3;
+endif
+
+var socios:=GetObjProperty(casa, "socios");
+
+foreach socio in socios
+if(socio == who.serial)
+return 2;
+endif
+endforeach
+
+
+var amigos:=GetObjProperty(casa, "amigos");
+
+foreach amigo in amigos
+if(amigo == who.serial)
+return 1;
+endif
+endforeach
+
+return 0;
+endfunction
+
+
+
+
+////Funções do Menu OPÇÕES
+function Transferir_Casa(who,placa)
+var casa:=SystemFindObjectBySerial(Cint(GetObjProperty(placa, "house_serial")));
+
+if(!casa)
+SendSysMessage(who, "Casa com problemas, contate um Staff!",3,33);  
+return;
+endif
+
+if(VerificarNivel(who,placa) < 3)
+SendSysMessage(who, "Voce precisa ser o dono da casa para vende-la.");
+ if(VerificarNivel(who,placa) < 1)
+ pagina_opcoes(who,placa,casa);
+ endif
+return;
+endif
+
+SendSysMessage(who, "Pra quem voce gostaria de transferir a posse casa?");
+var targetow := Target(who);
+if((!targetow) || (targetow.acctname == who.acctname))
+sendsysmessage(who, "Cancelado."); 
+pagina_opcoes(who,placa,casa);
+return;
+endif   
+
+var gumppreco := SendTextEntryGump( who, "Qual o valor se cobrado?", TE_CANCEL_ENABLE, TE_STYLE_NORMAL);
+if(!gumppreco)
+sendsysmessage(who, "Cancelado."); 
+pagina_opcoes(who,placa,casa);
+return;
+endif
+
+if(SimNao(who,"Vender a casa por " +Cstr(gumppreco)+"gps?"))
+sendsysmessage(who, "Cancelado."); 
+pagina_opcoes(who,placa,casa);
+return;
+endif
+
+
+if(SimNao(targetow,"Comprar a casa por " +Cstr(gumppreco)+"gps?"))
+sendsysmessage(who, targetow.name+" recusou a compra da casa."); 
+sendsysmessage(targetow, "Cancelado."); 
+pagina_opcoes(who,placa,casa);
+return;
+endif
+
+if(VerificarNivel(who,placa) < 3)
+SendSysMessage(who, "Esta casa nao e mais sua.");
+SendSysMessage(targetow, "Tentou vender uma casa que nao lhe pertencia.");
+return;
+endif
+
+var contacomprador:=FindAccount(targetow.acctname);
+if(contacomprador.getprop("possui_casa") == 1)
+SendSysMessage(who, targetow.name+" ja possui uma casa em seu nome.");
+SendSysMessage(targetow, "Voce so pode possuir uma casa.");
+pagina_opcoes(who,placa,casa);
+return;
+endif
+
+//Contar Dinheiro
+var bankbox := FindBankBox( targetow );
+var granatotal:=0;
+foreach item in enumerateitemsincontainer(bankbox)
+if(item.objtype == 3821)
+granatotal:=granatotal+item.amount;
+endif
+endforeach
+
+if(granatotal < Cint(gumppreco))
+sendsysmessage(who, targetow.name+" nao possui dinheiro em banco para a compra da casa."); 
+sendsysmessage(targetow, "Voce nao possui dinheiro em banco suficiente para comprar a casa.");
+pagina_opcoes(who,placa,casa);
+return;
+endif
+
+//Descontar Dinheiro do Banco
+var descontadoatual:=0;
+var falta;
+
+foreach item in enumerateitemsincontainer(bankbox)
+falta := Cint(gumppreco)-descontadoatual;
+if(descontadoatual >= Cint(gumppreco))
+break;
+endif
+if(item.objtype == 3821)
+ if (item.amount >= falta)
+  descontadoatual:=descontadoatual+falta; 
+  SubtractAmount( item, falta );
+ else
+  descontadoatual:=descontadoatual+item.amount; 
+  SubtractAmount( item, item.amount );
+ endif
+endif
+endforeach
+
+
+//Criar Dinheiro no Banco do Vendedor
+var bankboxwho := FindBankBox( who );
+gumppreco:=Cint(gumppreco);
+var num:=0;
+var criou;
+var depositado:=0;
+
+while(num < Cint(gumppreco/60000))
+num:=num+1;
+ criou:=CreateItemInContainer( bankboxwho, 3821, 60000 );
+  if(!criou)
+   criou:=CreateItemInContainer( who.backpack, 3821, 60000 );
+  endif
+  if(!criou)
+   CreateItemAtLocation( who.x, who.y, who.z, 3821, 60000 );
+  endif
+depositado:=depositado+60000;
+endwhile
+
+
+//ver se ainda falta valores menores que 60k
+if(depositado < gumppreco)
+var aindafalta:=gumppreco-depositado;
+ criou:=CreateItemInContainer( bankboxwho, 3821, Cint(aindafalta) );
+  if(!criou)
+   criou:=CreateItemInContainer( who.backpack, 3821, Cint(aindafalta) );
+  endif
+  if(!criou)
+   CreateItemAtLocation( who.x, who.y, who.z, 3821, Cint(aindafalta) );
+  endif
+endif
+
+
+
+var contawho:=FindAccount(who.acctname);
+
+contawho.setprop("possui_casa", 0);
+contacomprador.setprop("possui_casa", 1);
+SetObjProperty(casa,    "ownerserial", targetow.serial);
+SetObjProperty(casa,    "owneracct",   targetow.acctname);
+SendSysMessage(who,      "Transferencia Concluida.");
+SendSysMessage(targetow, "Transferencia Concluida.");
+return 1;
+
+endfunction
+
+
+
+
+
+function Transformar_Deed(who,placa)
+var casa:=SystemFindObjectBySerial(Cint(GetObjProperty(placa, "house_serial")));
+
+if(!casa)
+SendSysMessage(who, "Casa com problemas, contate um Staff!",3,33);  
+return;
+endif
+
+if(VerificarNivel(who,placa) < 3)
+SendSysMessage(who, "Voce precisa ser o dono da casa para transforma-la em escritura.");
+ if(VerificarNivel(who,placa) < 1)
+ pagina_opcoes(who,placa,casa);
+ endif
+return;
+endif
+
+if(SimNao(who, "Destruir a casa e transforma-la em escritura?"))
+SendSysMessage(who, "Cancelado."); 
+pagina_opcoes(who,placa,casa);
+return;
+endif
+
+if(VerificarNivel(who,placa) < 3)
+SendSysMessage(who, "Voce precisa ser o dono da casa para transforma-la em escritura.");
+return;
+endif
+
+///Verificar NPC´s, Itens que não podem ser destruidos.
+foreach npc in (casa.mobiles)
+ if(npc.npctemplate == "playervendor")
+  sendsysmessage(who, "Voce nao pode retirar a casa com um vendedor nela."); 
+  pagina_opcoes(who,placa,casa);
+  return;
+ endif
+endforeach  
+
+foreach item in (casa.items)
+ if(item.objtype == 0xa390)
+  sendsysmessage(who, "Voce nao pode retirar a casa com uma pedra de guilda nela."); 
+  pagina_opcoes(who,placa,casa);  
+  return;
+ endif
+endforeach
+  
+var deed;  
+    case(casa.objtype)
+      0x6060: deed:= CreateItemInBackpack(who,0x6019,1); //smallstoneandplasterhouse
+      0x6061: deed:= CreateItemInBackpack(who,0x601a,1); //smallstonehouse
+      0x6062: deed:= CreateItemInBackpack(who,0x601b,1); //smallwoodenhouse
+      0x6063: deed:= CreateItemInBackpack(who,0x601c,1); //smallplasterhouse
+      0x6064: deed:= CreateItemInBackpack(who,0x601d,1); //smallwoodandstrawhouse
+      0x6073: deed:= CreateItemInBackpack(who,0x601e,1); //smallbrickhouse
+      0x6065: deed:= CreateItemInBackpack(who,0x6020,1); //largebrickhouse
+      0x6072: deed:= CreateItemInBackpack(who,0x6026,1); //largepatiohouse
+      0x6066: deed:= CreateItemInBackpack(who,0x6021,1); //twostorywoodandplasterhouse
+      0x6068: deed:= CreateItemInBackpack(who,0x6022,1); //twostorystoneandplasterhouse
+      0x6069: deed:= CreateItemInBackpack(who,0x6023,1); //tower
+      0x6070: deed:= CreateItemInBackpack(who,0x6024,1); //keep
+      0x6071: deed:= CreateItemInBackpack(who,0x6025,1); //castle
+      0x6074: deed:= CreateItemInBackpack(who,0x6075,1); //quintal
+     
+      0x6915: deed:= CreateItemInBackpack(who,0x6914,1); //minitower
+      0x6917: deed:= CreateItemInBackpack(who,0x6916,1); //sobrado_troncos
+      0x6919: deed:= CreateItemInBackpack(who,0x6918,1); //arenito_enrustida
+      0x6923: deed:= CreateItemInBackpack(who,0x6922,1); //shop_de_pedra
+      0x6925: deed:= CreateItemInBackpack(who,0x6924,1); //shop_de_marmore
+      0x6921: deed:= CreateItemInBackpack(who,0x6920,1); //sobrado_varanda
+      0x6913: deed:= CreateItemInBackpack(who,0x6912,1); //marmore_varanda
+      0x6099: deed:= CreateItemInBackpack(who,0x6098,1); //arenito_varanda
+    endcase
+
+if(!deed)
+  sendsysmessage(who, "Esta casa nao pode ser removida, contate um Game Master.",3,33); 
+  pagina_opcoes(who,placa,casa);
+  return;
+endif
+
+DestroyMulti(casa); 
+
+DestroyItem(SystemFindObjectBySerial(GetObjProperty(casa, "builtdeed")));
+
+///Destroy Itens da casa
+foreach item in (casa.items)
+item.movable := 1;
+DestroyItem(item);
+endforeach
+
+var contawho:=FindAccount(who.acctname);
+contawho.setprop("possui_casa", 0);
+endfunction
+
+
+
+function Trocar_Fechaduras(who,placa)
+var casa:=SystemFindObjectBySerial(Cint(GetObjProperty(placa, "house_serial")));
+
+if(!casa)
+SendSysMessage(who, "Casa com problemas, contate um Staff!",3,33);  
+return;
+endif
+
+if(VerificarNivel(who,placa) < 2)
+SendSysMessage(who, "Voce precisa ser socio da casa para trocar as fechaduras.");
+return;
+endif
+
+SendSysMessage(who,"Selecione a nova chave.");
+  var newkey:=Target(who);
+
+if(VerificarNivel(who,placa) < 2)
+SendSysMessage(who, "Voce precisa ser socio da casa para trocar as fechaduras.");
+return;
+endif
+
+if(!newkey)
+SendSysMessage(who,"Cancelado.");
+pagina_opcoes(who,placa,casa);
+return;
+endif
+
+var lockid;
+if((newkey.objtype>=KEYSTART) &&(newkey.objtype<=KEYEND) &&(newkey.objtype!=KEYRING))
+ lockid:=AllocLockId();
+ SetObjProperty(newkey,"lockid",lockid);
+else
+ SendSysMessage(who,"Isto nao e uma chave.");
+ pagina_opcoes(who,placa,casa);
+ return;
+endif
+
+//Setar Prop nas portas e Trancar
+foreach item in(casa.components)
+ if(((item.objtype>=UOBJECT_DOORS_START) &&(item.objtype<=UOBJECT_DOORS_END)))
+  item.locked := 1;
+  SetObjProperty(item,"lockid",lockid);
+ endif
+endforeach
+
+var addonitem:=CInt(GetObjProperty(casa,"component2"));
+if(addonitem)
+ addonitem.locked:=1;
+ SetObjProperty(addonitem,"lockid",lockid);
+endif
+
+SendSysMessage(who,"As fechaduras foram trocadas.");
+pagina_opcoes(who,placa,casa);
+endfunction
+
+
+
+function Alterar_Nome(who,placa)
+var casa:=SystemFindObjectBySerial(Cint(GetObjProperty(placa, "house_serial")));
+
+if(!casa)
+SendSysMessage(who, "Casa com problemas, contate um Staff!",3,33);  
+return;
+endif
+
+if(VerificarNivel(who,placa) < 2)
+SendSysMessage(who, "Voce precisa ser socio da casa para trocar as fechaduras.");
+return;
+endif
+
+var newname := SendTextEntryGump( who, "Selecione o novo nome da sua casa. ", TE_CANCEL_ENABLE, TE_STYLE_NORMAL);
+
+if(VerificarNivel(who,placa) < 2)
+SendSysMessage(who, "Voce precisa ser socio da casa para trocar as fechaduras.");
+return;
+endif
+
+
+if(!newname)
+ SendSysMessage(who, "Cancelado!");
+// pagina_opcoes(who,placa,casa);
+ return;
+endif
+
+if(IsNull(newname))
+ SendSysMessage(who, "Cancelado!");
+ pagina_opcoes(who,placa,casa);
+ return;
+endif
+
+if((len(newname) > 20))
+SendSysMessage(who, "O nome da casa nao pode conter mais de 20 caracteres.");
+pagina_opcoes(who,placa,casa);
+return;
+endif
+if(len(SplitWords(newname)) > 5)
+SendSysMessage(who, "O nome da casa nao pode conter mais de 5 palavras");
+pagina_opcoes(who,placa,casa);
+return;
+endif
+
+
+//Pegando Decay
+
+if(!GetObjProperty(placa,"decay"))
+ SetObjProperty(placa, "decay", ReadGameClock() + 864000);
+endif
+var decaytime:=GetObjProperty(placa,"decay");
+
+if(GetObjProperty(placa,"nodecay") == 1)
+ placa.name  := newname + ", [decay trancado]";
+
+elseif((decaytime - ReadGameClock() ) > 864000)
+ placa.name  := newname + ", [10 dias para decair]";
+
+elseif((decaytime - ReadGameClock() ) > 777600)
+ placa.name  := newname + ", [9 dias para decair]";
+
+elseif((decaytime - ReadGameClock() ) > 691200)
+ placa.name  := newname + ", [8 dias para decair]";
+      
+elseif((decaytime - ReadGameClock() ) > 604800)
+ placa.name  := newname + ", [7 dias para decair]";
+
+elseif((decaytime - ReadGameClock() ) > 518400)
+ placa.name  := newname + ", [6 dias para decair]";
+
+elseif((decaytime - ReadGameClock() ) > 432000)
+ placa.name  := newname + ", [5 dias para decair]";
+
+elseif((decaytime - ReadGameClock() ) > 345600)
+ placa.name  := newname + ", [4 dias para decair]";
+
+elseif((decaytime - ReadGameClock() ) > 259200)
+ placa.name  := newname + ", [3 dias para decair]";
+
+elseif((decaytime - ReadGameClock() ) > 172800)
+ placa.name  := newname + ", [2 dias para decair]";
+
+elseif((decaytime - ReadGameClock() ) > 86400)
+ placa.name  := newname + ", [1 dia para decair]";
+
+elseif((decaytime - ReadGameClock() ) > 3600)
+ placa.name  := newname + ", [1 Hora para decair]";
+
+elseif((decaytime - ReadGameClock() ) > 1800)
+ placa.name  := newname + ", [30 minutos para decair]";
+
+elseif((decaytime - ReadGameClock() ) > 600)
+ placa.name  := newname + ", [10 minutos para decair]";
+
+elseif((decaytime - ReadGameClock() ) > 60)
+ placa.name  := newname + ", [1 minuto para decair]";
+
+endif
+
+SetObjProperty(placa, "signname", newname);
+pagina_opcoes(who,placa,casa);
+endfunction
+
+
+
+function Alterar_Cor(who,placa)
+
+if(VerificarNivel(who,placa) < 2)
+SendSysMessage(who, "Voce precisa ser socio da casa para alterar a cor da placa.");
+return;
+endif
+
+var color := SelectColor(who, placa);
+
+if(VerificarNivel(who,placa) < 2)
+SendSysMessage(who, "Voce precisa ser socio da casa para alterar a cor da placa.");
+return;
+endif
+
+
+if(!color)
+ SendSysMessage(who, "Cancelado!");
+ return;
+endif
+
+if(( color > 1001 ) || ( color == 1 ))
+ placa.color := 0;
+else
+ placa.color := color;
+endif
+SendSysMessage(who, "Cor da placa alterada.");
+endfunction
+
+
+function IsNull(texto)
+foreach letra in CAscZ( texto )
+if (letra != 32)
+return 0;
+endif
+endforeach
+return 1;
+endfunction
+
+///Funções GUMP STAFF
+function GumpStaff(who,casa,placa)
+
+  GFInitGump( 50 , 30 );
+  //GFNoClose();
+  GFResizePic(0, 0, 5120, 450, 280);
+  GFResizePic(5, 20, 5120, 440, 30);
+
+  GFTextLine( 170 , 25, 33 , "GUMP STAFF" );
+
+
+  GFTextLine( 15 , 60, 55 , "Acc Dona: " );
+  GFTextLine( 90 , 60, 95 ,  GetObjProperty(casa,"owneracct") );
+ 
+  GFTextLine( 230 , 60, 55 , "Serial Casa: " );
+  GFTextLine( 320 , 60, 95 , casa.serial );
+
+  GFTextLine( 230 , 90, 55 , "X, Y, Z: " );
+  GFTextLine( 300 , 90, 95 , casa.x+", "+casa.y+", "+casa.z );
+
+  var btrefresh:=GFButtonID(15, 93, 0x29f5, 0x29f6, 1);
+  GFTextLine( 30 , 90, 33 , "Dar Refresh" );
+
+  var bttrancar:=GFButtonID(15, 123, 0x29f5, 0x29f6, 1);
+  if(GetObjProperty(placa,"nodecay") == 1)
+  GFTextLine( 30 , 120, 33 , "Destrancar Decay" );
+  else
+  GFTextLine( 30 , 120, 33 , "Trancar Decay" );
+  endif
+
+  var btaddnpc:=GFButtonID(15, 153, 0x29f5, 0x29f6, 1);
+  GFTextLine( 30 , 150, 33 , "Add NPC de Local Irregular" );
+
+  var btfechar:=GFButtonID(190, 250, 0x2ee6, 0x2ee7, 1);
+
+  
+  var res := GFSendGump( who );
+
+if(res[btrefresh.keyid])
+SendSysMessage(who, "Voce deu refresh na casa.",3,95);
+SetObjProperty(placa,"decay", Cint(ReadGameClock() + 864000));
+placa.name := GetObjProperty(placa,"signname")  + ", [9 dias para decair]";
+endif
+
+if(res[bttrancar.keyid])
+ if(GetObjProperty(placa,"nodecay") == 1)
+ SendSysMessage(who, "Voce destrancou o decay da casa.",3,95);
+ SetObjProperty(placa,"nodecay", 0);
+ SetObjProperty(placa,"decay", Cint(ReadGameClock() + 864000));
+ placa.name := GetObjProperty(placa,"signname")  + ", [9 dias para decair]";
+ placa.color := 0;
+ else
+ SendSysMessage(who, "Voce trancou o decay da casa.",3,95);
+ SetObjProperty(placa,"nodecay", 1);
+ placa.name := GetObjProperty(placa,"signname")  + ", [decay trancado]";
+ placa.color := 1153;
+ endif
+endif
+
+if(res[btaddnpc.keyid])
+AddNPCAviso(who,casa,placa);
+endif
+
+if(res[btfechar.keyid])
+
+endif
+
+
+pagina_principal(who,placa,casa);
+endfunction
+
+function AddNPCAviso(who,casa,placa)
+GumpStaff(who,casa,placa);
+SendSysMessage(who, "Desativado.",3,95);
+return;
+
+var tempo:= SendTextEntryGump( who, "Em quantos dias de Servidor ON a casa deve ser retirada? (min. 2, max. 8)", TE_CANCEL_ENABLE, TE_STYLE_NORMAL);
+if((!tempo) || (Cint(tempo) < 2) || (Cint(tempo) > 8))
+sendsysmessage(who, "Cancelado."); 
+GumpStaff(who,casa,placa);
+return;
+endif
+tempo:=Cint(tempo)*86400;
+var decayrAt:=ReadGameClock()+tempo;
+
+var props array;
+props.+facing := who.facing;
+var npc := CreateNpcFromTemplate( "npc_casa", who.x, who.y, who.z, props );
+movecharactertolocation(npc , placa.x, placa.y, placa.z-4, MOVECHAR_FORCELOCATION);
+SetObjProperty(npc, "Serial_Casa", casa.serial); 
+SetObjProperty(npc, "Serial_Placa", placa.serial); 
+SetObjProperty(npc, "DecayAT", decayrAt);
+
+endfunction

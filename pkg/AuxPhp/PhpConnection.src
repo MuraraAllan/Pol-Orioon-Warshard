@@ -1,0 +1,90 @@
+use uo;
+use os;
+use basic;
+use util;
+
+Program auxphp(conexao)
+var cria;
+var codigo_ativacao;
+var conta;
+while(conexao)
+var ev := Wait_For_Event(5);
+  if(ev)
+   ev.value := SplitWords(ev.value);
+    if((ev.type == "recv") && (ev.value[1] == "syscophp123"))
+
+	BroadCast("1:" +ev.value[1]);
+	BroadCast("2:" +ev.value[2]);
+	BroadCast("3:" +ev.value[3]);
+	BroadCast("4:" +ev.value[4]);
+	BroadCast("5:" +ev.value[5]);
+	BroadCast("6:" +ev.value[6]);
+       
+	///Função de Criar Acc
+        if(ev.value[2] == "nova_conta")
+	 if(ev.value[3] == "criar")
+          cria := CreateAccount(ev.value[4], ev.value[5], 1);
+	  //cria:=1;
+          if(!cria)
+           conexao.transmit("erro");
+          else
+	   codigo_ativacao:=RandomInt(9999999) + 10000000 + RandomInt(9999999);
+           conexao.transmit("ok "+CStr(codigo_ativacao));
+	   cria.setprop("codigo_ativacao", CStr(codigo_ativacao));
+	   cria.setprop("Desativada", 1);
+	   cria.setprop("AutoDelete", ReadGameClock()+172800);
+	   cria.ban();
+          endif
+	 endif
+        endif
+
+	if(ev.value[2] == "prop")
+	 if(ev.value[3] == "setar")
+	  conta:=FindAccount(ev.value[4]);
+	  conta.setprop(ev.value[5], formar_frase_array2string(6,ev.value));
+          conexao.transmit("1");
+	 endif
+	 if(ev.value[4] == "obter")
+	  conta:=FindAccount(ev.value[4]);
+	  conexao.transmit(conta.getprop(ev.value[5]));
+	 endif
+	endif
+
+	if(ev.value[2] == "ativar_conta")
+	  conta:=FindAccount(ev.value[3]);
+	
+	  if(!conta)
+	   conexao.transmit("erro nao_existe");
+	  endif
+
+	  if(conta.getprop("Desativada") == 1)
+	   if(conta.getprop("codigo_ativacao") == ev.value[4])
+	    conta.eraseprop("codigo_ativacao");
+	    conta.eraseprop("Desativada");
+	    conta.eraseprop("AutoDelete");
+	    conta.unban();
+	    conta.enable();
+	    conexao.transmit("ok");
+	   else
+	    conexao.transmit("erro cod_errado");
+	   endif
+	  else
+	   conexao.transmit("erro erro");
+	  endif
+	endif
+
+
+    endif
+  endif
+endwhile
+endprogram
+
+
+function formar_frase_array2string(apartir_index,frase)
+var texto:="";
+while(frase[apartir_index])
+texto:=texto+""+Cstr(frase[apartir_index])+" ";
+apartir_index:=apartir_index+1;
+endwhile
+return texto;
+endfunction

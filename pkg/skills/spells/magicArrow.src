@@ -1,0 +1,195 @@
+use uo;
+use cfgfile;
+include "include/skills";
+include "include/spellRestrictions";
+include "include/attributes";
+
+program cast_magicarrow( parms )
+var prevtime;
+prevtime := ReadGameClock() + 8;
+  var circle := 1;
+  var delivery := "direct";
+  var noto := "harmful";
+  var result := maincast(parms, delivery, circle, noto, 1);
+  if(result == 0)
+    return;
+  endif
+  var caster := result[1];
+  var cast_on := result[2];
+  PlayMovingEffect( caster, cast_on, FX_MAGIC_ARROW, 5, 1 );
+  PlaySoundEffect( caster, SFX_SPELL_MAGIC_ARROW );
+  var mod_amount:= RandomDiceRoll("1d6+3");
+  var mr := CInt(GetObjProperty(cast_on, "mr"));
+ var mrr := CInt(GetObjProperty(caster, "mr"));
+
+var mana := Getmana(caster);
+if(Readgameclock() >=  prevtime)
+    SendSysMessage(caster, "Voce demorou demais e perdeu o focus",9,90);
+PlayStationaryEffect( caster.x, caster.y, caster.z, FX_SMOKE, 0xa, 0xa );     
+ playSoundEffect(caster,0x005d);
+setmana(caster, mana + 4);
+    return;
+  endif
+//se o mr for maior que o tanto que remove o explo e o mrr for = ou - que 0;
+if((mr >= 1) && (mrr <= 0))
+PlaySoundEffect(cast_on, SFX_SPELL_MAGIC_REFLECTION);
+    PlayObjectCenteredEffect(cast_on, FX_CURSE_EFFECT, 10,10);
+    SendSysMessage(cast_on, "Sua Aura Anti Magia Lhe Protege",9,89);
+SetobjProperty(cast_on,"mr", GetobjProperty(cast_on,"mr")-50);
+  PlayMovingEffect( caster, cast_on, FX_MAGIC_ARROW, 5, 1 );
+  PlaySoundEffect( caster, SFX_SPELL_MAGIC_ARROW );
+sleepms(1000);
+  PlayMovingEffect( cast_on, caster, FX_MAGIC_ARROW, 5, 1 );
+  PlaySoundEffect( caster, SFX_SPELL_MAGIC_ARROW );
+SetobjProperty(cast_on,"delayreflect", Readgameclock() + 120);
+cast_on := caster;
+
+
+//se o caster tiver de reflect maior que o cast_on;
+elseif((mr >= 1) && (mrr >= mr))
+//cast_on
+PlaySoundEffect(cast_on, SFX_SPELL_MAGIC_REFLECTION);
+    PlayObjectCenteredEffect(cast_on, FX_CURSE_EFFECT, 10,10);
+    SendSysMessage(cast_on, "Sua Aura Anti Magia Lhe Protege",9,89);
+SetobjProperty(cast_on,"mr", GetobjProperty(cast_on,"mr")-150);
+
+
+  PlayMovingEffect( caster, cast_on, FX_MAGIC_ARROW, 5, 1 );
+  PlaySoundEffect( caster, SFX_SPELL_MAGIC_ARROW );
+SetobjProperty(cast_on,"delayreflect", Readgameclock() + 120);
+sleepms(1500);
+//caster
+PlaySoundEffect(caster, SFX_SPELL_MAGIC_REFLECTION);
+    PlayObjectCenteredEffect(caster, FX_CURSE_EFFECT, 10,10);
+    SendSysMessage(cast_on, "Sua Aura Anti Magia Lhe Protege",9,89);
+SetobjProperty(caster,"mr", GetobjProperty(caster,"mr")-150);
+PlayMovingEffect( cast_on, caster, FX_MAGIC_ARROW, 5, 1 );
+PlaySoundEffect( caster, SFX_SPELL_MAGIC_ARROW );
+  sleepms(1500);
+PlayMovingEffect( caster, cast_on, FX_MAGIC_ARROW, 5, 1 );
+SetobjProperty(caster,"delayreflect", Readgameclock() + 120);
+
+//se o cast_on tiver de reflect maior que o caster;
+elseif((mr >= 1) && (mr >= mrr))
+//cast_on
+PlaySoundEffect(cast_on, SFX_SPELL_MAGIC_REFLECTION);
+    PlayObjectCenteredEffect(cast_on, FX_CURSE_EFFECT, 10,10);
+    SendSysMessage(cast_on, "Sua Aura Anti Magia Lhe Protege",9,89);
+SetobjProperty(cast_on,"mr", GetobjProperty(cast_on,"mr")-150);
+  PlayMovingEffect( caster, cast_on, FX_MAGIC_ARROW, 5, 1 );
+  PlaySoundEffect( caster, SFX_SPELL_MAGIC_ARROW );
+ SetobjProperty(cast_on,"delayreflect", Readgameclock() + 120);
+
+sleep(1);
+//caster
+PlaySoundEffect(caster, SFX_SPELL_MAGIC_REFLECTION);
+    PlayObjectCenteredEffect(caster, FX_CURSE_EFFECT, 10,10);
+    SendSysMessage(cast_on, "Sua Aura Anti Magia Lhe Protege",9,89);
+SetobjProperty(caster,"mr", GetobjProperty(caster,"mr")-150);
+PlayMovingEffect( cast_on, caster, FX_MAGIC_ARROW, 5, 1 );
+PlaySoundEffect( caster, SFX_SPELL_MAGIC_ARROW );
+SetobjProperty(caster,"delayreflect", Readgameclock() + 120);
+sleep(2);
+
+//caster
+PlaySoundEffect(cast_on, SFX_SPELL_MAGIC_REFLECTION);
+    PlayObjectCenteredEffect(cast_on, FX_CURSE_EFFECT, 10,10);
+    SendSysMessage(cast_on, "Sua Aura Anti Magia Lhe Protege",9,89);
+  PlayMovingEffect( caster, cast_on, FX_MAGIC_ARROW, 5, 1 );
+  PlaySoundEffect( caster, SFX_SPELL_MAGIC_ARROW );
+SetobjProperty(cast_on,"delayreflect", Readgameclock() + 120);
+sleepms(1000);
+
+PlayMovingEffect( cast_on, caster, FX_MAGIC_ARROW, 5, 1 );
+PlaySoundEffect( caster, SFX_SPELL_MAGIC_ARROW );
+SetobjProperty(caster,"delayreflect", Readgameclock() + 120);
+cast_on := caster;
+elseif((mr <= 0) && (mrr <= 0))
+cast_on := cast_on;
+endif
+
+if(caster == cast_on)
+ApplyRawDamage(cast_on, mod_amount);
+PrintTextAbove(cast_on, " " + mod_amount + " ", FONT_SMALL_LIGHT, 38);
+else 
+SetObjProperty(cast_on, "Lastataque", Readgameclock() + 5);  
+var dmg  := (Resistearrow(circle, caster, cast_on, mod_amount + 1));
+
+endif
+endprogram
+
+
+
+function Resistearrow(circle, caster, cast_on, amt)
+  var magery := CInt(GetEffectiveSkill(caster, SKILLID_MAGERY));
+  var evalint := CInt(GetEffectiveSkill(caster, SKILLID_EVALINT));
+  var resist := CInt(GetEffectiveSkill(cast_on, SKILLID_MAGICRESISTANCE));
+var chk := resist + randomdiceroll(resist) + 15 - (((magery - 40 + evalint - 50 - cint(randomdiceroll(magery) + 10)) / 30) + (circle * 4)  - randomdiceroll("1d8"));
+
+   var  diff := chk;
+
+
+  if(cast_on.dead)
+    return 0;
+  endif
+
+  if((RandomInt(99) + 25) <= diff)
+SetObjProperty(cast_on, "resist", 1);    
+SendSysMessage(cast_on, "Voce sente seu corpo resistindo a magia!",9,89);
+
+    PlaySoundEffect(cast_on, SFX_SPELL_WEAKEN);
+    PlayObjectCenteredEffect(cast_on, FX_CURSE_EFFECT, 5,5);
+  
+
+   var magery := GetEffectiveSkill(caster, SKILLID_MAGERY);
+  var insc   := GetEffectiveSkill(caster, SKILLID_EVALINT);
+var dmg1 :=  cint(GetModDuration(magery) / 40 + GetModDuration(insc) / 35  + RandomDiceRoll("1d3") - randomdiceroll("1d12") - GetModDuration(resist) / 50);
+
+if(dmg1 < 2)
+dmg1 := randomdiceroll("1d2") - randomdiceroll("1d2") + 3;
+endif
+
+send_attack(cast_on,caster, 5);
+ApplyRawDamage(cast_on,dmg1);
+PrintTextAbove(cast_on, " " + dmg1 + " ", FONT_SMALL_LIGHT, 38);
+SetObjProperty(caster, "Lastataque", Readgameclock() + 5); 
+//var aa :=GetEffectiveSkill(caster, SKILLID_MAGICRESISTANCE) + GetEffectiveSkill(caster, SKILLID_MAGICRESISTANCE) / GetEffectiveSkill(caster, SKILLID_MAGICRESISTANCE);
+ // var aaa := SetAttributeBaseValue(caster, GetAttributeIdBySkillId(SKILLID_MAGICRESISTANCE), aa);
+
+upparrs(cast_on,100,"MAGICRESISTANCE",100,evalint);
+
+else
+
+
+  var insc   := GetEffectiveSkill(caster, SKILLID_EVALINT);
+
+if(insc >= 80)
+send_attack(cast_on,caster, 43);
+var dmg :=  cint(GetModDuration(magery) / 30 + GetModDuration(insc) / 25  + RandomDiceRoll("1d3") - randomdiceroll("1d12") - GetModDuration(resist) / 50);
+if(cast_on.resist < 70)
+dmg := dmg - randomdiceroll("1d1") - 2;
+endif
+if(dmg <= 5)
+dmg := randomdiceroll("1d4") + 4;
+endif
+
+ApplyRawDamage(cast_on,dmg);
+PrintTextAbove(cast_on, " " + dmg + " ", FONT_SMALL_LIGHT, 38);
+SetObjProperty(caster, "Lastataque", Readgameclock() + 5); 
+else
+send_attack(cast_on,caster, 43);
+
+
+var dmg :=  cint(GetModDuration(magery) / 50 + GetModDuration(insc) / 50  + RandomDiceRoll("1d3") - randomdiceroll("1d10") - GetModDuration(resist) / 50);
+if(cast_on.resist < 70)
+dmg := dmg - randomdiceroll("1d1") - 2;
+if(dmg < 3)
+dmg := dmg + 2;
+endif
+endif
+ApplyRawDamage(cast_on,dmg);
+PrintTextAbove(cast_on, " " + dmg + " ", FONT_SMALL_LIGHT, 38);
+SetObjProperty(caster, "Lastataque", Readgameclock() + 5); 
+endif
+endif
+endfunction

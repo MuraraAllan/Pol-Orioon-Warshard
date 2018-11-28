@@ -1,0 +1,24 @@
+use os;
+use uo;
+
+program delayam(who)
+
+var tempocorrido := 0;
+var tempolimite := 300;
+while(tempolimite > tempocorrido)
+sleep(1);
+if(getobjproperty(who,"respondeu")== 1)
+sendsysmessage(who,"Antimacro respondido com sucesso!",3,98);
+eraseobjproperty(who,"respondeu");
+return;
+endif
+tempocorrido := tempocorrido + 1;
+
+endwhile
+if(!getobjproperty(who,"errou"))
+Sendsysmessage(who,"Voce demorou demais para responder o anti-macro, e sera kickado do servidor em 5 minutos",3,98);
+endif
+detach();
+sleep(300);
+disconnectclient(who);
+endprogram

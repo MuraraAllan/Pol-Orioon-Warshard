@@ -1,0 +1,37 @@
+Exported Functions:
+   PC  Args  Name
+    3     2  Pushthrough
+C:\pol2\pkg\systems\pushthrough\pushhook.src, Line 5
+program PushthroughHook()
+return 0; //change to 1 to enable the hook
+0: 0L
+1: progend
+2: progend
+C:\pol2\pkg\systems\pushthrough\pushhook.src, Line 8
+exported function Pushthrough(walker, obstructors) //note passed ARRAY of mobil
+3: makelocal
+4: jmp userfunc @6
+5: progend
+6: pop param 'obstructors'
+7: pop param 'walker'
+if(GetVital(walker,"Stamina") < GetVitalMaximumValue(walker,"Stamina"))
+8: local #1
+9: "Stamina"
+10: Func(2,0): GetVital
+11: local #1
+12: "Stamina"
+13: Func(2,1): GetVitalMaximumValue
+14: <
+15: if false goto 19
+return 0;
+16: 0L
+17: return
+18: goto24
+return ConsumeVital(walker,"Stamina",1000);
+19: local #1
+20: "Stamina"
+21: 1000L
+22: Func(2,2): ConsumeVital
+23: return
+24: 0L
+25: return

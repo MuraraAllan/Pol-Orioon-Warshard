@@ -1,0 +1,44 @@
+use os;
+use uo;
+use util;
+
+include "include/spellRestrictions";
+include "include/attributes";
+
+
+program cast_heal( parms )
+
+var prevtime;
+prevtime := ReadGameClock() + 12;
+  var circle := 4;
+  var delivery := "direct";
+  var noto := "helpful";
+  var result := maincast(parms, delivery, circle, noto, 29);
+  if(result == 0)
+    return;
+  endif
+
+var  mana := GetMana(caster);
+ 
+if(Readgameclock() >=  prevtime)
+PlayStationaryEffect( caster.x, caster.y, caster.z, FX_SMOKE, 0xa, 0xa );     
+ playSoundEffect(caster,0x005d);
+    SendSysMessage(caster, "Voce demorou demais e perdeu o focuss",9,90);
+SetMana(caster, mana + 11);
+    return;
+  endif
+  var caster := result[1];
+  var cast_on := result[2];
+if((getobjproperty(caster,"guild_id")) && (!getobjproperty(cast_on,"guild_id"))|| (getobjproperty(caster,"guild_id") != getobjproperty(cast_on,"guild_id"))|| (!getobjproperty(caster,"guild_id")) && (getobjproperty(cast_on,"guild_id")))
+ caster.SetCriminal(1);
+endif
+var magery := GetEffectiveSkill(caster, SKILLID_MAGERY);
+  var insc   := GetEffectiveSkill(caster, SKILLID_INSCRIPTION);
+  var dmg := GetModDuration(magery) / 25 + GetModDuration(insc) / 20 + RandomDiceRoll("1d20");;
+HealDamage(cast_on, dmg);
+PrintTextAbove(cast_on, " " + dmg + " ", FONT_SMALL_LIGHT, 1153);
+PlayObjectCenteredEffect( cast_on, FX_SPARK_EFFECT, 7, 0x10 );
+PlaySoundEffect( cast_on, SFX_SPELL_GREATER_HEAL );
+endprogram
+
+//// 

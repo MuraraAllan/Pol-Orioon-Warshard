@@ -1,0 +1,310 @@
+
+
+
+
+
+use cfgfile;
+ use uo;
+use os;
+use util;
+
+include "include/client";
+include "include/attributes";
+include "include/string";
+include "include/objtype";
+include "include/canAccess";
+include "include/utility";
+include "include/dist";
+include "include/toolWear";
+include "include/noto";
+
+const UACTION_CHOP := 0x0d;
+const FX_POISON_GAS := 0x113a;
+var bowcraftconfigfile := ReadConfigFile("::bowcraft");
+var mex;
+var mey;
+
+program lumbersysco(me, axe)
+  
+var objtype;
+var who := me;
+var name;
+  var diff := 0;
+  if(!can_access(me, axe))
+    return;
+  endif
+  if(!ReserveItem(axe))
+    return;
+  endif
+ var hand1 := (GetEquipmentByLayer(who, 1));
+  var hand2 := (GetEquipmentByLayer(who, 2));
+
+if((hand1.graphic > 1) && (hand1.graphic != axe.graphic)  || (hand2.graphic > 1) && (hand2.graphic != axe.graphic)  )
+sendsysmessage(who, "Voce guardou o item que estava segurando para poder trabalhar.",0x3,98);
+MoveItemToContainer( hand1, who.backpack, 136, 101 );
+MoveItemToContainer( hand2, who.backpack, 137, 102 );
+endif
+sleepms(150);
+equipitem(who,axe);
+SendSysMessage(who, "Selecione a arvore que voce deseja cortar.",0x3,98);
+  var tree := targetcoordinates(me);
+
+  if(!tree)
+sendsysmessage(who, "Cancelado",0x3,98);
+    return;
+  endif
+if(!is_tree(tree.objtype))
+sendsysmessage(who, "Voce apenas pode cortar arvores!",0x3,98);
+    return;
+  endif
+  SendSysMessage(me, "Voce comeca a cortar madeiras...",0x3,98);
+
+
+  var checker := 0;
+  mex := me.x;
+  mey := me.y;
+  var mount;
+  repeat
+
+    if(!axe)
+      return;
+    endif
+  PerformAction(who, UACTION_CHOP);
+        PlaySoundEffect(who, SFX_SKILL_LUMBERJACK);
+if((me.x != mex) || (me.y != mey))
+    SendSysMessage(me,"Voce para de cortar madeiras...",0x3,98);
+    return 1;
+  endif
+        sleep(2);
+if((me.x != mex) || (me.y != mey))
+     SendSysMessage(me,"Voce para de cortar madeiras...",0x3,98);
+    return 1;
+  endif
+        PerformAction(who, UACTION_CHOP);
+        PlaySoundEffect(who, SFX_SKILL_LUMBERJACK);
+if((me.x != mex) || (me.y != mey))
+    SendSysMessage(me,"Voce para de cortar madeiras...",0x3,98);
+    return 1;
+  endif
+        sleep(2);
+if((me.x != mex) || (me.y != mey))
+    SendSysMessage(me,"Voce para de cortar madeiras...",0x3,98);
+    return 1;
+  endif
+        PerformAction(who, UACTION_CHOP);
+        PlaySoundEffect(who, SFX_SKILL_LUMBERJACK);
+if((me.x != mex) || (me.y != mey))
+     SendSysMessage(me,"Voce para de cortar madeiras...",0x3,98);
+    return 1;
+  endif
+        sleepms(2000);
+    checker := Do_Chops(me, axe, tree);
+
+  until(checker == 1);
+endprogram
+function Do_Chops(me, axe, tree)
+var objtype;
+var who := me;
+var name;
+var a := ListItemsAtLocation( tree.x, tree.y, tree.z );
+var tipomadeira := "normal" ;
+  var diff := 0;
+var respawn;
+if(a)
+foreach aa in a
+
+if(aa.invisible == 1)
+ tipomadeira := getobjproperty(aa,"tipomadeira");
+ var quantiareal := getobjproperty(aa, "quantiamadeira");
+
+ if(!getobjproperty(aa, "lastlumberada"))
+ setobjproperty(aa, "lastlumberada", ReadGameClock());
+ endif
+ 
+ if(ReadGameClock() >= Getobjproperty(aa,"lastlumberada"))
+ tipomadeira:=tipomadeira;
+ setobjproperty(aa, "qts", Cint(quantiareal));
+ endif
+
+respawn:=aa;
+endif
+
+endforeach
+ elseif((!a) || (!tipomadeira) || (tipomadeira == "none"))
+ tipomadeira := "normal";
+endif
+
+var difficulty;
+case(tipomadeira)
+ 
+    "normal": difficulty :=  -1;   objtype := 0x1bdd;   name := "Convencional";
+    "gelo": difficulty :=  60;   objtype := 0xac52;   name :=  "Do Gelo";
+    "sangue":difficulty :=  75;   objtype := 0xac53;   name := "Do Sangue";
+    "congelada":difficulty :=  80;   objtype := 0xac54;   name := "Congelada";
+    "envelhecida":difficulty := 80;   objtype := 0x170e;   name := "Envelhecida";
+    "petrificada":difficulty := 85; objtype:= 0x170c; name:= "Petrificada";
+    "elfica":difficulty :=  90;   objtype := 0xac55;   name := "Elfica";
+  endcase
+ var diffi := GetHarvestDifficulty ( "wood" - 10, tree.x , tree.y , tree.objtype);
+ var skill := CInt((GetEffectiveSkill(me, SKILLID_LUMBERJACKING)));
+   if(diffi  == error)
+    SendSysMessage(who,"Nao ha mais madeiras para cortar aqui.",0x3,98);
+    return 1;
+  endif
+  if(diff != -1)
+    var rint := RandomInt(5) + 1;
+    if((CInt(skill) >= CInt(diff)) && (rint >= 4))
+      diffi := diff;
+    else
+     
+      objtype := 7133;
+      name := "Convencional";
+    endif
+  endif
+
+
+  var i, theamount, distt;
+
+    var wood_amount := HarvestResource( "wood", tree.x, tree.y, 1, randomdiceroll("1d3") + 2 );
+
+if(name != "Convencional")
+ if(wood_amount >= Getobjproperty(respawn,"qts"))
+ wood_amount:=randomint(Getobjproperty(respawn,"qts"));
+ endif
+
+ if(Cint(Getobjproperty(respawn,"qts")) <= 0)
+  objtype := 0x1bdd;
+  name := "Convencional";
+  wood_amount:=randomint(3)+2;
+ endif
+
+   if(Cint(Getobjproperty(respawn,"qts")) >= 1)
+    ///SendSysMessage(who,"Menos " +wood_amount,3,33);
+    Setobjproperty(respawn,"qts", Cint(Getobjproperty(respawn,"qts")-wood_amount) );
+    var temporespawn:=Cint(Getobjproperty(respawn,"temporespawn")*60);
+    Setobjproperty(respawn,"lastlumberada", Cint(ReadGameClock()+temporespawn));
+   endif
+endif
+
+ var points := CInt((GetEffectiveSkill(me, SKILLID_LUMBERJACKING) * 2) + 10);
+  if(CheckSkill(me, SKILLID_LUMBERJACKING, difficulty, points))
+    if(wood_amount == 0)
+// if(tipomadeira == 
+case(randomdiceroll("1d2"))
+	0:SendSysMessage(who, "Voce nao conseguiu encontrar nenhuma madeira cortavel",0x3,98);
+	1:SendSysMessage(who, "As laminas estao afiadas... mas as madeiras estao sumidas!",0x3,98);
+	2:SendSysMessage(who, "Droga! tanto trabalho para nada...",0x3,98);
+	
+endcase
+      return 1;
+    endif
+var theore := CreateItemInBackpack(who, objtype, wood_amount);
+
+    if(!theore)
+PlaySoundEffect(who,0x43);
+SendSysMessage(who, "Sua mochila esta muito pesada e Voce jogou as "+ wood_amount + " toras de Madeira " + name + " ao chao.",0x3,98);
+
+     CreateItemInBackpack(who, objtype, wood_amount);
+      foreach thing in ListItemsNearLocation(who.x, who.y, who.z, 0)
+        if(thing.objtype == objtype)
+          theore := thing;
+          break;
+          endif
+      endforeach
+      if(theore)
+        var amt := wood_amount.amount + 1;
+        DestroyItem(theore);
+        theore := CreateItemAtLocation(who.x, who.y, who.z, objtype, wood_amount);
+      else
+        theore := CreateItemAtLocation(who.x, who.y, who.z, objtype, wood_amount);
+
+      endif
+    else
+      SendSysMessage(who, "Voce cortou " + wood_amount +" toras de Madeira " + name + " e colocou em sua mochila.",0x3,98);
+  
+
+    endif
+    AwardRawSkillPoints(who, SKILLID_LUMBERJACKING, points);
+    var swings := GetObjProperty(axe,"swings");
+    if(!swings)
+      SetObjProperty(axe,"swings", 0);
+      swings := 0;
+    endif
+    if(swings > 50)
+      DestroyItem(axe);
+      SendSysMessage(who,"Sua ferramenta se parte ao meio",0x3,98);
+      return 1;
+    endif
+    if(RandomInt(50) > 25)   
+case(randomdiceroll("1d4"))
+	0:SendSysMessage(who, "A Lamina de meu machado esta perdendo o fio!",0x3,98);
+	1:SendSysMessage(who, "De tanto trabalho escravo ate meu machado se avariou!",0x3,98);
+	3:SendSysMessage(who, "A Lamina de meu machado esta ficando toda esburacada",0x3,98);
+	4:SendSysMessage(who, "O Cabo do meu machado comecou a rachar!",0x3,98);
+endcase	
+      swings := swings + 1;
+    endif
+    SetObjProperty(axe,"swings", swings);
+else
+	case(randomdiceroll("1d2"))
+	0:SendSysMessage(who, "Voce nao conseguiu encontrar nenhuma madeira cortavel",0x3,98);
+	1:SendSysMessage(who, "As laminas estao totalmente afiadas... mas as madeiras estao sumidas!",0x3,98);
+	2:SendSysMessage(who, "Droga! tanto trabalho para nada...",0x3,98);
+	
+endcase
+endif
+endfunction
+
+
+function is_furniture(theobj, thing)
+  var miscobjtypes := { 0x7007, 0xa30, 0xa34, 0xa38, 0xfae, 0x9e40};
+  if((theobj >= 0x9a8) && (theobj <= 0x9ab))
+    return 1;
+  elseif((theobj >= 0xa2a) && (theobj <= 0xa2c))
+    return 1;
+  elseif((theobj >= 0xa4c) && (theobj <= 0xa53))
+    return 1;
+  elseif((theobj >= 0xa97) && (theobj <= 0xa9e))
+    return 1;
+  elseif((theobj >= 0xb2c) && (theobj <= 0xb40))
+    return 1;
+  elseif((theobj >= 0xb49) && (theobj <= 0xb90))
+    return 1;
+  elseif((theobj >= 0xe3c) && (theobj <= 0xe43))
+    return 1;
+  elseif((theobj >= 0xe7c) && (theobj <= 0xe80))
+    return 1;
+  elseif((theobj >= 0xf65) && (theobj <= 0xf77))
+    return 1;
+  elseif(theobj in miscobjtypes)
+    return 1;
+  elseif(GetObjProperty(thing, "ItemsCreatedSerials"))
+    return 1;
+  else
+    return 0;
+  endif
+endfunction
+
+function is_tree(theobj)
+  if((theobj >= 0x0c99) && (theobj <= 0x0cea))
+    return 1;
+  elseif((theobj >= 0x0cf3) && (theobj <= 0x0d03))
+    return 1;
+  elseif((theobj >= 0x0d41) && (theobj <= 0x0dab))
+    return 1;
+  elseif((theobj >= 0x12b6) && (theobj <= 0x12c7))
+    return 1;
+  elseif((theobj >= 0x0d37) && (theobj <= 0x0d38))
+    return 1;
+  elseif((theobj == 0x0c9e) || (theobj == 0x0ca8) || (theobj == 0x0caa) || (theobj == 0x0cab))
+    return 1;
+  else
+    return 0;
+  endif
+endfunction
+
+
+
+
+
+

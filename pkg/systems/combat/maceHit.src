@@ -1,0 +1,18 @@
+use uo;
+use util;
+use os;
+include "include/attributes";
+
+program macehit(param)
+  var attacker := param[1];
+  var weapon := param[3];
+  var armor := param[4];
+  var basedamage := param[5];
+  var rawdamage := param[6];
+  if((attacker.dead))
+    return;
+  endif
+
+endprogram
+
+   

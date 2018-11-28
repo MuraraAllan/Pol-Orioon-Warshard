@@ -1,0 +1,7 @@
+C:\pol2\pkg\items\bountyboard\start.src, Line 4
+start_script("bountyWatcher");
+0: "bountyWatcher"
+1: 0L
+2: Func(2,0): start_script
+3: #
+4: progend

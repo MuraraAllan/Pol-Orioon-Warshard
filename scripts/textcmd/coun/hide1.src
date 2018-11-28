@@ -1,0 +1,39 @@
+use uo;
+
+include "include/attributes";
+
+program hi(who)
+  if(who.concealed == 1)
+    who.concealed := 0;
+    PlaySoundEffect(who, SFX_1FE);
+    PlayObjectCenteredEffect(who, FX_SMOKE, 0xa, 0xa);
+    sleepms(1000);
+    PrintTextAbove(who, "Ola, no que posso ajudar?", 0, 95);
+  else
+    PrintTextAbove(who, "Bom Jogo!", 0, 95);
+    sleepms(2000);
+    who.concealed := 1;
+    PlayMovingEffectXYZ(who.x, who.y, who.z+40, who.x+40, who.y-40, who.z+40, FX_MAGIC_ARROW, 6, 0, 0);
+    sleepms(100);
+    PlayMovingEffectXYZ(who.x, who.y, who.z+40, who.x-40, who.y+40, who.z+40, FX_MAGIC_ARROW, 12, 0, 0);  
+    sleepms(50);
+    PlayMovingEffectXYZ(who.x, who.y, who.z+40, who.x-40, who.y-40, who.z+40, FX_MAGIC_ARROW, 15, 0, 0);
+    sleepms(100);
+    PlayMovingEffectXYZ(who.x, who.y, who.z+40, who.x+40, who.y+40, who.z+40, FX_MAGIC_ARROW, 6, 0, 0);
+    sleepms(50);
+    PlayMovingEffectXYZ(who.x, who.y, who.z+40, who.x, who.y-40, who.z+40, FX_MAGIC_ARROW, 15, 0, 0);
+    sleepms(100);
+    PlayMovingEffectXYZ(who.x, who.y, who.z+40, who.x, who.y+40, who.z+40, FX_MAGIC_ARROW, 6, 0, 0);
+    sleepms(50);
+    PlayMovingEffectXYZ(who.x, who.y, who.z+40, who.x-40, who.y, who.z+40, FX_MAGIC_ARROW, 10, 0, 0);
+    sleepms(100);
+    PlayMovingEffectXYZ(who.x, who.y, who.z+40, who.x+40, who.y, who.z+40, FX_MAGIC_ARROW, 8, 0, 0);
+    sleep(1000);
+    PlayObjectCenteredEffect(who, FX_SMOKE, 0xa, 0xa);
+    sleep(400);
+    PlayObjectCenteredEffect(who, FX_SMOKE, 0xa, 0xa);
+    
+    
+  endif
+endprogram
+

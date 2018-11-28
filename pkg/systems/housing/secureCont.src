@@ -1,0 +1,23 @@
+use os;
+use uo;
+
+include "include/casas";
+
+program use_securecont(who, item)
+  var house := SystemFindObjectBySerial( GetObjProperty( item, "houseserial" ));
+
+var casa := item.multi; 
+
+if(!casa)
+SendSysMessage(who,"Este secure precisa estar em uma casa.");
+return;
+endif
+
+if(!Socio(who,casa))
+SendSysMessage(who, "Voce Precisa ser dono ou socio da casa para usar o cofre seguro."); 
+return;
+endif
+
+SendViewContainer( who, item );
+SendSysMessage( who, "Voce abriu o cofre seguro.");
+endprogram

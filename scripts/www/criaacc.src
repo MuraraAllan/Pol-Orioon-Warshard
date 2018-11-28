@@ -1,0 +1,169 @@
+use uo;
+use uo;
+use util;
+use http;
+include "include/accounts";
+
+program account_add()
+	WriteHTML ("<html><head><title>Painel Administrador do Sysco War Shard</title></head>");
+	WriteHTML ("<body text=#FF0000 bgcolor=#000000>");
+
+if(QueryParam ("submit1") == "Criar")
+var loginstaff:=QueryParam ("loginstaff");
+var senhastaff:=QueryParam ("senhastaff");
+var login:=QueryParam ("login");
+var senha:=QueryParam ("senha");
+criarconta(login,senha,loginstaff,senhastaff);
+return;
+endif
+
+	var acctname := QueryParam ("acctname");
+	if (!acctname)
+		WriteHTML ("<form method=GET action=criaacc.ecl>");
+		WriteHTML ("<font size=4>Entre com seu login e senha para acessar o painel criador.");
+		WriteHTML ("<br><font size=4>Login: <input name=acctname>");
+		WriteHTML ("<br><font size=4>Senha: <input name=acctpass type=password>");
+		WriteHTML ("<br><input id=submit1 name=submit1 type=submit value=Ok>");
+		WriteHTML ("</body></html>");
+		return;
+	endif
+	var acct := FindAccount (acctname);
+	var acctpass := QueryParam ("acctpass");
+
+	WriteHTML ("<body bgcolor=#000000><font size=4>");
+	
+	if (!acct)
+	WriteHTML ("Seu login está incorreto.");
+	WriteHTML ("</body></html>");	
+	return;
+	endif	
+
+	if (!acctpass)
+	WriteHTML ("Você deve digitar a sua senha.");
+	WriteHTML ("</body></html>");
+	return;	
+	endif
+
+	if (acct.checkpassword(acctpass) == 0)
+	WriteHTML ("Senha incorreta.");
+	WriteHTML ("</body></html>");	
+	return;
+	endif
+
+	if((acct.enabled == 0) || (acct.banned == 1))
+	WriteHTML ("Sua conta esta Jailada ou Banida.");
+	WriteHTML ("<br>Acesso Negado!</br>");
+	WriteHTML ("</body></html>");
+	return;	
+	endif
+	
+
+var i;
+var privilegio:=1;
+for (i:=1; i<=5; i:= i + 1)
+if(acct.GetCharacter(i).cmdlevel > privilegio)
+privilegio:=acct.GetCharacter(i).cmdlevel;
+endif
+endfor
+
+	if(privilegio == 1)
+	WriteHTML ("Sua conta nao tem priv suficiente para acessar este painel.");
+	WriteHTML ("<br>Acesso Negado!</br>");
+	WriteHTML ("</body></html>");
+	return;	
+	endif
+
+WriteHTML ("Você está logado usando o login: " +acct.name+ "");
+		WriteHTML ("<form method=GET action=criaacc.ecl>");
+		WriteHTML ("<br><font size=4>Entre com o login e senha da nova conta.</br>");
+		WriteHTML ("<br><font size=4>Login: <input name=login>");
+		WriteHTML ("<br><font size=4>Senha: <input name=senha>");
+		WriteHTML ("<br></br>");
+		WriteHTML ("<br><font size=4>Seu Login(Staff): <input name=loginstaff value="+acct.name+">");
+		WriteHTML ("<br><font size=4>Sua Senha(Staff): <input name=senhastaff type=password value="+acctpass+">");
+		WriteHTML ("<br><input id=submit1 name=submit1 type=submit value=Criar>");
+		WriteHTML ("</body></html>");
+		return;
+endprogram
+
+
+function criarconta(login,senha,loginstaff,senhastaff)
+WriteHTML ("<body bgcolor=#000000><font size=4>");
+///////Verificar ACC STAFF/////
+var acctstaff:=FindAccount (loginstaff);
+        if(!acctstaff)
+	WriteHTML ("Acc incorreta...");
+	WriteHTML ("</body></html>");	
+	return;
+	endif
+
+        if((!loginstaff) || (!senhastaff))
+	WriteHTML ("Voce deve prencher os campos login(staff) e senha(staff)...");
+	WriteHTML ("</body></html>");	
+	return;
+	endif	
+
+	if (acctstaff.checkpassword(senhastaff) == 0)
+	WriteHTML ("Senha de Staff incorreta.");
+	WriteHTML ("</body></html>");	
+	return;
+	endif
+
+	if((acctstaff.enabled == 0) || (acctstaff.banned == 1))
+	WriteHTML ("Sua conta staff esta Jail ou Ban.");
+	WriteHTML ("<br>Criação da conta Negada!</br>");
+	WriteHTML ("</body></html>");
+	return;	
+	endif
+
+var i;
+var privilegio:=1;
+for (i:=1; i<=5; i:= i + 1)
+if(acctstaff.GetCharacter(i).cmdlevel > privilegio)
+privilegio:=acctstaff.GetCharacter(i).cmdlevel;
+endif
+endfor	
+
+	if(privilegio == 1)
+	WriteHTML ("Sua conta nao tem priv suficiente para criar acc.");
+	WriteHTML ("<br>Criação da conta Negada!</br>");
+	WriteHTML ("</body></html>");
+	return;	
+	endif
+
+////////////////////////////////
+
+	var acct := FindAccount (login);
+	
+	
+	if (!login)
+	WriteHTML ("Você deve digitar um login.");
+	WriteHTML ("</body></html>");	
+	return;
+	endif	
+
+	if (acct)
+	WriteHTML ("Este login já existe.");
+	WriteHTML ("</body></html>");	
+	return;
+	endif	
+
+	if (!senha)
+	WriteHTML ("Você deve digitar uma senha.");
+	WriteHTML ("</body></html>");	
+	return;
+	endif
+
+	var criar := CreateAccount (login, senha, 1);
+
+	acct := FindAccount (login);
+	if ((criar == error) || (!acct))
+	WriteHTML ("Criação da conta falhou.");
+	WriteHTML ("</body></html>");	
+	return;
+	endif
+
+	WriteHTML ("Conta criada com sucesso!");
+	WriteHTML ("<br>Login: " +login+ " Senha: " +senha+ "</br>");
+	WriteHTML ("</body></html>");	
+endfunction

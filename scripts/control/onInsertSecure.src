@@ -1,0 +1,9 @@
+use uo;
+use os;
+
+include "include/eventID";
+include "include/insertSound";
+
+program on_insert(who, container, movetype, inserttype, adding_item, existing_stack, amt_to_add )
+  
+endprogram

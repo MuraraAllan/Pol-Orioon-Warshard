@@ -1,0 +1,59 @@
+C:\pol2\pkg\systems\combat\bewitchedHit.src, Line 5
+program macehit(param)
+use os;
+0: get arg 'param'
+var attacker := param[1];
+1: decl local #1
+2: local #0
+3: 1L
+4: [] 1
+5: :=
+6: #
+var defender := param[2];
+7: decl local #2
+8: local #0
+9: 2L
+10: [] 1
+11: :=
+12: #
+var basedamage := param[5];
+13: decl local #3
+14: local #0
+15: 5L
+16: [] 1
+17: :=
+18: #
+var rawdamage := param[6];
+19: decl local #4
+20: local #0
+21: 6L
+22: [] 1
+23: :=
+24: #
+if((attacker.dead) || (defender.dead))
+25: local #1
+26: get member 'dead'
+27: local #2
+28: get member 'dead'
+29: ||
+30: if false goto 33
+return;
+31: ""
+32: progend
+if(!defender.acctname)
+33: local #2
+34: get member 'acctname'
+35: if true goto 40
+rawdamage := (rawdamage / 2);
+36: local #4
+37: 2L
+38: /
+39: local4 := 
+SetObjProperty(defender, "TempDamage", rawdamage);
+40: local #2
+41: "TempDamage"
+42: local #4
+43: Func(2,0): SetObjProperty
+44: #
+45: leave block(5)
+46: progend

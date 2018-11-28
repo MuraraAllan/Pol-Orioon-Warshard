@@ -1,0 +1,1069 @@
+c:\pol\pkg\items\guildstone\guildControl.src, Line 4
+var proc := 0;
+0: decl global #0
+1: 0L
+2: :=
+3: #
+var stonemanager := 0;
+4: decl global #1
+5: 0L
+6: :=
+7: #
+var guildstone;
+8: decl global #2
+9: #
+c:\pol\pkg\items\guildstone\guildControl.src, Line 8
+program guildNode(stone)
+10: get arg 'stone'
+guildstone := stone;
+11: local #0
+12: global2 := 
+while(!proc)
+13: global #0
+14: !
+15: if false goto 27
+print("Waiting for Process");
+16: "Waiting for Process"
+17: Func(1,0): print
+18: #
+sleep(5);
+19: 5L
+20: Func(3,0): sleep
+21: #
+proc := GetProcess(GetGlobalProperty("#GuildManager"));
+22: "#GuildManager"
+23: Func(2,0): GetGlobalProperty
+24: Func(3,1): getprocess
+25: global0 := 
+26: goto13
+var guildid := GetObjProperty(stone, "guild_id");
+27: decl local #1
+28: local #0
+29: "guild_id"
+30: Func(2,1): GetObjProperty
+31: :=
+32: #
+while(!guildid)
+33: local #1
+34: !
+35: if false goto 44
+sleep(2);
+36: 2L
+37: Func(3,0): sleep
+38: #
+guildid := GetObjProperty(stone, "guild_id");
+39: local #0
+40: "guild_id"
+41: Func(2,1): GetObjProperty
+42: local1 := 
+43: goto33
+var pid := GetPid();
+44: decl local #2
+45: Func(3,2): getpid
+46: :=
+47: #
+stonemanager := GetProcess(pid);
+48: local #2
+49: Func(3,1): getprocess
+50: global1 := 
+SetGlobalProperty(CStr("#Guild" + guildid), pid);
+51: "#Guild"
+52: local #1
+53: +
+54: Func(0,0): CStr
+55: local #2
+56: Func(2,2): SetGlobalProperty
+57: #
+while(stone)
+58: local #0
+59: if false goto 103
+var ev := wait_for_event(360);
+60: decl local #0
+61: 360L
+62: Func(3,3): wait_for_event
+63: :=
+64: #
+if(ev)
+65: local #3
+66: if false goto 101
+case(ev.type)
+67: local #3
+68: get member 'type'
+69: casejmp
+	"gc": @70
+	"resign": @77
+	"declarewar": @82
+	"declareally": @87
+	"removeally": @92
+	"removeenemy": @97
+	default: @101
+stone.GuildChat(ev, FindGuild(guildid));
+70: local #0
+71: local #3
+72: local #1
+73: Func(2,3): FindGuild
+74: Call Method guildchat (2 params)
+75: #
+76: goto101
+Resign(ev);
+77: local #3
+78: makelocal
+79: jmp userfunc @804
+80: #
+81: goto101
+DeclareWar(ev);
+82: local #3
+83: makelocal
+84: jmp userfunc @383
+85: #
+86: goto101
+DeclareAlly(ev);
+87: local #3
+88: makelocal
+89: jmp userfunc @105
+90: #
+91: goto101
+RemoveAlly(ev);
+92: local #3
+93: makelocal
+94: jmp userfunc @652
+95: #
+96: goto101
+RemoveEnemy(ev);
+97: local #3
+98: makelocal
+99: jmp userfunc @728
+100: #
+101: leave block(1)
+102: goto58
+103: leave block(3)
+104: progend
+c:\pol\pkg\items\guildstone\guildControl.src, Line 70
+function DeclareAlly(ev)
+105: pop param 'ev'
+var who := ev.who;
+106: decl local #1
+107: local #0
+108: get member 'who'
+109: :=
+110: #
+var guild := ev.guild;
+111: decl local #2
+112: local #0
+113: get member 'guild'
+114: :=
+115: #
+var enemy := ev.enemy;
+116: decl local #3
+117: local #0
+118: get member 'enemy'
+119: :=
+120: #
+var chk := 0;
+121: decl local #4
+122: 0L
+123: :=
+124: #
+var dc := guild.getprop("GuildDeclareStatus");
+125: decl local #5
+126: local #2
+127: "GuildDeclareStatus"
+128: Call Method getprop (1 params)
+129: :=
+130: #
+if(!dc)
+131: local #5
+132: if true goto 135
+dc := {};
+133: array
+134: local5 := 
+foreach thing in dc
+135: local #5
+136: initforeach @160
+if(enemy.guildid == thing[2] && (guild.guildid == thing[1]) && (thing[3] == "RA
+137: local #3
+138: get member 'guildid'
+139: local #6
+140: 2L
+141: [] 1
+142: ==
+143: local #2
+144: get member 'guildid'
+145: local #6
+146: 1L
+147: [] 1
+148: ==
+149: &&
+150: local #6
+151: 3L
+152: [] 1
+153: "RA"
+154: ==
+155: &&
+156: if false goto 160
+chk := 1;
+157: 1L
+158: local4 := 
+break;
+159: goto161
+160: stepforeach @137
+161: leave block(3)
+if(chk)
+162: local #4
+163: if false goto 241
+if(!guildstone.CanWar(guild.getprop("type"),  enemy.getprop("type"), who))
+164: global #2
+165: local #2
+166: "type"
+167: Call Method getprop (1 params)
+168: local #3
+169: "type"
+170: Call Method getprop (1 params)
+171: local #1
+172: Call Method canwar (3 params)
+173: if true goto 176
+return;
+174: ""
+175: return
+SendSysMessage(who, "Voce aceitou o pedido de paz.");
+176: local #1
+177: "Voce aceitou o pedido de paz."
+178: 9L
+179: 281L
+180: Func(2,4): SendSysMessage
+181: #
+guild.addallyguild(enemy);
+182: local #2
+183: local #3
+184: Call Method addallyguild (1 params)
+185: #
+enemy.addallguild(guild);
+186: local #3
+187: local #2
+188: Call Method addallguild (1 params)
+189: #
+guildstone.RemoveDeclaration(guild, enemy);
+190: global #2
+191: local #2
+192: local #3
+193: Call Method removedeclaration (2 params)
+194: #
+guildstone.AddAllyGuild(guild, enemy);
+195: global #2
+196: local #2
+197: local #3
+198: Call Method addallyguild (2 params)
+199: #
+var evnt      := struct;
+200: decl local #0
+201: struct
+202: :=
+203: #
+evnt.+status  := 1;
+204: local #6
+205: "status"
+206: .+
+207: 1L
+208: := #
+evnt.+message := "Voce comecou uma alianca com a guilda: " + enemy.getprop("gui
+209: local #6
+210: "message"
+211: .+
+212: "Voce comecou uma alianca com a guilda: "
+213: local #3
+214: "guildname"
+215: Call Method getprop (1 params)
+216: +
+217: "."
+218: +
+219: := #
+guildstone.guildchat(evnt, guild);
+220: global #2
+221: local #6
+222: local #2
+223: Call Method guildchat (2 params)
+224: #
+evnt.message := "guild: " + guild.getprop("guildname") + " comecou uma alianca 
+225: local #6
+226: "guild: "
+227: local #2
+228: "guildname"
+229: Call Method getprop (1 params)
+230: +
+231: " comecou uma alianca com a sua guilda."
+232: +
+233: set member 'message' #
+guildstone.guildchat(evnt, enemy);
+234: global #2
+235: local #6
+236: local #3
+237: Call Method guildchat (2 params)
+238: #
+239: leave block(1)
+240: goto381
+var holder:={};
+241: decl local #0
+242: array
+243: :=
+244: #
+chk := 0;
+245: 0L
+246: local4 := 
+foreach gstatus in dc
+247: local #5
+248: initforeach @272
+if((guild.guildid == gstatus[2]) && (enemy.guildid == gstatus[1]) && (gstatus[3
+249: local #2
+250: get member 'guildid'
+251: local #7
+252: 2L
+253: [] 1
+254: ==
+255: local #3
+256: get member 'guildid'
+257: local #7
+258: 1L
+259: [] 1
+260: ==
+261: &&
+262: local #7
+263: 3L
+264: [] 1
+265: "RA"
+266: ==
+267: &&
+268: if false goto 272
+chk := 1;
+269: 1L
+270: local4 := 
+break;
+271: goto273
+272: stepforeach @249
+273: leave block(3)
+if(chk)
+274: local #4
+275: if false goto 328
+SendSysMessage(who, "Seu pedido de paz foi cancelado.");
+276: local #1
+277: "Seu pedido de paz foi cancelado."
+278: 9L
+279: 281L
+280: Func(2,4): SendSysMessage
+281: #
+guildstone.RemoveDeclaration(guild, enemy);
+282: global #2
+283: local #2
+284: local #3
+285: Call Method removedeclaration (2 params)
+286: #
+var evnt      := struct;
+287: decl local #0
+288: struct
+289: :=
+290: #
+evnt.+status  := 1;
+291: local #7
+292: "status"
+293: .+
+294: 1L
+295: := #
+evnt.+message := "Voce retirou seu pedido de paz: " + enemy.getprop("guildname"
+296: local #7
+297: "message"
+298: .+
+299: "Voce retirou seu pedido de paz: "
+300: local #3
+301: "guildname"
+302: Call Method getprop (1 params)
+303: +
+304: "."
+305: +
+306: := #
+guildstone.guildchat(evnt, guild);
+307: global #2
+308: local #7
+309: local #2
+310: Call Method guildchat (2 params)
+311: #
+evnt.message := "guild: " + guild.getprop("guildname") + " cancelou o pedido de
+312: local #7
+313: "guild: "
+314: local #2
+315: "guildname"
+316: Call Method getprop (1 params)
+317: +
+318: " cancelou o pedido de alianca com a sua guilda."
+319: +
+320: set member 'message' #
+guildstone.guildchat(evnt, enemy);
+321: global #2
+322: local #7
+323: local #3
+324: Call Method guildchat (2 params)
+325: #
+326: leave block(1)
+327: goto380
+SendSysMessage(who, "Your request for an alliance has been made.");
+328: local #1
+329: "Your request for an alliance has been made."
+330: 9L
+331: 281L
+332: Func(2,4): SendSysMessage
+333: #
+guildstone.AddDeclaration(guild, enemy, "RA");
+334: global #2
+335: local #2
+336: local #3
+337: "RA"
+338: Call Method adddeclaration (3 params)
+339: #
+var evnt      := struct;
+340: decl local #0
+341: struct
+342: :=
+343: #
+evnt.+status  := 1;
+344: local #7
+345: "status"
+346: .+
+347: 1L
+348: := #
+evnt.+message := "Voce enviou um pedido de alianca com a guilda: " + enemy.getp
+349: local #7
+350: "message"
+351: .+
+352: "Voce enviou um pedido de alianca com a guilda: "
+353: local #3
+354: "guildname"
+355: Call Method getprop (1 params)
+356: +
+357: "."
+358: +
+359: := #
+guildstone.guildchat(evnt, guild);
+360: global #2
+361: local #7
+362: local #2
+363: Call Method guildchat (2 params)
+364: #
+evnt.message := "guild: " + guild.getprop("guildname") + " enviou um pedido de 
+365: local #7
+366: "guild: "
+367: local #2
+368: "guildname"
+369: Call Method getprop (1 params)
+370: +
+371: " enviou um pedido de alianca a sua guilda."
+372: +
+373: set member 'message' #
+guildstone.guildchat(evnt, enemy);
+374: global #2
+375: local #7
+376: local #3
+377: Call Method guildchat (2 params)
+378: #
+379: leave block(1)
+380: leave block(1)
+381: 0L
+382: return
+c:\pol\pkg\items\guildstone\guildControl.src, Line 131
+function DeclareWar(ev)
+383: pop param 'ev'
+var who := ev.who;
+384: decl local #1
+385: local #0
+386: get member 'who'
+387: :=
+388: #
+var guild := ev.guild;
+389: decl local #2
+390: local #0
+391: get member 'guild'
+392: :=
+393: #
+var enemy := ev.enemy;
+394: decl local #3
+395: local #0
+396: get member 'enemy'
+397: :=
+398: #
+var chk := 0;
+399: decl local #4
+400: 0L
+401: :=
+402: #
+var dc := guild.getprop("GuildDeclareStatus");
+403: decl local #5
+404: local #2
+405: "GuildDeclareStatus"
+406: Call Method getprop (1 params)
+407: :=
+408: #
+if(!dc)
+409: local #5
+410: if true goto 413
+dc := {};
+411: array
+412: local5 := 
+foreach thing in dc
+413: local #5
+414: initforeach @591
+if((enemy.guildid == thing[2]) && (guild.guildid == thing[1]) && (thing[3] == "
+415: local #3
+416: get member 'guildid'
+417: local #6
+418: 2L
+419: [] 1
+420: ==
+421: local #2
+422: get member 'guildid'
+423: local #6
+424: 1L
+425: [] 1
+426: ==
+427: &&
+428: local #6
+429: 3L
+430: [] 1
+431: "RE"
+432: ==
+433: &&
+434: if false goto 516
+if(!guildstone.CanWar(guild.getprop("type"),  enemy.getprop("type"), who))
+435: global #2
+436: local #2
+437: "type"
+438: Call Method getprop (1 params)
+439: local #3
+440: "type"
+441: Call Method getprop (1 params)
+442: local #1
+443: Call Method canwar (3 params)
+444: if true goto 447
+return;
+445: ""
+446: return
+SendSysMessage(who, "Voce aceitou o pedido de guerra.");
+447: local #1
+448: "Voce aceitou o pedido de guerra."
+449: 9L
+450: 281L
+451: Func(2,4): SendSysMessage
+452: #
+guild.addenemyguild(enemy);
+453: local #2
+454: local #3
+455: Call Method addenemyguild (1 params)
+456: #
+enemy.addenemyguild(guild);
+457: local #3
+458: local #2
+459: Call Method addenemyguild (1 params)
+460: #
+guildstone.RemoveDeclaration(guild, enemy);
+461: global #2
+462: local #2
+463: local #3
+464: Call Method removedeclaration (2 params)
+465: #
+guildstone.AddEnemyGuild(guild, enemy);
+466: global #2
+467: local #2
+468: local #3
+469: Call Method addenemyguild (2 params)
+470: #
+var evnt      := struct;
+471: decl local #0
+472: struct
+473: :=
+474: #
+evnt.+status  := 1;
+475: local #9
+476: "status"
+477: .+
+478: 1L
+479: := #
+evnt.+message := "Voce comecou uma guerra com a guilda: " + enemy.getprop("guil
+480: local #9
+481: "message"
+482: .+
+483: "Voce comecou uma guerra com a guilda: "
+484: local #3
+485: "guildname"
+486: Call Method getprop (1 params)
+487: +
+488: "."
+489: +
+490: := #
+guildstone.guildchat(evnt, guild);
+491: global #2
+492: local #9
+493: local #2
+494: Call Method guildchat (2 params)
+495: #
+evnt.message := "guild: " + guild.getprop("guildname") + " comecou uma guerra c
+496: local #9
+497: "guild: "
+498: local #2
+499: "guildname"
+500: Call Method getprop (1 params)
+501: +
+502: " comecou uma guerra com a sua guilda."
+503: +
+504: set member 'message' #
+guildstone.guildchat(evnt, enemy);
+505: global #2
+506: local #9
+507: local #3
+508: Call Method guildchat (2 params)
+509: #
+chk := 1;
+510: 1L
+511: local4 := 
+break;
+512: leave block(1)
+513: goto592
+514: leave block(1)
+515: goto591
+elseif((enemy.guildid == thing[1]) && (guild.guildid == thing[2]) && (thing[3] 
+516: local #3
+517: get member 'guildid'
+518: local #6
+519: 1L
+520: [] 1
+521: ==
+522: local #2
+523: get member 'guildid'
+524: local #6
+525: 2L
+526: [] 1
+527: ==
+528: &&
+529: local #6
+530: 3L
+531: [] 1
+532: "RE"
+533: ==
+534: &&
+535: if false goto 591
+SendSysMessage(who, "Seu pedido de guerra foi retirado.");
+536: local #1
+537: "Seu pedido de guerra foi retirado."
+538: 9L
+539: 281L
+540: Func(2,4): SendSysMessage
+541: #
+guildstone.RemoveDeclaration(guild, enemy);
+542: global #2
+543: local #2
+544: local #3
+545: Call Method removedeclaration (2 params)
+546: #
+var evnt      := struct;
+547: decl local #0
+548: struct
+549: :=
+550: #
+evnt.+status  := 1;
+551: local #9
+552: "status"
+553: .+
+554: 1L
+555: := #
+evnt.+message := "We have cancelled our request for war with guild: " + enemy.g
+556: local #9
+557: "message"
+558: .+
+559: "We have cancelled our request for war with guild: "
+560: local #3
+561: "guildname"
+562: Call Method getprop (1 params)
+563: +
+564: "."
+565: +
+566: := #
+guildstone.guildchat(evnt, guild);
+567: global #2
+568: local #9
+569: local #2
+570: Call Method guildchat (2 params)
+571: #
+evnt.message := "guild: " + guild.getprop("guildname") + " has cancelled their 
+572: local #9
+573: "guild: "
+574: local #2
+575: "guildname"
+576: Call Method getprop (1 params)
+577: +
+578: " has cancelled their request for war with us."
+579: +
+580: set member 'message' #
+guildstone.guildchat(evnt, enemy);
+581: global #2
+582: local #9
+583: local #3
+584: Call Method guildchat (2 params)
+585: #
+chk := 1;
+586: 1L
+587: local4 := 
+break;
+588: leave block(1)
+589: goto592
+590: leave block(1)
+591: stepforeach @415
+592: leave block(3)
+if(chk)
+593: local #4
+594: if false goto 598
+return;
+595: ""
+596: return
+597: goto650
+SendSysMessage(who, "Your request for war has been made.");
+598: local #1
+599: "Your request for war has been made."
+600: 9L
+601: 281L
+602: Func(2,4): SendSysMessage
+603: #
+guildstone.AddDeclaration(guild, enemy, "RE");
+604: global #2
+605: local #2
+606: local #3
+607: "RE"
+608: Call Method adddeclaration (3 params)
+609: #
+var evnt      := struct;
+610: decl local #0
+611: struct
+612: :=
+613: #
+evnt.+status  := 1;
+614: local #6
+615: "status"
+616: .+
+617: 1L
+618: := #
+evnt.+message := "We have requested to have a war with guild: " + enemy.getprop
+619: local #6
+620: "message"
+621: .+
+622: "We have requested to have a war with guild: "
+623: local #3
+624: "guildname"
+625: Call Method getprop (1 params)
+626: +
+627: "."
+628: +
+629: := #
+guildstone.guildchat(evnt, guild);
+630: global #2
+631: local #6
+632: local #2
+633: Call Method guildchat (2 params)
+634: #
+evnt.message := "guild: " + guild.getprop("guildname") + " has requested to hav
+635: local #6
+636: "guild: "
+637: local #2
+638: "guildname"
+639: Call Method getprop (1 params)
+640: +
+641: " has requested to have a war with us."
+642: +
+643: set member 'message' #
+guildstone.guildchat(evnt, enemy);
+644: global #2
+645: local #6
+646: local #3
+647: Call Method guildchat (2 params)
+648: #
+649: leave block(1)
+650: 0L
+651: return
+c:\pol\pkg\items\guildstone\guildControl.src, Line 54
+function RemoveAlly(ev)
+652: pop param 'ev'
+var who := ev.who;
+653: decl local #1
+654: local #0
+655: get member 'who'
+656: :=
+657: #
+var guild := ev.guild;
+658: decl local #2
+659: local #0
+660: get member 'guild'
+661: :=
+662: #
+var enemy := ev.enemy;
+663: decl local #3
+664: local #0
+665: get member 'enemy'
+666: :=
+667: #
+SendSysMessage(who, "Voce terminou uma alianca.");
+668: local #1
+669: "Voce terminou uma alianca."
+670: 9L
+671: 281L
+672: Func(2,4): SendSysMessage
+673: #
+guild.removeallyguild(enemy);
+674: local #2
+675: local #3
+676: Call Method removeallyguild (1 params)
+677: #
+enemy.removeallyguild(guild);
+678: local #3
+679: local #2
+680: Call Method removeallyguild (1 params)
+681: #
+guildstone.RemoveAllyGuild(guild, enemy);
+682: global #2
+683: local #2
+684: local #3
+685: Call Method removeallyguild (2 params)
+686: #
+var evnt      := struct;
+687: decl local #4
+688: struct
+689: :=
+690: #
+evnt.+status  := 1;
+691: local #4
+692: "status"
+693: .+
+694: 1L
+695: := #
+evnt.+message := "Voce terminou uma alianca com a guilda: " + enemy.getprop("gu
+696: local #4
+697: "message"
+698: .+
+699: "Voce terminou uma alianca com a guilda: "
+700: local #3
+701: "guildname"
+702: Call Method getprop (1 params)
+703: +
+704: "."
+705: +
+706: := #
+guildstone.guildchat(evnt, guild);
+707: global #2
+708: local #4
+709: local #2
+710: Call Method guildchat (2 params)
+711: #
+evnt.message := "guild: " + guild.getprop("guildname") + " terminou uma alianca
+712: local #4
+713: "guild: "
+714: local #2
+715: "guildname"
+716: Call Method getprop (1 params)
+717: +
+718: " terminou uma alianca com a sua guilda."
+719: +
+720: set member 'message' #
+guildstone.guildchat(evnt, enemy);
+721: global #2
+722: local #4
+723: local #3
+724: Call Method guildchat (2 params)
+725: #
+726: 0L
+727: return
+c:\pol\pkg\items\guildstone\guildControl.src, Line 38
+function RemoveEnemy(ev)
+728: pop param 'ev'
+var who := ev.who;
+729: decl local #1
+730: local #0
+731: get member 'who'
+732: :=
+733: #
+var guild := ev.guild;
+734: decl local #2
+735: local #0
+736: get member 'guild'
+737: :=
+738: #
+var enemy := ev.enemy;
+739: decl local #3
+740: local #0
+741: get member 'enemy'
+742: :=
+743: #
+SendSysMessage(who, "Voce acabou a guerra.");
+744: local #1
+745: "Voce acabou a guerra."
+746: 9L
+747: 281L
+748: Func(2,4): SendSysMessage
+749: #
+guild.removeenemyguild(enemy);
+750: local #2
+751: local #3
+752: Call Method removeenemyguild (1 params)
+753: #
+enemy.removeenemyguild(guild);
+754: local #3
+755: local #2
+756: Call Method removeenemyguild (1 params)
+757: #
+guildstone.RemoveEnemyGuild(guild, enemy);
+758: global #2
+759: local #2
+760: local #3
+761: Call Method removeenemyguild (2 params)
+762: #
+var evnt      := struct;
+763: decl local #4
+764: struct
+765: :=
+766: #
+evnt.+status  := 1;
+767: local #4
+768: "status"
+769: .+
+770: 1L
+771: := #
+evnt.+message := "Voce terminou sua guerra com a guilda: " + enemy.getprop("gui
+772: local #4
+773: "message"
+774: .+
+775: "Voce terminou sua guerra com a guilda: "
+776: local #3
+777: "guildname"
+778: Call Method getprop (1 params)
+779: +
+780: "."
+781: +
+782: := #
+guildstone.guildchat(evnt, guild);
+783: global #2
+784: local #4
+785: local #2
+786: Call Method guildchat (2 params)
+787: #
+evnt.message := "guild: " + guild.getprop("guildname") + " terminou a guerra co
+788: local #4
+789: "guild: "
+790: local #2
+791: "guildname"
+792: Call Method getprop (1 params)
+793: +
+794: " terminou a guerra contra sua guilda."
+795: +
+796: set member 'message' #
+guildstone.guildchat(evnt, enemy);
+797: global #2
+798: local #4
+799: local #3
+800: Call Method guildchat (2 params)
+801: #
+802: 0L
+803: return
+c:\pol\pkg\items\guildstone\guildControl.src, Line 185
+function Resign(ev)
+804: pop param 'ev'
+var who   := ev.source;
+805: decl local #1
+806: local #0
+807: get member 'source'
+808: :=
+809: #
+var gm    := ev.gm;
+810: decl local #2
+811: local #0
+812: get member 'gm'
+813: :=
+814: #
+var guild := ev.guild;
+815: decl local #3
+816: local #0
+817: get member 'guild'
+818: :=
+819: #
+var stone := ev.guildstone;
+820: decl local #4
+821: local #0
+822: get member 'guildstone'
+823: :=
+824: #
+if(who == gm)
+825: local #1
+826: local #2
+827: ==
+828: if false goto 834
+guild.setprop("gm", 0);
+829: local #3
+830: "gm"
+831: 0L
+832: Call Method setprop (2 params)
+833: #
+guild.removemember(who);
+834: local #3
+835: local #1
+836: Call Method removemember (1 params)
+837: #
+EraseObjProperty(who, "guildtitle");
+838: local #1
+839: "guildtitle"
+840: Func(2,5): EraseObjProperty
+841: #
+EraseObjProperty(who, "guild_id");
+842: local #1
+843: "guild_id"
+844: Func(2,5): EraseObjProperty
+845: #
+EraseObjProperty(who, "fealty");
+846: local #1
+847: "fealty"
+848: Func(2,5): EraseObjProperty
+849: #
+who.title_guild := "";
+850: local #1
+851: ""
+852: set member 'title_guild' #
+EraseObjProperty(who, "abv");
+853: local #1
+854: "abv"
+855: Func(2,5): EraseObjProperty
+856: #
+SendSysMessage(who, "You are no longer a member of " + guild.getprop("guildname
+857: local #1
+858: "You are no longer a member of "
+859: local #3
+860: "guildname"
+861: Call Method getprop (1 params)
+862: +
+863: "."
+864: +
+865: 3L
+866: 70L
+867: Func(2,4): SendSysMessage
+868: #
+var members := guild.members;
+869: decl local #5
+870: local #3
+871: get member 'members'
+872: :=
+873: #
+if(len(members) == 0)
+874: local #5
+875: Func(0,1): len
+876: 0L
+877: ==
+878: if false goto 886
+ev.type := "disband";
+879: local #0
+880: "disband"
+881: set member 'type' #
+proc.sendevent(ev);
+882: global #0
+883: local #0
+884: Call Method sendevent (1 params)
+885: #
+886: 0L
+887: return

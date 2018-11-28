@@ -1,0 +1,41 @@
+use os;
+use uo;
+use util;
+use cfgfile;
+include "drinkPotion";
+include "include/attributes";
+include "include/canAccess";
+
+program drink_blue (who, potion)
+var staa := RandomDiceRoll("1d35+5");
+var stab := RandomDiceRoll("100");
+var stac := RandomDiceRoll("1d20+5");
+var a := GetStamina(who);
+EraseObjProperty(who, "IsMeditating");
+  EraseObjProperty(who, "HealTimer");
+  if((who.x >= 5944) && (who.x <= 5963) && (who.y >= 1170) && (who.y <= 1151))
+Sendsysmessage(who, "Pvp sem pots ok!?",9,89);
+return;
+endif
+  if(!can_access(who, potion))
+    return;
+  endif
+  if(potion.movable == 0)
+    SendSysMessage(who, "Voce nao pode beber isto.",9,89);
+    return;
+  endif
+  if(!checkifcandrink(who, "red"))
+    return;
+  endif
+
+if(potion.objtype == 0x1952)
+SetStamina(who, a + stac);
+endif
+if(potion.objtype == 0xdc0f)
+SetStamina(who, a + stab);
+endif
+if(potion.objtype == 0x1951)
+SetStamina(who, a + staa);
+endif
+empty_bottle(who, potion);
+endprogram

@@ -1,0 +1,176 @@
+use uo;
+use os;
+use util;
+use basic;
+use cfgfile;
+
+include "include/attributes";
+include "include/client";
+include "include/yesNo";
+include "include/spellRestrictions";
+include "../pkg/foundations/gumps/gumps";
+
+program duelar(who, item)
+
+ item.graphic := 4484;
+ var emuso := GetGlobalProperty("arenaIIemuso");
+ 
+  if(!ReserveItem(item))
+    SendSysMessage(who, "Pedra de PVP em uso.", 0, 40);
+    return;
+  endif
+
+if(emuso)
+SendSysMessage(who, "Arena em uso no momento...",0,33);
+return;
+endif
+
+SendSysMessage(who, "Selecione com quem voce quer duelar...",0,666);
+SetGlobalProperty("arenaIIemuso", 1);
+item.name := "Pedra de PVP II (Em uso por " + who.name + "!)";
+item.color := 1172;
+var oponente := Target(who);
+
+item.color := 1153;
+item.name := "PVP ARENA ARYDRAS";
+
+if(!oponente.isA(POLCLASS_MOBILE))
+SendSysMessage(who, "Cancelado!",0,33);
+EraseGlobalProperty("arenaIIemuso");
+return 0;
+endif
+
+if((!oponente) || (oponente.dead) || (oponente.serial == who.serial))
+SendSysMessage(who, "Cancelado!",0,33);
+EraseGlobalProperty("arenaIIemuso");
+return 0;
+endif
+
+
+SetGlobalProperty("arenaIIemuso", 1);
+
+SendSysMessage(oponente, who.name + " esta desafiando voce para um duelo.",0,666);
+SendSysMessage(oponente, "Voce deve aceitar em 10 segundos, do contrario sera cancelado!",0,95);
+
+EraseObjProperty(oponente, "aceitarpvp");
+var gump:=start_script("resposta", oponente);
+
+var tempoaceitar:=0;
+repeat
+
+if(GetObjProperty(oponente, "aceitarpvp") == 0)
+SendSysMessage(who, oponente.name + " recusou-se a duelar.",0,66);
+SendSysMessage(oponente, "Voce recusou o duelo!",0,66);
+EraseGlobalProperty("arenaIIemuso");
+return 0;
+endif
+
+if(tempoaceitar >= 200)
+CloseGump(oponente, gump.pid, 0);
+SendSysMessage(who, oponente.name + " demorou demais para aceitar o duelo.",0,66);
+SendSysMessage(oponente, "Voce demorou muito, duelo cancelado!",0,66);
+EraseGlobalProperty("arenaIIemuso");
+return 0;
+endif
+
+sleepms(50);
+tempoaceitar:=Cint(tempoaceitar+1);
+
+until (GetObjProperty(oponente, "aceitarpvp"));
+
+///Reflect
+SetObjProperty(who, "mr", 0);
+SetObjProperty(oponente, "mr", 0);
+SetObjProperty(who, "delayreflect", ReadGameClock() );
+SetObjProperty(oponente, "delayreflect", ReadGameClock() );
+
+var mountwho:=GetEquipmentByLayer(who, 25);
+var animalwho:=SystemFindObjectBySerial(CInt(GetObjProperty(mountwho,"serial")));
+
+var mountoponente:=GetEquipmentByLayer(oponente, 25);
+var animaloponente:=SystemFindObjectBySerial(CInt(GetObjProperty(mountoponente,"serial")));
+
+MoveCharacterToLocation(who, 65535, 65535, 0); ///posicao 1
+MoveCharacterToLocation(oponente, 65535, 65535, 0); ///posicao 2
+who.frozen := 1;
+oponente.frozen := 1;
+
+DoTempMod(who, "p", 1, 4);
+DoTempMod(oponente, "p", 1, 4);
+
+
+PrintTextAbovePrivate(oponente, "4",oponente);
+PrintTextAbovePrivate(who, "4",who);
+sleep(1);
+PrintTextAbovePrivate(oponente, "3",oponente);
+PrintTextAbovePrivate(who, "3",who);
+sleep(1);
+PrintTextAbovePrivate(oponente, "2",oponente);
+PrintTextAbovePrivate(who, "2",who);
+sleep(1);
+PrintTextAbovePrivate(oponente, "1",oponente);
+PrintTextAbovePrivate(who, "1",who);
+sleep(1);
+PrintTextAbovePrivate(oponente, "Valendo!",oponente);
+PrintTextAbovePrivate(who, "Valendo!",who);
+
+Detach();
+
+who.frozen := 0;
+oponente.frozen := 0;
+
+var tempo:=0;
+
+repeat
+sleep(5);
+tempo:=Cint(tempo+1);
+until ((who.dead) || (oponente.dead) || (tempo >= 60));
+
+
+if(who.dead)
+SendSysMessage(oponente, "Voce ganhou o pvp de " + who.name,0,666);
+SetObjProperty(oponente, "pvppoint", Cint( GetObjProperty(oponente, "pvppoint") +1 )  );
+SendSysMessage(oponente, "Voce ganhou um PVP Point.");
+
+SendSysMessage(who, "Voce perdeu o duelo...",0,33);
+Broadcast(who.name + " perdeu o pvp para " + oponente.name,0,24);
+SendSysMessage(oponente, "Voce tem 40 segundos para lotear seu Adversario.",3,95);
+sleep(40);
+
+elseif(oponente.dead)
+SendSysMessage(who, "Voce ganhou o pvp de " + oponente.name,0,666);
+SetObjProperty(who, "pvppoint", Cint( GetObjProperty(who, "pvppoint") +1 )  );
+SendSysMessage(who, "Voce ganhou um PVP Point.");
+
+SendSysMessage(oponente, "Voce perdeu o duelo...",0,33);
+Broadcast(oponente.name + " perdeu o pvp para " + who.name,0,24);
+SendSysMessage(who, "Voce tem 40 segundos para lotear seu Adversario.",3,95);
+sleep(40);
+
+else
+
+SendSysMessage(who, "Voce empatou o pvp com " + oponente.name,0,33);
+SendSysMessage(oponente, "Voce empatou o pvp com " + who.name,0,33);
+Broadcast(oponente.name + " empatou o pvp com " + who.name,0,24);
+endif
+
+EraseGlobalProperty("arenaIIemuso");
+item.name := "Pedra de PVP II";
+item.color := 1174;
+PrintTextAbove(item, "Arena II Liberada!",2,95);
+
+who.SetCriminal(0);
+oponente.SetCriminal(0);
+MoveCharacterToLocation(who, 1, 45, 1, MOVECHAR_FORCELOCATION);
+MoveCharacterToLocation(oponente, 1, 45, 1, MOVECHAR_FORCELOCATION);
+var whoo := { who.serial, animalwho };
+var oponentee := { oponente.serial, animaloponente };
+start_script("enviarpvp", whoo);
+start_script("enviarpvp", oponentee);
+
+
+endprogram
+
+
+
+

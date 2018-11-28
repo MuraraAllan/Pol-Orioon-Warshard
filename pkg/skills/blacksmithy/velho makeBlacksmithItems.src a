@@ -1,0 +1,937 @@
+use cfgfile;
+use util;
+
+include ":gumps:gumps";
+include "include/attributes";
+include "include/gumpUtil";
+include "include/dist";
+include "util/repair";
+include "include/client";
+include "include/objtype";
+include "include/client";
+include "include/objtype";
+include "include/canAccess";
+include "include/toolWear";
+
+include "include/client";
+include "include/attributes";
+include "include/yesno";
+
+
+var itemcfg   := ReadConfigFile(":combat:itemdesc");
+var smith_cfg := ReadConfigFile("blacksmithy");
+gfref.x := 50;
+gfref.y := 50;
+var O := 501;
+
+program use_hammer(who, hammer)
+  if(!can_access(who, hammer))
+    return;
+  endif
+  if(!hammer.movable)
+    SendSysMessage(who, "Voce nao pode usar isto.",9,89);
+    return;
+  endif
+  if(!ReserveItem(hammer))
+    SendSysMessage(who, "Voce nao pode usar isto.",9,89);
+    return;
+  endif
+equipitem(who,hammer);
+  GFInitGump(0, 0);
+  GFNoDispose();
+  GFNoClose();
+  GFPage(0);
+  GFResizePic(0, 60, 3500, 500, 400);
+  GFGumpPic( 20, 120, 150);
+  GFGumpPic( 28, 120, 150);
+  GFGumpPic(118, 120, 150);
+  GFGumpPic(208, 120, 150);
+  GFGumpPic(298, 120, 150);
+  GFGumpPic(370, 120, 150);
+  GFGumpPic(460, 120, 150);
+  GFGumpPic( 20, 128, 150);
+  GFGumpPic( 28, 128, 150);
+  GFGumpPic(118, 128, 150);
+  GFGumpPic(208, 128, 150);
+  GFGumpPic(298, 128, 150);
+  GFGumpPic(370, 128, 150);
+  GFGumpPic(460, 128, 150);
+  GFGumpPic( 20, 136, 150);
+  GFGumpPic(118, 136, 150);
+  GFGumpPic(232, 136, 150);
+  GFGumpPic(350, 136, 150);
+  GFGumpPic( 20, 136, 150);
+  GFGumpPic( 28, 136, 150);
+  GFGumpPic(118, 136, 150);
+  GFGumpPic(208, 136, 150);
+  GFGumpPic(298, 136, 150);
+  GFGumpPic(370, 136, 150);
+  GFGumpPic(460, 136, 150);
+  GFGumpPic( 28, 278, 150);
+  GFGumpPic(118, 278, 150);
+  GFGumpPic(208, 278, 150);
+  GFGumpPic(298, 278, 150);
+  GFGumpPic(368, 278, 150);
+  GFGumpPic( 20, 278, 150);
+  GFGumpPic(460, 278, 150);
+  GFGumpPic( 20, 226, 150);
+  GFGumpPic(118, 226, 150);
+  GFGumpPic(232, 226, 150);
+  GFGumpPic(350, 226, 150);
+  GFGumpPic( 20, 366, 150);
+  GFGumpPic( 28, 366, 150);
+  GFGumpPic(118, 366, 150);
+  GFGumpPic(208, 366, 150);
+  GFGumpPic(298, 366, 150);
+  GFGumpPic(370, 366, 150);
+  GFGumpPic(460, 366, 150);
+  GFGumpPic( 20, 350, 150);
+  GFGumpPic( 28, 350, 150);
+  GFGumpPic(118, 350, 150);
+  GFGumpPic(208, 350, 150);
+  GFGumpPic(298, 350, 150);
+  GFGumpPic(370, 350, 150);
+  GFGumpPic(460, 350, 150);
+  GFGumpPic(250, 70, 0x15b3);
+ GFGumpPic(40, 70, 0x15b3);
+ GFGumpPic(150, 100, 0x000c);
+ GFGumpPic(150, 100, 0xec6f);
+ GFGumpPic(150, 100, 0xec70);
+ GFGumpPic(150, 100, 0xec71);
+ GFGumpPic(150, 100, 0xc5d0);
+ 
+ GFGumpPic(150, 100, 0xec73);
+ GFGumpPic(150, 100, 0xec72);
+ GFGumpPic(150, 100, 0xec94);
+GFGumpPic(150, 100, 0xee40);
+  GFTextLine(135,  80, 900, "MENU BS");
+  GFTextLine( 30, 121,   1154, "Loriga");
+  GFTextLine(150, 121,   1154, "Malha");
+  GFTextLine(260, 121,   1154, "Plate");
+  GFTextLine(370, 121,   1154, "Elmos");
+  GFTextLine( 30, 351,   1154, "Escudos");
+  GFTextLine(120, 351,   1154, "Espadas");
+  GFTextLine(205, 351,   1154, "Machados");
+  GFTextLine(275, 351,   1154, "Armas Longas");
+  GFTextLine(375, 351,   1154, "Macas");
+  GFTextLine( 90, 380, 900, "Repetir");
+  GFTextLine(320, 380, 900, "Reparar");
+  var repair  := GFButtonID(300, 384,   3, 4, 97);
+  var lastitm := GFButtonID( 70, 384,   3, 4, 99);
+  var close   := GFButtonID(410, 380, 242, 241, 1);
+  GFButtonPage(110, 123, 5209, 5120,  2);
+  GFButtonPage(230, 123, 5209, 5120,  3);
+  GFButtonPage(340, 123, 5209, 5120,  4);
+  GFButtonPage(435, 123, 5209, 5120,  5);
+  GFButtonPage( 90, 353, 5209, 5120,  6);
+  GFButtonPage(180, 353, 5209, 5120,  7);
+  GFButtonPage(250, 353, 5209, 5120,  8);
+  GFButtonPage(345, 353, 5209, 5120,  9);
+  GFButtonPage(440, 353, 5209, 5120, 10);
+  GFTextLine(  250, 420, 3150, "Quantidade desejada");
+  GFGumpPic(390, 417, 3150);
+  var sa := GetObjProperty(who, "#SmithAmt");
+  if(!sa)
+    sa := 1;
+  endif
+  var ct := GFTextEntry(400, 420, 100, 30, 0, sa);
+  ComposeSubMenu(who);
+  EraseObjProperty(who, "IsMeditating");
+  EraseObjProperty(who, "HealTimer");
+  var res := GFSendGump(who);
+  if((res[0] == 999) || (res[close.keyid]))
+    SendSysMessage(who, "Cancelled",9,89);
+    return;
+  endif
+  var amt := Cint(SplitWords(res[ct.keyid])[2]);
+  if(!amt)
+    amt := 1;
+  elseif(amt > 10)
+    SendSysMessage(who, "Voce so pode fazer no maximo 10 itens por vez.",9,89);
+    return;
+  endif
+  SetObjProperty(who, "#SmithAmt", amt);
+  var cont := hammer.container;
+  if((!cont) || (cont.serial == who.serial))
+    cont := who.backpack;
+  endif
+  var the_objtype := res[0];
+  if(res[repair.keyid])
+    repair_this(who);
+    return;
+  elseif(res[lastitm.keyid])
+    the_objtype := GetObjProperty(who, "LastBlacksmithItem");
+    if(!the_objtype)
+      SendSysMessage(who, "You have never smithed before.");
+      return;
+    endif
+  endif
+  SetObjProperty(who, "LastBlacksmithItem", the_objtype);
+  makeblacksmithitems(who, the_objtype, amt, cont, hammer);
+endprogram
+
+function ComposeSubMenu(who)
+  var num := 2;
+  var skill := (GetEffectiveSkill(who, SKILLID_BLACKSMITHY) + 20);
+  var color := 0;
+  var cfg := ReadConfigFile(":blacksmithy:blacksmithy");
+  while(num < 11)
+    case(num)
+       2: GFPage(2);        // Page 2 (Ringmail)
+          if(skill >= Cint(cfg[5106]."skill"))
+            color := 900;
+            GFButtonIDC(150, 200, 210, 211, 1, 5106);
+          endif
+          GFTextLine( 90, 175, color, "Luvas de loriga");
+          GFTilePic( 100, 200, 5099);
+          color := 0;
+          if(skill >= Cint(cfg[5102]."skill"))
+            color := 900;
+            GFButtonIDC(300, 200, 210, 211, 1, 5102);
+          endif
+          GFTextLine(240, 175, color, "Ombreira de loriga");
+          GFTilePic( 250, 200, 5103);
+         color := 0;
+          if(skill >= Cint(cfg[5104]."skill"))
+            color := 900;
+            GFButtonIDC(150, 295, 210, 211, 1, 5104);
+          endif
+          GFTextLine( 90, 270, color, "Calca de loriga");
+          GFTilePic( 100, 295, 5104);
+          color := 0;
+          if(skill >= Cint(cfg[5100]."skill"))
+            color := 900;
+            GFButtonIDC(300, 295, 210, 211, 1, 5100);
+          endif
+          GFTextLine(240, 270, color, "Tunica de loriga");
+          GFTilePic( 250, 295, 5100);
+          color := 0;
+       3: GFPage(3);        // Page 3 (Chainmail)
+          if(skill >= Cint(cfg[5051]."skill"))
+            color := 900;
+            GFButtonIDC(150, 200, 210, 211, 1, 5051);
+          endif
+          GFTextLine( 90, 175, color, "Capuz de loriga");
+          GFTilePic( 100, 200, 5051);
+          color := 0;
+          if(skill >= Cint(cfg[5054]."skill"))
+            color := 900;
+            GFButtonIDC(300, 200, 210, 211, 1, 5054);
+          endif
+          GFTextLine(240, 175, color, "Calca de loriga");
+          GFTilePic( 250, 200, 5054);
+          color := 0;
+          if(skill >= Cint(cfg[5055]."skill"))
+            color := 900;
+            GFButtonIDC(150, 295, 210, 211, 1, 5055);
+          endif
+          GFTextLine( 90, 270, color, "Tunica de loriga");
+          GFTilePic( 100, 295, 5055);
+          color := 0;
+       4: GFPage(4);        // Page 4 (Platemail)
+          if(skill >= Cint(cfg[5139]."skill"))
+            color := 900;
+            GFButtonIDC(100, 200, 210, 211, 1, 5139);
+          endif
+          GFTextLine( 60, 175, color, "Gorgel de metal");
+          GFTilePic(  70, 200, 5139);
+          color := 0;
+          if(skill >= Cint(cfg[5140]."skill"))
+            color := 900;
+            GFButtonIDC(260, 200, 210, 211, 1, 5140);
+          endif
+          GFTextLine(200, 175, color, "Luvas de metal");
+          GFTilePic( 210, 200, 5140);
+          color := 0;
+          if(skill >= Cint(cfg[5136]."skill"))
+            color := 900;
+            GFButtonIDC(400, 200, 210, 211, 1, 5136);
+          endif
+          GFTextLine(340, 175, color, "Ombreiras de metal");
+          GFTilePic( 350, 200, 5136);
+          color := 0;
+          if(skill >= Cint(cfg[5137]."skill"))
+            color := 900;
+            GFButtonIDC(120, 295, 210, 211, 1, 5137);
+          endif
+          GFTextLine( 60, 270, color, "Calcas de metal");
+          GFTilePic(  70, 295, 5137);
+          color := 0;
+          if(skill >= Cint(cfg[5141]."skill"))
+            color := 900;
+            GFButtonIDC(260, 295, 210, 211, 1, 5141);
+          endif
+          GFTextLine(200, 270, color, "Peirtoral De Metal");
+          GFTilePic( 210, 295, 5141);
+          color := 0;
+          if(skill >= Cint(cfg[7172]."skill"))
+            color := 900;
+            GFButtonIDC(400, 295, 210, 211, 1, 7172);
+          endif
+          GFTextLine(340, 270, color, "Armadura feminina");
+          GFTilePic( 350, 295, 7172);
+          color := 0;
+       5: GFPage(5);        //Page 5 (Helmets)
+          if(skill >= Cint(cfg[5130]."skill"))
+            color := 900;
+            GFButtonIDC(110, 200, 210, 211, 1, 5130);
+          endif
+          GFTextLine( 65, 175, color, "Elmo");
+          GFTilePic(  60, 200, 5130);
+          color := 0;
+          if(skill >= Cint(cfg[5132]."skill"))
+            color := 900;
+            GFButtonIDC(210, 200, 210, 211, 1, 5132);
+          endif
+          GFTextLine(160, 175, color, "Bascinet");
+          GFTilePic( 160, 200, 5132);
+          color := 0;
+          if(skill >= Cint(cfg[5134]."skill"))
+            color := 900;
+            GFButtonIDC(310, 200, 210, 211, 1, 5134);
+          endif
+          GFTextLine(260, 175, color, "Elmo Aberto");
+          GFTilePic( 260, 200, 5134);
+          color := 0;
+          if(skill >= Cint(cfg[5128]."skill"))
+            color := 900;
+            GFButtonIDC(410, 200, 210, 211, 1, 5128);
+          endif
+          GFTextLine(360, 175, color, "Elmo Fechado");
+          GFTilePic( 360, 200, 5128);
+          color := 0;
+          if(skill >= Cint(cfg[5138]."skill"))
+            color := 900;
+            GFButtonIDC(110, 295, 210, 211, 1, 5138);
+          endif
+          GFTextLine( 65, 270, color, "Elmo Grande");
+          GFTilePic(  60, 295, 5138);
+          color := 0;
+       6: GFPage(6);        //Page 6 (Shields)
+          if(skill >= Cint(cfg[7027]."skill"))
+            color := 900;
+            GFButtonIDC(110, 200, 210, 211, 1, 7027);
+          endif
+          GFTextLine( 65, 175, color, "Buckler");
+          GFTilePic(  60, 200, 7027);
+          color := 0;
+          if(skill >= Cint(cfg[7026]."skill"))
+            color := 900;
+            GFButtonIDC(210, 200, 210, 211, 1, 7026);
+          endif
+          GFTextLine(140, 175, color, "Escudo de bronze");
+          GFTilePic( 160, 200, 7026);
+          color := 0;
+          if(skill >= Cint(cfg[7035]."skill"))
+            color := 900;
+            GFButtonIDC(310, 200, 210, 211, 1, 7035);
+          endif
+          GFTextLine(260, 175, color, "Escudo de metal");
+          GFTilePic( 260, 200, 7035);
+          color := 0;
+          if(skill >= Cint(cfg[7028]."skill"))
+            color := 900;
+            GFButtonIDC(410, 200, 210, 211, 1, 7032);
+          endif
+          GFTextLine(390, 175, color, "Escudo medio");
+          GFTilePic( 350, 200, 7032);
+          color := 0;
+          if(skill >= Cint(cfg[7032]."skill"))
+            color := 900;
+            GFButtonIDC(110, 295, 210, 211, 1, 7028);
+          endif
+          GFTextLine( 65, 270, color, "Escudo medio");
+          GFTilePic(  60, 295, 7028);
+          color := 0;
+          if(skill >= Cint(cfg[7030]."skill"))
+            color := 900;
+           GFButtonIDC(210, 295, 210, 211, 1, 7030);
+          endif
+          GFTextLine(160, 270, color, "Escudo corporal");
+          GFTilePic( 160, 295, 7030);
+          color := 0;
+       7: GFPage(7);        //Page 7 (Bladed)
+          if(skill >= Cint(cfg[3921]."skill"))
+            color := 900;
+            GFButtonIDC(110, 200, 210, 211, 1, 3921);
+          endif
+          GFTextLine( 65, 175, color, "adaga");
+          GFTilePic(  60, 200, 3921);
+          color := 0;
+          if(skill >= Cint(cfg[5184]."skill"))
+            color := 900;
+            GFButtonIDC(210, 200, 210, 211, 1, 5184);
+          endif
+          GFTextLine(160, 175, color, "cutelo");
+          GFTilePic( 160, 200, 5185);
+          color := 0;
+          if(skill >= Cint(cfg[5118]."skill"))
+            color := 900;
+            GFButtonIDC(310, 200, 210, 211, 1, 5118);
+          endif
+          GFTextLine(260, 175, color, "katana");
+          GFTilePic( 260, 200, 5119);
+          color := 0;
+          if(skill >= Cint(cfg[5121]."skill"))
+            color := 900;
+            GFButtonIDC(410, 200, 210, 211, 1, 5121);
+          endif
+          GFTextLine(360, 175, color, "kopesh");
+          GFTilePic( 360, 200, 5121);
+          color := 0;
+          if(skill >= Cint(cfg[5045]."skill"))
+            color := 900;
+            GFButtonIDC(110, 295, 210, 211, 1, 5045);
+          endif
+          GFTextLine( 65, 270, color, "cimitarra");
+          GFTilePic(  60, 295, 5046);
+          color := 0;
+          if(skill >= Cint(cfg[3934]."skill"))
+            color := 900;
+            GFButtonIDC(210, 295, 210, 211, 1, 3934);
+          endif
+          GFTextLine(160, 270, color, "espada larga");
+          GFTilePic( 160, 295, 3934);
+          color := 0;
+          if(skill >= Cint(cfg[3936]."skill"))
+            color := 900;
+            GFButtonIDC(310, 295, 210, 211, 1, 3936);
+          endif
+          GFTextLine(260, 270, color, "espada longa");
+          GFTilePic( 245, 295, 3937);
+          color := 0;
+          if(skill >= Cint(cfg[5049]."skill"))
+            color := 900;
+            GFButtonIDC(410, 295, 210, 211, 1, 5049);
+          endif
+          GFTextLine(360, 270, color, "espada bastarda");
+          GFTilePic( 360, 295, 5049);
+          color := 0;
+       8: GFPage(8);        //Page 8 (Axes)
+          if(skill >= Cint(cfg[3911]."skill"))
+            color := 900;
+            GFButtonIDC(110, 200, 210, 211, 1, 3911);
+          endif
+          GFTextLine( 65, 175, color, "machado de batalha");
+          GFTilePic(  60, 200, 3911);
+          color := 0;
+          if(skill >= Cint(cfg[3909]."skill"))
+            color := 900;
+            GFButtonIDC(260, 200, 210, 211, 1, 3909);
+          endif
+          GFTextLine(200, 175, color, "machado executador");
+          GFTilePic( 200, 200, 3909);
+          color := 0;
+          if(skill >= Cint(cfg[5186]."skill"))
+            color := 900;
+            GFButtonIDC(410, 200, 210, 211, 1, 5186);
+          endif
+          GFTextLine(360, 175, color, "machado de duas maos");
+          GFTilePic( 360, 200, 5187);
+          color := 0;
+          if(skill >= Cint(cfg[3915]."skill"))
+            color := 900;
+            GFButtonIDC(110, 295, 210, 211, 1, 3915);
+          endif
+          GFTextLine( 65, 270, color, "machado duplo");
+          GFTilePic(  60, 295, 3915);
+          color := 0;
+          if(skill >= Cint(cfg[3913]."skill"))
+            color := 900;
+            GFButtonIDC(210, 295, 210, 211, 1, 3913);
+          endif
+          GFTextLine(180, 270, color, "machado");
+          GFTilePic( 160, 295, 3913);
+          color := 0;
+          if(skill >= Cint(cfg[5039]."skill"))
+            color := 900;
+            GFButtonIDC(310, 295, 210, 211, 1, 5039);
+          endif
+          GFTextLine(260, 270, color, "machado de guerra");
+          GFTilePic( 255, 295, 5040);
+          color := 0;
+          if(skill >= Cint(cfg[5114]."skill"))
+            color := 900;
+            GFButtonIDC(410, 295, 210, 211, 1, 5114);
+          endif
+          GFTextLine(360, 270, color, "machado largo de batalha");
+          GFTilePic( 360, 295, 5115);
+          color := 0;
+       9: GFPage(9);        //Page 9 (Polearms)
+          if(skill >= Cint(cfg[5122]."skill"))
+            color := 900;
+            GFButtonIDC(110, 200, 210, 211, 1, 5122);
+          endif
+          GFTextLine( 65, 175, color, "lanca pequena");
+          GFTilePic(  55, 200, 5123);
+          color := 0;
+          if(skill >= Cint(cfg[3939]."skill"))
+            color := 900;
+            GFButtonIDC(210, 200, 210, 211, 1, 3939);
+          endif
+          GFTextLine(160, 175, color, "lanca");
+          GFTilePic( 105, 200, 3938);
+          color := 0;
+          if(skill >= Cint(cfg[5124]."skill"))
+            color := 900;
+            GFButtonIDC(310, 200, 210, 211, 1, 5124);
+          endif
+          GFTextLine(260, 175, color, "garfo de guerra");
+          GFTilePic( 260, 200, 5125);
+          color := 0;
+          if(skill >= Cint(cfg[3918]."skill"))
+            color := 900;
+            GFButtonIDC(410, 200, 210, 211, 1, 3918);
+          endif
+          GFTextLine(360, 175, color, "bardicha");
+          GFTilePic( 325, 200, 3917);
+          color := 0;
+          if(skill >= Cint(cfg[5182]."skill"))
+            color := 900;
+            GFButtonIDC(110, 295, 210, 211, 1, 5182);
+          endif
+          GFTextLine( 65, 270, color, "alabarda");
+          GFTilePic(  10, 295, 5183);
+          color := 0;
+      10: GFPage(10);       //Page 10 (Bashing)
+          if(skill >= Cint(cfg[3932]."skill"))
+            color := 900;
+            GFButtonIDC(110, 200, 210, 211, 1, 3932);
+          endif
+          GFTextLine( 65, 175, color, "maca");
+          GFTilePic(  60, 200, 3932);
+          color := 0;
+          if(skill >= Cint(cfg[5178]."skill"))
+            color := 900;
+            GFButtonIDC(210, 200, 210, 211, 1, 5178);
+          endif
+          GFTextLine(160, 175, color, "maca longa");
+          GFTilePic( 160, 200, 5179);
+          color := 0;
+          if(skill >= Cint(cfg[5126]."skill"))
+            color := 900;
+            GFButtonIDC(310, 200, 210, 211, 1, 5126);
+          endif
+          GFTextLine(260, 175, color, "maca de guerra");
+          GFTilePic( 260, 200, 5127);
+          color := 0;
+          if(skill >= Cint(cfg[5176]."skill"))
+            color := 900;
+            GFButtonIDC(410, 200, 210, 211, 1, 5176);
+          endif
+          GFTextLine(360, 175, color, "martelo de guerra");
+          GFTilePic( 360, 200, 5176);
+          color := 0;
+          if(skill >= Cint(cfg[5180]."skill"))
+            color := 900;
+            GFButtonIDC(110, 295, 210, 211, 1, 5180);
+          endif
+          GFTextLine( 65, 270, color, "marreta");
+          GFTilePic(  60, 295, 5181);
+          color := 0;
+    endcase
+    num := num + 1;
+  endwhile
+  return;
+endfunction
+
+function GFButtonIDC(x, y, release, press, close, retval)
+	var line := "button " + CStr(gfref.x + Cint(x)) + " " + CStr(gfref.y + Cint(y));
+	line := line + " " + CStr(Cint(release)) + " " + CStr(Cint(press)) + " ";
+	line := line + "1 0 ";
+	line := line + CStr(retval);
+	gflayout.append( line );
+endfunction
+
+function repair_this(who)
+  SendSysMessage(who, "Selecione o item que voce deseja reparar.",9,89);
+  var use_on := Target(who);
+  if(!can_access(who, use_on))
+    return;
+  endif
+  if(use_on.movable == 0)
+    SendSysMessage(who, "Voce nao pode reparar isto.",9,89);
+    return;
+  endif
+  if(!Accessible(who, use_on))
+    SendSysMessage(who, "Voce nao tem acesso ao item.",9,89);
+    return;
+  elseif(dist(who, use_on) > 2)
+    SendSysMessage(who, "Voce esta longe.",9,89);
+    return;
+  endif
+  if(is_weapon_armor(use_on.objtype))
+    var near_items := ListItemsNearLocation(who.x, who.y, who.z,3);
+    foreach item in near_items
+      if ((item.objtype == UOBJ_ANVIL1) || (item.objtype == UOBJ_ANVIL2))
+        repair_item( who, use_on, SKILLID_BLACKSMITHY );
+        return;
+      endif
+    endforeach
+    SendSysMessage( who, "Voce deve apoiar o material em uma bigorna para poder trabalhar",9,89 );
+    return;
+  else
+    SendSysMessage(who, "Voce nao pode reparar isto",9,89);
+  endif
+  return;
+endfunction
+
+function is_weapon_armor(what)
+  var elem := FindConfigElem(itemcfg, what);
+  var repairable := GetConfigInt(elem,"repairable");
+  if (repairable == 1)
+    return 1;
+  else
+    return 0;
+  endif
+endfunction
+
+ function makeblacksmithitems(who, what, amt, cont, hammer)
+  var anvil_near := 0;
+  foreach item in ListItemsNearLocation(who.x, who.y, who.z, 2)
+    if((item.objtype == 0x0faf) || (item.objtype == 0x0fb0))
+      anvil_near := 1;
+      break;
+    endif
+  endforeach
+  if(anvil_near == 0)
+    SendSysMessage(who, "Voce deve apoiar o material em uma bigorna para poder trabalhar",9,89);
+    return;
+  endif
+  var tname, skil, element, material, pts, points, maxhp, itemname;
+  var nme, excmod, val, num, rint, word, theitem, holder, dmg;
+  SendSysMessage(who, "Selecione o material que deseja usar.",9,89);
+  var use_on := Target(who);
+  if(!can_access(who, use_on))
+    return;
+  endif
+  if(!Accessible(who, use_on) || (Distance(who, use_on) > 2))
+    SendSysMessage(who, "Voce nao tem acesso ao item.",9,89);
+    return;
+  endif
+  var is_ingot := 0;
+  var ptmod :=0 ;
+
+maxhp    := smith_cfg[what].maxhp;
+  case(use_on.objtype)
+    0x6309: is_ingot := 1; ptmod := 0;  dmg := theitem.maxhp - 75;
+    0x630a: is_ingot := 1; ptmod := 5;  dmg := theitem.maxhp - 60;
+    0x630b: is_ingot := 1; ptmod := 5;  dmg := theitem.maxhp - 50;
+    0x630c: is_ingot := 1; ptmod := 10; dmg := theitem.maxhp - 40;
+    0x630d: is_ingot := 1; ptmod := 10; dmg := theitem.maxhp - 30;
+    0x630e: is_ingot := 1; ptmod := 15; dmg := theitem.maxhp - 20;
+    0x630f: is_ingot := 1; ptmod := 15; dmg := theitem.maxhp - 15;
+    0x6310: is_ingot := 1; ptmod := 20; dmg := theitem.maxhp - 10;
+    0x6311: is_ingot := 1; ptmod := 25; dmg := theitem.maxhp - 10;
+    0x6313: is_ingot := 1; ptmod := 30; dmg := theitem.maxhp - 5;
+    0x6315: is_ingot := 1; ptmod := 30; dmg := theitem.maxhp - 5;
+    0x6317: is_ingot := 1; ptmod := 30; dmg := theitem.maxhp;
+    0x6319: is_ingot := 1; ptmod := 33; dmg := theitem.maxhp;
+    0x6321: is_ingot := 1; ptmod := 33; dmg := theitem.maxhp;
+    0x6323: is_ingot := 1; ptmod := 33; dmg := theitem.maxhp;
+    0x6325: is_ingot := 1; ptmod := 35; dmg := theitem.maxhp;
+    0x6327: is_ingot := 1; ptmod := 25; dmg := theitem.maxhp;
+    0x6329: is_ingot := 1; ptmod := 40; dmg := theitem.maxhp;
+endcase
+  if(is_ingot == 0)
+    SendSysMessage(who, "Voce so pode usar lings!",9,89);
+    return;
+  endif
+  if(use_on.movable == 0)
+    SendSysMessage(who, "Voce nao pode usar isto.",9,89);
+    return;
+  endif
+  if(!checkskillfordifferentmetals(who, use_on))
+    SendSysMessage(who, "Voce nao tem skill suficiente para usar o material.",9,89);
+    return;
+  endif
+  if(!Accessible(who, use_on))
+    SendSysMessage(who, "Voce so deve usar lings!",9,89);
+    return;
+  endif
+  if(!ReserveItem(use_on))
+    SendSysMessage(who, "O item ja esta em uso.",9,89);
+    return;
+  endif
+  if(!what)
+    SendSysMessage(who, "Cancelado",9,89);
+    return;
+  endif
+    itemname := smith_cfg[what].name;
+  material := Cint(smith_cfg[what].material);
+  skil     := Cint(smith_cfg[what].skill);
+  var dano  := Cint(smith_cfg[what].Damage);
+  points   := Cint(smith_cfg[what].points) * 2;
+  var counter := 0;
+  var x := who.x;
+  var y := who.y;
+  var skchk := GetEffectiveSkill(who, SKILLID_BLACKSMITHY);
+  pts := getpoints(who, skil, pts);
+  excmod := Cint(GetEffectiveSkill(who, SKILLID_ARMSLORE) / 10) + 3;
+  var modpts := 0;
+  if(skchk > (skil - 20))
+    modpts := (skchk - skil);
+  endif
+  while(counter < amt)
+    if((who.x != x) || (who.y != y))
+      SendSysMessage(who, "Voce para de trabalhar.",9,89);
+      break;
+    endif
+    if(!hammer)
+      break;
+    endif
+ 
+    if(GetAmount(use_on) >= material)
+      PlaySoundEffect(who, SFX_ANVIL);
+      sleep(2);
+      PlaySoundEffect(who, SFX_ANVIL);
+      sleep(2);
+      PlaySoundEffect(who, SFX_ANVIL);
+      sleep(2);
+      pts := Cint(points + ptmod);
+      if(CheckSkill(who, SKILLID_BLACKSMITHY, skil, 0))
+        nme := "";
+        
+        theitem := CreateItemInContainer(cont, what, 1);
+        if(theitem)
+          CheckToolWear (who, hammer, SKILLID_BLACKSMITHY);
+          if(!theitem.isa)
+            case(use_on.objtype)
+              0x6309:   nme := "Ferro " ; theitem.color := 0x0;  theitem.dmg_mod:= 0; theitem.ar_mod := 1;
+              0x630a:   nme := "Cobre Rustico " + itemname; theitem.color := 1118; theitem.dmg_mod:= 1; theitem.ar_mod := 1;
+              0x630b:   nme := "Onyx "      ; theitem.color := 0x8455;  theitem.dmg_mod:= 1; theitem.ar_mod := 1;
+              0x630c:   nme := "Cobre "      ; theitem.color := 0x845e;   theitem.dmg_mod:= 1; theitem.ar_mod := 2;
+              0x630d:   nme := "Bronze "      ; theitem.color := 0x86b2; theitem.dmg_mod:= 2; theitem.ar_mod := 3;
+              0x630e:   nme := "Dourado "      ; theitem.color := 0x88a6; theitem.dmg_mod:= 3; theitem.ar_mod := 4;
+              0x630f:   nme := "Agapite "     ; theitem.color := 0x83ea; theitem.dmg_mod:= 3; theitem.ar_mod := 5;
+              0x6310:   nme := "Verite "      ; theitem.color := 0x889f;  theitem.dmg_mod:= 5; theitem.ar_mod := 9;
+              0x6311:   nme := "Valorite "    ; theitem.color := 0x8539; theitem.dmg_mod:= 8; theitem.ar_mod := 14;   
+              0x6313:   nme := "Titanio "    ; theitem.color := 576; theitem.dmg_mod:= 10; theitem.ar_mod := 16;
+              0x6315:   nme := "Rosado "   ; theitem.color := 0x668; theitem.dmg_mod:= 10; theitem.ar_mod := 16;
+              0x6317:   nme := "Maremoto "    ; theitem.color := 90;theitem.dmg_mod:= 10; theitem.ar_mod := 10; 
+              0x6319:   nme := "Solar "    ; theitem.color := 1101; theitem.dmg_mod:= 10; theitem.ar_mod := 10;
+              0x6321:   nme := "Lava "    ; theitem.color := 38;theitem.dmg_mod:= 10; theitem.ar_mod := 16; 
+              0x6323:   nme := "Ice "    ; theitem.color := 1153;theitem.dmg_mod:= 10; theitem.ar_mod := 10;
+              0x6325:   nme := "Uranio "    ; theitem.color := 19;theitem.dmg_mod:= 10; theitem.ar_mod := 10;
+              0x6327:   nme := "Azurita "    ; theitem.color := 0x04df; theitem.dmg_mod:= 7; theitem.ar_mod := 13;
+              0x6329:   nme := "Gelo "    ; theitem.color := 1154;theitem.dmg_mod:= 10; theitem.ar_mod := 10; 
+endcase
+          else
+          nme;
+          endif
+  if(!SubtractAmount(use_on, material))
+            DestroyItem(theitem);
+            return;
+          endif
+          AwardRawSkillPoints(who, SKILLID_BLACKSMITHY, pts);
+          rint := randomint(100);
+          if((excmod + modpts) >= rint)
+            ///theitem.quality := 1.2;
+            theitem.hp      := theitem.maxhp;
+            ///theitem.Damage  := dano + 5;
+            theitem.dmg_mod  := theitem.dmg_mod + 1;
+           theitem.movable:= 0;
+            SendSysMessage(who, "Voce fez um item excepcional e colocou em sua mochila",9,89);
+   theitem.movable:= 0;
+            if(GetEffectiveSkill(who, SKILLID_BLACKSMITHY) == 100)
+         var a := yesno(who,"Assinar os Items?");
+          theitem.movable:= 0;
+         if(!a)
+        tname := itemname + " Excepcional";
+theitem.movable := 1;
+          else
+            tname := itemname + " Excepcional" + " [Feito por " + who.name + "]";
+theitem.movable := 1;
+            endif
+             endif
+          else
+            rint := randomint(100);
+            holder := GetBaseMod(skchk, skil, (excmod - 3));
+            if(rint < holder)
+              SendSysMessage( who, "Voce fez um item de qualidade media.",9,89 );
+ tname := itemname ;
+              val := randomint(2) + 1;
+              case(val)
+                1: theitem.quality := 0.7;
+                2: theitem.quality := 0.8;
+                3: theitem.quality := 0.9;
+              endcase
+              theitem.hp := dmg;
+            else
+              SendSysMessage( who, "Voce criou um item e colocou em sua mochila.",9,89 );
+  tname := itemname ;
+              theitem.quality := 1.0;
+              theitem.hp := theitem.maxhp;
+            endif
+            if((nme[1] == "a") || (nme[1] == "e") || (nme[1] == "i") || (nme[1] == "o") || (nme[1] == "u"))
+              word := "";
+            else
+              word := "";
+            endif
+            tname := "" + word + nme;
+          endif
+          SetName(theitem, tname);
+        else
+          SendSysMessage(who, "Nao coube na sua bag, Cancelado.",9,89);
+          break;
+        endif
+      else
+        var baseskill := GetBaseSkillBaseValue(who, SKILLID_BLACKSMITHY);
+        if(baseskill < 100)
+          pts := pts / 2;
+         endif
+        num := randomint(material) /2;
+        SubtractAmount(use_on, num);
+        SendSysMessage(who, "Voce destruiu alguns lings.",9,89);
+      endif
+    else
+      SendSysMessage(who, "Voce nao tem lings suficiente!",9,89);
+      return;
+    endif
+    counter := counter + 1;
+    endwhile
+endfunction
+
+function GetBaseMod(skill, diff, emod)
+  var holder := 0;
+  var max := diff + 20;
+  var min := diff - 20;
+  if(skill > max)
+    holder := 20;
+  elseif((skill <= max) and (skill >= min))
+    holder := 20 + Cint((max - skill) / 2);
+  else
+    holder :=  40;
+  endif
+  return Cint(holder - emod);
+endfunction
+
+
+function getpoints(who, diff, pts)
+  var skill := GetEffectiveSkill(who, SKILLID_BLACKSMITHY);
+  if(diff > 20)
+    diff := diff - 20;
+  else
+    diff := 1;
+  endif
+  if(skill > diff)
+    if((skill - diff) <= 5)
+      pts := pts;
+    elseif((skill - diff) <= 10)
+      pts := (pts * 3) / 4;
+    elseif((skill - diff) <= 15)
+      pts := pts / 2;
+    elseif((skill - diff) <= 20)
+      pts := pts / 4;
+    else
+      pts := 0;
+    endif
+  endif
+  return pts;
+endfunction
+
+function checkskillfordifferentmetals(who, ingot)
+  case( ingot.objtype )
+    0x6309:   return(checkhisskill(who,  0));
+	0x630a:   return(checkhisskill(who, 65));
+    0x630b:   return(checkhisskill(who, 70));
+    0x630c:   return(checkhisskill(who, 75));
+    0x630d:   return(checkhisskill(who, 80));
+    0x630e:   return(checkhisskill(who, 85));
+    0x630f:   return(checkhisskill(who, 90));
+    0x6310:   return(checkhisskill(who, 95));
+    0x6311:   return(checkhisskill(who, 99));
+    0x6313:   return(checkhisskill(who, 100));
+    0x6315:   return(checkhisskill(who, 100));
+    0x6317:   return(checkhisskill(who, 100));
+    0x6319:   return(checkhisskill(who, 100));
+    0x6321:   return(checkhisskill(who, 100));
+    0x6323:   return(checkhisskill(who, 100));
+    0x6325:   return(checkhisskill(who, 100));
+    0x6327:   return(checkhisskill(who, 99));
+    0x6329:   return(checkhisskill(who, 100));
+default:  SendSysMessage(who, "You can't forge that.");
+  endcase
+endfunction
+
+function checkhisskill(who, skill)
+  var his_skill := GetEffectiveSkill(who, SKILLID_BLACKSMITHY);
+  if(his_skill >= skill)
+    return 1;
+  else
+    return 0;
+  endif
+endfunction
+
+function resmelt(who, tongs);
+  var near_items := ListItemsNearLocation(who.x, who.y, who.z, 3);
+  var forge_near := 0;
+  foreach forge in near_items
+    if((forge.objtype == 0xfb1) || ((forge.objtype >= 0x197a) && (forge.objtype <= 0x19a9)))
+      forge_near := 1;
+      break;
+    endif
+  endforeach
+  if(forge_near == 0)
+    SendSysMessage(who, "You must be near a forge to re-smelt items.");
+    return;
+  endif
+  SendSysMessage(who, "Select the item you wish to melt down");
+  var use_on := Target(who, TGTOPT_CHECK_LOS);
+  if(!use_on)
+	SendSysMessage(who, "Targetting cancelled");
+	return;
+  endif
+  if(!can_access(who, use_on))
+    SendSysMessage(who, "You cannot use that.");
+    return;
+  endif
+  if(!Accessible(who, use_on) || !ReserveItem( use_on ))
+    SendSysMessage(who, "You cannot use that.");
+    return;
+  endif
+  if(use_on.container != who.backpack)
+	SendSysMessage(who, "You can only melt items stored in the top level of your backpack");
+	return;
+  endif
+  var skill := smith_cfg[use_on.objtype]."skill";
+  var amt := Cint(smith_cfg[use_on.objtype]."material");
+  if((!skill) || (!amt))
+    SendSysMessage(who, "You cannot resmelt that.");
+    return;
+  endif
+  amt := Cint((amt * GetEffectiveSkill(who,SKILLID_BLACKSMITHY) * 75 ) / 10000);
+  if(amt < 1)
+	amt := 1;
+  endif
+  var itemcfg := ReadConfigFile(":mining:itemdesc");
+  if(!itemcfg)
+	return;
+  endif
+  var elemcol;
+  var ingot := -1;
+  var color := use_on.color;
+  var valid_ingot := { 0x6309, 0x630a, 0x630b, 0x630c, 0x630d, 0x630e, 0x630f, 0x6310, 0x6311, 0x6313, 0x6315, 0x6317, 0x6319, 0x6321, 0x6323, 0x6325, 0x6327, 0x6329 };
+  foreach entry in valid_ingot
+    elemcol := itemcfg[entry]."Color";
+	if(color == elemcol)
+	  ingot := entry;
+	  break;
+	endif
+  endforeach
+  if(ingot == -1)
+	PrintTextAbovePrivate(use_on, "Voce so pode fundir lingots!", who);
+	return;
+  endif
+  PlaySoundEffect(who, 0x2c);
+  sleep(1);
+  if(DestroyItem(use_on))
+	if(CheckSkill(who, SKILLID_BLACKSMITHY, skill, 10))
+	  SendSysMessage(who, "You manage to get a bit of material out of that");
+	  CreateItemInBackpack(who, ingot, amt);
+	else
+	  SendSysMessage(who, "You fail, and destroy the item");
+	endif
+    return;
+  endif
+endfunction

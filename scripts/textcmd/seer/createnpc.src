@@ -1,0 +1,17 @@
+use uo;
+use file;
+
+program textcmd_createnpc( who, template )
+
+    var props array;
+    props.+facing := who.facing;
+    var loc := TargetCoordinates(who);
+    var result := CreateNpcFromTemplate( template, loc.x, loc.y, loc.z, props );
+	  if(result) 
+var log:="Login: " +who.acct.name+ " criou npc de nome : " + result.name +" Serial : " + + result.serial ;
+	    LogToFile("log/.createnpc.log", log );
+endif
+    if (!result)
+        SendSysMessage( who, "NPC Creation Failed: " + result.errortext );
+    endif
+endprogram

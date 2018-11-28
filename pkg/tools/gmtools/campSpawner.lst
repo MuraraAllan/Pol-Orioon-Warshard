@@ -1,0 +1,4795 @@
+C:/pol2/scripts/include/startEqp.inc, Line 6
+var unique_items_created := {};
+0: decl global #0
+1: array
+2: :=
+3: #
+var starteqp_cfg;
+4: decl global #1
+5: #
+var template;
+6: decl global #2
+7: #
+var magicspawnchance := 0;
+8: decl global #3
+9: 0L
+10: :=
+11: #
+var magicadjustment  := 0;
+12: decl global #4
+13: 0L
+14: :=
+15: #
+var making_starting_equipment := 0;
+16: decl global #5
+17: 0L
+18: :=
+19: #
+var thecritter;
+20: decl global #6
+21: #
+C:\pol2\pkg\tools\gmtools\campSpawner.src, Line 7
+var chestarray := {};
+22: decl global #7
+23: array
+24: :=
+25: #
+var mobarray := {};
+26: decl global #8
+27: array
+28: :=
+29: #
+C:\pol2\pkg\tools\gmtools\campSpawner.src, Line 10
+program spawntest(item)
+30: get arg 'item'
+var rng := GetObjProperty(item,"range");
+31: decl local #1
+32: local #0
+33: "range"
+34: Func(2,1): GetObjProperty
+35: :=
+36: #
+foreach thing in ListItemsNearLocation(item.x, item.y, item.z, 20)
+37: local #0
+38: get member 'x'
+39: local #0
+40: get member 'y'
+41: local #0
+42: get member 'z'
+43: 20L
+44: Func(2,23): ListItemsNearLocation
+45: initforeach @56
+if(GetObjProperty(thing,"link") == item.serial)
+46: local #2
+47: "link"
+48: Func(2,1): GetObjProperty
+49: local #0
+50: get member 'serial'
+51: ==
+52: if false goto 56
+DestroyItem(thing);
+53: local #2
+54: Func(2,18): DestroyItem
+55: #
+56: stepforeach @46
+57: leave block(3)
+if((GetObjProperty(item,"duration") == error) || (!GetObjProperty(item,"duratio
+58: local #0
+59: "duration"
+60: Func(2,1): GetObjProperty
+61: error
+62: ==
+63: local #0
+64: "duration"
+65: Func(2,1): GetObjProperty
+66: !
+67: ||
+68: if false goto 99
+SetObjProperty(item,"waiting", 1);
+69: local #0
+70: "waiting"
+71: 1L
+72: Func(2,3): SetObjProperty
+73: #
+foreach char in EnumerateOnlineCharacters()
+74: Func(2,24): EnumerateOnlineCharacters
+75: initforeach @97
+if(char.cmdlevel > 1)
+76: local #2
+77: get member 'cmdlevel'
+78: 1L
+79: >
+80: if false goto 97
+SendSysMessage(char,"ERROR: Camp Spawner at " + item.x + " " + item.y + " is no
+81: local #2
+82: "ERROR: Camp Spawner at "
+83: local #0
+84: get member 'x'
+85: +
+86: " "
+87: +
+88: local #0
+89: get member 'y'
+90: +
+91: " is not functioning properly."
+92: +
+93: 3L
+94: 1000L
+95: Func(2,25): SendSysMessage
+96: #
+97: stepforeach @76
+98: leave block(3)
+while(GetObjProperty(item,"waiting"))
+99: local #0
+100: "waiting"
+101: Func(2,1): GetObjProperty
+102: if false goto 132
+foreach char in EnumerateOnlineCharacters()
+103: Func(2,24): EnumerateOnlineCharacters
+104: initforeach @126
+if(char.cmdlevel > 1)
+105: local #2
+106: get member 'cmdlevel'
+107: 1L
+108: >
+109: if false goto 126
+SendSysMessage(char,"ERROR: Camp Spawner at " + item.x + " " + item.y + " is no
+110: local #2
+111: "ERROR: Camp Spawner at "
+112: local #0
+113: get member 'x'
+114: +
+115: " "
+116: +
+117: local #0
+118: get member 'y'
+119: +
+120: " is not functioning properly."
+121: +
+122: 3L
+123: 1000L
+124: Func(2,25): SendSysMessage
+125: #
+126: stepforeach @105
+127: leave block(3)
+sleep(5);
+128: 5L
+129: Func(3,3): sleep
+130: #
+131: goto99
+var amt := GetObjProperty(item,"amount");
+132: decl local #2
+133: local #0
+134: "amount"
+135: Func(2,1): GetObjProperty
+136: :=
+137: #
+var frq := GetObjProperty(item,"duration");
+138: decl local #3
+139: local #0
+140: "duration"
+141: Func(2,1): GetObjProperty
+142: :=
+143: #
+var chest, thechest, themob;
+144: decl local #4
+145: #
+146: decl local #5
+147: #
+148: decl local #6
+149: #
+var i := 1;
+150: decl local #7
+151: 1L
+152: :=
+153: #
+while(item)
+154: local #0
+155: if false goto 295
+chestarray := GetObjProperty(item, "chestarray");
+156: local #0
+157: "chestarray"
+158: Func(2,1): GetObjProperty
+159: global7 := 
+if(!chestarray)
+160: global #7
+161: if true goto 164
+chestarray := {};
+162: array
+163: global7 := 
+mobarray := GetObjProperty(item, "MobArray");
+164: local #0
+165: "MobArray"
+166: Func(2,1): GetObjProperty
+167: global8 := 
+if(!mobarray)
+168: global #8
+169: if true goto 172
+mobarray := {};
+170: array
+171: global8 := 
+foreach chst in chestarray
+172: global #7
+173: initforeach @189
+thechest := SystemFindObjectBySerial(CInt(chst));
+174: local #8
+175: Func(0,0): CInt
+176: 0L
+177: Func(2,26): SystemFindObjectBySerial
+178: local5 := 
+chestarray.erase(returnindex(chestarray, chst));
+179: global #7
+180: global #7
+181: local #8
+182: makelocal
+183: jmp userfunc @1943
+184: Call Method erase (1 params)
+185: #
+DestroyItem(thechest);
+186: local #5
+187: Func(2,18): DestroyItem
+188: #
+189: stepforeach @174
+190: leave block(3)
+foreach mobile in mobarray
+191: global #8
+192: initforeach @214
+themob := SystemFindObjectBySerial(CInt(mobile));
+193: local #8
+194: Func(0,0): CInt
+195: 0L
+196: Func(2,26): SystemFindObjectBySerial
+197: local6 := 
+mobarray.erase(returnindex(mobarray, mobile));
+198: global #8
+199: global #8
+200: local #8
+201: makelocal
+202: jmp userfunc @1943
+203: Call Method erase (1 params)
+204: #
+SetObjProperty(themob, "guardkill", 1);
+205: local #6
+206: "guardkill"
+207: 1L
+208: Func(2,3): SetObjProperty
+209: #
+ApplyRawDamage(themob, 2000);
+210: local #6
+211: 2000L
+212: Func(2,27): ApplyRawDamage
+213: #
+214: stepforeach @193
+215: leave block(3)
+if(amt > 0)
+216: local #2
+217: 0L
+218: >
+219: if false goto 254
+i := 1;
+220: 1L
+221: local7 := 
+for(1:=1; i<=amt; i:=i+1)
+222: 1L
+223: 1L
+224: :=
+225: #
+226: local #7
+227: local #2
+228: <=
+229: if false goto 241
+CreateTreasureChest(item);
+230: local #0
+231: makelocal
+232: jmp userfunc @1278
+233: #
+234: local #7
+235: local #7
+236: 1L
+237: +
+238: :=
+239: #
+240: goto226
+foreach thing in chestarray
+241: global #7
+242: initforeach @252
+thechest := SystemFindObjectBySerial(CInt(thing));
+243: local #8
+244: Func(0,0): CInt
+245: 0L
+246: Func(2,26): SystemFindObjectBySerial
+247: local5 := 
+thechest.graphic := thechest.objtype;
+248: local #5
+249: local #5
+250: get member 'objtype'
+251: set member 'graphic' #
+252: stepforeach @243
+253: leave block(3)
+create_standards(item);
+254: local #0
+255: makelocal
+256: jmp userfunc @472
+257: #
+create_guardians(item);
+258: local #0
+259: makelocal
+260: jmp userfunc @297
+261: #
+sleep(frq);
+262: local #3
+263: Func(3,3): sleep
+264: #
+foreach thing in ListItemsNearLocation(item.x, item.y, item.z, CInt(20))
+265: local #0
+266: get member 'x'
+267: local #0
+268: get member 'y'
+269: local #0
+270: get member 'z'
+271: 20L
+272: Func(0,0): CInt
+273: Func(2,23): ListItemsNearLocation
+274: initforeach @285
+if(GetObjProperty(thing,"link") == item.serial)
+275: local #8
+276: "link"
+277: Func(2,1): GetObjProperty
+278: local #0
+279: get member 'serial'
+280: ==
+281: if false goto 285
+DestroyItem(thing);
+282: local #8
+283: Func(2,18): DestroyItem
+284: #
+285: stepforeach @275
+286: leave block(3)
+sleep(1);
+287: 1L
+288: Func(3,3): sleep
+289: #
+process_move(item);
+290: local #0
+291: makelocal
+292: jmp userfunc @1836
+293: #
+294: goto154
+295: leave block(8)
+296: progend
+C:\pol2\pkg\tools\gmtools\campSpawner.src, Line 105
+function create_guardians(item)
+297: pop param 'item'
+var cfgfile := ReadConfigFile(":gmtools:guardians");
+298: decl local #1
+299: ":gmtools:guardians"
+300: Func(4,0): ReadConfigFile
+301: :=
+302: #
+if(!cfgfile)
+303: local #1
+304: if true goto 337
+foreach char in EnumerateOnlineCharacters()
+305: Func(2,24): EnumerateOnlineCharacters
+306: initforeach @333
+if(char.cmdlevel > 1)
+307: local #2
+308: get member 'cmdlevel'
+309: 1L
+310: >
+311: if false goto 333
+SendSysMessage(char,"ERROR: Camp Spawner " + item.serial + " at " + item.x + " 
+312: local #2
+313: "ERROR: Camp Spawner "
+314: local #0
+315: get member 'serial'
+316: +
+317: " at "
+318: +
+319: local #0
+320: get member 'x'
+321: +
+322: " "
+323: +
+324: local #0
+325: get member 'y'
+326: +
+327: " is not functioning properly."
+328: +
+329: 3L
+330: 1000L
+331: Func(2,25): SendSysMessage
+332: #
+333: stepforeach @307
+334: leave block(3)
+return;
+335: ""
+336: return
+var lvl;
+337: decl local #2
+338: #
+var spawntype := GetObjProperty(item, "CritterType");
+339: decl local #3
+340: local #0
+341: "CritterType"
+342: Func(2,1): GetObjProperty
+343: :=
+344: #
+case(spawntype)
+345: local #3
+346: casejmp
+	"orcs": @347
+	"ratmen": @350
+	"lizardmen": @353
+	"bandit": @356
+	"gypsie": @359
+	default: @361
+lvl := 1;
+347: 1L
+348: local2 := 
+349: goto361
+lvl := 2;
+350: 2L
+351: local2 := 
+352: goto361
+lvl := 3;
+353: 3L
+354: local2 := 
+355: goto361
+lvl := 4;
+356: 4L
+357: local2 := 
+358: goto361
+lvl := 5;
+359: 5L
+360: local2 := 
+var elem := FindConfigElem( cfgfile, lvl );
+361: decl local #4
+362: local #1
+363: local #2
+364: Func(4,1): FindConfigElem
+365: :=
+366: #
+if(!elem)
+367: local #4
+368: if true goto 401
+foreach char in EnumerateOnlineCharacters()
+369: Func(2,24): EnumerateOnlineCharacters
+370: initforeach @397
+if(char.cmdlevel > 1)
+371: local #5
+372: get member 'cmdlevel'
+373: 1L
+374: >
+375: if false goto 397
+SendSysMessage(char,"ERROR: Camp Spawner " + item.serial + " at " + item.x + " 
+376: local #5
+377: "ERROR: Camp Spawner "
+378: local #0
+379: get member 'serial'
+380: +
+381: " at "
+382: +
+383: local #0
+384: get member 'x'
+385: +
+386: " "
+387: +
+388: local #0
+389: get member 'y'
+390: +
+391: " is not functioning properly."
+392: +
+393: 3L
+394: 1000L
+395: Func(2,25): SendSysMessage
+396: #
+397: stepforeach @371
+398: leave block(3)
+return;
+399: ""
+400: return
+var limit := GetObjProperty(item, "CritterAmount");
+401: decl local #5
+402: local #0
+403: "CritterAmount"
+404: Func(2,1): GetObjProperty
+405: :=
+406: #
+var num := GetConfigInt( elem, "num");
+407: decl local #6
+408: local #4
+409: "num"
+410: Func(4,2): GetConfigInt
+411: :=
+412: #
+var rand, template;
+413: decl local #7
+414: #
+415: decl local #8
+416: #
+var i := 1;
+417: decl local #9
+418: 1L
+419: :=
+420: #
+var mobarray := {};
+421: decl local #10
+422: array
+423: :=
+424: #
+var critter;
+425: decl local #11
+426: #
+for( i := 1; i <= limit; i := i + 1 )
+427: local #9
+428: 1L
+429: :=
+430: #
+431: local #9
+432: local #5
+433: <=
+434: if false goto 462
+rand := RandomInt(num) + 1;
+435: local #6
+436: Func(5,0): RandomInt
+437: 1L
+438: +
+439: local7 := 
+template := GetConfigString(elem, ("creature" + rand) );
+440: local #4
+441: "creature"
+442: local #7
+443: +
+444: Func(4,4): GetConfigString
+445: local8 := 
+critter := CreateGuardian(item, template);
+446: local #0
+447: local #8
+448: makelocal
+449: jmp userfunc @1243
+450: local11 := 
+mobarray.append(critter);
+451: local #10
+452: local #11
+453: Call Method append (1 params)
+454: #
+455: local #9
+456: local #9
+457: 1L
+458: +
+459: :=
+460: #
+461: goto431
+SetObjProperty(item, "MobArray", mobarray);
+462: local #0
+463: "MobArray"
+464: local #10
+465: Func(2,3): SetObjProperty
+466: #
+UnloadConfigFile(":gmtools:guardians");
+467: ":gmtools:guardians"
+468: Func(4,5): UnloadConfigFile
+469: #
+470: 0L
+471: return
+C:\pol2\pkg\tools\gmtools\campSpawner.src, Line 149
+function create_standards(item)
+472: pop param 'item'
+var rng := RandomInt(5) + 5;
+473: decl local #1
+474: 5L
+475: Func(5,0): RandomInt
+476: 5L
+477: +
+478: :=
+479: #
+var newx, newy, newz;
+480: decl local #2
+481: #
+482: decl local #3
+483: #
+484: decl local #4
+485: #
+if(rng > 10)
+486: local #1
+487: 10L
+488: >
+489: if false goto 492
+rng := 10;
+490: 10L
+491: local1 := 
+var checker := 0;
+492: decl local #5
+493: 0L
+494: :=
+495: #
+if((rng == 0) || (rng == error))
+496: local #1
+497: 0L
+498: ==
+499: local #1
+500: error
+501: ==
+502: ||
+503: if false goto 506
+rng := 1;
+504: 1L
+505: local1 := 
+var checkitem;
+506: decl local #6
+507: #
+while((checker == 0) && (item))
+508: local #5
+509: 0L
+510: ==
+511: local #0
+512: &&
+513: if false goto 741
+checker := 1;
+514: 1L
+515: local5 := 
+case(rng)
+516: local #1
+517: casejmp
+	1: @518
+	2: @537
+	3: @556
+	4: @575
+	5: @594
+	6: @613
+	7: @632
+	8: @651
+	9: @670
+	10: @689
+	default: @707
+newx := item.x + RandomInt( 1) - RandomInt( 1);    newy := item.y + RandomInt( 
+518: local #0
+519: get member 'x'
+520: 1L
+521: Func(5,0): RandomInt
+522: +
+523: 1L
+524: Func(5,0): RandomInt
+525: -
+526: local2 := 
+newy := item.y + RandomInt( 1) - RandomInt( 1);
+527: local #0
+528: get member 'y'
+529: 1L
+530: Func(5,0): RandomInt
+531: +
+532: 1L
+533: Func(5,0): RandomInt
+534: -
+535: local3 := 
+536: goto707
+newx := item.x + RandomInt( 2) - RandomInt( 2);    newy := item.y + RandomInt( 
+537: local #0
+538: get member 'x'
+539: 2L
+540: Func(5,0): RandomInt
+541: +
+542: 2L
+543: Func(5,0): RandomInt
+544: -
+545: local2 := 
+newy := item.y + RandomInt( 2) - RandomInt( 2);
+546: local #0
+547: get member 'y'
+548: 2L
+549: Func(5,0): RandomInt
+550: +
+551: 2L
+552: Func(5,0): RandomInt
+553: -
+554: local3 := 
+555: goto707
+newx := item.x + RandomInt( 3) - RandomInt( 3);    newy := item.y + RandomInt( 
+556: local #0
+557: get member 'x'
+558: 3L
+559: Func(5,0): RandomInt
+560: +
+561: 3L
+562: Func(5,0): RandomInt
+563: -
+564: local2 := 
+newy := item.y + RandomInt( 3) - RandomInt( 3);
+565: local #0
+566: get member 'y'
+567: 3L
+568: Func(5,0): RandomInt
+569: +
+570: 3L
+571: Func(5,0): RandomInt
+572: -
+573: local3 := 
+574: goto707
+newx := item.x + RandomInt( 4) - RandomInt( 4);    newy := item.y + RandomInt( 
+575: local #0
+576: get member 'x'
+577: 4L
+578: Func(5,0): RandomInt
+579: +
+580: 4L
+581: Func(5,0): RandomInt
+582: -
+583: local2 := 
+newy := item.y + RandomInt( 4) - RandomInt( 4);
+584: local #0
+585: get member 'y'
+586: 4L
+587: Func(5,0): RandomInt
+588: +
+589: 4L
+590: Func(5,0): RandomInt
+591: -
+592: local3 := 
+593: goto707
+newx := item.x + RandomInt( 5) - RandomInt( 5);    newy := item.y + RandomInt( 
+594: local #0
+595: get member 'x'
+596: 5L
+597: Func(5,0): RandomInt
+598: +
+599: 5L
+600: Func(5,0): RandomInt
+601: -
+602: local2 := 
+newy := item.y + RandomInt( 5) - RandomInt( 5);
+603: local #0
+604: get member 'y'
+605: 5L
+606: Func(5,0): RandomInt
+607: +
+608: 5L
+609: Func(5,0): RandomInt
+610: -
+611: local3 := 
+612: goto707
+newx := item.x + RandomInt( 6) - RandomInt( 6);    newy := item.y + RandomInt( 
+613: local #0
+614: get member 'x'
+615: 6L
+616: Func(5,0): RandomInt
+617: +
+618: 6L
+619: Func(5,0): RandomInt
+620: -
+621: local2 := 
+newy := item.y + RandomInt( 6) - RandomInt( 6);
+622: local #0
+623: get member 'y'
+624: 6L
+625: Func(5,0): RandomInt
+626: +
+627: 6L
+628: Func(5,0): RandomInt
+629: -
+630: local3 := 
+631: goto707
+newx := item.x + RandomInt( 7) - RandomInt( 7);    newy := item.y + RandomInt( 
+632: local #0
+633: get member 'x'
+634: 7L
+635: Func(5,0): RandomInt
+636: +
+637: 7L
+638: Func(5,0): RandomInt
+639: -
+640: local2 := 
+newy := item.y + RandomInt( 7) - RandomInt( 7);
+641: local #0
+642: get member 'y'
+643: 7L
+644: Func(5,0): RandomInt
+645: +
+646: 7L
+647: Func(5,0): RandomInt
+648: -
+649: local3 := 
+650: goto707
+newx := item.x + RandomInt( 8) - RandomInt( 8);    newy := item.y + RandomInt( 
+651: local #0
+652: get member 'x'
+653: 8L
+654: Func(5,0): RandomInt
+655: +
+656: 8L
+657: Func(5,0): RandomInt
+658: -
+659: local2 := 
+newy := item.y + RandomInt( 8) - RandomInt( 8);
+660: local #0
+661: get member 'y'
+662: 8L
+663: Func(5,0): RandomInt
+664: +
+665: 8L
+666: Func(5,0): RandomInt
+667: -
+668: local3 := 
+669: goto707
+newx := item.x + RandomInt( 9) - RandomInt( 9);    newy := item.y + RandomInt( 
+670: local #0
+671: get member 'x'
+672: 9L
+673: Func(5,0): RandomInt
+674: +
+675: 9L
+676: Func(5,0): RandomInt
+677: -
+678: local2 := 
+newy := item.y + RandomInt( 9) - RandomInt( 9);
+679: local #0
+680: get member 'y'
+681: 9L
+682: Func(5,0): RandomInt
+683: +
+684: 9L
+685: Func(5,0): RandomInt
+686: -
+687: local3 := 
+688: goto707
+newx := item.x + RandomInt(10) - RandomInt(10);    newy := item.y + RandomInt(1
+689: local #0
+690: get member 'x'
+691: 10L
+692: Func(5,0): RandomInt
+693: +
+694: 10L
+695: Func(5,0): RandomInt
+696: -
+697: local2 := 
+newy := item.y + RandomInt(10) - RandomInt(10);
+698: local #0
+699: get member 'y'
+700: 10L
+701: Func(5,0): RandomInt
+702: +
+703: 10L
+704: Func(5,0): RandomInt
+705: -
+706: local3 := 
+newz:= GetWorldHeight(newx, newy);
+707: local #2
+708: local #3
+709: Func(2,28): GetWorldHeight
+710: local4 := 
+if((item.x == newx) && (item.y == newy))
+711: local #0
+712: get member 'x'
+713: local #2
+714: ==
+715: local #0
+716: get member 'y'
+717: local #3
+718: ==
+719: &&
+720: if false goto 723
+checker := 0;
+721: 0L
+722: local5 := 
+foreach box in chestarray
+723: global #7
+724: initforeach @738
+if((box.x == newx) && (box.y == newy))
+725: local #7
+726: get member 'x'
+727: local #2
+728: ==
+729: local #7
+730: get member 'y'
+731: local #3
+732: ==
+733: &&
+734: if false goto 738
+checker := 0;
+735: 0L
+736: local5 := 
+break;
+737: goto739
+738: stepforeach @725
+739: leave block(3)
+740: goto508
+var type := GetObjProperty(item, "CritterType");
+741: decl local #7
+742: local #0
+743: "CritterType"
+744: Func(2,1): GetObjProperty
+745: :=
+746: #
+var gfx1, gfx2, gfx3;
+747: decl local #8
+748: #
+749: decl local #9
+750: #
+751: decl local #10
+752: #
+case(type)
+753: local #7
+754: casejmp
+	"orcs": @755
+	"ratmen": @762
+	"lizardmen": @769
+	"bandit": @776
+	"gypsie": @783
+	default: @789
+gfx1 := 0x41f;   gfx2 := 0x428;   gfx3 := 0x10f2;
+755: 1055L
+756: local8 := 
+gfx2 := 0x428;   gfx3 := 0x10f2;
+757: 1064L
+758: local9 := 
+gfx3 := 0x10f2;
+759: 4338L
+760: local10 := 
+761: goto789
+gfx1 := 0x420;   gfx2 := 0x429;   gfx3 := 0x10f3;
+762: 1056L
+763: local8 := 
+gfx2 := 0x429;   gfx3 := 0x10f3;
+764: 1065L
+765: local9 := 
+gfx3 := 0x10f3;
+766: 4339L
+767: local10 := 
+768: goto789
+gfx1 := 0x420;   gfx2 := 0x429;   gfx3 := 0x10f2;
+769: 1056L
+770: local8 := 
+gfx2 := 0x429;   gfx3 := 0x10f2;
+771: 1065L
+772: local9 := 
+gfx3 := 0x10f2;
+773: 4338L
+774: local10 := 
+775: goto789
+gfx1 := 0xe56;   gfx2 := 0xe57;   gfx3 := 0x0974;
+776: 3670L
+777: local8 := 
+gfx2 := 0xe57;   gfx3 := 0x0974;
+778: 3671L
+779: local9 := 
+gfx3 := 0x0974;
+780: 2420L
+781: local10 := 
+782: goto789
+gfx1 := 0xe58;   gfx2 := 0xe59;   gfx3 := 0x0975;
+783: 3672L
+784: local8 := 
+gfx2 := 0xe59;   gfx3 := 0x0975;
+785: 3673L
+786: local9 := 
+gfx3 := 0x0975;
+787: 2421L
+788: local10 := 
+var chest := CreateItemAtLocation( newx, newy, newz, gfx1, 1);
+789: decl local #11
+790: local #2
+791: local #3
+792: local #4
+793: local #8
+794: 1L
+795: Func(2,30): CreateItemAtLocation
+796: :=
+797: #
+SetObjProperty(chest,"link", item.serial);
+798: local #11
+799: "link"
+800: local #0
+801: get member 'serial'
+802: Func(2,3): SetObjProperty
+803: #
+chest.movable := 0;
+804: local #11
+805: 0L
+806: set member 'movable' #
+chestarray.append(chest.serial);
+807: global #7
+808: local #11
+809: get member 'serial'
+810: Call Method append (1 params)
+811: #
+case(rng)
+812: local #1
+813: casejmp
+	1: @814
+	2: @833
+	3: @852
+	4: @871
+	5: @890
+	6: @909
+	7: @928
+	8: @947
+	9: @966
+	10: @985
+	default: @1003
+newx := item.x + RandomInt( 1) - RandomInt( 1);    newy := item.y + RandomInt( 
+814: local #0
+815: get member 'x'
+816: 1L
+817: Func(5,0): RandomInt
+818: +
+819: 1L
+820: Func(5,0): RandomInt
+821: -
+822: local2 := 
+newy := item.y + RandomInt( 1) - RandomInt( 1);
+823: local #0
+824: get member 'y'
+825: 1L
+826: Func(5,0): RandomInt
+827: +
+828: 1L
+829: Func(5,0): RandomInt
+830: -
+831: local3 := 
+832: goto1003
+newx := item.x + RandomInt( 2) - RandomInt( 2);    newy := item.y + RandomInt( 
+833: local #0
+834: get member 'x'
+835: 2L
+836: Func(5,0): RandomInt
+837: +
+838: 2L
+839: Func(5,0): RandomInt
+840: -
+841: local2 := 
+newy := item.y + RandomInt( 2) - RandomInt( 2);
+842: local #0
+843: get member 'y'
+844: 2L
+845: Func(5,0): RandomInt
+846: +
+847: 2L
+848: Func(5,0): RandomInt
+849: -
+850: local3 := 
+851: goto1003
+newx := item.x + RandomInt( 3) - RandomInt( 3);    newy := item.y + RandomInt( 
+852: local #0
+853: get member 'x'
+854: 3L
+855: Func(5,0): RandomInt
+856: +
+857: 3L
+858: Func(5,0): RandomInt
+859: -
+860: local2 := 
+newy := item.y + RandomInt( 3) - RandomInt( 3);
+861: local #0
+862: get member 'y'
+863: 3L
+864: Func(5,0): RandomInt
+865: +
+866: 3L
+867: Func(5,0): RandomInt
+868: -
+869: local3 := 
+870: goto1003
+newx := item.x + RandomInt( 4) - RandomInt( 4);    newy := item.y + RandomInt( 
+871: local #0
+872: get member 'x'
+873: 4L
+874: Func(5,0): RandomInt
+875: +
+876: 4L
+877: Func(5,0): RandomInt
+878: -
+879: local2 := 
+newy := item.y + RandomInt( 4) - RandomInt( 4);
+880: local #0
+881: get member 'y'
+882: 4L
+883: Func(5,0): RandomInt
+884: +
+885: 4L
+886: Func(5,0): RandomInt
+887: -
+888: local3 := 
+889: goto1003
+newx := item.x + RandomInt( 5) - RandomInt( 5);    newy := item.y + RandomInt( 
+890: local #0
+891: get member 'x'
+892: 5L
+893: Func(5,0): RandomInt
+894: +
+895: 5L
+896: Func(5,0): RandomInt
+897: -
+898: local2 := 
+newy := item.y + RandomInt( 5) - RandomInt( 5);
+899: local #0
+900: get member 'y'
+901: 5L
+902: Func(5,0): RandomInt
+903: +
+904: 5L
+905: Func(5,0): RandomInt
+906: -
+907: local3 := 
+908: goto1003
+newx := item.x + RandomInt( 6) - RandomInt( 6);    newy := item.y + RandomInt( 
+909: local #0
+910: get member 'x'
+911: 6L
+912: Func(5,0): RandomInt
+913: +
+914: 6L
+915: Func(5,0): RandomInt
+916: -
+917: local2 := 
+newy := item.y + RandomInt( 6) - RandomInt( 6);
+918: local #0
+919: get member 'y'
+920: 6L
+921: Func(5,0): RandomInt
+922: +
+923: 6L
+924: Func(5,0): RandomInt
+925: -
+926: local3 := 
+927: goto1003
+newx := item.x + RandomInt( 7) - RandomInt( 7);    newy := item.y + RandomInt( 
+928: local #0
+929: get member 'x'
+930: 7L
+931: Func(5,0): RandomInt
+932: +
+933: 7L
+934: Func(5,0): RandomInt
+935: -
+936: local2 := 
+newy := item.y + RandomInt( 7) - RandomInt( 7);
+937: local #0
+938: get member 'y'
+939: 7L
+940: Func(5,0): RandomInt
+941: +
+942: 7L
+943: Func(5,0): RandomInt
+944: -
+945: local3 := 
+946: goto1003
+newx := item.x + RandomInt( 8) - RandomInt( 8);    newy := item.y + RandomInt( 
+947: local #0
+948: get member 'x'
+949: 8L
+950: Func(5,0): RandomInt
+951: +
+952: 8L
+953: Func(5,0): RandomInt
+954: -
+955: local2 := 
+newy := item.y + RandomInt( 8) - RandomInt( 8);
+956: local #0
+957: get member 'y'
+958: 8L
+959: Func(5,0): RandomInt
+960: +
+961: 8L
+962: Func(5,0): RandomInt
+963: -
+964: local3 := 
+965: goto1003
+newx := item.x + RandomInt( 9) - RandomInt( 9);    newy := item.y + RandomInt( 
+966: local #0
+967: get member 'x'
+968: 9L
+969: Func(5,0): RandomInt
+970: +
+971: 9L
+972: Func(5,0): RandomInt
+973: -
+974: local2 := 
+newy := item.y + RandomInt( 9) - RandomInt( 9);
+975: local #0
+976: get member 'y'
+977: 9L
+978: Func(5,0): RandomInt
+979: +
+980: 9L
+981: Func(5,0): RandomInt
+982: -
+983: local3 := 
+984: goto1003
+newx := item.x + RandomInt(10) - RandomInt(10);    newy := item.y + RandomInt(1
+985: local #0
+986: get member 'x'
+987: 10L
+988: Func(5,0): RandomInt
+989: +
+990: 10L
+991: Func(5,0): RandomInt
+992: -
+993: local2 := 
+newy := item.y + RandomInt(10) - RandomInt(10);
+994: local #0
+995: get member 'y'
+996: 10L
+997: Func(5,0): RandomInt
+998: +
+999: 10L
+1000: Func(5,0): RandomInt
+1001: -
+1002: local3 := 
+chest := CreateItemAtLocation( newx, newy, newz, gfx2, 1);
+1003: local #2
+1004: local #3
+1005: local #4
+1006: local #9
+1007: 1L
+1008: Func(2,30): CreateItemAtLocation
+1009: local11 := 
+SetObjProperty(chest,"link", item.serial);
+1010: local #11
+1011: "link"
+1012: local #0
+1013: get member 'serial'
+1014: Func(2,3): SetObjProperty
+1015: #
+chest.movable := 0;
+1016: local #11
+1017: 0L
+1018: set member 'movable' #
+chestarray.append(chest.serial);
+1019: global #7
+1020: local #11
+1021: get member 'serial'
+1022: Call Method append (1 params)
+1023: #
+case(rng)
+1024: local #1
+1025: casejmp
+	1: @1026
+	2: @1045
+	3: @1064
+	4: @1083
+	5: @1102
+	6: @1121
+	7: @1140
+	8: @1159
+	9: @1178
+	10: @1197
+	default: @1215
+newx := item.x + RandomInt( 1) - RandomInt( 1);    newy := item.y + RandomInt( 
+1026: local #0
+1027: get member 'x'
+1028: 1L
+1029: Func(5,0): RandomInt
+1030: +
+1031: 1L
+1032: Func(5,0): RandomInt
+1033: -
+1034: local2 := 
+newy := item.y + RandomInt( 1) - RandomInt( 1);
+1035: local #0
+1036: get member 'y'
+1037: 1L
+1038: Func(5,0): RandomInt
+1039: +
+1040: 1L
+1041: Func(5,0): RandomInt
+1042: -
+1043: local3 := 
+1044: goto1215
+newx := item.x + RandomInt( 2) - RandomInt( 2);    newy := item.y + RandomInt( 
+1045: local #0
+1046: get member 'x'
+1047: 2L
+1048: Func(5,0): RandomInt
+1049: +
+1050: 2L
+1051: Func(5,0): RandomInt
+1052: -
+1053: local2 := 
+newy := item.y + RandomInt( 2) - RandomInt( 2);
+1054: local #0
+1055: get member 'y'
+1056: 2L
+1057: Func(5,0): RandomInt
+1058: +
+1059: 2L
+1060: Func(5,0): RandomInt
+1061: -
+1062: local3 := 
+1063: goto1215
+newx := item.x + RandomInt( 3) - RandomInt( 3);    newy := item.y + RandomInt( 
+1064: local #0
+1065: get member 'x'
+1066: 3L
+1067: Func(5,0): RandomInt
+1068: +
+1069: 3L
+1070: Func(5,0): RandomInt
+1071: -
+1072: local2 := 
+newy := item.y + RandomInt( 3) - RandomInt( 3);
+1073: local #0
+1074: get member 'y'
+1075: 3L
+1076: Func(5,0): RandomInt
+1077: +
+1078: 3L
+1079: Func(5,0): RandomInt
+1080: -
+1081: local3 := 
+1082: goto1215
+newx := item.x + RandomInt( 4) - RandomInt( 4);    newy := item.y + RandomInt( 
+1083: local #0
+1084: get member 'x'
+1085: 4L
+1086: Func(5,0): RandomInt
+1087: +
+1088: 4L
+1089: Func(5,0): RandomInt
+1090: -
+1091: local2 := 
+newy := item.y + RandomInt( 4) - RandomInt( 4);
+1092: local #0
+1093: get member 'y'
+1094: 4L
+1095: Func(5,0): RandomInt
+1096: +
+1097: 4L
+1098: Func(5,0): RandomInt
+1099: -
+1100: local3 := 
+1101: goto1215
+newx := item.x + RandomInt( 5) - RandomInt( 5);    newy := item.y + RandomInt( 
+1102: local #0
+1103: get member 'x'
+1104: 5L
+1105: Func(5,0): RandomInt
+1106: +
+1107: 5L
+1108: Func(5,0): RandomInt
+1109: -
+1110: local2 := 
+newy := item.y + RandomInt( 5) - RandomInt( 5);
+1111: local #0
+1112: get member 'y'
+1113: 5L
+1114: Func(5,0): RandomInt
+1115: +
+1116: 5L
+1117: Func(5,0): RandomInt
+1118: -
+1119: local3 := 
+1120: goto1215
+newx := item.x + RandomInt( 6) - RandomInt( 6);    newy := item.y + RandomInt( 
+1121: local #0
+1122: get member 'x'
+1123: 6L
+1124: Func(5,0): RandomInt
+1125: +
+1126: 6L
+1127: Func(5,0): RandomInt
+1128: -
+1129: local2 := 
+newy := item.y + RandomInt( 6) - RandomInt( 6);
+1130: local #0
+1131: get member 'y'
+1132: 6L
+1133: Func(5,0): RandomInt
+1134: +
+1135: 6L
+1136: Func(5,0): RandomInt
+1137: -
+1138: local3 := 
+1139: goto1215
+newx := item.x + RandomInt( 7) - RandomInt( 7);    newy := item.y + RandomInt( 
+1140: local #0
+1141: get member 'x'
+1142: 7L
+1143: Func(5,0): RandomInt
+1144: +
+1145: 7L
+1146: Func(5,0): RandomInt
+1147: -
+1148: local2 := 
+newy := item.y + RandomInt( 7) - RandomInt( 7);
+1149: local #0
+1150: get member 'y'
+1151: 7L
+1152: Func(5,0): RandomInt
+1153: +
+1154: 7L
+1155: Func(5,0): RandomInt
+1156: -
+1157: local3 := 
+1158: goto1215
+newx := item.x + RandomInt( 8) - RandomInt( 8);    newy := item.y + RandomInt( 
+1159: local #0
+1160: get member 'x'
+1161: 8L
+1162: Func(5,0): RandomInt
+1163: +
+1164: 8L
+1165: Func(5,0): RandomInt
+1166: -
+1167: local2 := 
+newy := item.y + RandomInt( 8) - RandomInt( 8);
+1168: local #0
+1169: get member 'y'
+1170: 8L
+1171: Func(5,0): RandomInt
+1172: +
+1173: 8L
+1174: Func(5,0): RandomInt
+1175: -
+1176: local3 := 
+1177: goto1215
+newx := item.x + RandomInt( 9) - RandomInt( 9);    newy := item.y + RandomInt( 
+1178: local #0
+1179: get member 'x'
+1180: 9L
+1181: Func(5,0): RandomInt
+1182: +
+1183: 9L
+1184: Func(5,0): RandomInt
+1185: -
+1186: local2 := 
+newy := item.y + RandomInt( 9) - RandomInt( 9);
+1187: local #0
+1188: get member 'y'
+1189: 9L
+1190: Func(5,0): RandomInt
+1191: +
+1192: 9L
+1193: Func(5,0): RandomInt
+1194: -
+1195: local3 := 
+1196: goto1215
+newx := item.x + RandomInt(10) - RandomInt(10);    newy := item.y + RandomInt(1
+1197: local #0
+1198: get member 'x'
+1199: 10L
+1200: Func(5,0): RandomInt
+1201: +
+1202: 10L
+1203: Func(5,0): RandomInt
+1204: -
+1205: local2 := 
+newy := item.y + RandomInt(10) - RandomInt(10);
+1206: local #0
+1207: get member 'y'
+1208: 10L
+1209: Func(5,0): RandomInt
+1210: +
+1211: 10L
+1212: Func(5,0): RandomInt
+1213: -
+1214: local3 := 
+chest := CreateItemAtLocation( newx, newy, newz, gfx3, 1);
+1215: local #2
+1216: local #3
+1217: local #4
+1218: local #10
+1219: 1L
+1220: Func(2,30): CreateItemAtLocation
+1221: local11 := 
+SetObjProperty(chest,"link", item.serial);
+1222: local #11
+1223: "link"
+1224: local #0
+1225: get member 'serial'
+1226: Func(2,3): SetObjProperty
+1227: #
+chest.movable := 0;
+1228: local #11
+1229: 0L
+1230: set member 'movable' #
+chestarray.append(chest.serial);
+1231: global #7
+1232: local #11
+1233: get member 'serial'
+1234: Call Method append (1 params)
+1235: #
+SetObjProperty(item,"chestarray", chestarray);
+1236: local #0
+1237: "chestarray"
+1238: global #7
+1239: Func(2,3): SetObjProperty
+1240: #
+1241: 0L
+1242: return
+C:\pol2\pkg\tools\gmtools\campSpawner.src, Line 321
+function CreateGuardian(chest, template)
+1243: pop param 'template'
+1244: pop param 'chest'
+var dx := RandomInt( 8 ) - 4;
+1245: decl local #2
+1246: 8L
+1247: Func(5,0): RandomInt
+1248: 4L
+1249: -
+1250: :=
+1251: #
+var dy := RandomInt( 8 ) - 4;
+1252: decl local #3
+1253: 8L
+1254: Func(5,0): RandomInt
+1255: 4L
+1256: -
+1257: :=
+1258: #
+var nasty := CreateNpcFromTemplate( template, chest.x+dx, chest.y+dy, chest.z, 
+1259: decl local #4
+1260: local #0
+1261: local #1
+1262: get member 'x'
+1263: local #2
+1264: +
+1265: local #1
+1266: get member 'y'
+1267: local #3
+1268: +
+1269: local #1
+1270: get member 'z'
+1271: 0L
+1272: Func(2,31): CreateNpcFromTemplate
+1273: :=
+1274: #
+return nasty.serial;
+1275: local #4
+1276: get member 'serial'
+1277: return
+C:\pol2\pkg\tools\gmtools\campSpawner.src, Line 233
+function CreateTreasureChest(item)
+1278: pop param 'item'
+var lvl := GetObjProperty(item,"level");
+1279: decl local #1
+1280: local #0
+1281: "level"
+1282: Func(2,1): GetObjProperty
+1283: :=
+1284: #
+var rng := (GetObjProperty(item,"range") * 2);
+1285: decl local #2
+1286: local #0
+1287: "range"
+1288: Func(2,1): GetObjProperty
+1289: 2L
+1290: *
+1291: :=
+1292: #
+var newx, newy, newz, chest, gfx, type;
+1293: decl local #3
+1294: #
+1295: decl local #4
+1296: #
+1297: decl local #5
+1298: #
+1299: decl local #6
+1300: #
+1301: decl local #7
+1302: #
+1303: decl local #8
+1304: #
+if(rng > 10)
+1305: local #2
+1306: 10L
+1307: >
+1308: if false goto 1311
+rng := 10;
+1309: 10L
+1310: local2 := 
+var checker := 0;
+1311: decl local #9
+1312: 0L
+1313: :=
+1314: #
+if((rng == 0) || (rng == error))
+1315: local #2
+1316: 0L
+1317: ==
+1318: local #2
+1319: error
+1320: ==
+1321: ||
+1322: if false goto 1325
+rng := 1;
+1323: 1L
+1324: local2 := 
+while((checker == 0) && (item))
+1325: local #9
+1326: 0L
+1327: ==
+1328: local #0
+1329: &&
+1330: if false goto 1588
+case(rng)
+1331: local #2
+1332: casejmp
+	1: @1333
+	2: @1352
+	3: @1371
+	4: @1390
+	5: @1409
+	6: @1428
+	7: @1447
+	8: @1466
+	9: @1485
+	10: @1504
+	default: @1522
+newx := item.x + RandomInt( 1) - RandomInt( 1);    newy := item.y + RandomInt( 
+1333: local #0
+1334: get member 'x'
+1335: 1L
+1336: Func(5,0): RandomInt
+1337: +
+1338: 1L
+1339: Func(5,0): RandomInt
+1340: -
+1341: local3 := 
+newy := item.y + RandomInt( 1) - RandomInt( 1);
+1342: local #0
+1343: get member 'y'
+1344: 1L
+1345: Func(5,0): RandomInt
+1346: +
+1347: 1L
+1348: Func(5,0): RandomInt
+1349: -
+1350: local4 := 
+1351: goto1522
+newx := item.x + RandomInt( 2) - RandomInt( 2);    newy := item.y + RandomInt( 
+1352: local #0
+1353: get member 'x'
+1354: 2L
+1355: Func(5,0): RandomInt
+1356: +
+1357: 2L
+1358: Func(5,0): RandomInt
+1359: -
+1360: local3 := 
+newy := item.y + RandomInt( 2) - RandomInt( 2);
+1361: local #0
+1362: get member 'y'
+1363: 2L
+1364: Func(5,0): RandomInt
+1365: +
+1366: 2L
+1367: Func(5,0): RandomInt
+1368: -
+1369: local4 := 
+1370: goto1522
+newx := item.x + RandomInt( 3) - RandomInt( 3);    newy := item.y + RandomInt( 
+1371: local #0
+1372: get member 'x'
+1373: 3L
+1374: Func(5,0): RandomInt
+1375: +
+1376: 3L
+1377: Func(5,0): RandomInt
+1378: -
+1379: local3 := 
+newy := item.y + RandomInt( 3) - RandomInt( 3);
+1380: local #0
+1381: get member 'y'
+1382: 3L
+1383: Func(5,0): RandomInt
+1384: +
+1385: 3L
+1386: Func(5,0): RandomInt
+1387: -
+1388: local4 := 
+1389: goto1522
+newx := item.x + RandomInt( 4) - RandomInt( 4);    newy := item.y + RandomInt( 
+1390: local #0
+1391: get member 'x'
+1392: 4L
+1393: Func(5,0): RandomInt
+1394: +
+1395: 4L
+1396: Func(5,0): RandomInt
+1397: -
+1398: local3 := 
+newy := item.y + RandomInt( 4) - RandomInt( 4);
+1399: local #0
+1400: get member 'y'
+1401: 4L
+1402: Func(5,0): RandomInt
+1403: +
+1404: 4L
+1405: Func(5,0): RandomInt
+1406: -
+1407: local4 := 
+1408: goto1522
+newx := item.x + RandomInt( 5) - RandomInt( 5);    newy := item.y + RandomInt( 
+1409: local #0
+1410: get member 'x'
+1411: 5L
+1412: Func(5,0): RandomInt
+1413: +
+1414: 5L
+1415: Func(5,0): RandomInt
+1416: -
+1417: local3 := 
+newy := item.y + RandomInt( 5) - RandomInt( 5);
+1418: local #0
+1419: get member 'y'
+1420: 5L
+1421: Func(5,0): RandomInt
+1422: +
+1423: 5L
+1424: Func(5,0): RandomInt
+1425: -
+1426: local4 := 
+1427: goto1522
+newx := item.x + RandomInt( 6) - RandomInt( 6);    newy := item.y + RandomInt( 
+1428: local #0
+1429: get member 'x'
+1430: 6L
+1431: Func(5,0): RandomInt
+1432: +
+1433: 6L
+1434: Func(5,0): RandomInt
+1435: -
+1436: local3 := 
+newy := item.y + RandomInt( 6) - RandomInt( 6);
+1437: local #0
+1438: get member 'y'
+1439: 6L
+1440: Func(5,0): RandomInt
+1441: +
+1442: 6L
+1443: Func(5,0): RandomInt
+1444: -
+1445: local4 := 
+1446: goto1522
+newx := item.x + RandomInt( 7) - RandomInt( 7);    newy := item.y + RandomInt( 
+1447: local #0
+1448: get member 'x'
+1449: 7L
+1450: Func(5,0): RandomInt
+1451: +
+1452: 7L
+1453: Func(5,0): RandomInt
+1454: -
+1455: local3 := 
+newy := item.y + RandomInt( 7) - RandomInt( 7);
+1456: local #0
+1457: get member 'y'
+1458: 7L
+1459: Func(5,0): RandomInt
+1460: +
+1461: 7L
+1462: Func(5,0): RandomInt
+1463: -
+1464: local4 := 
+1465: goto1522
+newx := item.x + RandomInt( 8) - RandomInt( 8);    newy := item.y + RandomInt( 
+1466: local #0
+1467: get member 'x'
+1468: 8L
+1469: Func(5,0): RandomInt
+1470: +
+1471: 8L
+1472: Func(5,0): RandomInt
+1473: -
+1474: local3 := 
+newy := item.y + RandomInt( 8) - RandomInt( 8);
+1475: local #0
+1476: get member 'y'
+1477: 8L
+1478: Func(5,0): RandomInt
+1479: +
+1480: 8L
+1481: Func(5,0): RandomInt
+1482: -
+1483: local4 := 
+1484: goto1522
+newx := item.x + RandomInt( 9) - RandomInt( 9);    newy := item.y + RandomInt( 
+1485: local #0
+1486: get member 'x'
+1487: 9L
+1488: Func(5,0): RandomInt
+1489: +
+1490: 9L
+1491: Func(5,0): RandomInt
+1492: -
+1493: local3 := 
+newy := item.y + RandomInt( 9) - RandomInt( 9);
+1494: local #0
+1495: get member 'y'
+1496: 9L
+1497: Func(5,0): RandomInt
+1498: +
+1499: 9L
+1500: Func(5,0): RandomInt
+1501: -
+1502: local4 := 
+1503: goto1522
+newx := item.x + RandomInt(10) - RandomInt(10);    newy := item.y + RandomInt(1
+1504: local #0
+1505: get member 'x'
+1506: 10L
+1507: Func(5,0): RandomInt
+1508: +
+1509: 10L
+1510: Func(5,0): RandomInt
+1511: -
+1512: local3 := 
+newy := item.y + RandomInt(10) - RandomInt(10);
+1513: local #0
+1514: get member 'y'
+1515: 10L
+1516: Func(5,0): RandomInt
+1517: +
+1518: 10L
+1519: Func(5,0): RandomInt
+1520: -
+1521: local4 := 
+newz:= GetWorldHeight(newx, newy);
+1522: local #3
+1523: local #4
+1524: Func(2,28): GetWorldHeight
+1525: local5 := 
+if((item.x == newx) && (item.y == newy))
+1526: local #0
+1527: get member 'x'
+1528: local #3
+1529: ==
+1530: local #0
+1531: get member 'y'
+1532: local #4
+1533: ==
+1534: &&
+1535: if false goto 1538
+checker := 0;
+1536: 0L
+1537: local9 := 
+foreach box in chestarray
+1538: global #7
+1539: initforeach @1553
+if((box.x == newx) && (box.y == newy))
+1540: local #10
+1541: get member 'x'
+1542: local #3
+1543: ==
+1544: local #10
+1545: get member 'y'
+1546: local #4
+1547: ==
+1548: &&
+1549: if false goto 1553
+checker := 0;
+1550: 0L
+1551: local9 := 
+break;
+1552: goto1554
+1553: stepforeach @1540
+1554: leave block(3)
+type := RandomInt(4)+1;
+1555: 4L
+1556: Func(5,0): RandomInt
+1557: 1L
+1558: +
+1559: local8 := 
+case(type)
+1560: local #8
+1561: casejmp
+	1: @1562
+	2: @1565
+	3: @1568
+	4: @1571
+	5: @1574
+	default: @1576
+gfx := 3650;
+1562: 3650L
+1563: local7 := 
+1564: goto1576
+gfx := 3651;
+1565: 3651L
+1566: local7 := 
+1567: goto1576
+gfx := 3703;
+1568: 3703L
+1569: local7 := 
+1570: goto1576
+gfx := 3648;
+1571: 3648L
+1572: local7 := 
+1573: goto1576
+gfx := 3708;
+1574: 3708L
+1575: local7 := 
+chest := CreateItemAtLocation( newx, newy, newz, gfx, 1 );
+1576: local #3
+1577: local #4
+1578: local #5
+1579: local #7
+1580: 1L
+1581: Func(2,30): CreateItemAtLocation
+1582: local6 := 
+if(chest)
+1583: local #6
+1584: if false goto 1587
+checker := 1;
+1585: 1L
+1586: local9 := 
+1587: goto1325
+SetObjProperty(chest,"link", item.serial);
+1588: local #6
+1589: "link"
+1590: local #0
+1591: get member 'serial'
+1592: Func(2,3): SetObjProperty
+1593: #
+chest.graphic := 1;
+1594: local #6
+1595: 1L
+1596: set member 'graphic' #
+chest.locked :=  1;
+1597: local #6
+1598: 1L
+1599: set member 'locked' #
+chest.movable := 0;
+1600: local #6
+1601: 0L
+1602: set member 'movable' #
+chest.usescript := ":tinkering:tinkerTraps";
+1603: local #6
+1604: ":tinkering:tinkerTraps"
+1605: set member 'usescript' #
+var lockid := AllocLockId();
+1606: decl local #10
+1607: makelocal
+1608: jmp userfunc @1973
+1609: :=
+1610: #
+SetObjProperty( chest, "lockid", lockid );
+1611: local #6
+1612: "lockid"
+1613: local #10
+1614: Func(2,3): SetObjProperty
+1615: #
+var lootgroup;
+1616: decl local #11
+1617: #
+var strength := 0;
+1618: decl local #12
+1619: 0L
+1620: :=
+1621: #
+case(lvl)
+1622: local #1
+1623: casejmp
+	1: @1624
+	2: @1629
+	3: @1634
+	4: @1639
+	5: @1644
+	default: @1648
+lootgroup := 69;    strength :=  20;
+1624: 69L
+1625: local11 := 
+strength :=  20;
+1626: 20L
+1627: local12 := 
+1628: goto1648
+lootgroup := 70;    strength :=  40;
+1629: 70L
+1630: local11 := 
+strength :=  40;
+1631: 40L
+1632: local12 := 
+1633: goto1648
+lootgroup := 71;    strength :=  60;
+1634: 71L
+1635: local11 := 
+strength :=  60;
+1636: 60L
+1637: local12 := 
+1638: goto1648
+lootgroup := 72;    strength :=  80;
+1639: 72L
+1640: local11 := 
+strength :=  80;
+1641: 80L
+1642: local12 := 
+1643: goto1648
+lootgroup := 73;    strength := 100;
+1644: 73L
+1645: local11 := 
+strength := 100;
+1646: 100L
+1647: local12 := 
+var traptype := RandomInt(10)+1;
+1648: decl local #13
+1649: 10L
+1650: Func(5,0): RandomInt
+1651: 1L
+1652: +
+1653: :=
+1654: #
+if(traptype > 3)
+1655: local #13
+1656: 3L
+1657: >
+1658: if false goto 1662
+traptype := 3;
+1659: 3L
+1660: local13 := 
+1661: goto1664
+traptype := 2;
+1662: 2L
+1663: local13 := 
+SetObjProperty(chest, "trap_type", (CStr(traptype)));
+1664: local #6
+1665: "trap_type"
+1666: local #13
+1667: Func(0,4): CStr
+1668: Func(2,3): SetObjProperty
+1669: #
+SetObjProperty(chest, "LockPickDiff", (strength - RandomInt(20)));
+1670: local #6
+1671: "LockPickDiff"
+1672: local #12
+1673: 20L
+1674: Func(5,0): RandomInt
+1675: -
+1676: Func(2,3): SetObjProperty
+1677: #
+SetObjProperty(chest, "trap_strength", strength);
+1678: local #6
+1679: "trap_strength"
+1680: local #12
+1681: Func(2,3): SetObjProperty
+1682: #
+makeloot( chest, lootgroup );
+1683: local #6
+1684: local #11
+1685: makelocal
+1686: jmp userfunc @1705
+1687: #
+CreateFromGroup(chest, lootgroup);
+1688: local #6
+1689: local #11
+1690: makelocal
+1691: jmp userfunc @1990
+1692: #
+chestarray.append(chest.serial);
+1693: global #7
+1694: local #6
+1695: get member 'serial'
+1696: Call Method append (1 params)
+1697: #
+SetObjProperty(item,"chestarray", chestarray);
+1698: local #0
+1699: "chestarray"
+1700: global #7
+1701: Func(2,3): SetObjProperty
+1702: #
+1703: 0L
+1704: return
+C:/pol2/scripts/include/startEqp.inc, Line 15
+function MakeLoot(corpse, lootgroup)
+1705: pop param 'lootgroup'
+1706: pop param 'corpse'
+var npcdesc := ReadConfigFile("::npcdesc");
+1707: decl local #2
+1708: "::npcdesc"
+1709: Func(4,0): ReadConfigFile
+1710: :=
+1711: #
+var elem := FindConfigElem(npcdesc, corpse.npctemplate);
+1712: decl local #3
+1713: local #2
+1714: local #1
+1715: get member 'npctemplate'
+1716: Func(4,1): FindConfigElem
+1717: :=
+1718: #
+var mprop, madj;
+1719: decl local #4
+1720: #
+1721: decl local #5
+1722: #
+if(elem)
+1723: local #3
+1724: if false goto 1736
+mprop := CInt(GetConfigInt(elem, "Magicitemchance"));
+1725: local #3
+1726: "Magicitemchance"
+1727: Func(4,2): GetConfigInt
+1728: Func(0,0): CInt
+1729: local4 := 
+madj  := CInt(GetConfigInt(elem, "MagicAdjustment"));
+1730: local #3
+1731: "MagicAdjustment"
+1732: Func(4,2): GetConfigInt
+1733: Func(0,0): CInt
+1734: local5 := 
+1735: goto1765
+mprop := 1;
+1736: 1L
+1737: local4 := 
+if(corpse.objtype == 0x9e40)
+1738: local #1
+1739: get member 'objtype'
+1740: 40512L
+1741: ==
+1742: if false goto 1763
+case(CInt(GetObjProperty(corpse,"level")))
+1743: local #1
+1744: "level"
+1745: Func(2,1): GetObjProperty
+1746: Func(0,0): CInt
+1747: casejmp
+	1: @1748
+	2: @1751
+	3: @1754
+	4: @1757
+	5: @1760
+	default: @1762
+madj := 0;
+1748: 0L
+1749: local5 := 
+1750: goto1762
+madj := 2;
+1751: 2L
+1752: local5 := 
+1753: goto1762
+madj := 4;
+1754: 4L
+1755: local5 := 
+1756: goto1762
+madj := 6;
+1757: 6L
+1758: local5 := 
+1759: goto1762
+madj := 8;
+1760: 8L
+1761: local5 := 
+1762: goto1765
+magicadjustment := 0;
+1763: 0L
+1764: global4 := 
+if(GetHp(corpse))
+1765: local #1
+1766: makelocal
+1767: jmp userfunc @2659
+1768: if false goto 1782
+foreach thing in ListEquippedItems(corpse)
+1769: local #1
+1770: Func(2,15): ListEquippedItems
+1771: initforeach @1780
+if(thing.objtype == 0xe75)
+1772: local #6
+1773: get member 'objtype'
+1774: 3701L
+1775: ==
+1776: if false goto 1780
+corpse := thing;
+1777: local #6
+1778: local1 := 
+break;
+1779: goto1781
+1780: stepforeach @1772
+1781: leave block(3)
+thecritter := corpse;
+1782: local #1
+1783: global6 := 
+if(mprop)
+1784: local #4
+1785: if false goto 1789
+magicspawnchance := 1;
+1786: 1L
+1787: global3 := 
+1788: goto1804
+if((corpse.objtype == 0x9e40) || (corpse.objtype == 0xe40))
+1789: local #1
+1790: get member 'objtype'
+1791: 40512L
+1792: ==
+1793: local #1
+1794: get member 'objtype'
+1795: 3648L
+1796: ==
+1797: ||
+1798: if false goto 1802
+magicspawnchance := 1;
+1799: 1L
+1800: global3 := 
+1801: goto1804
+magicspawnchance := 0;
+1802: 0L
+1803: global3 := 
+magicadjustment  := madj;
+1804: local #5
+1805: global4 := 
+starteqp_cfg := ReadConfigFile("::nlootgroup");
+1806: "::nlootgroup"
+1807: Func(4,0): ReadConfigFile
+1808: global1 := 
+if(lootgroup)
+1809: local #0
+1810: if false goto 1817
+CreateFromGroup(corpse, lootgroup);
+1811: local #1
+1812: local #0
+1813: makelocal
+1814: jmp userfunc @1990
+1815: #
+1816: goto1834
+var lootgroups := GetConfigStringArray(elem, "lootgroup");
+1817: decl local #0
+1818: local #3
+1819: "lootgroup"
+1820: Func(4,3): GetConfigStringArray
+1821: :=
+1822: #
+foreach str in lootgroups
+1823: local #6
+1824: initforeach @1831
+CreateFromGroup(corpse, CInt(str));
+1825: local #1
+1826: local #7
+1827: Func(0,0): CInt
+1828: makelocal
+1829: jmp userfunc @1990
+1830: #
+1831: stepforeach @1825
+1832: leave block(3)
+1833: leave block(1)
+1834: 0L
+1835: return
+C:\pol2\pkg\tools\gmtools\campSpawner.src, Line 80
+function process_move(item)
+1836: pop param 'item'
+var anchor := GetObjProperty(item, "AnchorPoint");
+1837: decl local #1
+1838: local #0
+1839: "AnchorPoint"
+1840: Func(2,1): GetObjProperty
+1841: :=
+1842: #
+var newx, newy, newz;
+1843: decl local #2
+1844: #
+1845: decl local #3
+1846: #
+1847: decl local #4
+1848: #
+var check := 0;
+1849: decl local #5
+1850: 0L
+1851: :=
+1852: #
+var counter := 0;
+1853: decl local #6
+1854: 0L
+1855: :=
+1856: #
+item.movable := 1;
+1857: local #0
+1858: 1L
+1859: set member 'movable' #
+while((check == 0) && (counter <= 20))
+1860: local #5
+1861: 0L
+1862: ==
+1863: local #6
+1864: 20L
+1865: <=
+1866: &&
+1867: if false goto 1938
+newx := anchor[1] + RandomInt(100) - RandomInt(100);
+1868: local #1
+1869: 1L
+1870: [] 1
+1871: 100L
+1872: Func(5,0): RandomInt
+1873: +
+1874: 100L
+1875: Func(5,0): RandomInt
+1876: -
+1877: local2 := 
+newy := anchor[2] + RandomInt(100) - RandomInt(100);
+1878: local #1
+1879: 2L
+1880: [] 1
+1881: 100L
+1882: Func(5,0): RandomInt
+1883: +
+1884: 100L
+1885: Func(5,0): RandomInt
+1886: -
+1887: local3 := 
+newz := GetWorldHeight(newx, newy);
+1888: local #2
+1889: local #3
+1890: Func(2,28): GetWorldHeight
+1891: local4 := 
+if(MoveItemToLocation(item, newx, newy, newz, MOVEITEM_NORMAL))
+1892: local #0
+1893: local #2
+1894: local #3
+1895: local #4
+1896: 0L
+1897: Func(2,29): MoveItemToLocation
+1898: if false goto 1930
+foreach char in EnumerateOnlineCharacters()
+1899: Func(2,24): EnumerateOnlineCharacters
+1900: initforeach @1925
+if(char.cmdlevel > 1)
+1901: local #7
+1902: get member 'cmdlevel'
+1903: 1L
+1904: >
+1905: if false goto 1925
+SendSysMessage(char, "moving Camp Spawner " + item.serial + " to " + item.x + "
+1906: local #7
+1907: "moving Camp Spawner "
+1908: local #0
+1909: get member 'serial'
+1910: +
+1911: " to "
+1912: +
+1913: local #0
+1914: get member 'x'
+1915: +
+1916: " "
+1917: +
+1918: local #0
+1919: get member 'y'
+1920: +
+1921: 3L
+1922: 38L
+1923: Func(2,25): SendSysMessage
+1924: #
+1925: stepforeach @1901
+1926: leave block(3)
+check := 1;
+1927: 1L
+1928: local5 := 
+1929: goto1934
+counter := counter + 1;
+1930: local #6
+1931: 1L
+1932: +
+1933: local6 := 
+sleep(1);
+1934: 1L
+1935: Func(3,3): sleep
+1936: #
+1937: goto1860
+item.movable := 0;
+1938: local #0
+1939: 0L
+1940: set member 'movable' #
+1941: 0L
+1942: return
+C:\pol2\pkg\tools\gmtools\campSpawner.src, Line 311
+function returnindex(info, information)
+1943: pop param 'information'
+1944: pop param 'info'
+var i;
+1945: decl local #2
+1946: #
+for (i := 0; i <= len(info); i := i + 1)
+1947: local #2
+1948: 0L
+1949: :=
+1950: #
+1951: local #2
+1952: local #1
+1953: Func(0,5): len
+1954: <=
+1955: if false goto 1971
+if (info[i] == information)
+1956: local #1
+1957: local #2
+1958: [] 1
+1959: local #0
+1960: ==
+1961: if false goto 1964
+return i;
+1962: local #2
+1963: return
+1964: local #2
+1965: local #2
+1966: 1L
+1967: +
+1968: :=
+1969: #
+1970: goto1951
+return 0;
+1971: 0L
+1972: return
+C:/pol2/scripts/util/key.inc, Line 5
+function AllocLockId()
+var lockid := GetGlobalProperty( "nextlockid" );
+1973: decl local #0
+1974: "nextlockid"
+1975: Func(2,20): GetGlobalProperty
+1976: :=
+1977: #
+if (!lockid)
+1978: local #0
+1979: if true goto 1982
+lockid := 1;
+1980: 1L
+1981: local0 := 
+SetGlobalProperty( "nextlockid", lockid+1 );
+1982: "nextlockid"
+1983: local #0
+1984: 1L
+1985: +
+1986: Func(2,21): SetGlobalProperty
+1987: #
+return lockid;
+1988: local #0
+1989: return
+C:/pol2/scripts/include/startEqp.inc, Line 76
+function CreateFromGroup(who, group)
+1990: pop param 'group'
+1991: pop param 'who'
+if(making_starting_equipment != 1)
+1992: global #5
+1993: 1L
+1994: <>
+1995: if false goto 1999
+starteqp_cfg := ReadConfigFile("::nlootgroup");
+1996: "::nlootgroup"
+1997: Func(4,0): ReadConfigFile
+1998: global1 := 
+var elem := starteqp_cfg[group];
+1999: decl local #2
+2000: global #1
+2001: local #0
+2002: [] 1
+2003: :=
+2004: #
+foreach str in GetConfigStringArray(elem, "Stack")
+2005: local #2
+2006: "Stack"
+2007: Func(4,3): GetConfigStringArray
+2008: initforeach @2014
+CreateFromStackString(who, str);
+2009: local #1
+2010: local #3
+2011: makelocal
+2012: jmp userfunc @2474
+2013: #
+2014: stepforeach @2009
+2015: leave block(3)
+foreach str in GetConfigStringArray(elem, "Item")
+2016: local #2
+2017: "Item"
+2018: Func(4,3): GetConfigStringArray
+2019: initforeach @2025
+CreateFromItemString(who, str);
+2020: local #1
+2021: local #3
+2022: makelocal
+2023: jmp userfunc @2062
+2024: #
+2025: stepforeach @2020
+2026: leave block(3)
+foreach str in GetConfigStringArray(elem, "Random")
+2027: local #2
+2028: "Random"
+2029: Func(4,3): GetConfigStringArray
+2030: initforeach @2036
+CreateFromRandomString(who, str);
+2031: local #1
+2032: local #3
+2033: makelocal
+2034: jmp userfunc @2338
+2035: #
+2036: stepforeach @2031
+2037: leave block(3)
+foreach str in GetConfigStringArray(elem, "Group")
+2038: local #2
+2039: "Group"
+2040: Func(4,3): GetConfigStringArray
+2041: initforeach @2047
+CreateFromGroup(who, str);
+2042: local #1
+2043: local #3
+2044: makelocal
+2045: jmp userfunc @1990
+2046: #
+2047: stepforeach @2042
+2048: leave block(3)
+foreach str in GetConfigStringArray(elem, "Unique")
+2049: local #2
+2050: "Unique"
+2051: Func(4,3): GetConfigStringArray
+2052: initforeach @2058
+CreateFromUniqueString(who, str);
+2053: local #1
+2054: local #3
+2055: makelocal
+2056: jmp userfunc @2598
+2057: #
+2058: stepforeach @2053
+2059: leave block(3)
+2060: 0L
+2061: return
+C:/pol2/scripts/include/startEqp.inc, Line 103
+function CreateFromItemString(who, str)
+2062: pop param 'str'
+2063: pop param 'who'
+var params := SplitWords(str);
+2064: decl local #2
+2065: local #0
+2066: Func(0,1): SplitWords
+2067: :=
+2068: #
+var count, objname, color, chance;
+2069: decl local #3
+2070: #
+2071: decl local #4
+2072: #
+2073: decl local #5
+2074: #
+2075: decl local #6
+2076: #
+var couleurs := ReadConfigFile("::colors");
+2077: decl local #7
+2078: "::colors"
+2079: Func(4,0): ReadConfigFile
+2080: :=
+2081: #
+count := RandomDiceRoll(CStr(params[1]));
+2082: local #2
+2083: 1L
+2084: [] 1
+2085: Func(0,4): CStr
+2086: Func(5,1): RandomDiceRoll
+2087: local3 := 
+params[1] := params[2];
+2088: local #2
+2089: 1L
+2090: local #2
+2091: 2L
+2092: [] 1
+2093: [] := (1) #
+params[2] := params[3];
+2094: local #2
+2095: 2L
+2096: local #2
+2097: 3L
+2098: [] 1
+2099: [] := (1) #
+params[3] := params[4];
+2100: local #2
+2101: 3L
+2102: local #2
+2103: 4L
+2104: [] 1
+2105: [] := (1) #
+if (!count)
+2106: local #3
+2107: if true goto 2110
+count := 1;
+2108: 1L
+2109: local3 := 
+objname := params[1];
+2110: local #2
+2111: 1L
+2112: [] 1
+2113: local4 := 
+if(CInt(params[2]))
+2114: local #2
+2115: 2L
+2116: [] 1
+2117: Func(0,0): CInt
+2118: if false goto 2125
+color := CInt(params[2]);
+2119: local #2
+2120: 2L
+2121: [] 1
+2122: Func(0,0): CInt
+2123: local5 := 
+2124: goto2217
+elseif (params[2])
+2125: local #2
+2126: 2L
+2127: [] 1
+2128: if false goto 2217
+color := 0;
+2129: 0L
+2130: local5 := 
+var colorg := FindConfigElem(couleurs, params[2]);
+2131: decl local #0
+2132: local #7
+2133: local #2
+2134: 2L
+2135: [] 1
+2136: Func(4,1): FindConfigElem
+2137: :=
+2138: #
+if(colorg)
+2139: local #8
+2140: if false goto 2216
+var str := GetConfigStringArray(colorg, "color");
+2141: decl local #0
+2142: local #8
+2143: "color"
+2144: Func(4,3): GetConfigStringArray
+2145: :=
+2146: #
+var ar := {};
+2147: decl local #1
+2148: array
+2149: :=
+2150: #
+var rndint := RandomInt(len(str)) + 1;
+2151: decl local #2
+2152: local #9
+2153: Func(0,5): len
+2154: Func(5,0): RandomInt
+2155: 1L
+2156: +
+2157: :=
+2158: #
+ar := SplitWords(str[rndint]);
+2159: local #9
+2160: local #11
+2161: [] 1
+2162: Func(0,1): SplitWords
+2163: local10 := 
+if(len(ar) > 1)
+2164: local #10
+2165: Func(0,5): len
+2166: 1L
+2167: >
+2168: if false goto 2200
+if(CInt(ar[2]) > 0)
+2169: local #10
+2170: 2L
+2171: [] 1
+2172: Func(0,0): CInt
+2173: 0L
+2174: >
+2175: if false goto 2190
+color := RandomInt(CInt(ar[2]) - CInt(ar[1]))+1;
+2176: local #10
+2177: 2L
+2178: [] 1
+2179: Func(0,0): CInt
+2180: local #10
+2181: 1L
+2182: [] 1
+2183: Func(0,0): CInt
+2184: -
+2185: Func(5,0): RandomInt
+2186: 1L
+2187: +
+2188: local5 := 
+2189: goto2199
+color := CInt(str[RandomInt(len(str))+1]);
+2190: local #9
+2191: local #9
+2192: Func(0,5): len
+2193: Func(5,0): RandomInt
+2194: 1L
+2195: +
+2196: [] 1
+2197: Func(0,0): CInt
+2198: local5 := 
+2199: goto2209
+color := CInt(str[RandomInt(len(str))+1]);
+2200: local #9
+2201: local #9
+2202: Func(0,5): len
+2203: Func(5,0): RandomInt
+2204: 1L
+2205: +
+2206: [] 1
+2207: Func(0,0): CInt
+2208: local5 := 
+if(color == 1)
+2209: local #5
+2210: 1L
+2211: ==
+2212: if false goto 2215
+color := 0;
+2213: 0L
+2214: local5 := 
+2215: leave block(3)
+2216: leave block(1)
+if (!color)
+2217: local #5
+2218: if true goto 2221
+color := 0;
+2219: 0L
+2220: local5 := 
+if(CInt(params[3]))
+2221: local #2
+2222: 3L
+2223: [] 1
+2224: Func(0,0): CInt
+2225: if false goto 2232
+chance := CInt(params[3]);
+2226: local #2
+2227: 3L
+2228: [] 1
+2229: Func(0,0): CInt
+2230: local6 := 
+2231: goto2234
+chance := 100;
+2232: 100L
+2233: local6 := 
+if(CInt(RandomInt(100)+1) <= CInt(chance))
+2234: 100L
+2235: Func(5,0): RandomInt
+2236: 1L
+2237: +
+2238: Func(0,0): CInt
+2239: local #6
+2240: Func(0,0): CInt
+2241: <=
+2242: if false goto 2336
+var i, canbemagic;
+2243: decl local #0
+2244: #
+2245: decl local #1
+2246: #
+for(i:=1; i<=CInt(count); i:=i+1)
+2247: local #8
+2248: 1L
+2249: :=
+2250: #
+2251: local #8
+2252: local #3
+2253: Func(0,0): CInt
+2254: <=
+2255: if false goto 2335
+if (CInt(objname))
+2256: local #4
+2257: Func(0,0): CInt
+2258: if false goto 2262
+objname := CInt(objname);
+2259: local #4
+2260: Func(0,0): CInt
+2261: local4 := 
+var item := CreateItemInContainer(who, objname);
+2262: decl local #0
+2263: local #1
+2264: local #4
+2265: 1L
+2266: Func(2,16): CreateItemInContainer
+2267: :=
+2268: #
+item.color := color;
+2269: local #10
+2270: local #5
+2271: set member 'color' #
+if(making_starting_equipment)
+2272: global #5
+2273: if false goto 2279
+item.newbie := 1;
+2274: local #10
+2275: 1L
+2276: set member 'newbie' #
+continue;
+2277: leave block(1)
+2278: goto2328
+if( (item.graphic in array( 0xdf2, 0xdf3, 0xdf4, 0xdf5, 0x13f9 )) && (magicspaw
+2279: local #10
+2280: get member 'graphic'
+2281: array
+2282: 3570L
+2283: +=
+2284: 3571L
+2285: +=
+2286: 3572L
+2287: +=
+2288: 3573L
+2289: +=
+2290: 5113L
+2291: +=
+2292: in
+2293: global #3
+2294: 1L
+2295: ==
+2296: &&
+2297: if false goto 2303
+ProcessWand(item);
+2298: local #10
+2299: makelocal
+2300: jmp userfunc @2733
+2301: #
+2302: goto2327
+if(magicspawnchance == 1)
+2303: global #3
+2304: 1L
+2305: ==
+2306: if false goto 2327
+canbemagic := MagicAllowedandType(objname);
+2307: local #4
+2308: makelocal
+2309: jmp userfunc @2667
+2310: local9 := 
+case(canbemagic)
+2311: local #9
+2312: casejmp
+	1: @2313
+	2: @2318
+	3: @2323
+	default: @2327
+WeaponTable(item);
+2313: local #10
+2314: makelocal
+2315: jmp userfunc @2901
+2316: #
+2317: goto2327
+ArmorTable(item);
+2318: local #10
+2319: makelocal
+2320: jmp userfunc @3329
+2321: #
+2322: goto2327
+ClothTable(item);
+2323: local #10
+2324: makelocal
+2325: jmp userfunc @3415
+2326: #
+2327: leave block(1)
+2328: local #8
+2329: local #8
+2330: 1L
+2331: +
+2332: :=
+2333: #
+2334: goto2251
+2335: leave block(2)
+2336: 0L
+2337: return
+C:/pol2/scripts/include/startEqp.inc, Line 350
+function CreateFromRandomString(who, desc)
+2338: pop param 'desc'
+2339: pop param 'who'
+var params := SplitWords(desc);
+2340: decl local #2
+2341: local #0
+2342: Func(0,1): SplitWords
+2343: :=
+2344: #
+var amt := Cint(params[1]);
+2345: decl local #3
+2346: local #2
+2347: 1L
+2348: [] 1
+2349: Func(0,0): CInt
+2350: :=
+2351: #
+var count := 1;
+2352: decl local #4
+2353: 1L
+2354: :=
+2355: #
+if(amt != 1)
+2356: local #3
+2357: 1L
+2358: <>
+2359: if false goto 2366
+count := RandomDiceRoll(Cstr(amt + 1));
+2360: local #3
+2361: 1L
+2362: +
+2363: Func(0,4): CStr
+2364: Func(5,1): RandomDiceRoll
+2365: local4 := 
+var group := params[2];
+2366: decl local #5
+2367: local #2
+2368: 2L
+2369: [] 1
+2370: :=
+2371: #
+var chance := params[4];
+2372: decl local #6
+2373: local #2
+2374: 4L
+2375: [] 1
+2376: :=
+2377: #
+var elem := FindConfigElem(starteqp_cfg, group);
+2378: decl local #7
+2379: global #1
+2380: local #5
+2381: Func(4,1): FindConfigElem
+2382: :=
+2383: #
+if(elem == error)
+2384: local #7
+2385: error
+2386: ==
+2387: if false goto 2395
+syslog("Unable to find group " + group);
+2388: "Unable to find group "
+2389: local #5
+2390: +
+2391: Func(3,2): syslog
+2392: #
+return;
+2393: ""
+2394: return
+var items := GetConfigStringArray(elem, "Item");
+2395: decl local #8
+2396: local #7
+2397: "Item"
+2398: Func(4,3): GetConfigStringArray
+2399: :=
+2400: #
+if(items == error)
+2401: local #8
+2402: error
+2403: ==
+2404: if false goto 2414
+syslog("Group " + group + " does not contain items!");
+2405: "Group "
+2406: local #5
+2407: +
+2408: " does not contain items!"
+2409: +
+2410: Func(3,2): syslog
+2411: #
+return;
+2412: ""
+2413: return
+if(!chance)
+2414: local #6
+2415: if true goto 2418
+chance := 100;
+2416: 100L
+2417: local6 := 
+var rand := RandomInt(99)+1;
+2418: decl local #9
+2419: 99L
+2420: Func(5,0): RandomInt
+2421: 1L
+2422: +
+2423: :=
+2424: #
+if(CInt(rand) <= CInt(chance))
+2425: local #9
+2426: Func(0,0): CInt
+2427: local #6
+2428: Func(0,0): CInt
+2429: <=
+2430: if false goto 2472
+if(count > len(items))
+2431: local #4
+2432: local #8
+2433: Func(0,5): len
+2434: >
+2435: if false goto 2439
+count := len(items);
+2436: local #8
+2437: Func(0,5): len
+2438: local4 := 
+while(count)
+2439: local #4
+2440: if false goto 2472
+var n := RandomInt(len(items)) + 1;
+2441: decl local #0
+2442: local #8
+2443: Func(0,5): len
+2444: Func(5,0): RandomInt
+2445: 1L
+2446: +
+2447: :=
+2448: #
+if(items[n])
+2449: local #8
+2450: local #10
+2451: [] 1
+2452: if false goto 2470
+CreateFromItemString(who, items[n]);
+2453: local #1
+2454: local #8
+2455: local #10
+2456: [] 1
+2457: makelocal
+2458: jmp userfunc @2062
+2459: #
+if(making_starting_equipment)
+2460: global #5
+2461: if false goto 2466
+items[n] := "";
+2462: local #8
+2463: local #10
+2464: ""
+2465: [] := (1) #
+count := count - 1;
+2466: local #4
+2467: 1L
+2468: -
+2469: local4 := 
+2470: leave block(1)
+2471: goto2439
+2472: 0L
+2473: return
+C:/pol2/scripts/include/startEqp.inc, Line 410
+function CreateFromStackString(who, str)
+2474: pop param 'str'
+2475: pop param 'who'
+var params := SplitWords(str);
+2476: decl local #2
+2477: local #0
+2478: Func(0,1): SplitWords
+2479: :=
+2480: #
+var count;
+2481: decl local #3
+2482: #
+var objname;
+2483: decl local #4
+2484: #
+var color;
+2485: decl local #5
+2486: #
+var chance;
+2487: decl local #6
+2488: #
+count := RandomDiceRoll(CStr(params[1]));
+2489: local #2
+2490: 1L
+2491: [] 1
+2492: Func(0,4): CStr
+2493: Func(5,1): RandomDiceRoll
+2494: local3 := 
+params[1] := params[2];
+2495: local #2
+2496: 1L
+2497: local #2
+2498: 2L
+2499: [] 1
+2500: [] := (1) #
+params[2] := params[3];
+2501: local #2
+2502: 2L
+2503: local #2
+2504: 3L
+2505: [] 1
+2506: [] := (1) #
+params[3] := params[4];
+2507: local #2
+2508: 3L
+2509: local #2
+2510: 4L
+2511: [] 1
+2512: [] := (1) #
+if (!count)
+2513: local #3
+2514: if true goto 2517
+count := 1;
+2515: 1L
+2516: local3 := 
+objname := params[1];
+2517: local #2
+2518: 1L
+2519: [] 1
+2520: local4 := 
+if(CInt(params[2]))
+2521: local #2
+2522: 2L
+2523: [] 1
+2524: Func(0,0): CInt
+2525: if false goto 2532
+color := CInt(params[2]);
+2526: local #2
+2527: 2L
+2528: [] 1
+2529: Func(0,0): CInt
+2530: local5 := 
+2531: goto2534
+color := 0;
+2532: 0L
+2533: local5 := 
+if (CInt(params[3]))
+2534: local #2
+2535: 3L
+2536: [] 1
+2537: Func(0,0): CInt
+2538: if false goto 2545
+chance := CInt(params[3]);
+2539: local #2
+2540: 3L
+2541: [] 1
+2542: Func(0,0): CInt
+2543: local6 := 
+2544: goto2547
+chance := 100;
+2545: 100L
+2546: local6 := 
+var rand := RandomInt(100)+1;
+2547: decl local #7
+2548: 100L
+2549: Func(5,0): RandomInt
+2550: 1L
+2551: +
+2552: :=
+2553: #
+if(CInt(rand) <= CInt(chance))
+2554: local #7
+2555: Func(0,0): CInt
+2556: local #6
+2557: Func(0,0): CInt
+2558: <=
+2559: if false goto 2596
+if (CInt(objname))
+2560: local #4
+2561: Func(0,0): CInt
+2562: if false goto 2566
+objname := CInt(objname);
+2563: local #4
+2564: Func(0,0): CInt
+2565: local4 := 
+var item := CreateItemInContainer(who, objname, count);
+2566: decl local #0
+2567: local #1
+2568: local #4
+2569: local #3
+2570: Func(2,16): CreateItemInContainer
+2571: :=
+2572: #
+if(!item)
+2573: local #8
+2574: if true goto 2587
+syslog("Unable to create " + objname + " on " + who.name + ".");
+2575: "Unable to create "
+2576: local #4
+2577: +
+2578: " on "
+2579: +
+2580: local #1
+2581: get member 'name'
+2582: +
+2583: "."
+2584: +
+2585: Func(3,2): syslog
+2586: #
+item.color := color;
+2587: local #8
+2588: local #5
+2589: set member 'color' #
+if(making_starting_equipment)
+2590: global #5
+2591: if false goto 2595
+item.newbie := 1;
+2592: local #8
+2593: 1L
+2594: set member 'newbie' #
+2595: leave block(1)
+2596: 0L
+2597: return
+C:/pol2/scripts/include/startEqp.inc, Line 390
+function CreateFromUniqueString(who, str)
+2598: pop param 'str'
+2599: pop param 'who'
+var params := SplitWords(str);
+2600: decl local #2
+2601: local #0
+2602: Func(0,1): SplitWords
+2603: :=
+2604: #
+var objtype;
+2605: decl local #3
+2606: #
+if (CInt(params[1]))
+2607: local #2
+2608: 1L
+2609: [] 1
+2610: Func(0,0): CInt
+2611: if false goto 2617
+objtype := params[1];
+2612: local #2
+2613: 1L
+2614: [] 1
+2615: local3 := 
+2616: goto2622
+objtype := GetObjtypeByName(params[1]);
+2617: local #2
+2618: 1L
+2619: [] 1
+2620: Func(2,19): GetObjtypeByName
+2621: local3 := 
+if(!objtype)
+2622: local #3
+2623: if true goto 2633
+syslog("Don't know what a " + str + " is");
+2624: "Don't know what a "
+2625: local #0
+2626: +
+2627: " is"
+2628: +
+2629: Func(3,2): syslog
+2630: #
+return;
+2631: ""
+2632: return
+if(objtype in unique_items_created)
+2633: local #3
+2634: global #0
+2635: in
+2636: if false goto 2639
+return;
+2637: ""
+2638: return
+unique_items_created[len(unique_items_created) + 1] := objtype;
+2639: global #0
+2640: global #0
+2641: Func(0,5): len
+2642: 1L
+2643: +
+2644: local #3
+2645: [] := (1) #
+var newstr := "1 " + str;
+2646: decl local #4
+2647: "1 "
+2648: local #0
+2649: +
+2650: :=
+2651: #
+CreateFromItemString(who, newstr);
+2652: local #1
+2653: local #4
+2654: makelocal
+2655: jmp userfunc @2062
+2656: #
+2657: 0L
+2658: return
+C:/pol2/scripts/include/attributes.inc, Line 448
+function GetHp(who)
+2659: pop param 'who'
+return Cint(GetVital(who, VITALID_LIFE)/ 100);
+2660: local #0
+2661: "Life"
+2662: Func(2,10): GetVital
+2663: 100L
+2664: /
+2665: Func(0,0): CInt
+2666: return
+C:/pol2/scripts/include/startEqp.inc, Line 450
+function MagicAllowedandType(objname)
+2667: pop param 'objname'
+var magicweapcfg := ReadConfigFile(":combat:magicweaps");
+2668: decl local #1
+2669: ":combat:magicweaps"
+2670: Func(4,0): ReadConfigFile
+2671: :=
+2672: #
+var magicarmorcfg := ReadConfigFile(":combat:magicarmor");
+2673: decl local #2
+2674: ":combat:magicarmor"
+2675: Func(4,0): ReadConfigFile
+2676: :=
+2677: #
+var magicclothcfg := ReadConfigFile(":combat:magiccloth");
+2678: decl local #3
+2679: ":combat:magiccloth"
+2680: Func(4,0): ReadConfigFile
+2681: :=
+2682: #
+var elem1 := FindConfigElem(magicweapcfg, "1");
+2683: decl local #4
+2684: local #1
+2685: "1"
+2686: Func(4,1): FindConfigElem
+2687: :=
+2688: #
+var data1 := GetConfigInt(elem1, objname);
+2689: decl local #5
+2690: local #4
+2691: local #0
+2692: Func(4,2): GetConfigInt
+2693: :=
+2694: #
+if(data1)
+2695: local #5
+2696: if false goto 2699
+return 1;
+2697: 1L
+2698: return
+var elem2 := FindConfigElem(magicarmorcfg, "1");
+2699: decl local #6
+2700: local #2
+2701: "1"
+2702: Func(4,1): FindConfigElem
+2703: :=
+2704: #
+var data2 := GetConfigInt(elem2, objname);
+2705: decl local #7
+2706: local #6
+2707: local #0
+2708: Func(4,2): GetConfigInt
+2709: :=
+2710: #
+if(data2)
+2711: local #7
+2712: if false goto 2715
+return 2;
+2713: 2L
+2714: return
+var elem3 := FindConfigElem(magicclothcfg, "1");
+2715: decl local #8
+2716: local #3
+2717: "1"
+2718: Func(4,1): FindConfigElem
+2719: :=
+2720: #
+var data3 := GetConfigInt(elem3, objname);
+2721: decl local #9
+2722: local #8
+2723: local #0
+2724: Func(4,2): GetConfigInt
+2725: :=
+2726: #
+if(data3)
+2727: local #9
+2728: if false goto 2731
+return 3;
+2729: 3L
+2730: return
+return 0;
+2731: 0L
+2732: return
+C:/pol2/scripts/include/startEqp.inc, Line 175
+function ProcessWand(item)
+2733: pop param 'item'
+var amt;
+2734: decl local #1
+2735: #
+case(RandomInt(10) + 1)
+2736: 10L
+2737: Func(5,0): RandomInt
+2738: 1L
+2739: +
+2740: casejmp
+	1: @2741
+	2: @2754
+	3: @2767
+	4: @2780
+	5: @2793
+	6: @2806
+	7: @2819
+	8: @2832
+	9: @2845
+	10: @2858
+	default: @2870
+amt :=  15;   SetObjProperty(item, "SpellId",  1);   SetObjProperty(item, "dama
+2741: 15L
+2742: local1 := 
+SetObjProperty(item, "SpellId",  1);   SetObjProperty(item, "damagemod", "of cl
+2743: local #0
+2744: "SpellId"
+2745: 1L
+2746: Func(2,3): SetObjProperty
+2747: #
+SetObjProperty(item, "damagemod", "of clumsiness");
+2748: local #0
+2749: "damagemod"
+2750: "of clumsiness"
+2751: Func(2,3): SetObjProperty
+2752: #
+2753: goto2870
+amt :=  15;   SetObjProperty(item, "SpellId",  3);   SetObjProperty(item, "dama
+2754: 15L
+2755: local1 := 
+SetObjProperty(item, "SpellId",  3);   SetObjProperty(item, "damagemod", "of fe
+2756: local #0
+2757: "SpellId"
+2758: 3L
+2759: Func(2,3): SetObjProperty
+2760: #
+SetObjProperty(item, "damagemod", "of feeblemindedness");
+2761: local #0
+2762: "damagemod"
+2763: "of feeblemindedness"
+2764: Func(2,3): SetObjProperty
+2765: #
+2766: goto2870
+amt :=  15;   SetObjProperty(item, "SpellId",  4);   SetObjProperty(item, "dama
+2767: 15L
+2768: local1 := 
+SetObjProperty(item, "SpellId",  4);   SetObjProperty(item, "damagemod", "of he
+2769: local #0
+2770: "SpellId"
+2771: 4L
+2772: Func(2,3): SetObjProperty
+2773: #
+SetObjProperty(item, "damagemod", "of healing");
+2774: local #0
+2775: "damagemod"
+2776: "of healing"
+2777: Func(2,3): SetObjProperty
+2778: #
+2779: goto2870
+amt :=  15;   SetObjProperty(item, "SpellId",  8);   SetObjProperty(item, "dama
+2780: 15L
+2781: local1 := 
+SetObjProperty(item, "SpellId",  8);   SetObjProperty(item, "damagemod", "of we
+2782: local #0
+2783: "SpellId"
+2784: 8L
+2785: Func(2,3): SetObjProperty
+2786: #
+SetObjProperty(item, "damagemod", "of weakness");
+2787: local #0
+2788: "damagemod"
+2789: "of weakness"
+2790: Func(2,3): SetObjProperty
+2791: #
+2792: goto2870
+amt :=  10;   SetObjProperty(item, "SpellId", 12);   SetObjProperty(item, "dama
+2793: 10L
+2794: local1 := 
+SetObjProperty(item, "SpellId", 12);   SetObjProperty(item, "damagemod", "of ha
+2795: local #0
+2796: "SpellId"
+2797: 12L
+2798: Func(2,3): SetObjProperty
+2799: #
+SetObjProperty(item, "damagemod", "of harming");
+2800: local #0
+2801: "damagemod"
+2802: "of harming"
+2803: Func(2,3): SetObjProperty
+2804: #
+2805: goto2870
+amt :=   5;   SetObjProperty(item, "SpellId", 18);   SetObjProperty(item, "dama
+2806: 5L
+2807: local1 := 
+SetObjProperty(item, "SpellId", 18);   SetObjProperty(item, "damagemod", "of fi
+2808: local #0
+2809: "SpellId"
+2810: 18L
+2811: Func(2,3): SetObjProperty
+2812: #
+SetObjProperty(item, "damagemod", "of fireballs");
+2813: local #0
+2814: "damagemod"
+2815: "of fireballs"
+2816: Func(2,3): SetObjProperty
+2817: #
+2818: goto2870
+amt :=   5;   SetObjProperty(item, "SpellId", 29);   SetObjProperty(item, "dama
+2819: 5L
+2820: local1 := 
+SetObjProperty(item, "SpellId", 29);   SetObjProperty(item, "damagemod", "of gr
+2821: local #0
+2822: "SpellId"
+2823: 29L
+2824: Func(2,3): SetObjProperty
+2825: #
+SetObjProperty(item, "damagemod", "of greater healing");
+2826: local #0
+2827: "damagemod"
+2828: "of greater healing"
+2829: Func(2,3): SetObjProperty
+2830: #
+2831: goto2870
+amt :=   3;   SetObjProperty(item, "SpellId", 30);   SetObjProperty(item, "dama
+2832: 3L
+2833: local1 := 
+SetObjProperty(item, "SpellId", 30);   SetObjProperty(item, "damagemod", "of li
+2834: local #0
+2835: "SpellId"
+2836: 30L
+2837: Func(2,3): SetObjProperty
+2838: #
+SetObjProperty(item, "damagemod", "of lightning");
+2839: local #0
+2840: "damagemod"
+2841: "of lightning"
+2842: Func(2,3): SetObjProperty
+2843: #
+2844: goto2870
+amt :=  10;   SetObjProperty(item, "SpellId", 31);   SetObjProperty(item, "dama
+2845: 10L
+2846: local1 := 
+SetObjProperty(item, "SpellId", 31);   SetObjProperty(item, "damagemod", "of ma
+2847: local #0
+2848: "SpellId"
+2849: 31L
+2850: Func(2,3): SetObjProperty
+2851: #
+SetObjProperty(item, "damagemod", "of mana draining");
+2852: local #0
+2853: "damagemod"
+2854: "of mana draining"
+2855: Func(2,3): SetObjProperty
+2856: #
+2857: goto2870
+amt := 100;   SetObjProperty(item, "SpellId", 65);   SetObjProperty(item, "dama
+2858: 100L
+2859: local1 := 
+SetObjProperty(item, "SpellId", 65);   SetObjProperty(item, "damagemod", "of id
+2860: local #0
+2861: "SpellId"
+2862: 65L
+2863: Func(2,3): SetObjProperty
+2864: #
+SetObjProperty(item, "damagemod", "of identification");
+2865: local #0
+2866: "damagemod"
+2867: "of identification"
+2868: Func(2,3): SetObjProperty
+2869: #
+SetObjProperty(item, "charges", (amt + RandomInt(10)));
+2870: local #0
+2871: "charges"
+2872: local #1
+2873: 10L
+2874: Func(5,0): RandomInt
+2875: +
+2876: Func(2,3): SetObjProperty
+2877: #
+item.usescript := ":wands:magicWands";
+2878: local #0
+2879: ":wands:magicWands"
+2880: set member 'usescript' #
+var dsc;
+2881: decl local #2
+2882: #
+if(item.objtype == 0x13f9)
+2883: local #0
+2884: get member 'objtype'
+2885: 5113L
+2886: ==
+2887: if false goto 2891
+dsc := "gnarled staff";
+2888: "gnarled staff"
+2889: local2 := 
+2890: goto2893
+dsc := "wand";
+2891: "wand"
+2892: local2 := 
+SetName(item, "a magic " + dsc);
+2893: local #0
+2894: "a magic "
+2895: local #2
+2896: +
+2897: Func(2,17): SetName
+2898: #
+2899: 0L
+2900: return
+C:/pol2/scripts/include/startEqp.inc, Line 317
+function WeaponTable(item)
+2901: pop param 'item'
+var newarray := array(1, 2, 3);
+2902: decl local #1
+2903: array
+2904: 1L
+2905: +=
+2906: 2L
+2907: +=
+2908: 3L
+2909: +=
+2910: :=
+2911: #
+var count := RandomInt(100) + 1;
+2912: decl local #2
+2913: 100L
+2914: Func(5,0): RandomInt
+2915: 1L
+2916: +
+2917: :=
+2918: #
+var counter;
+2919: decl local #3
+2920: #
+if(count >= 60)
+2921: local #2
+2922: 60L
+2923: >=
+2924: if false goto 2928
+counter := 1;
+2925: 1L
+2926: local3 := 
+2927: goto2944
+elseif(count >= 40)
+2928: local #2
+2929: 40L
+2930: >=
+2931: if false goto 2935
+counter := 2;
+2932: 2L
+2933: local3 := 
+2934: goto2944
+elseif(count >= 10)
+2935: local #2
+2936: 10L
+2937: >=
+2938: if false goto 2942
+counter := 3;
+2939: 3L
+2940: local3 := 
+2941: goto2944
+counter := 4;
+2942: 4L
+2943: local3 := 
+if(counter == 1)
+2944: local #3
+2945: 1L
+2946: ==
+2947: if false goto 2953
+DestroyItem(item);
+2948: local #0
+2949: Func(2,18): DestroyItem
+2950: #
+return;
+2951: ""
+2952: return
+count := 0;
+2953: 0L
+2954: local2 := 
+var num, val;
+2955: decl local #4
+2956: #
+2957: decl local #5
+2958: #
+while(count <= counter)
+2959: local #2
+2960: local #3
+2961: <=
+2962: if false goto 2998
+num := RandomInt(len(newarray)) + 1;
+2963: local #1
+2964: Func(0,5): len
+2965: Func(5,0): RandomInt
+2966: 1L
+2967: +
+2968: local4 := 
+val := newarray[num];
+2969: local #1
+2970: local #4
+2971: [] 1
+2972: local5 := 
+case(val)
+2973: local #5
+2974: casejmp
+	1: @2975
+	2: @2980
+	3: @2985
+	default: @2989
+ApplyAccyMod(item);
+2975: local #0
+2976: makelocal
+2977: jmp userfunc @3051
+2978: #
+2979: goto2989
+ApplyHPMod(item);
+2980: local #0
+2981: makelocal
+2982: jmp userfunc @3228
+2983: #
+2984: goto2989
+ApplyDmgMod(item);
+2985: local #0
+2986: makelocal
+2987: jmp userfunc @3142
+2988: #
+newarray.erase(num);
+2989: local #1
+2990: local #4
+2991: Call Method erase (1 params)
+2992: #
+count := count + 1;
+2993: local #2
+2994: 1L
+2995: +
+2996: local2 := 
+2997: goto2959
+AddName(item);
+2998: local #0
+2999: makelocal
+3000: jmp userfunc @3004
+3001: #
+3002: 0L
+3003: return
+C:/pol2/scripts/include/startEqp.inc, Line 582
+function AddName(item)
+3004: pop param 'item'
+var currdesc := item.desc;
+3005: decl local #1
+3006: local #0
+3007: get member 'desc'
+3008: :=
+3009: #
+if(currdesc[1] == "a")
+3010: local #1
+3011: 1L
+3012: [] 1
+3013: "a"
+3014: ==
+3015: if false goto 3043
+var space := find(item.desc, " ", 1);
+3016: decl local #0
+3017: local #0
+3018: get member 'desc'
+3019: " "
+3020: 1L
+3021: Func(0,6): find
+3022: :=
+3023: #
+var newname := currdesc[space+1,len(item.desc)];
+3024: decl local #1
+3025: local #1
+3026: local #2
+3027: 1L
+3028: +
+3029: local #0
+3030: get member 'desc'
+3031: Func(0,5): len
+3032: [,]
+3033: :=
+3034: #
+SetName(item,"a magic " + newname);
+3035: local #0
+3036: "a magic "
+3037: local #3
+3038: +
+3039: Func(2,17): SetName
+3040: #
+3041: leave block(2)
+3042: goto3049
+SetName(item, "magic " + currdesc);
+3043: local #0
+3044: "magic "
+3045: local #1
+3046: +
+3047: Func(2,17): SetName
+3048: #
+3049: 0L
+3050: return
+C:/pol2/scripts/include/startEqp.inc, Line 496
+function ApplyAccyMod(item)
+3051: pop param 'item'
+var numb := ((RandomInt(100)+1) - magicadjustment);
+3052: decl local #1
+3053: 100L
+3054: Func(5,0): RandomInt
+3055: 1L
+3056: +
+3057: global #4
+3058: -
+3059: :=
+3060: #
+if(numb < 1)
+3061: local #1
+3062: 1L
+3063: <
+3064: if false goto 3067
+numb := 1;
+3065: 1L
+3066: local1 := 
+var modifier := 0;
+3067: decl local #2
+3068: 0L
+3069: :=
+3070: #
+if(numb >= 50)
+3071: local #1
+3072: 50L
+3073: >=
+3074: if false goto 3083
+modifier := 5;
+3075: 5L
+3076: local2 := 
+SetObjProperty(item, "accuracy", "accurate");
+3077: local #0
+3078: "accuracy"
+3079: "accurate"
+3080: Func(2,3): SetObjProperty
+3081: #
+3082: goto3130
+elseif(numb >= 25)
+3083: local #1
+3084: 25L
+3085: >=
+3086: if false goto 3095
+modifier := 10;
+3087: 10L
+3088: local2 := 
+SetObjProperty(item, "accuracy", "surpassingly accurate");
+3089: local #0
+3090: "accuracy"
+3091: "surpassingly accurate"
+3092: Func(2,3): SetObjProperty
+3093: #
+3094: goto3130
+elseif(numb >= 15)
+3095: local #1
+3096: 15L
+3097: >=
+3098: if false goto 3107
+modifier := 15;
+3099: 15L
+3100: local2 := 
+SetObjProperty(item, "accuracy", "eminently accurate");
+3101: local #0
+3102: "accuracy"
+3103: "eminently accurate"
+3104: Func(2,3): SetObjProperty
+3105: #
+3106: goto3130
+elseif(numb >= 5)
+3107: local #1
+3108: 5L
+3109: >=
+3110: if false goto 3119
+modifier := 20;
+3111: 20L
+3112: local2 := 
+SetObjProperty(item, "accuracy", "exceedingly accurate");
+3113: local #0
+3114: "accuracy"
+3115: "exceedingly accurate"
+3116: Func(2,3): SetObjProperty
+3117: #
+3118: goto3130
+elseif(numb >= 1)
+3119: local #1
+3120: 1L
+3121: >=
+3122: if false goto 3130
+modifier := 25;
+3123: 25L
+3124: local2 := 
+SetObjProperty(item, "accuracy", "supremely accurate");
+3125: local #0
+3126: "accuracy"
+3127: "supremely accurate"
+3128: Func(2,3): SetObjProperty
+3129: #
+SetObjProperty(item, "type", "accuracy");
+3130: local #0
+3131: "type"
+3132: "accuracy"
+3133: Func(2,3): SetObjProperty
+3134: #
+SetObjProperty(item, "gain", modifier);
+3135: local #0
+3136: "gain"
+3137: local #2
+3138: Func(2,3): SetObjProperty
+3139: #
+3140: 0L
+3141: return
+C:/pol2/scripts/include/startEqp.inc, Line 472
+function ApplyDmgMod(item)
+3142: pop param 'item'
+var numb := ((RandomInt(100)+1) - magicadjustment);
+3143: decl local #1
+3144: 100L
+3145: Func(5,0): RandomInt
+3146: 1L
+3147: +
+3148: global #4
+3149: -
+3150: :=
+3151: #
+if(numb < 1)
+3152: local #1
+3153: 1L
+3154: <
+3155: if false goto 3158
+numb := 1;
+3156: 1L
+3157: local1 := 
+if(numb >= 50)
+3158: local #1
+3159: 50L
+3160: >=
+3161: if false goto 3171
+item.dmg_mod := 1;
+3162: local #0
+3163: 1L
+3164: set member 'dmg_mod' #
+SetObjProperty(item, "damagemod", "of ruin");
+3165: local #0
+3166: "damagemod"
+3167: "of ruin"
+3168: Func(2,3): SetObjProperty
+3169: #
+3170: goto3222
+elseif(numb >= 25)
+3171: local #1
+3172: 25L
+3173: >=
+3174: if false goto 3184
+item.dmg_mod := 3;
+3175: local #0
+3176: 3L
+3177: set member 'dmg_mod' #
+SetObjProperty(item, "damagemod", "of might");
+3178: local #0
+3179: "damagemod"
+3180: "of might"
+3181: Func(2,3): SetObjProperty
+3182: #
+3183: goto3222
+elseif(numb >= 15)
+3184: local #1
+3185: 15L
+3186: >=
+3187: if false goto 3197
+item.dmg_mod := 5;
+3188: local #0
+3189: 5L
+3190: set member 'dmg_mod' #
+SetObjProperty(item, "damagemod", "of force");
+3191: local #0
+3192: "damagemod"
+3193: "of force"
+3194: Func(2,3): SetObjProperty
+3195: #
+3196: goto3222
+elseif(numb >= 5)
+3197: local #1
+3198: 5L
+3199: >=
+3200: if false goto 3210
+item.dmg_mod := 7;
+3201: local #0
+3202: 7L
+3203: set member 'dmg_mod' #
+SetObjProperty(item, "damagemod", "of power");
+3204: local #0
+3205: "damagemod"
+3206: "of power"
+3207: Func(2,3): SetObjProperty
+3208: #
+3209: goto3222
+elseif(numb >= 1)
+3210: local #1
+3211: 1L
+3212: >=
+3213: if false goto 3222
+item.dmg_mod := 9;
+3214: local #0
+3215: 9L
+3216: set member 'dmg_mod' #
+SetObjProperty(item, "damagemod", "of vanquishing");
+3217: local #0
+3218: "damagemod"
+3219: "of vanquishing"
+3220: Func(2,3): SetObjProperty
+3221: #
+SilverMod(item);
+3222: local #0
+3223: makelocal
+3224: jmp userfunc @3779
+3225: #
+3226: 0L
+3227: return
+C:/pol2/scripts/include/startEqp.inc, Line 522
+function ApplyHPMod(item)
+3228: pop param 'item'
+var numb := ((RandomInt(100)+1) - magicadjustment);
+3229: decl local #1
+3230: 100L
+3231: Func(5,0): RandomInt
+3232: 1L
+3233: +
+3234: global #4
+3235: -
+3236: :=
+3237: #
+if(numb < 1)
+3238: local #1
+3239: 1L
+3240: <
+3241: if false goto 3244
+numb := 1;
+3242: 1L
+3243: local1 := 
+if(numb >= 50)
+3244: local #1
+3245: 50L
+3246: >=
+3247: if false goto 3260
+item.maxhp_mod := item.maxhp_mod + 05;
+3248: local #0
+3249: local #0
+3250: get member 'maxhp_mod'
+3251: 5L
+3252: +
+3253: set member 'maxhp_mod' #
+SetObjProperty(item, "durability", "durable");
+3254: local #0
+3255: "durability"
+3256: "durable"
+3257: Func(2,3): SetObjProperty
+3258: #
+3259: goto3323
+elseif(numb >= 25)
+3260: local #1
+3261: 25L
+3262: >=
+3263: if false goto 3276
+item.maxhp_mod := item.maxhp_mod + 10;
+3264: local #0
+3265: local #0
+3266: get member 'maxhp_mod'
+3267: 10L
+3268: +
+3269: set member 'maxhp_mod' #
+SetObjProperty(item, "durability", "substantial");
+3270: local #0
+3271: "durability"
+3272: "substantial"
+3273: Func(2,3): SetObjProperty
+3274: #
+3275: goto3323
+elseif(numb >= 15)
+3276: local #1
+3277: 15L
+3278: >=
+3279: if false goto 3292
+item.maxhp_mod := item.maxhp_mod + 15;
+3280: local #0
+3281: local #0
+3282: get member 'maxhp_mod'
+3283: 15L
+3284: +
+3285: set member 'maxhp_mod' #
+SetObjProperty(item, "durability", "massive");
+3286: local #0
+3287: "durability"
+3288: "massive"
+3289: Func(2,3): SetObjProperty
+3290: #
+3291: goto3323
+elseif(numb >= 5)
+3292: local #1
+3293: 5L
+3294: >=
+3295: if false goto 3308
+item.maxhp_mod := item.maxhp_mod + 20;
+3296: local #0
+3297: local #0
+3298: get member 'maxhp_mod'
+3299: 20L
+3300: +
+3301: set member 'maxhp_mod' #
+SetObjProperty(item, "durability", "fortified");
+3302: local #0
+3303: "durability"
+3304: "fortified"
+3305: Func(2,3): SetObjProperty
+3306: #
+3307: goto3323
+elseif(numb >= 1)
+3308: local #1
+3309: 1L
+3310: >=
+3311: if false goto 3323
+item.maxhp_mod := item.maxhp_mod + 25;
+3312: local #0
+3313: local #0
+3314: get member 'maxhp_mod'
+3315: 25L
+3316: +
+3317: set member 'maxhp_mod' #
+SetObjProperty(item, "durability", "indestructable");
+3318: local #0
+3319: "durability"
+3320: "indestructable"
+3321: Func(2,3): SetObjProperty
+3322: #
+item.hp := item.maxhp;
+3323: local #0
+3324: local #0
+3325: get member 'maxhp'
+3326: set member 'hp' #
+3327: 0L
+3328: return
+C:/pol2/scripts/include/startEqp.inc, Line 236
+function ArmorTable(item)
+3329: pop param 'item'
+var newarray := {1, 2};
+3330: decl local #1
+3331: array
+3332: 1L
+3333: +=
+3334: 2L
+3335: +=
+3336: :=
+3337: #
+var count := RandomInt(99) + 1;
+3338: decl local #2
+3339: 99L
+3340: Func(5,0): RandomInt
+3341: 1L
+3342: +
+3343: :=
+3344: #
+var counter;
+3345: decl local #3
+3346: #
+if(count >= 40)
+3347: local #2
+3348: 40L
+3349: >=
+3350: if false goto 3354
+counter := 1;
+3351: 1L
+3352: local3 := 
+3353: goto3356
+counter := 2;
+3354: 2L
+3355: local3 := 
+count := 0;
+3356: 0L
+3357: local2 := 
+var num;
+3358: decl local #4
+3359: #
+while(count <= counter)
+3360: local #2
+3361: local #3
+3362: <=
+3363: if false goto 3398
+num := RandomInt(99) + 1;
+3364: 99L
+3365: Func(5,0): RandomInt
+3366: 1L
+3367: +
+3368: local4 := 
+if(num >=  50)
+3369: local #4
+3370: 50L
+3371: >=
+3372: if false goto 3376
+num := 1;
+3373: 1L
+3374: local4 := 
+3375: goto3378
+num := 2;
+3376: 2L
+3377: local4 := 
+case(num)
+3378: local #4
+3379: casejmp
+	1: @3380
+	2: @3385
+	default: @3389
+ApplyHPMod(item);
+3380: local #0
+3381: makelocal
+3382: jmp userfunc @3228
+3383: #
+3384: goto3389
+ApplyARMod(item);
+3385: local #0
+3386: makelocal
+3387: jmp userfunc @3818
+3388: #
+newarray.erase(num);
+3389: local #1
+3390: local #4
+3391: Call Method erase (1 params)
+3392: #
+count := count + 1;
+3393: local #2
+3394: 1L
+3395: +
+3396: local2 := 
+3397: goto3360
+if((RandomInt(10)+1) <= 1)
+3398: 10L
+3399: Func(5,0): RandomInt
+3400: 1L
+3401: +
+3402: 1L
+3403: <=
+3404: if false goto 3409
+ExtraArmorTable(item);
+3405: local #0
+3406: makelocal
+3407: jmp userfunc @3592
+3408: #
+AddName(item);
+3409: local #0
+3410: makelocal
+3411: jmp userfunc @3004
+3412: #
+3413: 0L
+3414: return
+C:/pol2/scripts/include/startEqp.inc, Line 200
+function ClothTable(item)
+3415: pop param 'item'
+var val := RandomInt(19) + 1;
+3416: decl local #1
+3417: 19L
+3418: Func(5,0): RandomInt
+3419: 1L
+3420: +
+3421: :=
+3422: #
+if(val >= 14)
+3423: local #1
+3424: 14L
+3425: >=
+3426: if false goto 3451
+var charges := RandomDiceRoll("1d30") + 10;
+3427: decl local #0
+3428: "1d30"
+3429: Func(5,1): RandomDiceRoll
+3430: 10L
+3431: +
+3432: :=
+3433: #
+SetObjProperty(item, "charges", charges);
+3434: local #0
+3435: "charges"
+3436: local #2
+3437: Func(2,3): SetObjProperty
+3438: #
+SetObjProperty(item, "type", "sight");
+3439: local #0
+3440: "type"
+3441: "sight"
+3442: Func(2,3): SetObjProperty
+3443: #
+SetObjProperty(item, "damagemod", " of nightsight");
+3444: local #0
+3445: "damagemod"
+3446: " of nightsight"
+3447: Func(2,3): SetObjProperty
+3448: #
+3449: leave block(1)
+3450: goto3586
+elseif(val >= 11)
+3451: local #1
+3452: 11L
+3453: >=
+3454: if false goto 3479
+var charges := RandomDiceRoll("1d30") + 10;
+3455: decl local #0
+3456: "1d30"
+3457: Func(5,1): RandomDiceRoll
+3458: 10L
+3459: +
+3460: :=
+3461: #
+SetObjProperty(item, "charges", charges);
+3462: local #0
+3463: "charges"
+3464: local #2
+3465: Func(2,3): SetObjProperty
+3466: #
+SetObjProperty(item, "type", "protection");
+3467: local #0
+3468: "type"
+3469: "protection"
+3470: Func(2,3): SetObjProperty
+3471: #
+SetObjProperty(item, "damagemod", " of protection");
+3472: local #0
+3473: "damagemod"
+3474: " of protection"
+3475: Func(2,3): SetObjProperty
+3476: #
+3477: leave block(1)
+3478: goto3586
+elseif(val <= 8)
+3479: local #1
+3480: 8L
+3481: <=
+3482: if false goto 3507
+var charges := RandomDiceRoll("1d30") + 10;
+3483: decl local #0
+3484: "1d30"
+3485: Func(5,1): RandomDiceRoll
+3486: 10L
+3487: +
+3488: :=
+3489: #
+SetObjProperty(item, "charges", charges);
+3490: local #0
+3491: "charges"
+3492: local #2
+3493: Func(2,3): SetObjProperty
+3494: #
+SetObjProperty(item, "type", "strength");
+3495: local #0
+3496: "type"
+3497: "strength"
+3498: Func(2,3): SetObjProperty
+3499: #
+SetObjProperty(item, "damagemod", " of strength");
+3500: local #0
+3501: "damagemod"
+3502: " of strength"
+3503: Func(2,3): SetObjProperty
+3504: #
+3505: leave block(1)
+3506: goto3586
+elseif(val > 5)
+3507: local #1
+3508: 5L
+3509: >
+3510: if false goto 3535
+var charges := RandomDiceRoll("1d30") + 10;
+3511: decl local #0
+3512: "1d30"
+3513: Func(5,1): RandomDiceRoll
+3514: 10L
+3515: +
+3516: :=
+3517: #
+SetObjProperty(item, "charges", charges);
+3518: local #0
+3519: "charges"
+3520: local #2
+3521: Func(2,3): SetObjProperty
+3522: #
+SetObjProperty(item, "type", "invisibility");
+3523: local #0
+3524: "type"
+3525: "invisibility"
+3526: Func(2,3): SetObjProperty
+3527: #
+SetObjProperty(item, "damagemod", " of invisibility");
+3528: local #0
+3529: "damagemod"
+3530: " of invisibility"
+3531: Func(2,3): SetObjProperty
+3532: #
+3533: leave block(1)
+3534: goto3586
+elseif(val == 3)
+3535: local #1
+3536: 3L
+3537: ==
+3538: if false goto 3563
+var charges := RandomDiceRoll("1d30") + 10;
+3539: decl local #0
+3540: "1d30"
+3541: Func(5,1): RandomDiceRoll
+3542: 10L
+3543: +
+3544: :=
+3545: #
+SetObjProperty(item, "charges", charges);
+3546: local #0
+3547: "charges"
+3548: local #2
+3549: Func(2,3): SetObjProperty
+3550: #
+SetObjProperty(item, "type", "blessing");
+3551: local #0
+3552: "type"
+3553: "blessing"
+3554: Func(2,3): SetObjProperty
+3555: #
+SetObjProperty(item, "damagemod", " of blessing");
+3556: local #0
+3557: "damagemod"
+3558: " of blessing"
+3559: Func(2,3): SetObjProperty
+3560: #
+3561: leave block(1)
+3562: goto3586
+var charges := RandomDiceRoll("1d30") + 10;
+3563: decl local #0
+3564: "1d30"
+3565: Func(5,1): RandomDiceRoll
+3566: 10L
+3567: +
+3568: :=
+3569: #
+SetObjProperty(item, "charges", charges);
+3570: local #0
+3571: "charges"
+3572: local #2
+3573: Func(2,3): SetObjProperty
+3574: #
+SetObjProperty(item, "type", "reflect");
+3575: local #0
+3576: "type"
+3577: "reflect"
+3578: Func(2,3): SetObjProperty
+3579: #
+SetObjProperty(item, "damagemod", " of magic reflection");
+3580: local #0
+3581: "damagemod"
+3582: " of magic reflection"
+3583: Func(2,3): SetObjProperty
+3584: #
+3585: leave block(1)
+AddName(item);
+3586: local #0
+3587: makelocal
+3588: jmp userfunc @3004
+3589: #
+3590: 0L
+3591: return
+C:/pol2/scripts/include/startEqp.inc, Line 267
+function ExtraArmorTable(item)
+3592: pop param 'item'
+var val := RandomInt(4) + 1;
+3593: decl local #1
+3594: 4L
+3595: Func(5,0): RandomInt
+3596: 1L
+3597: +
+3598: :=
+3599: #
+case(val)
+3600: local #1
+3601: casejmp
+	1: @3602
+	2: @3646
+	3: @3690
+	4: @3734
+	default: @3777
+var charges := RandomDiceRoll("1d30") + 10;
+3602: decl local #0
+3603: "1d30"
+3604: Func(5,1): RandomDiceRoll
+3605: 10L
+3606: +
+3607: :=
+3608: #
+SetObjProperty(item, "charges", charges);
+3609: local #0
+3610: "charges"
+3611: local #2
+3612: Func(2,3): SetObjProperty
+3613: #
+SetObjProperty(item, "type", "protection");
+3614: local #0
+3615: "type"
+3616: "protection"
+3617: Func(2,3): SetObjProperty
+3618: #
+var dmgmod := GetObjProperty(item, "damagemod");
+3619: decl local #1
+3620: local #0
+3621: "damagemod"
+3622: Func(2,1): GetObjProperty
+3623: :=
+3624: #
+if(dmgmod)
+3625: local #3
+3626: if false goto 3637
+dmgmod := dmgmod + " and protection";
+3627: local #3
+3628: " and protection"
+3629: +
+3630: local3 := 
+SetObjProperty(item, "damagemod", dmgmod);
+3631: local #0
+3632: "damagemod"
+3633: local #3
+3634: Func(2,3): SetObjProperty
+3635: #
+3636: goto3644
+dmgmod := " of protection";
+3637: " of protection"
+3638: local3 := 
+SetObjProperty(item, "damagemod", dmgmod);
+3639: local #0
+3640: "damagemod"
+3641: local #3
+3642: Func(2,3): SetObjProperty
+3643: #
+3644: leave block(2)
+3645: goto3777
+var charges := RandomDiceRoll("1d30") + 10;
+3646: decl local #0
+3647: "1d30"
+3648: Func(5,1): RandomDiceRoll
+3649: 10L
+3650: +
+3651: :=
+3652: #
+SetObjProperty(item, "charges", charges);
+3653: local #0
+3654: "charges"
+3655: local #2
+3656: Func(2,3): SetObjProperty
+3657: #
+SetObjProperty(item, "type", "strength");
+3658: local #0
+3659: "type"
+3660: "strength"
+3661: Func(2,3): SetObjProperty
+3662: #
+var dmgmod := GetObjProperty(item, "damagemod");
+3663: decl local #1
+3664: local #0
+3665: "damagemod"
+3666: Func(2,1): GetObjProperty
+3667: :=
+3668: #
+if(dmgmod)
+3669: local #3
+3670: if false goto 3681
+dmgmod := dmgmod + " and strength";
+3671: local #3
+3672: " and strength"
+3673: +
+3674: local3 := 
+SetObjProperty(item, "damagemod", dmgmod);
+3675: local #0
+3676: "damagemod"
+3677: local #3
+3678: Func(2,3): SetObjProperty
+3679: #
+3680: goto3688
+dmgmod := " of strength";
+3681: " of strength"
+3682: local3 := 
+SetObjProperty(item, "damagemod", dmgmod);
+3683: local #0
+3684: "damagemod"
+3685: local #3
+3686: Func(2,3): SetObjProperty
+3687: #
+3688: leave block(2)
+3689: goto3777
+var charges := RandomDiceRoll("1d30") + 10;
+3690: decl local #0
+3691: "1d30"
+3692: Func(5,1): RandomDiceRoll
+3693: 10L
+3694: +
+3695: :=
+3696: #
+SetObjProperty(item, "charges", charges);
+3697: local #0
+3698: "charges"
+3699: local #2
+3700: Func(2,3): SetObjProperty
+3701: #
+SetObjProperty(item, "type", "blessing");
+3702: local #0
+3703: "type"
+3704: "blessing"
+3705: Func(2,3): SetObjProperty
+3706: #
+var dmgmod := GetObjProperty(item, "damagemod");
+3707: decl local #1
+3708: local #0
+3709: "damagemod"
+3710: Func(2,1): GetObjProperty
+3711: :=
+3712: #
+if(dmgmod)
+3713: local #3
+3714: if false goto 3725
+dmgmod := dmgmod + " and blessing";
+3715: local #3
+3716: " and blessing"
+3717: +
+3718: local3 := 
+SetObjProperty(item, "damagemod", dmgmod);
+3719: local #0
+3720: "damagemod"
+3721: local #3
+3722: Func(2,3): SetObjProperty
+3723: #
+3724: goto3732
+dmgmod := " of blessing";
+3725: " of blessing"
+3726: local3 := 
+SetObjProperty(item, "damagemod", dmgmod);
+3727: local #0
+3728: "damagemod"
+3729: local #3
+3730: Func(2,3): SetObjProperty
+3731: #
+3732: leave block(2)
+3733: goto3777
+var charges := RandomDiceRoll("1d30") + 10;
+3734: decl local #0
+3735: "1d30"
+3736: Func(5,1): RandomDiceRoll
+3737: 10L
+3738: +
+3739: :=
+3740: #
+SetObjProperty(item, "charges", charges);
+3741: local #0
+3742: "charges"
+3743: local #2
+3744: Func(2,3): SetObjProperty
+3745: #
+SetObjProperty(item, "type", "reflect");
+3746: local #0
+3747: "type"
+3748: "reflect"
+3749: Func(2,3): SetObjProperty
+3750: #
+var dmgmod := GetObjProperty(item, "damagemod");
+3751: decl local #1
+3752: local #0
+3753: "damagemod"
+3754: Func(2,1): GetObjProperty
+3755: :=
+3756: #
+if(dmgmod)
+3757: local #3
+3758: if false goto 3769
+dmgmod := dmgmod + " and magic reflection";
+3759: local #3
+3760: " and magic reflection"
+3761: +
+3762: local3 := 
+SetObjProperty(item, "damagemod", dmgmod);
+3763: local #0
+3764: "damagemod"
+3765: local #3
+3766: Func(2,3): SetObjProperty
+3767: #
+3768: goto3776
+dmgmod := " of magic reflection";
+3769: " of magic reflection"
+3770: local3 := 
+SetObjProperty(item, "damagemod", dmgmod);
+3771: local #0
+3772: "damagemod"
+3773: local #3
+3774: Func(2,3): SetObjProperty
+3775: #
+3776: leave block(2)
+3777: 0L
+3778: return
+C:/pol2/scripts/include/startEqp.inc, Line 569
+function SilverMod(item)
+3779: pop param 'item'
+var numb := (RandomInt(10) + 1);
+3780: decl local #1
+3781: 10L
+3782: Func(5,0): RandomInt
+3783: 1L
+3784: +
+3785: :=
+3786: #
+if(numb == 1)
+3787: local #1
+3788: 1L
+3789: ==
+3790: if false goto 3816
+var hits := GetObjProperty(item, "OnHit");
+3791: decl local #0
+3792: local #0
+3793: "OnHit"
+3794: Func(2,1): GetObjProperty
+3795: :=
+3796: #
+if(!hits)
+3797: local #2
+3798: if true goto 3801
+hits := {};
+3799: array
+3800: local2 := 
+hits.append("silverHit");
+3801: local #2
+3802: "silverHit"
+3803: Call Method append (1 params)
+3804: #
+SetObjProperty(item, "OnHit", hits);
+3805: local #0
+3806: "OnHit"
+3807: local #2
+3808: Func(2,3): SetObjProperty
+3809: #
+SetObjProperty(item, "silvermod", 1);
+3810: local #0
+3811: "silvermod"
+3812: 1L
+3813: Func(2,3): SetObjProperty
+3814: #
+3815: leave block(1)
+3816: 0L
+3817: return
+C:/pol2/scripts/include/startEqp.inc, Line 546
+function ApplyARMod(item)
+3818: pop param 'item'
+var numb := ((RandomInt(100)+1) - magicadjustment);
+3819: decl local #1
+3820: 100L
+3821: Func(5,0): RandomInt
+3822: 1L
+3823: +
+3824: global #4
+3825: -
+3826: :=
+3827: #
+if(numb < 1)
+3828: local #1
+3829: 1L
+3830: <
+3831: if false goto 3834
+numb := 1;
+3832: 1L
+3833: local1 := 
+if(numb >= 50)
+3834: local #1
+3835: 50L
+3836: >=
+3837: if false goto 3847
+item.ar_mod := 5;
+3838: local #0
+3839: 5L
+3840: set member 'ar_mod' #
+SetObjProperty(item, "damagemod", "of defense");
+3841: local #0
+3842: "damagemod"
+3843: "of defense"
+3844: Func(2,3): SetObjProperty
+3845: #
+3846: goto3898
+elseif(numb >= 25)
+3847: local #1
+3848: 25L
+3849: >=
+3850: if false goto 3860
+item.ar_mod := 10;
+3851: local #0
+3852: 10L
+3853: set member 'ar_mod' #
+SetObjProperty(item, "damagemod", "of guarding");
+3854: local #0
+3855: "damagemod"
+3856: "of guarding"
+3857: Func(2,3): SetObjProperty
+3858: #
+3859: goto3898
+elseif(numb >= 15)
+3860: local #1
+3861: 15L
+3862: >=
+3863: if false goto 3873
+item.ar_mod := 15;
+3864: local #0
+3865: 15L
+3866: set member 'ar_mod' #
+SetObjProperty(item, "damagemod", "of hardening");
+3867: local #0
+3868: "damagemod"
+3869: "of hardening"
+3870: Func(2,3): SetObjProperty
+3871: #
+3872: goto3898
+elseif(numb >= 5)
+3873: local #1
+3874: 5L
+3875: >=
+3876: if false goto 3886
+item.ar_mod := 20;
+3877: local #0
+3878: 20L
+3879: set member 'ar_mod' #
+SetObjProperty(item, "damagemod", "of fortification");
+3880: local #0
+3881: "damagemod"
+3882: "of fortification"
+3883: Func(2,3): SetObjProperty
+3884: #
+3885: goto3898
+elseif(numb >= 1)
+3886: local #1
+3887: 1L
+3888: >=
+3889: if false goto 3898
+item.ar_mod := 25;
+3890: local #0
+3891: 25L
+3892: set member 'ar_mod' #
+SetObjProperty(item, "damagemod", "of invulnerability");
+3893: local #0
+3894: "damagemod"
+3895: "of invulnerability"
+3896: Func(2,3): SetObjProperty
+3897: #
+3898: 0L
+3899: return

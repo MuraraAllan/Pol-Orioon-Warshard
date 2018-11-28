@@ -1,0 +1,17 @@
+use os;
+use uo;
+use cfgfile;
+use util;
+use basic;
+
+include "../pkg/foundations/gumps/gumps";
+include "../pkg/items/guildstone/guildData";
+
+
+
+program gss(who)
+
+
+
+who.poisoned := 0;
+endprogram

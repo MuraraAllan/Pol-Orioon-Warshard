@@ -1,0 +1,24 @@
+use uo;
+use os;
+
+include "include/client";
+include "include/attributes";
+
+program spiritspeak(who)
+  EraseObjProperty(who, "IsMeditating");
+  EraseObjProperty(who, "HealTimer");
+  var pts := (CInt(GetEffectiveSkill(who, SKILLID_SPIRITSPEAK)) * 2) + 20;
+  if(CheckSkill(who, SKILLID_SPIRITSPEAK, -1,  pts))
+    SendSysMessage(who, "Voce Comeca A Se Cominicar com o outro mundo.",9,89);
+    Detach();
+    GrantPrivilege(who, "hearghosts");
+    who.enable("hearghosts");
+    PlaySoundEffect(who, SFX_SKILL_SPIRITSPEAK);
+    sleep(30);
+    RevokePrivilege(who, "hearghosts");
+  else
+    SendSysMessage(who, "Tu E Muito Besta Nao consegue nem fala com os mortos.",9,89);
+  endif
+endprogram
+
+

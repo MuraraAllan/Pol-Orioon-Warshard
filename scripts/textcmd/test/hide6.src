@@ -1,0 +1,130 @@
+use uo;
+
+include "include/attributes";
+
+program hide(who)
+  if(who.concealed == 1)
+    
+var i;
+for (i:=-11; i<=11; i:= i + 1)
+///\\\
+  PlayStationaryEffect(who.x +(i), who.y, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y+1, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y+2, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y+3, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y+4, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y+5, who.z, FX_FLAMESTRIKE, 7, 0x10 ); 
+  PlayStationaryEffect(who.x +(i), who.y+6, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y+7, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y+8, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y+9, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y+10, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y+11, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y-1, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y-2, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y-3, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y-4, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y-5, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y-6, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y-7, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y-8, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y-9, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y-10, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y-11, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+endfor
+
+sleepms(1200);
+
+for (i:=-11; i<=11; i:= i + 1)
+///\\\
+  PlayStationaryEffect(who.x +(i), who.y, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y+1, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y+2, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y+3, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y+4, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y+5, who.z, FX_FLAMESTRIKE, 7, 0x10 ); 
+  PlayStationaryEffect(who.x +(i), who.y+6, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y+7, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y+8, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y+9, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y+10, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y+11, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y-1, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y-2, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y-3, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y-4, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y-5, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y-6, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y-7, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y-8, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y-9, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y-10, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y-11, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+endfor
+
+who.concealed := 0;
+  else
+var i;
+for (i:=-11; i<=11; i:= i + 1)
+///\\\
+  PlayStationaryEffect(who.x +(i), who.y, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y+1, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y+2, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y+3, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y+4, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y+5, who.z, FX_FLAMESTRIKE, 7, 0x10 ); 
+  PlayStationaryEffect(who.x +(i), who.y+6, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y+7, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y+8, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y+9, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y+10, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y+11, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y-1, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y-2, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y-3, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y-4, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y-5, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y-6, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y-7, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y-8, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y-9, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y-10, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y-11, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+endfor
+
+sleepms(1200);
+
+for (i:=-11; i<=11; i:= i + 1)
+///\\\
+  PlayStationaryEffect(who.x +(i), who.y, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y+1, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y+2, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y+3, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y+4, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y+5, who.z, FX_FLAMESTRIKE, 7, 0x10 ); 
+  PlayStationaryEffect(who.x +(i), who.y+6, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y+7, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y+8, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y+9, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y+10, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y+11, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y-1, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y-2, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y-3, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y-4, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y-5, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y-6, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y-7, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y-8, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y-9, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y-10, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlayStationaryEffect(who.x +(i), who.y-11, who.z, FX_FLAMESTRIKE, 7, 0x10 );
+endfor
+
+
+
+
+    who.concealed := 1;
+  endif
+endprogram
+

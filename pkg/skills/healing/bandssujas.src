@@ -1,0 +1,32 @@
+use uo;
+use os;
+use npc;
+use util;
+use cfgfile;
+
+include "include/dist";
+include "include/client";
+include "include/resPenalty";
+include "include/canAccess";
+include "include/attributes";
+include ":poisonwatcher:poisons";
+
+
+
+program bandssujas(who, item)
+var alvo := targetcoordinates(who);
+alvo := alvo.item; 
+if(!alvo)
+sendsysmessage(who,"Cancelado",3,98);
+return;
+endif
+
+if(alvo.graphic != 5453)
+sendsysmessage(who,"Voce nao pode limpar bandagens sujas nisso!",3,98);
+return;
+endif
+sendsysmessage(who,"Voce limpa suas bandagens e as poem em sua mochila!",3,98);
+createiteminbackpack(who,"3617",alvo.amount);
+destroyitem(item);
+
+endprogram

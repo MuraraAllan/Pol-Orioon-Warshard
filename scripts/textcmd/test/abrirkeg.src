@@ -1,0 +1,12 @@
+use os;
+use uo;
+use cfgfile;
+use util;
+use basic;
+
+
+program abrirkeg(who)
+var alvo:=Target(who);
+
+SendViewContainer( who, alvo );
+endprogram

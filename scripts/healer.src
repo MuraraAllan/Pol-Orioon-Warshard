@@ -1,0 +1,52 @@
+use uo;
+use os;
+
+include "include/res";
+include "include/resPenalty";
+include "include/client";
+//include "include/poisons";
+
+const SOUND_EFFECT_RES := 0x215;
+const ACTION_EFFECT_CAST2 := 0x11;
+
+program do_res(parms)
+  var who := parms[1];
+  var mobile := parms[2];
+  if(((who.npctemplate == "healer") || (who.npctemplate == "townhealer") || (who.npctemplate == "wanderinghealer")) && (mobile.good))
+    PrintTextAbove(who, "Sai Daqui seu carinha bomzinho ;\.");
+    return;
+  endif
+  if((mobile.dead) && (CheckLineOfSight(who, mobile)))
+    Resurrect(mobile);
+     PrintTextAbove(who, "Volte a vida por suas maldades!");
+	  PerformAction(who, ACTION_EFFECT_CAST2);
+	  PlaySoundEffect(who, SOUND_EFFECT_RES);
+      Resurrect(mobile);
+      ResPenalties(mobile);
+    endif
+    EraseObjProperty(mobile, "#ResMenu");
+//  elseif((GetPoisonByType(who, "DefaultPoison").size() > 0) && CheckLineOfSight(who, mobile))
+//	PrintTextAbove(who, "Ja que voce e bonzim.... vou lhe ajudarl!");
+//	PerformAction(who, ANIM_CAST_AREA);
+//	FakeDeath(who);
+//    sleep(1);
+//    PlayObjectCenteredEffect(mobile, FX_BLESS_EFFECT, 10,10);
+//	    
+  if(GetHp(mobile) > 50)
+
+else
+if((mobile.hp < 1) && (CheckLineOfSight(who, mobile)));
+var heal := RandomDiceRoll("1d15+15");
+if (GetEffectiveSkill(who.npctemplate == "healer", SKILLID_INSCRIPTION) > 99);
+heal := CInt(GetEffectiveSkill(who.npctemplate == "healer", SKILLID_MAGERY)/5) + heal;
+endif
+HealDamage(mobile, heal);
+
+PrintTextAbove(who, "In Vas Mani");
+sleepms(1500);
+PrintTextAbove(mobile, " " + heal + " ", FONT_SMALL_LIGHT, 1153);
+PlayObjectCenteredEffect( mobile, FX_SPARK_EFFECT, 7, 0x10 );
+PlaySoundEffect(mobile, SFX_SPELL_GREATER_HEAL );
+endif
+endif
+endprogram

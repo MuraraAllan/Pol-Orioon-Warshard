@@ -1,0 +1,38 @@
+use os;
+use uo;
+use util;
+include "drinkPotion";
+include "include/canAccess";
+include "include/attributes";
+
+program drink_blue (who, potion)
+EraseObjProperty(who, "IsMeditating");
+EraseObjProperty(who, "HealTimer");
+var heal := RandomDiceRoll("1d10+10");
+var heala := RandomDiceRoll("1d45");
+var healb := RandomDiceRoll("1d64+1");
+if(!can_access(who, potion))
+    return;
+  endif
+  if(potion.movable == 0)
+    SendSysMessage(who, "Voce nao pode tomar isto.",9,89);
+    return;
+  endif
+  if(!checkifcandrink(who, "yellow"))
+    return;
+  endif
+if(potion.objtype == 0xdc01)
+HealDamage(who, heal);
+PrintTextAbove(who, " " + heal + " ", FONT_SMALL_LIGHT, 1153);  
+endif
+if(potion.objtype == 0xdc02)
+HealDamage(who, heala - 10);
+PrintTextAbove(who, " " + heala + " ", FONT_SMALL_LIGHT, 1153);  
+endif
+if(potion.objtype == 0xdc03)
+HealDamage(who, healb);
+PrintTextAbove(who, " " + healb + " ", FONT_SMALL_LIGHT, 1153);  
+endif
+empty_bottle(who, potion);
+PlaySoundEffect( who,  SOUND_EFFECT_HEAL );
+endprogram

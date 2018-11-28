@@ -1,0 +1,158 @@
+
+
+use uo;
+use os;
+use basic;
+
+include "include/eventID";
+include "include/attributes";
+include "include/sysEvent";
+include "include/objtype";
+
+program SignListener(sign)
+while(1)
+sleep(120);
+
+var house := GetObjProperty(sign, "house_serial");
+
+if (house)
+ house := SystemFindObjectBySerial(house);
+endif
+
+if(!house)
+ return;
+endif
+
+var decaytime := GetObjProperty(sign,"decay");
+if(!decaytime)
+ decaytime := (ReadGameClock() + 864000);
+ SetObjProperty(sign, "decay", decaytime);
+endif
+
+var newnamee := GetObjProperty(sign,"signname");
+if(!newnamee)
+newnamee := SetObjProperty(sign,"signname", "-" );
+endif
+
+newnamee := newnamee;
+
+      if(GetObjProperty(sign,"nodecay") == 1)
+        sign.name := newnamee + ", [decay trancado]";
+	sign.color := 1153;
+
+      elseif (ReadGameClock() > decaytime)
+        demolish(house);
+      
+      elseif((decaytime - ReadGameClock() ) > 864000)
+        sign.name := newnamee + ", [10 dias para decair]";
+
+      elseif((decaytime - ReadGameClock() ) > 777600)
+        sign.name  := newnamee + ", [9 dias para decair]";
+
+      elseif((decaytime - ReadGameClock() ) > 691200)
+         sign.name  := newnamee  + ", [8 dias para decair]";
+      
+      elseif((decaytime - ReadGameClock() ) > 604800)
+         sign.name  := newnamee + ", [7 dias para decair]";
+
+      elseif((decaytime - ReadGameClock() ) > 518400)
+        sign.name := newnamee  + ", [6 dias para decair]";
+
+      elseif((decaytime - ReadGameClock() ) > 432000)
+        sign.name  := newnamee  + ", [5 dias para decair]";
+
+      elseif((decaytime - ReadGameClock() ) > 345600)
+         sign.name := newnamee  + ", [4 dias para decair]";
+
+      elseif((decaytime - ReadGameClock() ) > 259200)
+         sign.name := newnamee  + ", [3 dias para decair]";
+
+      elseif((decaytime - ReadGameClock() ) > 172800)
+         sign.name := newnamee  + ", [2 dias para decair]";
+
+      elseif((decaytime - ReadGameClock() ) > 86400)
+        sign.name := newnamee  + ", [1 dia para decair]";
+
+      elseif((decaytime - ReadGameClock() ) > 3600)
+        sign.name := newnamee  + ", [1 Hora para decair]";
+
+      elseif((decaytime - ReadGameClock() ) > 1800)
+        sign.name := newnamee  + ", [30 minutos para decair]";
+
+      elseif((decaytime - ReadGameClock() ) > 600)
+        sign.name := newnamee  + ", [10 minutos para decair]";
+
+      elseif((decaytime - ReadGameClock() ) > 300)
+        sign.name := newnamee  + ", [5 minutos para decair]";
+
+      endif
+    
+
+   /// cleareventque();
+endwhile
+endprogram
+
+
+function cleareventque()
+  var ev;
+  repeat
+  until(!(ev := os::wait_for_event(0)));
+endfunction
+
+function handle_speech(event, house, sign, sec)
+  var text := lower(event.text );
+  if((text["!trancar"]) && (sec >= 2))
+
+  elseif((text["!destrancar"]) && (sec >= 2))
+    
+  elseif((text["!secure"]) && (sec >= 2))
+   
+  elseif((text["!unsecure"]) && (sec >= 2))
+   
+  elseif((text["!expulsar"]) && (sec >= 1))
+    
+  elseif((text["!banir"]) && (sec >= 1))
+    
+  elseif((text["!lixeira"]) && (sec >= 2))
+    
+  elseif(text["!revelar"])
+   
+  endif
+endfunction
+
+
+
+function demolish(house)
+
+///Retirar a Prop de q ja possui uma casa
+var contawho:=FindAccount(GetObjProperty(house, "owneracct"));
+contawho.setprop("possui_casa", 0);
+
+DestroyItem(SystemFindObjectBySerial(GetObjProperty(house, "builtdeed")));
+
+
+///Verificar NPC´s, Itens que não podem ser destruidos.
+foreach npc in (house.mobiles)
+ if(npc.npctemplate == "playervendor")
+  movecharactertolocation(npc , 5310, 1160, 0, MOVECHAR_FORCELOCATION);
+ endif
+endforeach  
+
+foreach item in (house.items)
+ if(item.objtype == 0xa390)
+  MoveItemToLocation(item, 5275, 1160, 0, MOVEITEM_FORCELOCATION);
+ endif
+endforeach
+
+
+///Destroy Itens da casa
+foreach item in (house.items)
+item.movable := 1;
+DestroyItem(item);
+endforeach
+
+DestroyMulti(house );
+
+
+
+endfunction

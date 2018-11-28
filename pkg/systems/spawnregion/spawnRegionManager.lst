@@ -1,0 +1,1997 @@
+C:/pol2/scripts/include/datafile.inc, Line 57
+var DF_DEBUG_MODE	:= 1;
+0: decl global #0
+1: 1L
+2: :=
+3: #
+C:\pol2\pkg\systems\spawnregion\spawnRegion.inc, Line 16
+var npccfg          := ReadConfigFile(":*:npcdesc");
+4: decl global #1
+5: ":*:npcdesc"
+6: Func(4,0): ReadConfigFile
+7: :=
+8: #
+var regcfg          := dictionary;  // Regions config.
+9: decl global #2
+10: dictionary
+11: :=
+12: #
+var grpcfg          := dictionary;  // Groups config.
+13: decl global #3
+14: dictionary
+15: :=
+16: #
+var regidx          := 0;           // Region index for SpawnAllRegions.
+17: decl global #4
+18: 0L
+19: :=
+20: #
+var regionscfg, groupscfg, counter;
+21: decl global #5
+22: #
+23: decl global #6
+24: #
+25: decl global #7
+26: #
+UnloadConfigFile(":spawnregion:spawnregions");
+27: ":spawnregion:spawnregions"
+28: Func(4,3): UnloadConfigFile
+29: #
+UnloadConfigFile(":spawnregion:spawngroups");
+30: ":spawnregion:spawngroups"
+31: Func(4,3): UnloadConfigFile
+32: #
+C:\pol2\pkg\systems\spawnregion\spawnRegionManager.src, Line 3
+var SpawnRegionData := DFOpenDataFile("SpawnRegionData", 1);
+33: decl global #8
+34: "SpawnRegionData"
+35: 1L
+36: 0L
+37: makelocal
+38: jmp userfunc @121
+39: :=
+40: #
+var SpawnRegionFreq := DFOpenDataFile("SpawnRegionFreq", 1);
+41: decl global #9
+42: "SpawnRegionFreq"
+43: 1L
+44: 0L
+45: makelocal
+46: jmp userfunc @121
+47: :=
+48: #
+C:\pol2\pkg\systems\spawnregion\spawnRegionManager.src, Line 6
+program SpawnRegionManager(param)
+49: get arg 'param'
+var pid := getpid();
+50: decl local #1
+51: Func(2,4): getpid
+52: :=
+53: #
+SetGlobalProperty("#SpawnRegionManagerPID", pid);
+54: "#SpawnRegionManagerPID"
+55: local #1
+56: Func(3,22): SetGlobalProperty
+57: #
+groupscfg := GlobalSpawnGroups();
+58: makelocal
+59: jmp userfunc @180
+60: global6 := 
+regionscfg := GlobalSpawnRegions();
+61: makelocal
+62: jmp userfunc @277
+63: global5 := 
+ReadRegions();
+64: makelocal
+65: jmp userfunc @421
+66: #
+ReadGroups();
+67: makelocal
+68: jmp userfunc @399
+69: #
+ValidateSpawnRegions();
+70: makelocal
+71: jmp userfunc @539
+72: #
+var ev;
+73: decl local #2
+74: #
+while(1)
+75: 1L
+76: if false goto 119
+var NextLoop := ReadGameClock() + 60;
+77: decl local #0
+78: Func(3,16): ReadGameClock
+79: 60L
+80: +
+81: :=
+82: #
+ev := os::wait_for_event(60);
+83: 60L
+84: Func(2,5): wait_for_event
+85: local2 := 
+if(ReadGameClock() >= NextLoop)
+86: Func(3,16): ReadGameClock
+87: local #3
+88: >=
+89: if false goto 117
+print("Beginning Spawn Region Sweep");
+90: "Beginning Spawn Region Sweep"
+91: Func(1,0): print
+92: #
+counter := 0;
+93: 0L
+94: global7 := 
+SpawnRegionData := DFOpenDataFile("SpawnRegionData", 1);
+95: "SpawnRegionData"
+96: 1L
+97: 0L
+98: makelocal
+99: jmp userfunc @121
+100: global8 := 
+SpawnRegionFreq := DFOpenDataFile("SpawnRegionFreq", 1);
+101: "SpawnRegionFreq"
+102: 1L
+103: 0L
+104: makelocal
+105: jmp userfunc @121
+106: global9 := 
+SpawnAllRegions();
+107: makelocal
+108: jmp userfunc @443
+109: #
+print("Ending Spawn Region Sweep, " + counter + " NPCs spawned this cycle");
+110: "Ending Spawn Region Sweep, "
+111: global #7
+112: +
+113: " NPCs spawned this cycle"
+114: +
+115: Func(1,0): print
+116: #
+117: leave block(1)
+118: goto75
+119: leave block(3)
+120: progend
+C:/pol2/scripts/include/datafile.inc, Line 59
+function DFOpenDataFile(filename, create:=DF_NO_CREATE, flags:=DF_KEYTYPE_STRIN
+121: pop param 'flags'
+122: pop param 'create'
+123: pop param 'filename'
+var temp := OpenDataFile(filename);
+124: decl local #3
+125: local #2
+126: Func(6,0): OpenDataFile
+127: :=
+128: #
+if ( (!temp) && (create) )
+129: local #3
+130: !
+131: local #1
+132: &&
+133: if false goto 147
+DF_OutPut("Creating data file: " + filename);
+134: "Creating data file: "
+135: local #2
+136: +
+137: makelocal
+138: jmp userfunc @768
+139: #
+CreateDataFile(filename, flags);
+140: local #2
+141: local #0
+142: Func(6,1): CreateDataFile
+143: #
+temp := OpenDataFile(filename);
+144: local #2
+145: Func(6,0): OpenDataFile
+146: local3 := 
+if ( temp )
+147: local #3
+148: if false goto 152
+return temp;
+149: local #3
+150: return
+151: goto178
+elseif ( create ) 
+152: local #1
+153: if false goto 178
+var errmsg := error;
+154: decl local #0
+155: error
+156: :=
+157: #
+errmsg.+errortext := "Could not open " + filename + ":" + temp.errortext;
+158: local #4
+159: "errortext"
+160: .+
+161: "Could not open "
+162: local #2
+163: +
+164: ":"
+165: +
+166: local #3
+167: get member 'errortext'
+168: +
+169: := #
+DF_OutPut(errmsg.errortext);
+170: local #4
+171: get member 'errortext'
+172: makelocal
+173: jmp userfunc @768
+174: #
+return errmsg;
+175: local #4
+176: return
+177: leave block(1)
+178: 0L
+179: return
+C:\pol2\pkg\systems\spawnregion\spawnRegionManager.src, Line 30
+function GlobalSpawnGroups()
+var dfile := OpenDataFile("SpawnGroups");
+180: decl local #0
+181: "SpawnGroups"
+182: Func(6,0): OpenDataFile
+183: :=
+184: #
+if(!dfile)
+185: local #0
+186: if true goto 275
+dfile := CreateDataFile("SpawnGroups");
+187: "SpawnGroups"
+188: 0L
+189: Func(6,1): CreateDataFile
+190: local0 := 
+var cfg := ReadConfigFile(":spawnregion:spawngroups");
+191: decl local #0
+192: ":spawnregion:spawngroups"
+193: Func(4,0): ReadConfigFile
+194: :=
+195: #
+var grouparray := {};
+196: decl local #1
+197: array
+198: :=
+199: #
+var holder := {};
+200: decl local #2
+201: array
+202: :=
+203: #
+var ary, plc;
+204: decl local #3
+205: #
+206: decl local #4
+207: #
+foreach group in GetConfigStringKeys(cfg)
+208: local #1
+209: Func(4,4): GetConfigStringKeys
+210: initforeach @237
+holder.append(group);
+211: local #3
+212: local #6
+213: Call Method append (1 params)
+214: #
+plc := FindConfigElem(cfg, group);
+215: local #1
+216: local #6
+217: Func(4,1): FindConfigElem
+218: local5 := 
+ary := GetConfigStringArray(plc, "npc");
+219: local #5
+220: "npc"
+221: Func(4,5): GetConfigStringArray
+222: local4 := 
+foreach entry in ary
+223: local #4
+224: initforeach @229
+holder.append(entry);
+225: local #3
+226: local #9
+227: Call Method append (1 params)
+228: #
+229: stepforeach @225
+230: leave block(3)
+grouparray.append(holder);
+231: local #2
+232: local #3
+233: Call Method append (1 params)
+234: #
+holder := {};
+235: array
+236: local3 := 
+237: stepforeach @211
+238: leave block(3)
+var group, groupholder := {};
+239: decl local #5
+240: #
+241: decl local #6
+242: array
+243: :=
+244: #
+foreach thing in grouparray
+245: local #2
+246: initforeach @272
+group := dfile.CreateElement(thing[1]);
+247: local #0
+248: local #8
+249: 1L
+250: [] 1
+251: Call Method createelement (1 params)
+252: local6 := 
+thing.erase(1);
+253: local #8
+254: 1L
+255: Call Method erase (1 params)
+256: #
+foreach subthing in thing
+257: local #8
+258: initforeach @263
+groupholder.append(subthing);
+259: local #7
+260: local #11
+261: Call Method append (1 params)
+262: #
+263: stepforeach @259
+264: leave block(3)
+group.SetProp("npc", groupholder);
+265: local #6
+266: "npc"
+267: local #7
+268: Call Method setprop (2 params)
+269: #
+groupholder := {};
+270: array
+271: local7 := 
+272: stepforeach @247
+273: leave block(3)
+274: leave block(7)
+return dfile;
+275: local #0
+276: return
+C:\pol2\pkg\systems\spawnregion\spawnRegionManager.src, Line 62
+function GlobalSpawnRegions()
+var dfile := OpenDataFile("SpawnRegions");
+277: decl local #0
+278: "SpawnRegions"
+279: Func(6,0): OpenDataFile
+280: :=
+281: #
+if(!dfile)
+282: local #0
+283: if true goto 397
+dfile := CreateDataFile("SpawnRegions");
+284: "SpawnRegions"
+285: 0L
+286: Func(6,1): CreateDataFile
+287: local0 := 
+var cfg := ReadConfigFile(":spawnregion:spawnregions");
+288: decl local #0
+289: ":spawnregion:spawnregions"
+290: Func(4,0): ReadConfigFile
+291: :=
+292: #
+var grouparray := {};
+293: decl local #1
+294: array
+295: :=
+296: #
+var holder := {};
+297: decl local #2
+298: array
+299: :=
+300: #
+var ary, plc;
+301: decl local #3
+302: #
+303: decl local #4
+304: #
+foreach group in GetConfigStringKeys(cfg)
+305: local #1
+306: Func(4,4): GetConfigStringKeys
+307: initforeach @341
+holder.append(group);
+308: local #3
+309: local #6
+310: Call Method append (1 params)
+311: #
+holder.append(cfg[group]."rect");
+312: local #3
+313: local #1
+314: local #6
+315: [] 1
+316: get member 'rect'
+317: Call Method append (1 params)
+318: #
+plc := FindConfigElem(cfg, group);
+319: local #1
+320: local #6
+321: Func(4,1): FindConfigElem
+322: local5 := 
+ary := GetConfigStringArray(plc, "group");
+323: local #5
+324: "group"
+325: Func(4,5): GetConfigStringArray
+326: local4 := 
+foreach entry in ary
+327: local #4
+328: initforeach @333
+holder.append(entry);
+329: local #3
+330: local #9
+331: Call Method append (1 params)
+332: #
+333: stepforeach @329
+334: leave block(3)
+grouparray.append(holder);
+335: local #2
+336: local #3
+337: Call Method append (1 params)
+338: #
+holder := {};
+339: array
+340: local3 := 
+341: stepforeach @308
+342: leave block(3)
+var group, split;
+343: decl local #5
+344: #
+345: decl local #6
+346: #
+foreach thing in grouparray
+347: local #2
+348: initforeach @394
+group := dfile.CreateElement(thing[1]);
+349: local #0
+350: local #8
+351: 1L
+352: [] 1
+353: Call Method createelement (1 params)
+354: local6 := 
+group.SetProp("rect", thing[2]);
+355: local #6
+356: "rect"
+357: local #8
+358: 2L
+359: [] 1
+360: Call Method setprop (2 params)
+361: #
+var num := 1;
+362: decl local #0
+363: 1L
+364: :=
+365: #
+foreach subthing in thing
+366: local #8
+367: initforeach @391
+if((subthing != thing[1]) && (subthing != thing[2]))
+368: local #12
+369: local #8
+370: 1L
+371: [] 1
+372: <>
+373: local #12
+374: local #8
+375: 2L
+376: [] 1
+377: <>
+378: &&
+379: if false goto 391
+group.SetProp("group"+num, subthing);
+380: local #6
+381: "group"
+382: local #11
+383: +
+384: local #12
+385: Call Method setprop (2 params)
+386: #
+num := num + 1;
+387: local #11
+388: 1L
+389: +
+390: local11 := 
+391: stepforeach @368
+392: leave block(3)
+393: leave block(1)
+394: stepforeach @349
+395: leave block(3)
+396: leave block(7)
+return dfile;
+397: local #0
+398: return
+C:\pol2\pkg\systems\spawnregion\spawnRegion.inc, Line 37
+function ReadGroups()
+foreach grpname in(groupscfg.Keys())
+399: global #6
+400: Call Method keys (0 params)
+401: initforeach @417
+var grpelem := groupscfg.FindElement(grpname);
+402: decl local #0
+403: global #6
+404: local #0
+405: Call Method findelement (1 params)
+406: :=
+407: #
+if(!grpelem)
+408: local #3
+409: if true goto 412
+continue;
+410: leave block(1)
+411: goto417
+grpcfg[grpname] := grpelem;
+412: global #3
+413: local #0
+414: local #3
+415: [] := (1) #
+416: leave block(1)
+417: stepforeach @402
+418: leave block(3)
+419: 0L
+420: return
+C:\pol2\pkg\systems\spawnregion\spawnRegion.inc, Line 27
+function ReadRegions()
+foreach regname in(regionscfg.Keys())
+421: global #5
+422: Call Method keys (0 params)
+423: initforeach @439
+var regelem := regionscfg.FindElement(regname);
+424: decl local #0
+425: global #5
+426: local #0
+427: Call Method findelement (1 params)
+428: :=
+429: #
+if(!regelem)
+430: local #3
+431: if true goto 434
+continue;
+432: leave block(1)
+433: goto439
+regcfg[regname] := regelem;
+434: global #2
+435: local #0
+436: local #3
+437: [] := (1) #
+438: leave block(1)
+439: stepforeach @424
+440: leave block(3)
+441: 0L
+442: return
+C:\pol2\pkg\systems\spawnregion\spawnRegion.inc, Line 299
+function SpawnAllRegions()
+if(GetGlobalProperty("SpawnRegionOff"))
+443: "SpawnRegionOff"
+444: Func(3,17): GetGlobalProperty
+445: if false goto 448
+return 0;
+446: 0L
+447: return
+var regions := regionscfg.Keys();
+448: decl local #0
+449: global #5
+450: Call Method keys (0 params)
+451: :=
+452: #
+foreach reg in regions
+453: local #0
+454: initforeach @473
+SetGlobalProperty("#" + reg, 1);
+455: "#"
+456: local #1
+457: +
+458: 1L
+459: Func(3,22): SetGlobalProperty
+460: #
+SpawnRegion(reg);
+461: local #1
+462: makelocal
+463: jmp userfunc @477
+464: #
+EraseGlobalProperty("#" + reg);
+465: "#"
+466: local #1
+467: +
+468: Func(3,23): EraseGlobalProperty
+469: #
+sleepms(1);
+470: 1L
+471: Func(2,3): sleepms
+472: #
+473: stepforeach @455
+474: leave block(3)
+475: 0L
+476: return
+C:\pol2\pkg\systems\spawnregion\spawnRegion.inc, Line 46
+function SpawnRegion(region)
+477: pop param 'region'
+var ct1 := counter;
+478: decl local #1
+479: global #7
+480: :=
+481: #
+if(GetGlobalProperty("SpawnRegionOff"))
+482: "SpawnRegionOff"
+483: Func(3,17): GetGlobalProperty
+484: if false goto 487
+return 0;
+485: 0L
+486: return
+foreach thing in(regcfg[region].propnames())
+487: global #2
+488: local #0
+489: [] 1
+490: Call Method propnames (0 params)
+491: initforeach @532
+if(thing != "rect")
+492: local #2
+493: "rect"
+494: <>
+495: if false goto 532
+var grpdata := SplitWords(regcfg[region].GetProp(thing));
+496: decl local #0
+497: global #2
+498: local #0
+499: [] 1
+500: local #2
+501: Call Method getprop (1 params)
+502: Func(0,4): SplitWords
+503: :=
+504: #
+SpawnGroup(region, grpdata[1], CInt(grpdata[2]), CInt(grpdata[3]), CInt(grpdata
+505: local #0
+506: local #5
+507: 1L
+508: [] 1
+509: local #5
+510: 2L
+511: [] 1
+512: Func(0,3): CInt
+513: local #5
+514: 3L
+515: [] 1
+516: Func(0,3): CInt
+517: local #5
+518: 4L
+519: [] 1
+520: Func(0,3): CInt
+521: local #5
+522: 5L
+523: [] 1
+524: Func(0,3): CInt
+525: makelocal
+526: jmp userfunc @933
+527: #
+sleepms(1);
+528: 1L
+529: Func(2,3): sleepms
+530: #
+531: leave block(1)
+532: stepforeach @492
+533: leave block(3)
+sleepms(1);
+534: 1L
+535: Func(2,3): sleepms
+536: #
+537: 0L
+538: return
+C:\pol2\pkg\systems\spawnregion\spawnRegion.inc, Line 351
+function ValidateSpawnRegions()
+print("////////////////////////////////////////");
+539: "////////////////////////////////////////"
+540: Func(1,0): print
+541: #
+print("// Validating Spawn Regions");
+542: "// Validating Spawn Regions"
+543: Func(1,0): print
+544: #
+print("////////////////////////////////////////");
+545: "////////////////////////////////////////"
+546: Func(1,0): print
+547: #
+var count := 0;
+548: decl local #0
+549: 0L
+550: :=
+551: #
+var cfggroups, ingrpcfg, spawns, obj, num;
+552: decl local #1
+553: #
+554: decl local #2
+555: #
+556: decl local #3
+557: #
+558: decl local #4
+559: #
+560: decl local #5
+561: #
+var keys := SpawnRegionData.keys();
+562: decl local #6
+563: global #8
+564: Call Method keys (0 params)
+565: :=
+566: #
+foreach regname in keys
+567: local #6
+568: initforeach @696
+if(!regcfg.exists(regname))
+569: global #2
+570: local #7
+571: Call Method exists (1 params)
+572: if true goto 586
+DespawnRegion(regname);
+573: local #7
+574: makelocal
+575: jmp userfunc @744
+576: #
+SpawnRegionData.DeleteElement(regname);
+577: global #8
+578: local #7
+579: Call Method deleteelement (1 params)
+580: #
+SpawnRegionFreq.DeleteElement(regname);
+581: global #9
+582: local #7
+583: Call Method deleteelement (1 params)
+584: #
+continue;
+585: goto696
+var delem := DFFindElement(SpawnRegionData, regname);
+586: decl local #0
+587: global #8
+588: local #7
+589: 0L
+590: makelocal
+591: jmp userfunc @776
+592: :=
+593: #
+var felem := DFFindElement(SpawnRegionFreq, regname);
+594: decl local #1
+595: global #9
+596: local #7
+597: 0L
+598: makelocal
+599: jmp userfunc @776
+600: :=
+601: #
+foreach grpname in (delem.PropNames())
+602: local #10
+603: Call Method propnames (0 params)
+604: initforeach @690
+ingrpcfg := 0;
+605: 0L
+606: local2 := 
+var elm := regcfg[regname];
+607: decl local #0
+608: global #2
+609: local #7
+610: [] 1
+611: :=
+612: #
+foreach cgrp in(elm.PropNames())
+613: local #15
+614: Call Method propnames (0 params)
+615: initforeach @632
+cgrp := elm.GetProp(cgrp);
+616: local #15
+617: local #16
+618: Call Method getprop (1 params)
+619: local16 := 
+cgrp := SplitWords(cgrp);
+620: local #16
+621: Func(0,4): SplitWords
+622: local16 := 
+if(cgrp[1] == grpname)
+623: local #16
+624: 1L
+625: [] 1
+626: local #12
+627: ==
+628: if false goto 632
+ingrpcfg := 1;
+629: 1L
+630: local2 := 
+break;
+631: goto633
+632: stepforeach @616
+633: leave block(3)
+if(!ingrpcfg)
+634: local #2
+635: if true goto 651
+DespawnGroup(regname, grpname);
+636: local #7
+637: local #12
+638: makelocal
+639: jmp userfunc @725
+640: #
+delem.EraseProp(grpname);
+641: local #10
+642: local #12
+643: Call Method eraseprop (1 params)
+644: #
+felem.EraseProp(grpname);
+645: local #11
+646: local #12
+647: Call Method eraseprop (1 params)
+648: #
+continue;
+649: leave block(1)
+650: goto690
+var holder := array;
+651: decl local #1
+652: array
+653: :=
+654: #
+foreach thing in DFGetPRop(delem, grpname)
+655: local #10
+656: local #12
+657: 0L
+658: 0L
+659: makelocal
+660: jmp userfunc @841
+661: initforeach @677
+obj := SystemFindObjectBySerial(thing);
+662: local #17
+663: 0L
+664: Func(3,20): SystemFindObjectBySerial
+665: local4 := 
+if(obj)
+666: local #4
+667: if false goto 673
+holder.append(thing);
+668: local #16
+669: local #17
+670: Call Method append (1 params)
+671: #
+672: goto677
+count := count + 1;
+673: local #0
+674: 1L
+675: +
+676: local0 := 
+677: stepforeach @662
+678: leave block(3)
+delem.SetProp(grpname, holder);
+679: local #10
+680: local #12
+681: local #16
+682: Call Method setprop (2 params)
+683: #
+holder := {};
+684: array
+685: local16 := 
+sleepms(1);
+686: 1L
+687: Func(2,3): sleepms
+688: #
+689: leave block(2)
+690: stepforeach @605
+691: leave block(3)
+sleepms(1);
+692: 1L
+693: Func(2,3): sleepms
+694: #
+695: leave block(2)
+696: stepforeach @569
+697: leave block(3)
+EraseGlobalProperty("SpawnRegions");
+698: "SpawnRegions"
+699: Func(3,23): EraseGlobalProperty
+700: #
+EraseGlobalProperty("SpawnRegionsFreq");
+701: "SpawnRegionsFreq"
+702: Func(3,23): EraseGlobalProperty
+703: #
+print("////////////////////////////////////////");
+704: "////////////////////////////////////////"
+705: Func(1,0): print
+706: #
+print("//Done validating Spawn Region");
+707: "//Done validating Spawn Region"
+708: Func(1,0): print
+709: #
+print("//");
+710: "//"
+711: Func(1,0): print
+712: #
+print("//removed " + count + " invalid entries");
+713: "//removed "
+714: local #0
+715: +
+716: " invalid entries"
+717: +
+718: Func(1,0): print
+719: #
+print("////////////////////////////////////////");
+720: "////////////////////////////////////////"
+721: Func(1,0): print
+722: #
+723: 0L
+724: return
+C:\pol2\pkg\systems\spawnregion\spawnRegion.inc, Line 235
+function DespawnGroup(region, group)
+725: pop param 'group'
+726: pop param 'region'
+var spawns := GetGroupSpawns(region, group);
+727: decl local #2
+728: local #1
+729: local #0
+730: makelocal
+731: jmp userfunc @903
+732: :=
+733: #
+foreach spawn in spawns
+734: local #2
+735: initforeach @740
+Despawn(spawn);
+736: local #3
+737: makelocal
+738: jmp userfunc @1283
+739: #
+740: stepforeach @736
+741: leave block(3)
+742: 0L
+743: return
+C:\pol2\pkg\systems\spawnregion\spawnRegion.inc, Line 218
+function DespawnRegion(region)
+744: pop param 'region'
+var rgroups := DFFindElement(SpawnRegionData, region, 1);
+745: decl local #1
+746: global #8
+747: local #0
+748: 1L
+749: makelocal
+750: jmp userfunc @776
+751: :=
+752: #
+if(Len(rgroups))
+753: local #1
+754: Func(0,1): len
+755: if false goto 766
+foreach grp in(rgroups.PropNames())
+756: local #1
+757: Call Method propnames (0 params)
+758: initforeach @764
+DespawnGroup(region, grp);
+759: local #0
+760: local #2
+761: makelocal
+762: jmp userfunc @725
+763: #
+764: stepforeach @759
+765: leave block(3)
+766: 0L
+767: return
+C:/pol2/scripts/include/datafile.inc, Line 140
+function DF_OutPut(text)
+768: pop param 'text'
+if ( DF_DEBUG_MODE )
+769: global #0
+770: if false goto 774
+SysLog(text);
+771: local #0
+772: Func(2,0): syslog
+773: #
+774: 0L
+775: return
+C:/pol2/scripts/include/datafile.inc, Line 89
+function DFFindElement(byref file_ref, elem_name, create:=DF_NO_CREATE)
+776: pop param 'create'
+777: pop param 'elem_name'
+778: pop param byref 'file_ref'
+var temp := file_ref.FindElement( cstr(elem_name) );
+779: decl local #3
+780: local #2
+781: local #1
+782: Func(0,2): CStr
+783: Call Method findelement (1 params)
+784: :=
+785: #
+if (!temp && create)
+786: local #3
+787: !
+788: local #0
+789: &&
+790: if false goto 808
+DF_OutPut("Creating elem: " +  cstr(elem_name) );
+791: "Creating elem: "
+792: local #1
+793: Func(0,2): CStr
+794: +
+795: makelocal
+796: jmp userfunc @768
+797: #
+file_ref.CreateElement( cstr(elem_name) );
+798: local #2
+799: local #1
+800: Func(0,2): CStr
+801: Call Method createelement (1 params)
+802: #
+temp := file_ref.FindElement( cstr(elem_name) );
+803: local #2
+804: local #1
+805: Func(0,2): CStr
+806: Call Method findelement (1 params)
+807: local3 := 
+if ( temp )
+808: local #3
+809: if false goto 813
+return temp;
+810: local #3
+811: return
+812: goto839
+elseif (create)
+813: local #0
+814: if false goto 839
+var errmsg := error;
+815: decl local #0
+816: error
+817: :=
+818: #
+errmsg.+errortext := "Could not open data elem " + elem_name + ":" + temp.error
+819: local #4
+820: "errortext"
+821: .+
+822: "Could not open data elem "
+823: local #1
+824: +
+825: ":"
+826: +
+827: local #3
+828: get member 'errortext'
+829: +
+830: := #
+DF_OutPut(errmsg.errortext);
+831: local #4
+832: get member 'errortext'
+833: makelocal
+834: jmp userfunc @768
+835: #
+return errmsg;
+836: local #4
+837: return
+838: leave block(1)
+839: 0L
+840: return
+C:/pol2/scripts/include/datafile.inc, Line 119
+function DFGetProp(byref elem_ref, prop_name, create:=DF_NO_CREATE, assignval:=
+841: pop param 'assignval'
+842: pop param 'create'
+843: pop param 'prop_name'
+844: pop param byref 'elem_ref'
+var temp := elem_ref.GetProp(prop_name);
+845: decl local #4
+846: local #3
+847: local #2
+848: Call Method getprop (1 params)
+849: :=
+850: #
+if ( (!temp) && (create) )
+851: local #4
+852: !
+853: local #1
+854: &&
+855: if false goto 865
+elem_ref.SetProp(prop_name, assignval);
+856: local #3
+857: local #2
+858: local #0
+859: Call Method setprop (2 params)
+860: #
+temp := elem_ref.GetProp(prop_name);
+861: local #3
+862: local #2
+863: Call Method getprop (1 params)
+864: local4 := 
+if ( temp || (create) && (!assignval) )
+865: local #4
+866: local #1
+867: local #0
+868: !
+869: &&
+870: ||
+871: if false goto 875
+return temp;
+872: local #4
+873: return
+874: goto901
+elseif (create)
+875: local #1
+876: if false goto 901
+var errmsg := error;
+877: decl local #0
+878: error
+879: :=
+880: #
+errmsg.+errortext := "Could not read data file property " + prop_name + ":" + t
+881: local #5
+882: "errortext"
+883: .+
+884: "Could not read data file property "
+885: local #2
+886: +
+887: ":"
+888: +
+889: local #4
+890: get member 'errortext'
+891: +
+892: := #
+DF_OutPut(errmsg.errortext);
+893: local #5
+894: get member 'errortext'
+895: makelocal
+896: jmp userfunc @768
+897: #
+return errmsg;
+898: local #5
+899: return
+900: leave block(1)
+901: 0L
+902: return
+C:\pol2\pkg\systems\spawnregion\spawnRegion.inc, Line 263
+function GetGroupSpawns(region, group)
+903: pop param 'group'
+904: pop param 'region'
+var rgroups := DFFindElement(SpawnRegionData, region, 1);
+905: decl local #2
+906: global #8
+907: local #1
+908: 1L
+909: makelocal
+910: jmp userfunc @776
+911: :=
+912: #
+var sp := rgroups.GetProp(group);
+913: decl local #3
+914: local #2
+915: local #0
+916: Call Method getprop (1 params)
+917: :=
+918: #
+if (sp)
+919: local #3
+920: if false goto 924
+return sp;
+921: local #3
+922: return
+923: goto931
+rgroups.SetProp(group, array);
+924: local #2
+925: local #0
+926: array
+927: Call Method setprop (2 params)
+928: #
+return array;
+929: array
+930: return
+931: 0L
+932: return
+C:\pol2\pkg\systems\spawnregion\spawnRegion.inc, Line 107
+function SpawnGroup(region, group, max, freq, hrstart, hrend)
+933: pop param 'hrend'
+934: pop param 'hrstart'
+935: pop param 'freq'
+936: pop param 'max'
+937: pop param 'group'
+938: pop param 'region'
+var nextspawn := GetGroupFreq(region, group);
+939: decl local #6
+940: local #5
+941: local #4
+942: makelocal
+943: jmp userfunc @1322
+944: :=
+945: #
+if(nextspawn == -1)
+946: local #6
+947: -1L
+948: ==
+949: if false goto 953
+return 0;
+950: 0L
+951: return
+952: goto976
+elseif(hrstart and hrend)
+953: local #1
+954: local #0
+955: &&
+956: if false goto 976
+var hrnow := GetHourOfDay();
+957: decl local #0
+958: makelocal
+959: jmp userfunc @1343
+960: :=
+961: #
+if(!HourWithinRange(hrnow, hrstart, hrend))
+962: local #7
+963: local #1
+964: local #0
+965: makelocal
+966: jmp userfunc @1441
+967: if true goto 975
+DespawnGroup(region, group);
+968: local #5
+969: local #4
+970: makelocal
+971: jmp userfunc @725
+972: #
+return 0;
+973: 0L
+974: return
+975: leave block(1)
+var spawns := GetGroupSpawns(region, group);
+976: decl local #7
+977: local #5
+978: local #4
+979: makelocal
+980: jmp userfunc @903
+981: :=
+982: #
+if(spawns.size() >= CInt(max))
+983: local #7
+984: Call Method size (0 params)
+985: local #3
+986: Func(0,3): CInt
+987: >=
+988: if false goto 991
+return 0;
+989: 0L
+990: return
+if(!freq)
+991: local #2
+992: if true goto 995
+freq := DEFAULT_GRP_FREQUENCY;
+993: 5L
+994: local2 := 
+var clock := ReadGameClock();
+995: decl local #8
+996: Func(3,16): ReadGameClock
+997: :=
+998: #
+if(nextspawn > clock)
+999: local #6
+1000: local #8
+1001: >
+1002: if false goto 1005
+return 0;
+1003: 0L
+1004: return
+nextspawn := clock +(freq * 60);
+1005: local #8
+1006: local #2
+1007: 60L
+1008: *
+1009: +
+1010: local6 := 
+SetGroupFreq(region, group, nextspawn);
+1011: local #5
+1012: local #4
+1013: local #6
+1014: makelocal
+1015: jmp userfunc @1499
+1016: #
+if(spawns.size() >= max)
+1017: local #7
+1018: Call Method size (0 params)
+1019: local #3
+1020: >=
+1021: if false goto 1024
+return 0;
+1022: 0L
+1023: return
+var npcs := grpcfg[group].GetProp("npc");
+1024: decl local #9
+1025: global #3
+1026: local #4
+1027: [] 1
+1028: "npc"
+1029: Call Method getprop (1 params)
+1030: :=
+1031: #
+if(!npcs)
+1032: local #9
+1033: if true goto 1041
+syslog("Unable to find SpawnGroup: " + group);
+1034: "Unable to find SpawnGroup: "
+1035: local #4
+1036: +
+1037: Func(2,0): syslog
+1038: #
+return 0;
+1039: 0L
+1040: return
+var tospawn := max - spawns.size();
+1041: decl local #10
+1042: local #3
+1043: local #7
+1044: Call Method size (0 params)
+1045: -
+1046: :=
+1047: #
+var sp, template, npc;
+1048: decl local #11
+1049: #
+1050: decl local #12
+1051: #
+1052: decl local #13
+1053: #
+for(sp := 1; sp <= tospawn; sp := sp + 1)
+1054: local #11
+1055: 1L
+1056: :=
+1057: #
+1058: local #11
+1059: local #10
+1060: <=
+1061: if false goto 1090
+template := PickRandomNpc(npcs);
+1062: local #9
+1063: makelocal
+1064: jmp userfunc @1486
+1065: local12 := 
+npc := SpawnNpc(region, group, template);
+1066: local #5
+1067: local #4
+1068: local #12
+1069: makelocal
+1070: jmp userfunc @1098
+1071: local13 := 
+if(!npc)
+1072: local #13
+1073: if true goto 1075
+continue;
+1074: goto1083
+spawns.append(npc.serial);
+1075: local #7
+1076: local #13
+1077: get member 'serial'
+1078: Call Method append (1 params)
+1079: #
+sleepms(1);
+1080: 1L
+1081: Func(2,3): sleepms
+1082: #
+1083: local #11
+1084: local #11
+1085: 1L
+1086: +
+1087: :=
+1088: #
+1089: goto1058
+SetGroupSpawns(region, group, spawns);
+1090: local #5
+1091: local #4
+1092: local #7
+1093: makelocal
+1094: jmp userfunc @1523
+1095: #
+1096: 0L
+1097: return
+C:\pol2\pkg\systems\spawnregion\spawnRegion.inc, Line 158
+function SpawnNpc(region, group, template)
+1098: pop param 'template'
+1099: pop param 'group'
+1100: pop param 'region'
+var coords := SplitWords(regcfg[region].GetProp("rect"));
+1101: decl local #3
+1102: global #2
+1103: local #2
+1104: [] 1
+1105: "rect"
+1106: Call Method getprop (1 params)
+1107: Func(0,4): SplitWords
+1108: :=
+1109: #
+var x1 := CInt(coords[1]);
+1110: decl local #4
+1111: local #3
+1112: 1L
+1113: [] 1
+1114: Func(0,3): CInt
+1115: :=
+1116: #
+var y1 := CInt(coords[2]);
+1117: decl local #5
+1118: local #3
+1119: 2L
+1120: [] 1
+1121: Func(0,3): CInt
+1122: :=
+1123: #
+var x2 := CInt(coords[3]);
+1124: decl local #6
+1125: local #3
+1126: 3L
+1127: [] 1
+1128: Func(0,3): CInt
+1129: :=
+1130: #
+var y2 := CInt(coords[4]);
+1131: decl local #7
+1132: local #3
+1133: 4L
+1134: [] 1
+1135: Func(0,3): CInt
+1136: :=
+1137: #
+var x, y, z;
+1138: decl local #8
+1139: #
+1140: decl local #9
+1141: #
+1142: decl local #10
+1143: #
+var tries := 0;
+1144: decl local #11
+1145: 0L
+1146: :=
+1147: #
+var sh, info, npc, prop;
+1148: decl local #12
+1149: #
+1150: decl local #13
+1151: #
+1152: decl local #14
+1153: #
+1154: decl local #15
+1155: #
+x := RandomInt(x2-x1)+x1;
+1156: local #6
+1157: local #4
+1158: -
+1159: Func(5,0): RandomInt
+1160: local #4
+1161: +
+1162: local8 := 
+y := RandomInt(y2-y1)+y1;
+1163: local #7
+1164: local #5
+1165: -
+1166: Func(5,0): RandomInt
+1167: local #5
+1168: +
+1169: local9 := 
+z := GetMapInfo(x, y).z;
+1170: local #8
+1171: local #9
+1172: Func(3,18): GetMapInfo
+1173: get member 'z'
+1174: local10 := 
+tries := tries + 1;
+1175: local #11
+1176: 1L
+1177: +
+1178: local11 := 
+sh := GetStandingHeight(x, y, z);
+1179: local #8
+1180: local #9
+1181: local #10
+1182: Func(3,19): GetStandingHeight
+1183: local12 := 
+if(sh.multi || sh.multi.serial)
+1184: local #12
+1185: get member 'multi'
+1186: local #12
+1187: get member 'multi'
+1188: get member 'serial'
+1189: ||
+1190: if false goto 1194
+npc := 0;
+1191: 0L
+1192: local14 := 
+1193: goto1239
+info := Hex(GetMapInfo(x, y).landtile);
+1194: local #8
+1195: local #9
+1196: Func(3,18): GetMapInfo
+1197: get member 'landtile'
+1198: Func(0,7): Hex
+1199: local13 := 
+if((info < 0x406) ||(info > 0x455))
+1200: local #13
+1201: 1030L
+1202: <
+1203: local #13
+1204: 1109L
+1205: >
+1206: ||
+1207: if false goto 1239
+npc := CreateNpc(template, x, y, z);
+1208: local #0
+1209: local #8
+1210: local #9
+1211: local #10
+1212: 0L
+1213: makelocal
+1214: jmp userfunc @1261
+1215: local14 := 
+if(npc)
+1216: local #14
+1217: if false goto 1239
+counter := counter + 1;
+1218: global #7
+1219: 1L
+1220: +
+1221: global7 := 
+prop := array;
+1222: array
+1223: local15 := 
+prop.append(region);
+1224: local #15
+1225: local #2
+1226: Call Method append (1 params)
+1227: #
+prop.append(group);
+1228: local #15
+1229: local #1
+1230: Call Method append (1 params)
+1231: #
+SetObjProperty(npc, "SpawnRegion", prop);
+1232: local #14
+1233: "SpawnRegion"
+1234: local #15
+1235: Func(3,1): SetObjProperty
+1236: #
+return npc;
+1237: local #14
+1238: return
+sleepms(1);
+1239: 1L
+1240: Func(2,3): sleepms
+1241: #
+1242: local #11
+1243: 20L
+1244: >
+1245: if false goto 1156
+if(tries > MAX_SPAWN_TRIES)
+1246: local #11
+1247: 20L
+1248: >
+1249: if false goto 1259
+syslog("Exceeded max tries. Region = " + region + ", npc = " + template);
+1250: "Exceeded max tries. Region = "
+1251: local #2
+1252: +
+1253: ", npc = "
+1254: +
+1255: local #0
+1256: +
+1257: Func(2,0): syslog
+1258: #
+return 0;
+1259: 0L
+1260: return
+C:/pol2/scripts/include/createNPC.inc, Line 4
+function CreateNpc(template, x, y, z, props := 0)
+1261: pop param 'props'
+1262: pop param 'z'
+1263: pop param 'y'
+1264: pop param 'x'
+1265: pop param 'template'
+var npc := CreateNpcFromTemplate(template, x, y, z, props);
+1266: decl local #5
+1267: local #4
+1268: local #3
+1269: local #2
+1270: local #1
+1271: local #0
+1272: Func(3,0): CreateNpcFromTemplate
+1273: :=
+1274: #
+SetObjProperty(npc, "AiSerial", npc.serial);
+1275: local #5
+1276: "AiSerial"
+1277: local #5
+1278: get member 'serial'
+1279: Func(3,1): SetObjProperty
+1280: #
+return npc;
+1281: local #5
+1282: return
+C:\pol2\pkg\systems\spawnregion\spawnRegion.inc, Line 250
+function Despawn(serial)
+1283: pop param 'serial'
+var npc := SystemFindObjectBySerial(serial);
+1284: decl local #1
+1285: local #0
+1286: 0L
+1287: Func(3,20): SystemFindObjectBySerial
+1288: :=
+1289: #
+if(!npc)
+1290: local #1
+1291: if true goto 1295
+return 0;
+1292: 0L
+1293: return
+1294: goto1320
+SetObjProperty(npc, "guardkill", 1);
+1295: local #1
+1296: "guardkill"
+1297: 1L
+1298: Func(3,1): SetObjProperty
+1299: #
+SetObjProperty(npc, "NoSound", 1);
+1300: local #1
+1301: "NoSound"
+1302: 1L
+1303: Func(3,1): SetObjProperty
+1304: #
+ApplyRawDamage(npc, GetMaxHp(npc) * 2);
+1305: local #1
+1306: local #1
+1307: makelocal
+1308: jmp userfunc @1361
+1309: 2L
+1310: *
+1311: Func(3,21): ApplyRawDamage
+1312: #
+sleepms(1);
+1313: 1L
+1314: Func(2,3): sleepms
+1315: #
+counter := counter +1;
+1316: global #7
+1317: 1L
+1318: +
+1319: global7 := 
+1320: 0L
+1321: return
+C:\pol2\pkg\systems\spawnregion\spawnRegion.inc, Line 337
+function GetGroupFreq(region, group)
+1322: pop param 'group'
+1323: pop param 'region'
+var srfreq := DFFindElement(SpawnRegionFreq, region, 1);
+1324: decl local #2
+1325: global #9
+1326: local #1
+1327: 1L
+1328: makelocal
+1329: jmp userfunc @776
+1330: :=
+1331: #
+var freq := DFGetProp(srfreq, group, 1, 0);
+1332: decl local #3
+1333: local #2
+1334: local #0
+1335: 1L
+1336: 0L
+1337: makelocal
+1338: jmp userfunc @841
+1339: :=
+1340: #
+return freq;
+1341: local #3
+1342: return
+C:/pol2/scripts/include/clock.inc, Line 48
+function GetHourOfDay()
+var time := GetTimeofDay();
+1343: decl local #0
+1344: makelocal
+1345: jmp userfunc @1369
+1346: :=
+1347: #
+var colon := find(time, ":", 1);
+1348: decl local #1
+1349: local #0
+1350: ":"
+1351: 1L
+1352: Func(0,0): find
+1353: :=
+1354: #
+return CInt(time[1, colon]);
+1355: local #0
+1356: 1L
+1357: local #1
+1358: [,]
+1359: Func(0,3): CInt
+1360: return
+C:/pol2/scripts/include/attributes.inc, Line 464
+function GetMaxHp(who)
+1361: pop param 'who'
+return Cint(GetVitalMaximumValue(who, VITALID_LIFE)/ 100);
+1362: local #0
+1363: "Life"
+1364: Func(3,12): GetVitalMaximumValue
+1365: 100L
+1366: /
+1367: Func(0,3): CInt
+1368: return
+C:/pol2/scripts/include/clock.inc, Line 31
+function GetTimeofDay()
+var time_sec := GetTime();
+1369: decl local #0
+1370: makelocal
+1371: jmp userfunc @1566
+1372: :=
+1373: #
+var length := (GetDayLength() * 60) * 1.0;
+1374: decl local #1
+1375: makelocal
+1376: jmp userfunc @1547
+1377: 60L
+1378: *
+1379: 1LF
+1380: *
+1381: :=
+1382: #
+var temp := length / time_sec;
+1383: decl local #2
+1384: local #1
+1385: local #0
+1386: /
+1387: :=
+1388: #
+var raw_time := 24.0 / temp;
+1389: decl local #3
+1390: 24LF
+1391: local #2
+1392: /
+1393: :=
+1394: #
+var hours := CInt(raw_time);
+1395: decl local #4
+1396: local #3
+1397: Func(0,3): CInt
+1398: :=
+1399: #
+var remainder := raw_time - hours;
+1400: decl local #5
+1401: local #3
+1402: local #4
+1403: -
+1404: :=
+1405: #
+var minutes := CInt( remainder * 60 );
+1406: decl local #6
+1407: local #5
+1408: 60L
+1409: *
+1410: Func(0,3): CInt
+1411: :=
+1412: #
+if( len(CStr(minutes)) == 1 )
+1413: local #6
+1414: Func(0,2): CStr
+1415: Func(0,1): len
+1416: 1L
+1417: ==
+1418: if false goto 1424
+minutes := "0" + CStr(minutes);
+1419: "0"
+1420: local #6
+1421: Func(0,2): CStr
+1422: +
+1423: local6 := 
+if( len(CStr(hours)) == 1 )
+1424: local #4
+1425: Func(0,2): CStr
+1426: Func(0,1): len
+1427: 1L
+1428: ==
+1429: if false goto 1435
+hours := "0" + CStr(hours);
+1430: "0"
+1431: local #4
+1432: Func(0,2): CStr
+1433: +
+1434: local4 := 
+return (hours+":"+minutes);
+1435: local #4
+1436: ":"
+1437: +
+1438: local #6
+1439: +
+1440: return
+C:/pol2/scripts/include/clock.inc, Line 53
+function HourWithinRange(hr, hrstart, hrend)
+1441: pop param 'hrend'
+1442: pop param 'hrstart'
+1443: pop param 'hr'
+hr := CInt(hr) + 24;
+1444: local #2
+1445: Func(0,3): CInt
+1446: 24L
+1447: +
+1448: local2 := 
+hrstart := CInt(hrstart) + 24;
+1449: local #1
+1450: Func(0,3): CInt
+1451: 24L
+1452: +
+1453: local1 := 
+hrend := CInt(hrend) + 24;
+1454: local #0
+1455: Func(0,3): CInt
+1456: 24L
+1457: +
+1458: local0 := 
+if (hrstart > hrend)
+1459: local #1
+1460: local #0
+1461: >
+1462: if false goto 1474
+if (hr >= hrstart || hr < hrend)
+1463: local #2
+1464: local #1
+1465: >=
+1466: local #2
+1467: local #0
+1468: <
+1469: ||
+1470: if false goto 1473
+return 1;
+1471: 1L
+1472: return
+1473: goto1484
+if (hr >= hrstart && hr <= hrend)
+1474: local #2
+1475: local #1
+1476: >=
+1477: local #2
+1478: local #0
+1479: <=
+1480: &&
+1481: if false goto 1484
+return 1;
+1482: 1L
+1483: return
+return 0;
+1484: 0L
+1485: return
+C:\pol2\pkg\systems\spawnregion\spawnRegion.inc, Line 153
+function PickRandomNpc(byref npcs)
+1486: pop param byref 'npcs'
+var idx := RandomInt(npcs.size()) + 1;
+1487: decl local #1
+1488: local #0
+1489: Call Method size (0 params)
+1490: Func(5,0): RandomInt
+1491: 1L
+1492: +
+1493: :=
+1494: #
+return npcs[idx];
+1495: local #0
+1496: local #1
+1497: [] 1
+1498: return
+C:\pol2\pkg\systems\spawnregion\spawnRegion.inc, Line 343
+function SetGroupFreq(region, group, freq)
+1499: pop param 'freq'
+1500: pop param 'group'
+1501: pop param 'region'
+set_critical(1);
+1502: 1L
+1503: Func(2,1): set_critical
+1504: #
+var srfreq := DFFindElement(SpawnRegionFreq, region, 1);
+1505: decl local #3
+1506: global #9
+1507: local #2
+1508: 1L
+1509: makelocal
+1510: jmp userfunc @776
+1511: :=
+1512: #
+srfreq.SetProp(group, freq);
+1513: local #3
+1514: local #1
+1515: local #0
+1516: Call Method setprop (2 params)
+1517: #
+set_critical(0);
+1518: 0L
+1519: Func(2,1): set_critical
+1520: #
+1521: 0L
+1522: return
+C:\pol2\pkg\systems\spawnregion\spawnRegion.inc, Line 291
+function SetGroupSpawns(region, group, byref spawns)
+1523: pop param byref 'spawns'
+1524: pop param 'group'
+1525: pop param 'region'
+set_critical(1);
+1526: 1L
+1527: Func(2,1): set_critical
+1528: #
+var rgroups := DFFindElement(SpawnRegionData, region, 1);
+1529: decl local #3
+1530: global #8
+1531: local #2
+1532: 1L
+1533: makelocal
+1534: jmp userfunc @776
+1535: :=
+1536: #
+rgroups.SetProp(group, spawns);
+1537: local #3
+1538: local #1
+1539: local #0
+1540: Call Method setprop (2 params)
+1541: #
+set_critical(0);
+1542: 0L
+1543: Func(2,1): set_critical
+1544: #
+1545: 0L
+1546: return
+C:/pol2/scripts/include/clock.inc, Line 24
+function GetDayLength()
+var cfg := ReadConfigFile( "::days" );
+1547: decl local #0
+1548: "::days"
+1549: Func(4,0): ReadConfigFile
+1550: :=
+1551: #
+var elem := FindConfigElem( cfg, "WholeDay" );
+1552: decl local #1
+1553: local #0
+1554: "WholeDay"
+1555: Func(4,1): FindConfigElem
+1556: :=
+1557: #
+var length := GetConfigInt( elem, "Length" );
+1558: decl local #2
+1559: local #1
+1560: "Length"
+1561: Func(4,2): GetConfigInt
+1562: :=
+1563: #
+return length;
+1564: local #2
+1565: return
+C:/pol2/scripts/include/clock.inc, Line 5
+function GetTime()
+var cfg := ReadConfigFile( "::days" );
+1566: decl local #0
+1567: "::days"
+1568: Func(4,0): ReadConfigFile
+1569: :=
+1570: #
+var elem := FindConfigElem( cfg, "WholeDay" );
+1571: decl local #1
+1572: local #0
+1573: "WholeDay"
+1574: Func(4,1): FindConfigElem
+1575: :=
+1576: #
+var length := GetConfigInt( elem, "Length" );
+1577: decl local #2
+1578: local #1
+1579: "Length"
+1580: Func(4,2): GetConfigInt
+1581: :=
+1582: #
+var day_length := (60 * length);
+1583: decl local #3
+1584: 60L
+1585: local #2
+1586: *
+1587: :=
+1588: #
+var x := ReadGameClock();
+1589: decl local #4
+1590: Func(3,16): ReadGameClock
+1591: :=
+1592: #
+var bigpart := x / day_length;
+1593: decl local #5
+1594: local #4
+1595: local #3
+1596: /
+1597: :=
+1598: #
+var smallpart := bigpart * day_length;
+1599: decl local #6
+1600: local #5
+1601: local #3
+1602: *
+1603: :=
+1604: #
+x := (x - smallpart);
+1605: local #4
+1606: local #6
+1607: -
+1608: local4 := 
+return ( x );
+1609: local #4
+1610: return

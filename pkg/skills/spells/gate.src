@@ -1,0 +1,248 @@
+use os;
+use uo;
+
+include "include/spellRestrictions";
+include "include/isValidLoc";
+
+program spell_gate(parms)
+  var circle := 7;
+
+var prevtime;
+prevtime := ReadGameClock() + 8;
+  var success;
+  var delivery := "direct";
+  var noto := "neutral";
+  var result := maincast(parms, delivery, circle, noto, 52);
+  if(result == 0)
+    return;
+  endif
+  var caster := result[1];
+  var cast_on := result[2];
+
+  var  mana := GetMana(caster);
+ 
+if(!cast_on)
+sendsysmessage(caster,"Cancelado.");
+SetMana(caster, mana + 40);
+return;
+endif
+
+if(Readgameclock() >=  prevtime)
+    SendSysMessage(caster, "Voce demorou demais e perdeu o focus",9,90);
+PlayStationaryEffect( caster.x, caster.y, caster.z, FX_SMOKE, 0xa, 0xa );     
+ playSoundEffect(caster,0x005d);
+SetMana(caster, mana + 40);
+    return;
+  endif
+
+  if((cast_on.objtype != UOBJ_RUNE) && (cast_on.objtype != 0x6100))
+    SendSysMessage(caster, "Voce nao pode abrir gates atraves deste item!");
+   SetMana(caster, mana + 40);
+return;
+  endif
+
+  var tox := CInt(GetObjProperty( cast_on, "x" ));
+  var toy := CInt(GetObjProperty( cast_on, "y" ));
+  var toz := CInt(GetObjProperty( cast_on, "z" ));
+  if(!tox)
+    SendSysMessage(caster, "Sua runa precisa estar marcada.");
+SetMana(caster, mana + 40);
+return;
+
+  endif
+ 
+  if(GetObjProperty(cast_on, "Vendored"))
+    SendSysMessage(caster, "Sem bugga :(",9,89);
+    return;
+  endif
+  if(!isValidLoc(tox,toy))
+    SendSysMessage(caster,"Voce nao pode abrir gates para este lugar");
+SetMana(caster, mana + 40);
+return;
+ endif
+  PlaySoundEffect( caster, SFX_SPELL_GATE_TRAVEL );
+  var chk := 0;
+  if((caster.x >= 5120) && (caster.x <= 5375) && (caster.y >= 0) && (caster.y <= 255))
+    SendSysMessage(caster, "Voce nao pode abrir gates para este lugar");
+SetMana(caster, mana + 40);
+return;
+    if(cast_on.objtype == UOBJ_RUNE)
+       elseif(cast_on.objtype == 0x6100)
+      removeentry(cast_on);
+    endif
+    chk := 1;
+  endif
+  var multicheck := CreateItemAtLocation(5833, 1125, 0, 0xeed, 1);
+  multicheck.hidden := 1;
+  if(!MoveItemToLocation(multicheck, tox, toy, toz, MOVEITEM_NORMAL))
+    SendSysMessage(caster, "Voce nao pode abrir gates para este lugar, pois ha uma aura anti magia!");
+SetMana(caster, mana + 40);
+return;
+    if(cast_on.objtype == UOBJ_RUNE)
+      
+   elseif(cast_on.objtype == 0x6100)
+      removeentry(cast_on);
+    endif
+    chk := 1;
+  endif
+  if(multicheck.multi)
+           SendSysMessage(caster, "Voce nao pode abrir gates para este lugar, pois ha uma aura anti magia!");
+SetMana(caster, mana + 40);
+return;
+    if(cast_on.objtype == UOBJ_RUNE)
+      DestroyItem(cast_on);
+    elseif(cast_on.objtype == 0x6100)
+      removeentry(cast_on);
+    endif
+    chk := 1;
+  endif
+  DestroyItem(multicheck);
+  if(chk == 1)
+    return;
+  endif
+  if((tox >= 5120) && (tox <= 5375) && (toy >= 0) && (toy <= 255))
+      SendSysMessage(caster, "Voce nao pode recalar para este lugar, pois ha uma aura anti magia!");
+SetMana(caster, mana + 40);
+return;
+   
+  endif
+  var wx := caster.x;
+  var wy := caster.y;
+  var wz := caster.z;
+var a := ListItemsNearLocation( tox, toy, toz, 3 );
+var b := ListItemsNearLocation( wx, wy, wz, 3 );
+if(b)
+foreach bb in b
+if(bb.graphic == UOBJ_BLUE_MOONGATE)
+sendsysmessage(caster,"Nao eh possivel abrir gates proximo de outros!");
+PlayStationaryEffect( caster.x, caster.y, caster.z, FX_SMOKE, 0xa, 0xa );     
+ playSoundEffect(caster,0x005d);
+SetMana(caster, mana + 40);
+return;
+endif
+if(a)
+foreach aa in a
+if(aa.graphic == UOBJ_BLUE_MOONGATE)
+sendsysmessage(caster,"Nao eh possivel abrir gates proximo de outros!");
+PlayStationaryEffect( caster.x, caster.y, caster.z, FX_SMOKE, 0xa, 0xa );     
+ playSoundEffect(caster,0x005d);
+SetMana(caster, mana + 40);
+return;
+endif
+endforeach
+endif
+endforeach
+endif
+
+PlayStationaryEffect( wx, wy, wz, 6899, 1, 30, explode := 0 );
+  PlayStationaryEffect( tox, toy, toz, 6899, 1, 30, explode := 0 );
+  sleepms(1400);
+
+  var gate1 := CreateItemAtLocation( wx, wy, wz, UOBJ_BLUE_MOONGATE, 1 );
+ gate1.movable := 0;
+  var gate2 := CreateItemAtLocation( tox, toy, toz, UOBJ_BLUE_MOONGATE, 1 );
+ gate2.movable := 0;
+  if(!gate1)
+    DestroyItem(gate2);
+        SendSysMessage(caster, "Voce nao pode recalar para este lugar, pois ha uma aura anti magia!",9,89);
+    return;
+  endif
+  if (!gate2)
+    DestroyItem(gate1);
+        SendSysMessage(caster, "Voce nao pode recalar para este lugar, pois ha uma aura anti magia!",9,89);
+    return;
+  endif
+set_critical(0);
+renomear(cast_on,caster,gate1,gate2);
+cast_on.movable := 1;
+  SetObjProperty( gate1, "GateDestX", gate2.x );
+  SetObjProperty( gate1, "GateDestY", gate2.y );
+  SetObjProperty( gate1, "GateDestZ", gate2.z );
+  SetObjProperty( gate2, "GateDestX", gate1.x );
+  SetObjProperty( gate2, "GateDestY", gate1.y );
+  SetObjProperty( gate2, "GateDestZ", gate1.z );
+cast_on.movable := 1;
+ Detach();
+  sleep(cint(geteffectiveskill(caster,SKILLID_MAGERY) / 6) + randomdiceroll("1d4") + 1);
+  Detach();
+
+  DestroyItem( gate1 );
+  DestroyItem( gate2 );
+ set_critical(0);
+endprogram
+
+function removeentry(cast_on)
+  var tox := CInt(GetObjProperty( cast_on, "x" ));
+  var toy := CInt(GetObjProperty( cast_on, "y" ));
+  var toz := CInt(GetObjProperty( cast_on, "z" ));
+  var defs := GetObjProperty(cast_on, "runedefs");
+  var holder := {};
+  foreach thing in defs
+    if((Cint(thing[2]) != tox) or (Cint(thing[3]) != toy) or (Cint(thing[4]) != toz))
+      ///holder.append(thing);
+    endif
+  endforeach
+  SetObjProperty(cast_on, "runedefs", holder);
+  EraseObjProperty(cast_on, "x");
+  EraseObjProperty(cast_on, "y");
+  EraseObjProperty(cast_on, "z");
+  return;
+endfunction
+
+function renomear(cast_on,caster,item,item2)
+var cidade,cidade2;
+  var tox := CInt(GetObjProperty( cast_on, "x" ));
+  var toy := CInt(GetObjProperty( cast_on, "y" ));
+  var toz := CInt(GetObjProperty( cast_on, "z" ));
+  var wx := caster.x;
+  var wy := caster.y;
+  var wz := caster.z;
+
+if((tox >= 1414) && (tox <= 1540) && (toy >= 1534) && (toy <= 1915))
+cidade := "Britain";
+endif
+
+if((tox >= 2398) && (tox <= 2628) && (toy >= 360) && (toy <= 587))
+cidade := "Minoc";
+endif
+
+if((tox >= 523) && (tox <= 687) && (toy >= 2106) && (toy <= 2299))
+cidade := "Skara Brae";
+endif
+
+if((tox >= 1449) && (tox <= 1613) && (toy >= 1177) && (toy <= 1241))
+cidade := "Gullan";
+endif
+
+
+/////começo do renomeamento dos gates(caster)////
+
+if((wx >= 1414) && (wx <= 1540) && (wy >= 1534) && (wy <= 1915))
+cidade2 := "Britain";
+endif
+
+if((wx >= 2398) && (wx <= 2628) && (wy >= 360) && (wy <= 587))
+cidade2 := "Minoc";
+endif
+
+if((wx >= 523) && (wx <= 687) && (wy >= 2106) && (wy <= 2299))
+cidade2 := "Skara Brae";
+endif
+
+if((wx >= 1449) && (wx <= 1613) && (wy >= 1177) && (wy <= 1241))
+cidade2 := "Gullan";
+endif
+
+
+
+
+
+if((!cidade))
+cidade := "Desconhecido";
+endif 
+if(!cidade2)
+cidade2 := "Desconhecido";
+endif
+item.name := "Portal Mistico [" + cidade + "]" ;
+item2.name := "Portal Mistico [" + cidade2 + "]";
+endfunction

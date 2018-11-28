@@ -1,0 +1,18 @@
+use uo;
+
+
+program textcmd_tele(who)
+  if((who.cmdlevel < 3) && (who.multi))
+    SendSysMessage(who, "Voce nao pode mover players para dentro da casa.",0x9,90);
+    return;
+  endif
+  SendSysMessage(who, "Quem voce deseja trazer ate voce?",0x9,90);
+  var where := Target(who, TGTOPT_NOCHECK_LOS);
+  if(!where)
+    SendSysMessage(who, "Cancelado.",0x9,90);
+  endif
+  var result := MoveCharacterToLocation(where, who.x, who.y, who.z, MOVECHAR_FORCELOCATION);
+  if(!result)
+    SendSysMessage(who, result.errortext);
+  endif
+endprogram

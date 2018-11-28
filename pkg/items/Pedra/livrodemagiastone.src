@@ -1,0 +1,23 @@
+use uo; 
+include "include/attributes"; 
+
+program magia ( quem, item ) 
+DestroyItem(item);
+return;
+
+var book := CreateItemInBackpack( quem, 0x0efa, 1 ); 
+var scroll; 
+for( scroll := 0x1f2d; scroll <= 0x1f6c; scroll := scroll + 1 ) 
+CreateItemInContainer( book, scroll, 1 ); 
+book.name:="Livro de Magias"; 
+endfor 
+var i; 
+for (i := 0; i <= SKILLID__HIGHEST; i := i + 1) 
+var res := SetBaseSkillBaseValue( quem, i, 1000 ); 
+if (res == error) 
+syslog( "Nao foi possivel criar isso " + quem.name ); 
+
+endif 
+endfor 
+sendsysmessage(quem, "Voce pegou 1 Livro de Magia",9,89); 
+endprogram 

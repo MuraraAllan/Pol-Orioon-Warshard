@@ -1,0 +1,71 @@
+use os;
+use uo;
+use cfgfile;
+use util;
+use basic;
+
+include "include/client";
+include "include/attributes";
+
+program zerarskills(who)
+
+
+
+foreach acc in ListAccounts()
+
+var conta:=FindAccount( acc );
+
+if((conta.GetCharacter(1)))
+var rate := GetAttributeBaseValue(conta.GetCharacter(1),"MagicResistance");
+if((rate >= 810) || (rate <= 500))
+var res := SetBaseSkillBaseValue( conta.GetCharacter(1), 26, 800 );
+endif
+endif
+
+
+if((conta.GetCharacter(2)))
+var rate := GetAttributeBaseValue(conta.GetCharacter(2),"MagicResistance");
+if((rate >= 810) || (rate <= 500))
+var res := SetBaseSkillBaseValue( conta.GetCharacter(2), 26, 800 );
+endif
+
+endif
+
+
+
+
+if((conta.GetCharacter(3)))
+
+var rate := GetAttributeBaseValue(conta.GetCharacter(3),"MagicResistance");
+if((rate >= 810) || (rate <= 500))
+var res := SetBaseSkillBaseValue( conta.GetCharacter(3), 26, 800 );
+endif
+
+endif
+
+
+
+
+if((conta.GetCharacter(4)))
+var rate := GetAttributeBaseValue(conta.GetCharacter(4),"MagicResistance");
+if((rate >= 810) || (rate <= 500))
+var res := SetBaseSkillBaseValue( conta.GetCharacter(4), 26, 800 );
+endif
+
+endif
+
+
+
+
+if((conta.GetCharacter(5)))
+var rate := GetAttributeBaseValue(conta.GetCharacter(5),"MagicResistance");
+if((rate >= 810) || (rate <= 500))
+var res := SetBaseSkillBaseValue( conta.GetCharacter(5), 26, 800);
+endif
+
+endif
+
+
+endforeach
+endprogram
+ 

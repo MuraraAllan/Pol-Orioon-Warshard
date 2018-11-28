@@ -1,0 +1,17 @@
+use uo;
+
+program hideme( gm )
+    SendSysMessage( gm, "Selecione quem voce deseja tirar de frozen?",0x9,90 );
+    var res := TargetCoordinates( gm );
+    if (res.mobile)
+        res.mobile.frozen := 0;
+	if (GetObjProperty(res.mobile, "frozen"))
+		EraseObjProperty(res.mobile,"frozen");
+	else
+		SendSysMessage( gm, "that wasn't frozen");
+	endif
+        Sendsysmessage( res.mobile, res.mobile.name + "Nao esta mais frozen",0x9,90 );
+    else
+        SendSysMessage( gm, "Cancelado.",0x9,90 );
+    endif
+endprogram

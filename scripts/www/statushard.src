@@ -1,0 +1,13 @@
+use os;
+use uo;
+use util;
+use http;
+
+include "include/clock";
+include "include/accounts";
+
+program display_server_status ()
+		
+	WriteHTML ("666");
+
+endprogram

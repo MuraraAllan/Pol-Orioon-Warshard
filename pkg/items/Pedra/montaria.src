@@ -1,0 +1,93 @@
+
+use uo;
+use os;
+include "include/attributes";
+include "../pkg/foundations/gumps/gumps";                                            
+
+
+program Pedra_montaria(who, item)
+
+status(who); 
+endprogram
+
+
+function status(who)
+
+    if( CInt(GetObjProperty(who, "mont")) > ReadGameClock())
+      SendSysMessage(who, "Voce precisa esperar 2 minutos para pegar outra montaria.",3,95);
+      return;
+    endif
+
+  GFInitGump( 250 , 100 );
+  GFNoMove();
+  GFResizePic(50, 5, 5120, 200, 280);
+  GFTextLine( 115 , 20, 1154 , "Montarias" );
+  var bt1 := GFButtonID(170, 200, 0xf2, 0xf2, 1);
+  var bt2 := GFButtonID( 60, 50,  0x1a, 0x1a, 1);
+  var bt3 := GFButtonID( 60, 150, 0x1a, 0x1a, 1);
+  var bt4 := GFButtonID( 60, 100, 0x1a, 0x1a, 1);
+  var bt5 := GFButtonID( 60, 200, 0x1a, 0x1a, 1);
+  var bt6 := GFButtonID( 60, 250, 0x1a, 0x1a, 1);
+  var bt7 := GFButtonID( 170, 50, 0x1a, 0x1a, 1);
+  var bt8 := GFButtonID( 170, 100, 0x1a, 0x1a, 1);
+  var bt9 := GFButtonID( 170, 150, 0x1a, 0x1a, 1);
+ 
+  GFTextLine(90, 50,  1154, "Cavalo"); 
+  GFTextLine(90, 150, 1154, "Potro"); 
+  GFTextLine(90, 100, 1154, "Lhama");
+  GFTextLine(90, 200, 1154, " Cs"); 
+  GFTextLine(90, 250, 1154, "SB"); 
+  GFTextLine(210, 50, 1154, "OD");
+  GFTextLine(210, 100, 1154, "Of"); 
+  GFTextLine(210, 150, 1154, "Oa"); 
+  
+  
+  var res := GFSendGump(who);
+if(res[bt1.keyid]) 
+    sendsysmessage(who, "Cancelado.",9,89);
+return;  
+endif
+
+if(res[bt2.keyid]) 
+CreateItemInBackpack(who, 8479, 1);
+endif
+
+
+if(res[bt3.keyid])
+CreateItemInBackpack(who, 0x211f, 1);
+endif
+
+if(res[bt4.keyid])
+CreateItemInBackpack(who, 0x20f6,1);
+endif
+
+if(res[bt5.keyid])
+ var a:= CreateItemInBackpack(who, 0x2120,1);
+  a.color:= 637;
+    a.name:= "Miniatura de Cavalo Selvagem";
+endif
+
+if(res[bt6.keyid])
+   var a:= CreateItemInBackpack(who, 0x2120,1);
+   a.name:= "Miniatura de SilverBullet"; 
+    a.color:= 1154;
+endif
+
+if(res[bt7.keyid])
+   var a:= CreateItemInBackpack(who, 0x2135,1);
+   a.name:= "Miniatura de Ostard do Deserto"; 
+endif
+
+if(res[bt8.keyid])
+ var a:= CreateItemInBackpack(who,  0x2137,1);
+   a.color:=2130;
+   a.name:= "Miniatura de Ostard da Floresta";   
+endif 
+
+if(res[bt9.keyid])
+   var a:= CreateItemInBackpack(who, 0x2136,1);
+   a.name:= "Miniatura de Ostard Artico";
+endif
+
+SetObjProperty(who, "mont", ReadGameClock() + 120 );
+endfunction

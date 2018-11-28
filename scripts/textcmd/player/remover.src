@@ -1,0 +1,54 @@
+use uo; 
+use os; 
+use basic; 
+
+include "include/attributes"; 
+include "include/yesNo"; 
+include "include/dist";
+include "include/casas";
+
+program remover(who) 
+var casa := who.multi; 
+
+if(!casa)
+SendSysMessage(who,"Voce nao esta em uma casa.");
+return;
+endif
+
+if(!Socio(who,casa))
+SendSysMessage(who, "Voce Precisa ser dono ou socio da casa para poder usar esse comando!"); 
+return;
+endif
+
+SendSysMessage(who,"Selecione o Cofre Seguro para remover.");
+var alvo := Target(who);
+
+if((!alvo) || (GetMana(alvo) != error))
+SendSysMessage(who,"Cancelado.");
+return;
+endif 
+
+
+if(alvo.multi.serial != casa.serial)
+SendSysMessage(who,"Voce nao pode remover itens fora de sua casa.");
+return;
+endif
+
+
+if(alvo.objtype != 0x0e97)
+SendSysMessage(who,"Este item nao pode ser removido.");
+return;
+endif
+
+if(!YesNo(who, "Remover?")) 
+return; 
+endif
+
+if(GetObjProperty(alvo, "secure") == 1) 
+SetObjProperty(casa, "numsecure", Cint(GetObjProperty(Casa, "numsecure") + 1)); 
+elseif(GetObjProperty(alvo, "lockeddown") == 1 ) 
+SetObjProperty(casa, "numlockdowns", Cint(GetObjProperty(casa, "numlockdowns") + 1)); 
+endif 
+DestroyItem(alvo); 
+
+endprogram

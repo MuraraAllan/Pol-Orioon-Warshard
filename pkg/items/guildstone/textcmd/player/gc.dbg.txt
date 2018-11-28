@@ -1,0 +1,111 @@
+File 0: 
+File 1: c:\pol\pkg\items\guildstone\textcmd\player\gc.src
+File 2: c:/pol/scripts/uo.em
+File 3: c:/pol/scripts/os.em
+File 4: c:/pol/scripts/basic.em
+File 5: c:/pol/scripts/basicio.em
+Ins 0: File 1, Line 30, Block 1 StatementBegin
+Ins 1: File 1, Line 30, Block 1 
+Ins 2: File 1, Line 5, Block 1 StatementBegin
+Ins 3: File 1, Line 5, Block 1 
+Ins 4: File 1, Line 5, Block 1 
+Ins 5: File 1, Line 5, Block 1 
+Ins 6: File 1, Line 5, Block 1 
+Ins 7: File 1, Line 5, Block 1 
+Ins 8: File 1, Line 6, Block 1 StatementBegin
+Ins 9: File 1, Line 6, Block 1 
+Ins 10: File 1, Line 7, Block 1 StatementBegin
+Ins 11: File 1, Line 7, Block 1 
+Ins 12: File 1, Line 9, Block 1 StatementBegin
+Ins 13: File 1, Line 9, Block 1 
+Ins 14: File 1, Line 9, Block 1 
+Ins 15: File 1, Line 9, Block 1 
+Ins 16: File 1, Line 9, Block 1 
+Ins 17: File 1, Line 9, Block 1 
+Ins 18: File 1, Line 9, Block 1 
+Ins 19: File 1, Line 9, Block 1 
+Ins 20: File 1, Line 10, Block 1 StatementBegin
+Ins 21: File 1, Line 10, Block 1 
+Ins 22: File 1, Line 11, Block 1 StatementBegin
+Ins 23: File 1, Line 11, Block 1 
+Ins 24: File 1, Line 13, Block 1 StatementBegin
+Ins 25: File 1, Line 13, Block 1 
+Ins 26: File 1, Line 13, Block 1 
+Ins 27: File 1, Line 13, Block 1 
+Ins 28: File 1, Line 13, Block 1 
+Ins 29: File 1, Line 14, Block 1 StatementBegin
+Ins 30: File 1, Line 14, Block 1 
+Ins 31: File 1, Line 14, Block 1 
+Ins 32: File 1, Line 14, Block 1 
+Ins 33: File 1, Line 15, Block 1 StatementBegin
+Ins 34: File 1, Line 15, Block 1 
+Ins 35: File 1, Line 15, Block 1 
+Ins 36: File 1, Line 15, Block 1 
+Ins 37: File 1, Line 15, Block 1 
+Ins 38: File 1, Line 16, Block 1 StatementBegin
+Ins 39: File 1, Line 16, Block 1 
+Ins 40: File 2, Line 272, Block 1 
+Ins 41: File 2, Line 272, Block 1 
+Ins 42: File 1, Line 16, Block 1 
+Ins 43: File 1, Line 16, Block 1 
+Ins 44: File 1, Line 17, Block 1 
+Ins 45: File 1, Line 17, Block 1 StatementBegin
+Ins 46: File 1, Line 17, Block 1 
+Ins 47: File 1, Line 17, Block 1 
+Ins 48: File 1, Line 17, Block 1 
+Ins 49: File 1, Line 18, Block 1 StatementBegin
+Ins 50: File 1, Line 18, Block 1 
+Ins 51: File 1, Line 18, Block 1 
+Ins 52: File 1, Line 18, Block 1 
+Ins 53: File 1, Line 19, Block 1 StatementBegin
+Ins 54: File 1, Line 19, Block 1 
+Ins 55: File 2, Line 272, Block 1 
+Ins 56: File 2, Line 272, Block 1 
+Ins 57: File 1, Line 19, Block 1 
+Ins 58: File 1, Line 19, Block 1 
+Ins 59: File 1, Line 20, Block 1 
+Ins 60: File 1, Line 21, Block 2 StatementBegin
+Ins 61: File 1, Line 21, Block 2 
+Ins 62: File 1, Line 21, Block 2 
+Ins 63: File 1, Line 21, Block 2 
+Ins 64: File 1, Line 22, Block 2 StatementBegin
+Ins 65: File 1, Line 22, Block 2 
+Ins 66: File 1, Line 22, Block 2 
+Ins 67: File 1, Line 22, Block 2 
+Ins 68: File 1, Line 22, Block 2 
+Ins 69: File 1, Line 23, Block 2 StatementBegin
+Ins 70: File 1, Line 23, Block 2 
+Ins 71: File 1, Line 23, Block 2 
+Ins 72: File 1, Line 23, Block 2 
+Ins 73: File 1, Line 23, Block 2 
+Ins 74: File 1, Line 24, Block 2 StatementBegin
+Ins 75: File 1, Line 24, Block 2 
+Ins 76: File 1, Line 24, Block 2 
+Ins 77: File 1, Line 24, Block 2 
+Ins 78: File 1, Line 24, Block 2 
+Ins 79: File 1, Line 25, Block 2 StatementBegin
+Ins 80: File 1, Line 25, Block 2 
+Ins 81: File 1, Line 25, Block 2 
+Ins 82: File 1, Line 25, Block 2 
+Ins 83: File 1, Line 25, Block 2 
+Ins 84: File 1, Line 26, Block 2 StatementBegin
+Ins 85: File 1, Line 26, Block 2 
+Ins 86: File 1, Line 26, Block 2 
+Ins 87: File 1, Line 26, Block 2 
+Ins 88: File 1, Line 26, Block 2 
+Ins 89: File 1, Line 28, Block 1 
+Ins 90: File 1, Line 28, Block 0 
+Block 0:
+  Parent block: 0
+Block 1:
+  Parent block: 0
+  Local variables 0-4: 
+      0: who
+      1: text
+      2: guildid
+      3: guild_pid
+      4: guild_proc
+Block 2:
+  Parent block: 1
+  Local variables 5-5: 
+      5: evnt

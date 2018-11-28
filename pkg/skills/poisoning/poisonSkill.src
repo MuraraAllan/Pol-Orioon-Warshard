@@ -1,0 +1,93 @@
+use uo;
+use os;
+use util;
+use cfgfile;
+
+include "include/client";
+include "include/canAccess";
+include "include/noto";
+
+program do_poisoning(who)
+  EraseObjProperty(who, "IsMeditating");
+  EraseObjProperty(who, "HealTimer");
+  SendSysMessage(who, "Selecione A Pocao De Veneno",9,89);
+  var the_poison := Target(who);
+  if(!the_poison)
+    SendSysMessage(who, "Cancelado",9,89);
+    return;
+  elseif(!can_access(who, the_poison))
+    SendSysMessage(who, " Voce nao pode usar isto",9,89);
+    return;
+  elseif(the_poison.graphic != 0xf0a)
+    SendSysMessage(who, "Voce precisa selecionar uma pocao de veneno",9,89);
+    return;
+  endif
+  SendSysMessage(who, "Selecione algo para poisonar com esta pocao",9,89);
+  var the_item := Target(who, TGTOPT_CHECK_LOS);
+ if(getobjproperty(the_item, "poison_level"))
+Sendsysmessage(who, "Esta Arma Ja Esta Poisonada",9,89);
+else
+  if(!the_item)
+    SendSysMessage(who, "Cancelado",9,89);
+    return;
+  elseif(!can_access(who, the_item))
+    SendSysMessage(who, "Voce nao pode usar isto",9,89);
+    return;
+  endif
+  var acfgfile := ReadConfigFile(":*:itemdesc");
+  var theitem := acfgfile[the_item.objtype];
+
+  if((theitem.Attribute == "Swords") || (theitem.Attribute == "Fencing"))
+    var stren, skill, point;
+    case(the_poison.objtype)
+      0xdc04: stren := 1;   skill := 50; point := 50;
+      0xdc05: stren := 2;   skill := 80; point := 80;
+      0xdc06: stren := 3;   skill := 85; point := 80;
+      0xdc17: stren := 4;   skill := 95; point := 80;
+    endcase
+    if(SubtractAmount(the_poison, 1))
+      CreateItemInBackpack(who, 0xf0e, 1);
+      if(CheckSkill(who, SKILLID_POISONING, skill, point))
+        PlaySoundEffect(who, 0x248);
+        SetObjProperty(the_item, "poison_level", stren);
+        var skillmod := Cint(GetAttribute(who, "poisoning") / 20) + RandomInt(4);
+        SetObjProperty(the_item, "d", Cint(25 - (stren * 4)) + skillmod);
+        var hitscripts := GetObjProperty(the_item, "OnHit");
+        if(!hitscripts)
+          hitscripts := array;
+        endif
+        if(!hitscripts.exists(":combat:poisonHit"))
+          hitscripts.append(":combat:poisonHit");
+          SetObjProperty(the_item, "OnHit", hitscripts);
+        endif
+        SendSysMessage(who, "Voce aplicou o veneno em sua arma",9,89);
+        var myskill := CInt(GetEffectiveSkill(who, SKILLID_POISONING));
+        var modpts := 0;
+        if(myskill >=  skill)
+          modpts := (myskill - skill);
+        endif
+        var rint := RandomInt(100);
+        if(modpts >= rint)
+        
+        endif
+      else
+        if(RandomInt(100) > 90)
+          SendSysMessage(who, "Voce falhou em aplicar o veneno",9,89);
+          var parms := array(who, who, "poison Skill", stren);
+          start_script(":spells:poisonDamage", parms);
+        else
+          SendSysMessage(who, "Voce falhou em aplicar o veneno",9,89);
+        endif
+      endif
+    else
+      SendSysMessage(who, "Voce nao pode usar esta pocao",9,89);
+      return;
+    endif
+  else
+    SendSysMessage(who, "Isto nao pode ser poisonado",9,89);
+    return;
+  endif
+endif
+endprogram
+
+

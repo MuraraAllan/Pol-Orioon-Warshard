@@ -1,0 +1,41 @@
+use uo;
+use os;
+use util;
+
+include "include/client";
+include "include/attributes";
+
+program flamewind(who)
+
+var geral := ListMobilesNearLocation(who.x, who.y, who.z, 30);
+Detach();
+var x:=0;
+
+while (x < 3)
+foreach quem in geral
+if(quem != who)
+PlayStationaryEffect(quem.x, quem.y, quem.z, FX_FLAMESTRIKE, 7, 0x10 );
+PlayLightningBoltEffect( quem );
+endif
+endforeach
+sleepms(300);
+x:=x+1;
+endwhile
+x:=0;
+var z:=who.z;
+ if(who.concealed == 0)
+  while (x < 12)
+   MoveCharacterToLocation(who, who.x, who.y, who.z+(-x), MOVECHAR_FORCELOCATION);
+   sleepms(45);
+   x:=x+1;
+  endwhile
+ who.concealed:=1;
+ MoveCharacterToLocation(who, who.x, who.y, z, MOVECHAR_FORCELOCATION);
+ return;
+ endif
+
+ if(who.concealed == 1)
+ who.concealed:=0;
+ return;
+ endif
+endprogram

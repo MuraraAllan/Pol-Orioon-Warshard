@@ -1,0 +1,46 @@
+C:\pol2\pkg\tools\gmtools\healstone.src, Line 5
+program healstone(item)
+const VITALID_STAMINA              := "Stamina";
+0: get arg 'item'
+while(item)
+1: local #0
+2: if false goto 24
+foreach critter in ListMobilesNearLocation(item.x, item.y, item.z, 5)
+3: local #0
+4: get member 'x'
+5: local #0
+6: get member 'y'
+7: local #0
+8: get member 'z'
+9: 5L
+10: Func(2,15): ListMobilesNearLocation
+11: initforeach @18
+SetHp(critter, critter.strength);
+12: local #1
+13: local #1
+14: get member 'strength'
+15: makelocal
+16: jmp userfunc @26
+17: #
+18: stepforeach @12
+19: leave block(3)
+sleep(60);
+20: 60L
+21: Func(3,2): sleep
+22: #
+23: goto1
+24: leave block(1)
+25: progend
+C:/pol2/scripts/include/attributes.inc, Line 893
+function SetHp(who, hp)
+26: pop param 'hp'
+27: pop param 'who'
+return SetVital(who, VITALID_LIFE, Cint(hp*100));
+28: local #1
+29: "Life"
+30: local #0
+31: 100L
+32: *
+33: Func(0,0): CInt
+34: Func(2,14): SetVital
+35: return

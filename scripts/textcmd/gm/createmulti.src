@@ -1,0 +1,14 @@
+use uo;
+
+program criamulti(who, te)
+var aa := TargetMultiPlacement(who, te);
+if (!aa)
+sendsysmessage(who, "" + aa.errortext);
+endif
+var oi := CreateMultiAtLocation(aa.x, aa.y, aa.z, te, 0x0007);
+if (!oi)
+sendsysmessage(who, "" + oi.errortext);
+endif
+endprogram
+
+ 

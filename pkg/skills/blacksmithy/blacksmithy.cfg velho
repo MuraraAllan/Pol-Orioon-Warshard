@@ -1,0 +1,503 @@
+#note: arbitrary point values!
+
+blacksmithy 0x0f49
+{
+ name	Machado
+ Desc   Machado
+ material 14
+ skill 20
+ maxhp 950
+ points 55
+ Damage          1d23+15
+}
+
+blacksmithy 0x0f47
+{
+name	Machado de Batalha 
+ Desc   Machado De Batalha
+ material 14
+ skill 20
+ maxhp 950
+ points 50
+ Damage          1d22+15
+}
+
+blacksmithy 0x0f4b
+{
+name	Machado Duplo
+ Desc   Machado duplo
+ material 12
+ skill 20
+ maxhp 950
+ Damage          1d26+17
+ points 49
+}
+
+blacksmithy 0x0f45
+{
+name	Machado Executador
+ Desc   machado do executor
+ material 16
+ skill 20
+ maxhp 950
+ points 54
+ Damage          1d25+15
+}
+
+blacksmithy 0x13fa
+{
+name	Machado largo de batalha
+ Desc   Grande machado de batalha
+ material 14
+ skill 20
+ maxhp 950
+ Damage          1d26+14
+ points 48
+}
+
+blacksmithy 0x1442
+{
+name	Machado de Duas Maos
+ Desc   Machado de duas maos
+ material 16
+ skill 20
+ maxhp 950
+ points 53
+ Damage          1d24+14
+}
+
+blacksmithy 0x13af
+{
+name	Machado de Guerra
+ Desc   machado de guerra
+ material 16
+ skill 20
+ maxhp 950
+ points 59
+ Damage          1d24+16
+}
+
+blacksmithy 0x13bb
+{
+name	chainmail coif
+ Desc   Capuz de malha
+ material 10
+ skill 20
+ maxhp 950
+ points 34
+}
+
+blacksmithy 0x13be
+{
+name	chainmail leggings
+ Desc   calcas de malha
+ material 18
+ skill 20
+ maxhp 950
+ points 56
+}
+
+blacksmithy 0x13bf
+{
+name	chainmail tunic
+ Desc   tunica de malha
+ material 20
+ skill 20
+ maxhp 950
+ points 59
+}
+
+blacksmithy 0x140c
+{
+name	bascinet
+Desc    basinet
+ material 15
+ skill 20
+ maxhp 950
+ points 28
+}
+
+blacksmithy 0x1408
+{
+name	Elmo Fechado
+ Desc   Elmo fechado
+ material 15
+ skill 20
+ maxhp 950
+ points 57
+}
+
+blacksmithy 0x140a
+{
+name	Elmo
+ material 15
+ Desc elmo
+ skill 20
+ maxhp 950
+ points 57
+}
+
+blacksmithy 0x140e
+{
+name	Elmo
+ Desc   Elmo duplo
+ material 15
+ skill 20
+ maxhp 950
+ points 57
+}
+
+blacksmithy 0x1412
+{
+name	Elmo de metal
+ Desc   Elmo de metal
+ material 15
+ skill 20
+ maxhp 950
+ points 82
+}
+
+blacksmithy 0x143c
+{
+name	marreta
+ Desc   marreta
+ material 18
+ skill 20
+ maxhp 950
+ points 45
+}
+
+blacksmithy 0x0f5c
+{
+name	Maca
+ Desc   Maca estrela
+ material 6
+ skill 20
+ maxhp 950
+ points 34
+ Damage          1d15+12
+}
+
+blacksmithy 0x143a
+{
+name	Maca Longa
+ desc   Maca
+ material 10
+ skill 20
+ maxhp 950
+ points 39
+ Damage          1d14+13
+}
+
+blacksmithy 0x1438
+{
+name	Martelo de Guerra
+ desc   martelo de guerra
+ material 16
+ skill 20
+ maxhp 950
+ points 54
+ Damage          1d14+13
+}
+
+blacksmithy 0x1406
+{
+name	Maca de Guerra
+ Desc   Maca de guerra
+ material 14
+ skill 20
+ maxhp 950
+ points 48
+ Damage          1d19+17
+}
+
+blacksmithy 0x1c04
+{
+name	plate armor
+ Desc   Armadura de plate
+ material 20
+ skill 20
+ maxhp 950
+ points 64
+
+}
+
+blacksmithy 0x1415
+{
+name	Camisa De Plate
+ desc   Peitoral
+ material 25
+ skill 20
+ maxhp 950
+ points 95
+}
+
+blacksmithy 0x1414
+{
+name	Luvas De Plate
+ Desc   Luvas 
+ material 12
+ skill 20
+ maxhp 950
+ points 78
+}
+
+blacksmithy 0x1413
+{
+name	Gorgel De Plate 
+ Desc     Gorgel
+ material 10
+ skill 20
+ maxhp 950
+ points 76
+}
+
+blacksmithy 0x1411
+{
+name	Calcas De Plate
+ Desc   calcas
+ material 20
+ skill 20
+ maxhp 950
+ points 88
+}
+
+blacksmithy 0x1410
+{
+name	Ombreira De Plate
+ Desc    ombreiras
+ material 18
+ skill 20
+ maxhp 950
+ points 86
+}
+
+blacksmithy 0x0f4e
+{
+name	Bardicha 
+ Desc    bardiche
+ material 15
+ skill 20
+ maxhp 950
+ points 65
+ Damage          1d27+17
+}
+
+blacksmithy 0x143e
+{
+name	Alabarda
+ Desc    Alabarda
+ material 20
+ skill 20
+ maxhp 950
+ points 69
+ Damage          1d29+16
+}
+
+blacksmithy 0x13f2
+{
+name	Luvas De Loriga
+ Desc   Luvas de loriga
+ material 10
+ skill 20
+ maxhp 1500
+ points 32
+}
+
+blacksmithy 0x13f0
+{
+name	Calcas De Loriga
+ Desc   Calcas de loriga
+ material 16
+ skill 20
+ maxhp 1500
+ points 39
+}
+
+blacksmithy 0x13ee
+{
+name	Ombreiras De Loriga
+ Desc     ombreiras de loriga
+ material 14
+ skill 20
+ maxhp 1500
+ points 36
+}
+
+blacksmithy 0x13ec
+{
+name	 Tunica De Loriga
+ Desc    Tunica de loriga
+ material  18
+ skill 20
+ maxhp 1500
+ points 41
+}
+
+blacksmithy 0x1b72
+{
+name	Escudo De Bronze
+ Desc   Escudo pequeno
+ material 12
+ skill 20
+ maxhp 950
+ points 21
+}
+
+blacksmithy 0x1b73
+{
+name	Tampa De Panela
+ Desc   Tampa de panela
+ material 10
+ skill 20
+ maxhp 950
+ points 21
+}
+
+blacksmithy 0x1b76
+{
+name	Escudo Corporal
+ Desc   Escudo Corporal
+ material 18
+ skill 20
+ maxhp 950
+ points 44
+}
+
+blacksmithy 0x1b74
+{
+name	Escudo Medio 
+ Desc   Escudo medio
+ material 16
+ skill 20
+ maxhp 950
+ points 24
+}
+
+blacksmithy 0x1b7b
+{
+name	Escudo De Metal 
+ Desc   Escudo de metal
+ material 14
+ skill 21
+ maxhp 950
+ points 21
+}
+
+blacksmithy 0x1b78
+{
+name	 Escudo De Madeira
+ Desc     Escudo de madeira
+ material 8
+ skill 21
+ maxhp 950
+ points 21
+}
+
+blacksmithy 0x1402
+{
+name	Lanca Pequena
+ material 6
+ skill 20
+ maxhp 950
+ points 65
+ Damage          1d16+16
+}
+
+blacksmithy 0x0f63
+{
+name	Lanca
+ material 12
+ skill 20
+ maxhp 950
+ points 69
+ Damage          1d19+17
+}
+
+blacksmithy 0x1404
+{
+name	Garfo de Guerra
+ material 12
+ skill 20
+ maxhp 950
+ points 57
+ Damage          1d17+16
+}
+
+blacksmithy 0x0f5e
+{
+name	Espada Larga
+ material 10
+ skill 20
+ maxhp 950
+ points 55
+ Damage          1d16+15
+}
+
+blacksmithy 0x1440
+{
+name	Cutelo
+ material 8
+ skill 20
+ maxhp 950
+ points 44
+}
+
+blacksmithy 0x0f51
+{
+name	adaga
+ material 3
+ skill 20
+ maxhp 950
+ points 21
+ Damage          1d5+2
+}
+
+blacksmithy 0x13fe
+{
+name	Katana
+ material 8
+ skill 20
+ maxhp 950
+ points 64
+ Damage          1d12+14
+}
+
+blacksmithy 0x1401
+{
+name	Kopesh
+ material 8
+ skill 20
+ maxhp 950
+ points 56
+ Damage          1d11+13
+}
+
+blacksmithy 0x0f60
+{
+name	Espada Longa
+ material 12
+ skill 20
+ maxhp 950
+ points 48
+ Damage          1d15+17
+}
+
+blacksmithy 0x13b5
+{
+name	Cimitarra
+ material 10
+ skill 20
+ maxhp 950
+ points 51
+}
+
+blacksmithy 0x13b9
+{
+name	Espada Bastarda
+ material 14
+ skill 20
+ maxhp 950
+ points 44
+}
+

@@ -1,0 +1,275 @@
+C:\pol2\pkg\skills\tailoring\dyeBan.src, Line 6
+program dyeban(who)
+const EXTOBJ_HOLD            := 0xf013;
+0: get arg 'who'
+sleep(10);
+1: 10L
+2: Func(3,1): sleep
+3: #
+var act := who.acct;
+4: decl local #1
+5: local #0
+6: get member 'acct'
+7: :=
+8: #
+act.ban();
+9: local #1
+10: Call Method ban (0 params)
+11: #
+act.setprop("deleteme", 1);
+12: local #1
+13: "deleteme"
+14: 1L
+15: Call Method setprop (2 params)
+16: #
+var x, i;
+17: decl local #2
+18: #
+19: decl local #3
+20: #
+WipeBankBox(act.GetCharacter(1));
+21: local #1
+22: 1L
+23: Call Method getcharacter (1 params)
+24: makelocal
+25: jmp userfunc @191
+26: #
+foreach thing in ListEquippedItems(act.GetCharacter(1))
+27: local #1
+28: 1L
+29: Call Method getcharacter (1 params)
+30: Func(2,5): ListEquippedItems
+31: initforeach @41
+MoveItemToContainer(thing, act.GetCharacter(1).backpack);
+32: local #4
+33: local #1
+34: 1L
+35: Call Method getcharacter (1 params)
+36: get member 'backpack'
+37: -1L
+38: -1L
+39: Func(2,6): MoveItemToContainer
+40: #
+41: stepforeach @32
+42: leave block(3)
+DestroyItem(act.GetCharacter(1).backpack);
+43: local #1
+44: 1L
+45: Call Method getcharacter (1 params)
+46: get member 'backpack'
+47: Func(2,7): DestroyItem
+48: #
+act.DeleteCharacter(1);
+49: local #1
+50: 1L
+51: Call Method deletecharacter (1 params)
+52: #
+i := 0;
+53: 0L
+54: local3 := 
+WipeBankBox(act.GetCharacter(2));
+55: local #1
+56: 2L
+57: Call Method getcharacter (1 params)
+58: makelocal
+59: jmp userfunc @191
+60: #
+foreach thing in ListEquippedItems(act.GetCharacter(2))
+61: local #1
+62: 2L
+63: Call Method getcharacter (1 params)
+64: Func(2,5): ListEquippedItems
+65: initforeach @75
+MoveItemToContainer(thing, act.GetCharacter(2).backpack);
+66: local #4
+67: local #1
+68: 2L
+69: Call Method getcharacter (1 params)
+70: get member 'backpack'
+71: -1L
+72: -1L
+73: Func(2,6): MoveItemToContainer
+74: #
+75: stepforeach @66
+76: leave block(3)
+DestroyItem(act.GetCharacter(2).backpack);
+77: local #1
+78: 2L
+79: Call Method getcharacter (1 params)
+80: get member 'backpack'
+81: Func(2,7): DestroyItem
+82: #
+act.DeleteCharacter(2);
+83: local #1
+84: 2L
+85: Call Method deletecharacter (1 params)
+86: #
+i := 0;
+87: 0L
+88: local3 := 
+WipeBankBox(act.GetCharacter(3));
+89: local #1
+90: 3L
+91: Call Method getcharacter (1 params)
+92: makelocal
+93: jmp userfunc @191
+94: #
+foreach thing in ListEquippedItems(act.GetCharacter(3))
+95: local #1
+96: 3L
+97: Call Method getcharacter (1 params)
+98: Func(2,5): ListEquippedItems
+99: initforeach @109
+MoveItemToContainer(thing, act.GetCharacter(3).backpack);
+100: local #4
+101: local #1
+102: 3L
+103: Call Method getcharacter (1 params)
+104: get member 'backpack'
+105: -1L
+106: -1L
+107: Func(2,6): MoveItemToContainer
+108: #
+109: stepforeach @100
+110: leave block(3)
+DestroyItem(act.GetCharacter(3).backpack);
+111: local #1
+112: 3L
+113: Call Method getcharacter (1 params)
+114: get member 'backpack'
+115: Func(2,7): DestroyItem
+116: #
+act.DeleteCharacter(3);
+117: local #1
+118: 3L
+119: Call Method deletecharacter (1 params)
+120: #
+i := 0;
+121: 0L
+122: local3 := 
+WipeBankBox(act.GetCharacter(4));
+123: local #1
+124: 4L
+125: Call Method getcharacter (1 params)
+126: makelocal
+127: jmp userfunc @191
+128: #
+foreach thing in ListEquippedItems(act.GetCharacter(4))
+129: local #1
+130: 4L
+131: Call Method getcharacter (1 params)
+132: Func(2,5): ListEquippedItems
+133: initforeach @143
+MoveItemToContainer(thing, act.GetCharacter(4).backpack);
+134: local #4
+135: local #1
+136: 4L
+137: Call Method getcharacter (1 params)
+138: get member 'backpack'
+139: -1L
+140: -1L
+141: Func(2,6): MoveItemToContainer
+142: #
+143: stepforeach @134
+144: leave block(3)
+DestroyItem(act.GetCharacter(4).backpack);
+145: local #1
+146: 4L
+147: Call Method getcharacter (1 params)
+148: get member 'backpack'
+149: Func(2,7): DestroyItem
+150: #
+act.DeleteCharacter(4);
+151: local #1
+152: 4L
+153: Call Method deletecharacter (1 params)
+154: #
+i := 0;
+155: 0L
+156: local3 := 
+WipeBankBox(act.GetCharacter(5));
+157: local #1
+158: 5L
+159: Call Method getcharacter (1 params)
+160: makelocal
+161: jmp userfunc @191
+162: #
+foreach thing in ListEquippedItems(act.GetCharacter(5))
+163: local #1
+164: 5L
+165: Call Method getcharacter (1 params)
+166: Func(2,5): ListEquippedItems
+167: initforeach @177
+MoveItemToContainer(thing, act.GetCharacter(5).backpack);
+168: local #4
+169: local #1
+170: 5L
+171: Call Method getcharacter (1 params)
+172: get member 'backpack'
+173: -1L
+174: -1L
+175: Func(2,6): MoveItemToContainer
+176: #
+177: stepforeach @168
+178: leave block(3)
+DestroyItem(act.GetCharacter(5).backpack);
+179: local #1
+180: 5L
+181: Call Method getcharacter (1 params)
+182: get member 'backpack'
+183: Func(2,7): DestroyItem
+184: #
+act.DeleteCharacter(5);
+185: local #1
+186: 5L
+187: Call Method deletecharacter (1 params)
+188: #
+189: leave block(4)
+190: progend
+C:/pol2/scripts/util/bank.inc, Line 27
+function WipeBankBox( character )
+191: pop param 'character'
+var worldbank := OpenWorldBank();
+192: decl local #1
+193: makelocal
+194: jmp userfunc @208
+195: :=
+196: #
+var bank_obj_name := "Bankbox of " + character.serial;
+197: decl local #2
+198: "Bankbox of "
+199: local #0
+200: get member 'serial'
+201: +
+202: :=
+203: #
+return DestroyRootItemInStorageArea( worldbank, bank_obj_name );
+204: local #1
+205: local #2
+206: Func(2,2): DestroyRootItemInStorageArea
+207: return
+C:/pol2/scripts/util/bank.inc, Line 34
+function OpenWorldBank()
+var bank := FindStorageArea( "World Bank" );
+208: decl local #0
+209: "World Bank"
+210: Func(2,3): FindStorageArea
+211: :=
+212: #
+if (!bank)
+213: local #0
+214: if true goto 218
+bank := CreateStorageArea( "World Bank" );
+215: "World Bank"
+216: Func(2,4): CreateStorageArea
+217: local0 := 
+if (!bank)
+218: local #0
+219: if true goto 223
+syslog( "Unable to open or create world bank!" );
+220: "Unable to open or create world bank!"
+221: Func(3,0): syslog
+222: #
+return bank;
+223: local #0
+224: return

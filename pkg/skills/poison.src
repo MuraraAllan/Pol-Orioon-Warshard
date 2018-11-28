@@ -1,0 +1,157 @@
+use os;
+use uo;
+use cfgfile;
+
+include "include/spellRestrictions";
+include "include/attributes";
+include ":poisonwatcher:poisons";
+
+program cast_poison(parms)
+  var circle := 3;
+  var delivery := "direct";
+  var noto := "harmful";
+  var result := maincast(parms, delivery, circle, noto, 20);
+  if(result == 0)
+    return;
+  endif
+  var caster := result[1];
+  var cast_on := result[2];
+ 
+ var mr := CInt(GetObjProperty(cast_on, "mr"));
+ var mrr := CInt(GetObjProperty(caster, "mr"));
+//se o mr for maior que o tanto que remove e o mrr for = ou - que 20;
+
+if((mr >= 50) && (mrr <= 0))
+PlayMovingEffect(caster, cast_on, FX_CURSE_EFFECT, 5, 1);
+PlaySoundEffect(cast_on, SFX_SPELL_MAGIC_REFLECTION);
+    PlayObjectCenteredEffect(cast_on, FX_CURSE_EFFECT, 10,10);
+    SendSysMessage(cast_on, "Seu Reflect lhe salvou!",9,89);
+SetobjProperty(cast_on,"mr", GetobjProperty(cast_on,"mr")-45);
+sleepms(1500);
+PlayMovingEffect(cast_on, caster, FX_CURSE_EFFECT, 5, 1);
+cast_on := caster;
+
+//se o caster tiver de reflect maior que o cast_on;
+elseif((mr >= 20) && (mrr >= mr))
+//cast_on
+PlaySoundEffect(cast_on, SFX_SPELL_MAGIC_REFLECTION);
+    PlayObjectCenteredEffect(cast_on, FX_CURSE_EFFECT, 10,10);
+    SendSysMessage(cast_on, "Seu Reflect lhe salvou!",9,89);
+SetobjProperty(cast_on,"mr", GetobjProperty(cast_on,"mr")-45);
+PlayMovingEffect(caster, cast_on, FX_CURSE_EFFECT, 5, 1);
+sleepms(1500);
+//caster
+PlayMovingEffect(cast_on, caster, FX_CURSE_EFFECT, 5, 1);
+    SendSysMessage(caster, "Seu Reflect lhe salvou!",9,89);
+SetobjProperty(caster,"mr", GetobjProperty(caster,"mr")-45);
+sleepms(1500);
+PlayMovingEffect(caster, cast_on, FX_CURSE_EFFECT, 5, 1);
+
+//se o cast_on tiver de reflect maior que o caster;
+elseif((mr >= 60) && (mr >= mrr) && (mrr >= 1))
+//cast_on
+PlaySoundEffect(cast_on, SFX_SPELL_MAGIC_REFLECTION);
+    PlayObjectCenteredEffect(cast_on, FX_CURSE_EFFECT, 10,10);
+    SendSysMessage(cast_on, "Seu Reflect lhe salvou!",9,89);
+PlayMovingEffect(caster, cast_on, FX_CURSE_EFFECT, 5, 1);
+SetobjProperty(cast_on,"mr", GetobjProperty(cast_on,"mr")-45);
+sleep(1);
+//caster
+PlaySoundEffect(caster, SFX_SPELL_MAGIC_REFLECTION);
+    PlayObjectCenteredEffect(caster, FX_CURSE_EFFECT, 10,10);
+    SendSysMessage(caster, "Seu Reflect lhe salvou!",9,89);
+SetobjProperty(caster,"mr", GetobjProperty(caster,"mr")-45);
+
+PlayMovingEffect(cast_on, caster, FX_CURSE_EFFECT, 5, 1);
+sleep(2);
+//caster
+PlaySoundEffect(cast_on, SFX_SPELL_MAGIC_REFLECTION);
+    PlayObjectCenteredEffect(cast_on, FX_CURSE_EFFECT, 10,10);
+    SendSysMessage(cast_on, "Seu Reflect lhe salvou!",9,89);
+
+PlayMovingEffect(caster, cast_on, FX_CURSE_EFFECT, 5, 1);
+cast_on := caster;
+
+//se forem iguais(0)
+elseif((mr <= 0) && (mrr <= 0))
+cast_on := cast_on;
+endif
+  if((!cast_on.isA(POLCLASS_MOBILE)) || (cast_on.dead))
+    SendSysMessage(caster, "Voce nao pode envenenar isto.",9,90);
+    return;
+  endif
+
+  var p_level :=  0;
+var magery := GetEffectiveSkill(caster, SKILLID_MAGERY) ;
+var skil:= GetModDuration(magery);
+  if((skil >= 0) && (skil <= 80))
+    p_level := RandomDiceRoll("1d1");
+  elseif((skil >= 80) && (skil <= 90))
+   p_level := RandomDiceRoll("1d1") + 1;
+  elseif((skil >= 90) && (skil <= 99))
+   p_level := RandomDiceRoll("1d2") + 1;
+  elseif(skil >= 100)
+      p_level := RandomDiceRoll("1d2") + 1 - RandomDiceRoll("1d2") + RandomDiceRoll("1d1")  ;
+  endif
+
+ 
+if(p_level <= 0)
+p_level := 1;
+endif
+
+
+
+
+
+poisonresist(caster, cast_on, p_level,circle);
+
+
+
+
+endprogram
+
+function poisonresist(caster, cast_on, p_level, circle)
+   var magery := CInt(GetEffectiveSkill(caster, SKILLID_MAGERY));
+  var evalint := CInt(GetEffectiveSkill(caster, SKILLID_EVALINT));
+  var resist := CInt(GetEffectiveSkill(cast_on, SKILLID_MAGICRESISTANCE));
+ var chk := resist +  randomint(resist) / 10 - (((magery + evalint) / 6) + (circle * 4) );
+var diff;
+
+
+if((resist >= 50) && ( resist <= 79))
+chk := chk-5;
+endif
+
+
+ if((resist >= 90) && (resist <= 99))
+chk := chk + 7;
+elseif(resist == 100)
+chk := chk + 11;
+endif
+
+  if(cast_on.dead)
+    return 0;
+  endif
+
+if(caster == cast_on)
+chk := 1;
+endif
+
+
+   diff := chk;
+
+if((Randomdiceroll("1d85") + 13) <= diff)
+PlayMovingEffect(caster, cast_on, FX_CURSE_EFFECT, 5, 1);
+	SendSysMessage(cast_on, "Voce sente seu corpo resistindo a magia!",9,90);
+  	PlaySoundEffect(cast_on, SFX_SPELL_WEAKEN);
+	PlayObjectCenteredEffect(cast_on, FX_CURSE_EFFECT, 5,5);
+return;
+        endif
+
+
+PlayMovingEffect(caster, cast_on, FX_CURSE_EFFECT, 5, 1);
+PrintTextAbovePrivate( cast_on, "Voce foi envenenado!", cast_on ,1,33 );
+setobjproperty(cast_on,"LEVEL:",p_level);
+AddPoison(cast_on, "defaultpoison", 1500, caster, p_level);
+
+   endfunction

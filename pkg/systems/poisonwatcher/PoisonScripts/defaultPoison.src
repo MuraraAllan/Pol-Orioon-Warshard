@@ -1,0 +1,107 @@
+
+use uo;
+use os;
+
+include "include/spellRestrictions";
+include "include/attributes";
+include ":poisonwatcher:poisons";
+
+program default_poison(params, parms)
+
+	var who := params[1];
+	var attacker := params[2];
+	var level := CInt(params[3]);
+
+	if (!level)
+		level := 1;
+	endif
+
+	if (attacker)
+		SetScriptController(attacker);
+	endif
+
+	var dmg := 0;
+	var stam := 0;
+	var poisonedmsg := "";
+	var viewermsg := "";
+	var time := 15;
+var circle := 3;
+ var delivery := "direct";
+  var noto := "harmful";
+  var result := maincast(parms, delivery, circle, noto, 51);
+   var caster := result[1];
+  var cast_on := result[2]; 
+
+case (level)
+		default:
+		1:     
+		   if (dmg < 3)
+		   dmg := 3;
+		   endif
+         	   poisonedmsg :="Voce sente uma leve dor em seu corpo.";
+                   time := 12;
+/////////////////////////////
+		2: 
+		   dmg := Randomdiceroll("1d3") + 2;
+                   if(dmg < 3)
+                   dmg := 5;
+                   endif         
+                   poisonedmsg :="Voce se sente doente.";
+		   time := 10;
+/////////////////////////////
+		3: 
+                   dmg := Randomdiceroll("1d4") + 3;
+		   if (dmg < 5)
+			dmg := 5;
+		   endif
+                   case(randomdiceroll("1d2") + 1)
+                   1:poisonedmsg :="Voce se sente fortemente doente.";
+                   2:poisonedmsg :="Voce se sente fraco";
+                   3:poisonedmsg :="Voce sente uma forte dor em seu coracao"; 
+                   endcase
+                    time := 8;
+/////////////////////////////
+		4: 
+                   dmg := Randomdiceroll("1d10") + 6;
+		   if (dmg < 6)
+	           dmg := 6;
+		   endif
+                       case(randomdiceroll("1d2") + 1)
+                   1:poisonedmsg :="Voce Sente seu coracao parando.";
+                   2:poisonedmsg :="Voce sente a dor da morte em suas veias.";
+                   3:poisonedmsg :="Voce sente uma extrema falta de ar."; 
+                   endcase
+                   time := 6;
+
+	
+	endcase
+/////////////////////////////
+	while(1)
+if(gethp(who) <= 0)
+CurePoison(who, 120, "defaultPoison", 1500);
+return;
+endif
+Set_Critical(0);
+		RecalcVitals(who);
+sleep(time);
+               PrintTextAbovePrivate(who," Ouch ", who, 1,33);
+                Sendsysmessage(who, ""+poisonedmsg,9,89);
+		PrintTextAbovePrivate(who, dmg + "", who, FONT_SMALL_LIGHT, 70);
+		foreach mob in ListMobilesInLineOfSight(who, 8)
+			if((mob.ip) and (mob != who))
+                     PrintTextAbovePrivate(who, "Ouch", mob, 1,33);
+				PrintTextAbovePrivate(who, dmg + "", mob, FONT_SMALL_LIGHT, 70);
+			endif
+		endforeach		
+
+		var lasthitparms := {attacker.name, attacker.serial, "poison"};
+		SetObjProperty(who, "LastHit", lasthitparms );
+		ApplyRawDamage(who, dmg);
+
+		Set_Critical(1);
+			var curr := CInt(GetStamina(who));
+		
+		
+	endwhile
+
+endprogram

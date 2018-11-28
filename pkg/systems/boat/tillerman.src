@@ -1,0 +1,29 @@
+use os;
+use uo;
+
+include "util/key";
+include "include/objtype";
+include "plankUtil";
+
+program renameboat(you, tillerman)
+ if((GetObjProperty(tillerman,"owner") != you.serial) && (you.cmdlevel < 2) && (getobjproperty(you,"jarecebeuaviso") > readgameclock()))
+	PrintTextAbove(tillerman,"Voce foi avisado agora morrera");
+        applyrawdamage(you, 1500);
+ eraseobjproperty(you, "jarecebeuaviso");
+	return;
+  endif
+  if((GetObjProperty(tillerman,"owner") != you.serial) &&(you.cmdlevel < 2))
+	PrintTextAbove(tillerman,"Saia invasor, ou terei que tomar uma atitude drastica!");
+        setobjproperty(you, "jarecebeuaviso", readgameclock() + 50);
+	return;
+  endif
+    var boatname := RequestInput(you, tillerman, "Selecione o novo nome(maximo de 20 letras)");
+  if(boatname)
+	if(len(boatname) <= 20)
+	  tillerman.name := boatname;
+	  SendSysMessage(you, "barco renomeado com sucesso");
+	else
+	  SendSysMessage(you, "Ha Mais de 20 letras nesse nome por favor escolha otro");
+	endif
+  endif
+endprogram

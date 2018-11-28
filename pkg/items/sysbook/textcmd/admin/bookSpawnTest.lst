@@ -1,0 +1,252 @@
+Exported Functions:
+   PC  Args  Name
+   74     2  GetAuthor
+   85     1  GetBookElem
+   98     2  GetContents
+  109     2  GetTitle
+C:\pol2\pkg\items\sysbook\textcmd\admin\bookSpawnTest.src, Line 6
+program shelfstock(who);
+exported function GetAuthor(book, rint)
+0: get arg 'who'
+var shelf := Target(who);
+1: decl local #1
+2: local #0
+3: 1L
+4: Func(2,0): Target
+5: :=
+6: #
+addbooks(shelf);
+7: local #1
+8: makelocal
+9: jmp userfunc @13
+10: #
+11: leave block(2)
+12: progend
+C:\pol2\pkg\items\sysbook\textcmd\admin\bookSpawnTest.src, Line 11
+function addbooks(bookcase)
+13: pop param 'bookcase'
+var count := 0;
+14: decl local #1
+15: 0L
+16: :=
+17: #
+var books := EnumerateItemsInContainer(bookcase);
+18: decl local #2
+19: local #0
+20: Func(2,1): EnumerateItemsInContainer
+21: :=
+22: #
+var max := RandomDiceRoll("1d6+4");
+23: decl local #3
+24: "1d6+4"
+25: Func(4,0): RandomDiceRoll
+26: :=
+27: #
+if(books.size()!=0)
+28: local #2
+29: Call Method size (0 params)
+30: 0L
+31: <>
+32: if false goto 46
+foreach book in books
+33: local #2
+34: initforeach @44
+if(book.objtype == 0x7020)
+35: local #4
+36: get member 'objtype'
+37: 28704L
+38: ==
+39: if false goto 44
+count:=count+1;
+40: local #1
+41: 1L
+42: +
+43: local1 := 
+44: stepforeach @35
+45: leave block(3)
+while(count < max)
+46: local #1
+47: local #3
+48: <
+49: if false goto 72
+if((RandomInt(5)+1) > 3)
+50: 5L
+51: Func(4,1): RandomInt
+52: 1L
+53: +
+54: 3L
+55: >
+56: if false goto 62
+SpecialBook(bookcase);
+57: local #0
+58: makelocal
+59: jmp userfunc @120
+60: #
+61: goto67
+CreateItemInContainer(bookcase, 0x7020, 1);
+62: local #0
+63: 28704L
+64: 1L
+65: Func(2,2): CreateItemInContainer
+66: #
+count := count + 1;
+67: local #1
+68: 1L
+69: +
+70: local1 := 
+71: goto46
+72: 0L
+73: return
+C:\pol2\pkg\items\sysbook\textcmd\admin\bookSpawnTest.src, Line 64
+exported function GetAuthor(book, rint)
+74: makelocal
+75: jmp userfunc @77
+76: progend
+77: pop param 'rint'
+78: pop param 'book'
+return GetBookElem(rint).getprop( "author" );
+79: local #0
+80: makelocal
+81: jmp userfunc @88
+82: "author"
+83: Call Method getprop (1 params)
+84: return
+C:\pol2\pkg\items\sysbook\textcmd\admin\bookSpawnTest.src, Line 51
+exported function GetBookElem(bookid)
+85: makelocal
+86: jmp userfunc @88
+87: progend
+88: pop param 'bookid'
+var df := OpenDataFile("staticbooks");
+89: decl local #1
+90: "staticbooks"
+91: Func(5,0): OpenDataFile
+92: :=
+93: #
+return df.FindElement(bookid);
+94: local #1
+95: local #0
+96: Call Method findelement (1 params)
+97: return
+C:\pol2\pkg\items\sysbook\textcmd\admin\bookSpawnTest.src, Line 56
+exported function GetContents(book, rint)
+98: makelocal
+99: jmp userfunc @101
+100: progend
+101: pop param 'rint'
+102: pop param 'book'
+return GetBookElem(rint).getprop( "contents" );
+103: local #0
+104: makelocal
+105: jmp userfunc @88
+106: "contents"
+107: Call Method getprop (1 params)
+108: return
+C:\pol2\pkg\items\sysbook\textcmd\admin\bookSpawnTest.src, Line 60
+exported function GetTitle(book, rint)
+109: makelocal
+110: jmp userfunc @112
+111: progend
+112: pop param 'rint'
+113: pop param 'book'
+return GetBookElem(rint).getprop( "title" );
+114: local #0
+115: makelocal
+116: jmp userfunc @88
+117: "title"
+118: Call Method getprop (1 params)
+119: return
+C:\pol2\pkg\items\sysbook\textcmd\admin\bookSpawnTest.src, Line 32
+function SpecialBook(bookcase)
+120: pop param 'bookcase'
+var book := CreateItemInContainer(bookcase, 0xfef, 1);
+121: decl local #1
+122: local #0
+123: 4079L
+124: 1L
+125: Func(2,2): CreateItemInContainer
+126: :=
+127: #
+if(!book)
+128: local #1
+129: if true goto 132
+return;
+130: ""
+131: return
+case(RandomInt(4)+1)
+132: 4L
+133: Func(4,1): RandomInt
+134: 1L
+135: +
+136: casejmp
+	1: @137
+	2: @141
+	3: @145
+	4: @149
+	default: @152
+book.graphic := 4079;
+137: local #1
+138: 4079L
+139: set member 'graphic' #
+140: goto152
+book.graphic := 4080;
+141: local #1
+142: 4080L
+143: set member 'graphic' #
+144: goto152
+book.graphic := 4081;
+145: local #1
+146: 4081L
+147: set member 'graphic' #
+148: goto152
+book.graphic := 4082;
+149: local #1
+150: 4082L
+151: set member 'graphic' #
+var rint := CInt(RandomInt(30) + 1);
+152: decl local #2
+153: 30L
+154: Func(4,1): RandomInt
+155: 1L
+156: +
+157: Func(0,0): CInt
+158: :=
+159: #
+var title := GetTitle(book, rint);
+160: decl local #3
+161: local #1
+162: local #2
+163: makelocal
+164: jmp userfunc @112
+165: :=
+166: #
+SetObjProperty(book, "contents", GetContents(book, rint));
+167: local #1
+168: "contents"
+169: local #1
+170: local #2
+171: makelocal
+172: jmp userfunc @101
+173: Func(2,3): SetObjProperty
+174: #
+SetObjProperty(book, "title",    title);
+175: local #1
+176: "title"
+177: local #3
+178: Func(2,3): SetObjProperty
+179: #
+SetObjProperty(book, "author",   GetAuthor(book, rint));
+180: local #1
+181: "author"
+182: local #1
+183: local #2
+184: makelocal
+185: jmp userfunc @77
+186: Func(2,3): SetObjProperty
+187: #
+book.name := title;
+188: local #1
+189: local #3
+190: set member 'name' #
+191: 0L
+192: return

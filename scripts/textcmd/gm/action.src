@@ -1,0 +1,12 @@
+use uo;
+
+program textcmd_action( who, action )
+  SendSysMessage( who, "Quem voce deseja que faca uma acao?",0x9,90 );
+  var performer := Target( who, TGTOPT_NOCHECK_LOS );
+  if(!performer)
+  sendsysmessage(who,"Cancelado.",0x9,90);
+  endif
+  if(performer)
+    PerformAction( performer, CInt(action));
+  endif
+endprogram

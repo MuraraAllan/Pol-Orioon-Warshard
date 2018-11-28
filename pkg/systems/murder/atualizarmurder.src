@@ -1,0 +1,54 @@
+use uo;
+use os;
+use util;
+
+include "include/accounts";
+
+const LONG_COUNT_DECAY_TIME := 72000; //20 hours
+
+
+program atualizarmurder()
+
+while(1)
+
+sleep(1800);
+
+foreach chr in EnumerateOnlineCharacters()
+var longs := GetObjProperty(chr, "longmurders"); 
+
+
+if((ReadGameClock() >= GetObjProperty(chr,"decaytime")) && (longs > 0))
+SendSysMessage(chr,"Voce se sente menos culpado. Voce perdeu 1 long count.",9,33);
+SetObjProperty(chr,"decaytime", ReadGameClock()+LONG_COUNT_DECAY_TIME);
+SetObjProperty(chr,"longmurders", Cint(GetObjProperty(chr,"longmurders")-1));
+endif
+
+
+if(longs < 5)
+   chr.title_prefix:="";
+   chr.setMurderer(0);
+   chr.alignment := "good";
+endif
+
+if(longs >= 5)
+   chr.setMurderer(1);
+   chr.alignment := "evil";
+
+ if(GetObjProperty(chr, "sexo") == "homem")
+  chr.title_prefix:="O Assassino ";
+ else
+  chr.title_prefix:="A Assassina ";
+ endif
+
+endif
+
+///if(Cint(ReadGameClock()+144000) >= Cint(GetObjProperty(chr, "decaylongcountat")) )
+///SetObjProperty(chr, "decaylongcountat", Cint(GetObjProperty(chr, "decaylongcountat")-144000) )
+///endif
+
+endforeach
+
+endwhile
+
+
+endprogram

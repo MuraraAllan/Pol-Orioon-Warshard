@@ -1,0 +1,53 @@
+use uo;
+use util;
+
+include "include/client";
+include "include/attributes";
+include "include/spellAttack";
+include "include/spellRestrictions";
+
+program earthquake( parms )
+  var circle := 8;
+  var delivery := "notarget";
+  var noto := "neutral";
+  var result := maincast(parms, delivery, circle, noto, 57);
+  if(result == 0)
+    return;
+  endif
+  var caster := result[1];
+  var cast_on := result[2];
+  var magery := GetEffectiveSkill(caster, SKILLID_MAGERY);
+  var range := 12;
+  var victims := ListMobilesNearLocationEx( caster.x, caster.y, caster.z, range, LISTEX_FLAG_NORMAL + LISTEX_FLAG_HIDDEN );
+  var dmg;
+  PlaySoundEffect( caster, SFX_220 );
+  foreach mobile in victims
+if((cast_on.x > 4462 && cast_on.x < 4480 && cast_on.y > 1151 && cast_on.y < 1174))
+SendSysMessage(caster, "Nao sao permitidos ataques neste local!",3,70);   
+return 0;
+endif    
+if((mobile.serial != caster.serial) and (mobile.cmdlevel < 2))
+      SetObjProperty(mobile, "LastHit", {caster.name,caster.serial, "earthquake" });
+      send_attack(mobile,caster, 57);
+      dmg := RandomDiceRoll("1d12+40");
+if(GetEffectiveSkill(caster, SKILLID_EVALINT) == 0)
+dmg := RandomDiceRoll("1d5+32");
+endif
+if(GetEffectiveSkill(caster, SKILLID_EVALINT) > 79)
+dmg := RandomDiceRoll("1d4+37");
+endif  
+if(GetEffectiveSkill(caster, SKILLID_EVALINT) > 99)
+dmg := RandomDiceRoll("1d40+12");
+ PlaySoundEffect( mobile, SFX_SPELL_EARTHQUAKE );
+	  PlayObjectCenteredEffect( mobile, FX_SMOKE, 7, 7);
+      if(mobile.isA(POLCLASS_NPC))
+        dmg := dmg ;
+      endif
+	  ApplyRawDamage( mobile, Resisted(circle,caster,mobile,dmg) );
+PrintTextAbove(cast_on, " " + dmg + " ", FONT_SMALL_LIGHT, 38);    
+endif
+ endif
+endforeach
+  sleep(2);
+  PlaySoundEffect( caster, SFX_223 );
+endprogram

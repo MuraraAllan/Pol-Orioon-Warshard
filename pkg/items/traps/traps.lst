@@ -1,0 +1,346 @@
+C:\pol2\pkg\items\traps\traps.src, Line 8
+program open_trapped_item(who, item)
+include "include/canAccess";
+0: get arg 'who'
+1: get arg 'item'
+EraseObjProperty(who, "IsMeditating");
+2: local #0
+3: "IsMeditating"
+4: Func(2,5): EraseObjProperty
+5: #
+if(!can_access(who, item))
+6: local #0
+7: local #1
+8: 0L
+9: makelocal
+10: jmp userfunc @175
+11: if true goto 14
+return;
+12: ""
+13: progend
+var key_types array;
+14: decl local #2
+15: declare array
+16: #
+var stuff := EnumerateItemsInContainer(who.backpack);
+17: decl local #3
+18: local #0
+19: get member 'backpack'
+20: Func(2,6): EnumerateItemsInContainer
+21: :=
+22: #
+var thelock := GetObjProperty(item,"lockid");
+23: decl local #4
+24: local #1
+25: "lockid"
+26: Func(2,0): GetObjProperty
+27: :=
+28: #
+var has_key := 0;
+29: decl local #5
+30: 0L
+31: :=
+32: #
+foreach item in stuff
+33: local #3
+34: initforeach @49
+if (item.objtype in key_types)
+35: local #6
+36: get member 'objtype'
+37: local #2
+38: in
+39: if false goto 49
+if (GetObjProperty(item,"lockid") == thelock)
+40: local #6
+41: "lockid"
+42: Func(2,0): GetObjProperty
+43: local #4
+44: ==
+45: if false goto 49
+has_key := 1;
+46: 1L
+47: local5 := 
+break;
+48: goto50
+49: stepforeach @35
+50: leave block(3)
+if (!has_key)
+51: local #5
+52: if true goto 164
+var traptype := GetObjProperty(item,"trap_type");
+53: decl local #0
+54: local #1
+55: "trap_type"
+56: Func(2,0): GetObjProperty
+57: :=
+58: #
+var trapstrength := GetObjProperty(item,"trap_strength");
+59: decl local #1
+60: local #1
+61: "trap_strength"
+62: Func(2,0): GetObjProperty
+63: :=
+64: #
+case traptype
+65: local #6
+66: casejmp
+	"1": @67
+	"2": @102
+	"3": @115
+	default: @156
+PlaySoundEffect(who, SFX_225);
+67: local #0
+68: 549L
+69: Func(2,7): PlaySoundEffect
+70: #
+var dmg := RandomInt(30 * CInt(trapstrength));
+71: decl local #0
+72: 30L
+73: local #7
+74: Func(0,0): CInt
+75: *
+76: Func(3,0): RandomInt
+77: :=
+78: #
+SendSysMessage(who, "You set off a needle trap!");
+79: local #0
+80: "You set off a needle trap!"
+81: 3L
+82: 1000L
+83: Func(2,1): SendSysMessage
+84: #
+ApplyRawDamage(who, dmg);
+85: local #0
+86: local #8
+87: Func(2,8): ApplyRawDamage
+88: #
+item.usescript := "";
+89: local #1
+90: ""
+91: set member 'usescript' #
+EraseObjProperty( item, "trap_type" );
+92: local #1
+93: "trap_type"
+94: Func(2,5): EraseObjProperty
+95: #
+EraseObjProperty( item, "trap_strength" );
+96: local #1
+97: "trap_strength"
+98: Func(2,5): EraseObjProperty
+99: #
+100: leave block(1)
+101: goto162
+start_script(":traps:poisonTrapTriggered", {who, item, "You have been poisoned!
+102: ":traps:poisonTrapTriggered"
+103: array
+104: local #0
+105: +=
+106: local #1
+107: +=
+108: "You have been poisoned!"
+109: +=
+110: local #7
+111: +=
+112: Func(4,0): start_script
+113: #
+114: goto162
+PlaySoundEffect(who, SFX_208);
+115: local #0
+116: 520L
+117: Func(2,7): PlaySoundEffect
+118: #
+SendSysMessage(who, "You set off a trap!");
+119: local #0
+120: "You set off a trap!"
+121: 3L
+122: 1000L
+123: Func(2,1): SendSysMessage
+124: #
+PlayObjectCenteredEffect( who, FX_EXPLODE_3, 10,10);
+125: local #0
+126: 14000L
+127: 10L
+128: 10L
+129: Func(2,9): PlayObjectCenteredEffect
+130: #
+var dmg := RandomInt(20 * CInt(trapstrength));
+131: decl local #0
+132: 20L
+133: local #7
+134: Func(0,0): CInt
+135: *
+136: Func(3,0): RandomInt
+137: :=
+138: #
+ApplyRawDamage(who, dmg);
+139: local #0
+140: local #8
+141: Func(2,8): ApplyRawDamage
+142: #
+item.usescript := "";
+143: local #1
+144: ""
+145: set member 'usescript' #
+EraseObjProperty( item, "trap_type" );
+146: local #1
+147: "trap_type"
+148: Func(2,5): EraseObjProperty
+149: #
+EraseObjProperty( item, "trap_strength" );
+150: local #1
+151: "trap_strength"
+152: Func(2,5): EraseObjProperty
+153: #
+154: leave block(1)
+155: goto162
+SendSysMessage(who, "You narrowly avoid the trap!");
+156: local #0
+157: "You narrowly avoid the trap!"
+158: 3L
+159: 1000L
+160: Func(2,1): SendSysMessage
+161: #
+162: leave block(2)
+163: goto173
+item.usescript := "";
+164: local #1
+165: ""
+166: set member 'usescript' #
+SendSysMessage(who, "You disarm the trap");
+167: local #0
+168: "You disarm the trap"
+169: 3L
+170: 1000L
+171: Func(2,1): SendSysMessage
+172: #
+173: leave block(6)
+174: progend
+C:/pol2/scripts/include/canAccess.inc, Line 2
+function can_access(who, item, flags := 0)
+175: pop param 'flags'
+176: pop param 'item'
+177: pop param 'who'
+var owner := Cint(GetObjProperty(item, "Owner"));
+178: decl local #3
+179: local #1
+180: "Owner"
+181: Func(2,0): GetObjProperty
+182: Func(0,0): CInt
+183: :=
+184: #
+if((owner) and (owner != who.serial))
+185: local #3
+186: local #3
+187: local #2
+188: get member 'serial'
+189: <>
+190: &&
+191: if false goto 201
+SendSysMessage(who, "You cannot use that.");
+192: local #2
+193: "You cannot use that."
+194: 3L
+195: 1000L
+196: Func(2,1): SendSysMessage
+197: #
+return 0;
+198: 0L
+199: return
+200: goto280
+elseif(GetObjProperty(item, "Vendored"))
+201: local #1
+202: "Vendored"
+203: Func(2,0): GetObjProperty
+204: if false goto 214
+SendSysMessage(who, "You cannot use that.");
+205: local #2
+206: "You cannot use that."
+207: 3L
+208: 1000L
+209: Func(2,1): SendSysMessage
+210: #
+return 0;
+211: 0L
+212: return
+213: goto280
+elseif(!Accessible(who, item))
+214: local #2
+215: local #1
+216: Func(2,2): Accessible
+217: if true goto 227
+SendSysMessage(who, "You cannot use that.");
+218: local #2
+219: "You cannot use that."
+220: 3L
+221: 1000L
+222: Func(2,1): SendSysMessage
+223: #
+return 0;
+224: 0L
+225: return
+226: goto280
+elseif((!flags["distance"]) and ((Distance(who, item) > 2)))
+227: local #0
+228: "distance"
+229: [] 1
+230: !
+231: local #2
+232: local #1
+233: Func(2,3): Distance
+234: 2L
+235: >
+236: &&
+237: if false goto 247
+SendSysMessage(who, "That item is too far away.");
+238: local #2
+239: "That item is too far away."
+240: 3L
+241: 1000L
+242: Func(2,1): SendSysMessage
+243: #
+return 0;
+244: 0L
+245: return
+246: goto280
+elseif((!flags["unmovable"]) and (item.movable == 0))
+247: local #0
+248: "unmovable"
+249: [] 1
+250: !
+251: local #1
+252: get member 'movable'
+253: 0L
+254: ==
+255: &&
+256: if false goto 266
+SendSysMessage(who, "You cannot use that while locked down.");
+257: local #2
+258: "You cannot use that while locked down."
+259: 3L
+260: 1000L
+261: Func(2,1): SendSysMessage
+262: #
+return 0;
+263: 0L
+264: return
+265: goto280
+elseif(!ReserveItem(item))
+266: local #1
+267: Func(2,4): ReserveItem
+268: if true goto 278
+SendSysMessage(who, "That item is already in use.");
+269: local #2
+270: "That item is already in use."
+271: 3L
+272: 1000L
+273: Func(2,1): SendSysMessage
+274: #
+return 0;
+275: 0L
+276: return
+277: goto280
+return 1;
+278: 1L
+279: return
+280: 0L
+281: return

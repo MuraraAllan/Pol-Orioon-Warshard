@@ -1,0 +1,130 @@
+C:\pol2\pkg\npcs\playervendor\payCounter.src, Line 6
+program paycounter(me)
+use cfgfile;
+0: get arg 'me'
+var gold, rsrv, tax;
+1: decl local #1
+2: #
+3: decl local #2
+4: #
+5: decl local #3
+6: #
+var mypay := 50;
+7: decl local #4
+8: 50L
+9: :=
+10: #
+var fees := 0;
+11: decl local #5
+12: 0L
+13: :=
+14: #
+sleep(30);
+15: 30L
+16: Func(3,0): sleep
+17: #
+while(me)
+18: local #0
+19: if false goto 103
+fees := 0;
+20: 0L
+21: local5 := 
+gold := CInt(GetObjProperty(me, "g"));
+22: local #0
+23: "g"
+24: Func(2,6): GetObjProperty
+25: Func(0,0): CInt
+26: local1 := 
+rsrv := CInt(GetObjProperty(me, "r"));
+27: local #0
+28: "r"
+29: Func(2,6): GetObjProperty
+30: Func(0,0): CInt
+31: local2 := 
+tax := gold / 100;
+32: local #1
+33: 100L
+34: /
+35: local3 := 
+foreach item in EnumerateItemsInContainer(me.backpack)
+36: local #0
+37: get member 'backpack'
+38: Func(2,0): EnumerateItemsInContainer
+39: initforeach @47
+fees := fees + CInt(GetObjProperty(item,"price"));
+40: local #5
+41: local #6
+42: "price"
+43: Func(2,6): GetObjProperty
+44: Func(0,0): CInt
+45: +
+46: local5 := 
+47: stepforeach @40
+48: leave block(3)
+mypay := mypay + (fees / 100) + tax;
+49: local #4
+50: local #5
+51: 100L
+52: /
+53: +
+54: local #3
+55: +
+56: local4 := 
+if(gold >= mypay)
+57: local #1
+58: local #4
+59: >=
+60: if false goto 71
+gold := gold - mypay;
+61: local #1
+62: local #4
+63: -
+64: local1 := 
+SetObjProperty(me, "g", gold);
+65: local #0
+66: "g"
+67: local #1
+68: Func(2,7): SetObjProperty
+69: #
+70: goto99
+mypay := mypay - gold;
+71: local #4
+72: local #1
+73: -
+74: local4 := 
+SetObjProperty(me, "g", 0);
+75: local #0
+76: "g"
+77: 0L
+78: Func(2,7): SetObjProperty
+79: #
+if(rsrv >= mypay)
+80: local #2
+81: local #4
+82: >=
+83: if false goto 94
+rsrv := rsrv - mypay;
+84: local #2
+85: local #4
+86: -
+87: local2 := 
+SetObjProperty(me, "r", rsrv);
+88: local #0
+89: "r"
+90: local #2
+91: Func(2,7): SetObjProperty
+92: #
+93: goto99
+SetObjProperty(me, "deadbeat", 1);
+94: local #0
+95: "deadbeat"
+96: 1L
+97: Func(2,7): SetObjProperty
+98: #
+sleep(7200);
+99: 7200L
+100: Func(3,0): sleep
+101: #
+102: goto18
+103: leave block(6)
+104: progend

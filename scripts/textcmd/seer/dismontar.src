@@ -1,0 +1,15 @@
+use uo;
+use os;
+
+
+include "include/attributes";
+
+
+program dismontar(who)
+var alvo := Target(who);
+var montaria := GetEquipmentByLayer(alvo, 25);
+EraseObjProperty(alvo, "mounted");
+EraseObjProperty(alvo, "mounted_on");
+DestroyItem(montaria);
+endprogram
+

@@ -1,0 +1,109 @@
+use uo;
+use cfgfile;
+
+include "include/skillPoints";
+include "include/attributes";
+include "include/spellRestrictions";
+include "include/client";
+include "include/spellAttack";
+
+const EFFECT_SPARKLE := 0x373a;
+const SOUND_EFFECT_RES := 0x215;
+
+program mfirefield( character, item )
+  if((GetHp(character) < 1) || (character.cmdlevel > 2))
+    return;
+  endif
+  var npccfg := ReadConfigFile("::npcdesc");
+  var element;
+  var creater := GetObjProperty(item, "creater");
+  var fieldstrength;
+  var online := EnumerateOnlineCharacters();
+  var boss;
+  foreach char in online
+    if(creater == char.serial)
+      boss := char;
+      break;
+    endif
+  endforeach
+  if(!boss)
+    boss := SystemFindObjectBySerial(creater, SYSFIND_SEARCH_OFFLINE_MOBILES);
+  endif
+  SetScriptController(boss);
+  send_attack(character, boss, 46);
+  ApplyRawDamage(character, 1);
+  HealDamage(character, 1);
+  var dmg := CInt(GetEffectiveSkill(boss, 25)/10);
+  fieldstrength := RandomInt(dmg);
+  PlaySoundEffect(character, 0x209);
+  if(!character.dead)
+     var aa := teste( 2, boss, character, fieldstrength);
+  endif
+sleepms(1100);
+endprogram
+
+
+function teste(circle, caster, cast_on, amt)
+  var magery := GetEffectiveSkill(caster, SKILLID_MAGERY);
+  var evalint :=GetEffectiveSkill(caster, SKILLID_EVALINT);
+  var resist := GetEffectiveSkill(cast_on, SKILLID_MAGICRESISTANCE);
+  var chk := resist + randomdiceroll(resist) - (((magery - 40 + evalint - 50 - cint(randomdiceroll(magery) + 10)) / 30) + (circle * 4) + randomdiceroll("1d8"));
+
+   var  diff := chk;
+
+if((resist >= 50) && (resist <= 85))
+diff := chk - 10;
+endif
+
+  if(cast_on.dead)
+    return 0;
+  endif
+
+  if((Randomdiceroll("1d80") + 15) <= diff)
+SetObjProperty(cast_on, "resist", 1);    
+SendSysMessage(cast_on, "Voce sente seu corpo resistindo a magia!",9,89);
+    PlaySoundEffect(cast_on, SFX_SPELL_WEAKEN);
+    PlayObjectCenteredEffect(cast_on, FX_CURSE_EFFECT, 5,5);
+
+
+   var magery := GetEffectiveSkill(caster, SKILLID_MAGERY);
+  var insc   := GetEffectiveSkill(caster, SKILLID_EVALINT);
+var dmg1 := randomint(cint(GetModDuration(magery) / 100) + randomint(cint(GetModDuration(insc) / 50)) + RandomDiceRoll("1d3") );
+if(dmg1 < 0)
+dmg1 := 0;
+endif
+
+send_attack(cast_on,caster, 43);
+ApplyRawDamage(cast_on,dmg1);
+var evalint :=GetEffectiveSkill(caster, SKILLID_EVALINT) * 10;
+PrintTextAbove(cast_on, " " + dmg1 + " ", FONT_SMALL_LIGHT, 38);
+SetObjProperty(caster, "Lastataque", Readgameclock() + 5); 
+
+
+
+else
+  var insc   := GetEffectiveSkill(caster, SKILLID_EVALINT);
+if(insc >= 80)
+send_attack(cast_on,caster, 43);
+var dmg :=  cint(GetModDuration(magery) / 20 + GetModDuration(insc) / 15  + RandomDiceRoll("1d9") + 5 - 5);
+if(dmg > 6)
+dmg := randomdiceroll("1d3") + 5;
+endif
+ApplyRawDamage(cast_on,dmg);
+PrintTextAbove(cast_on, " " + dmg + " ", FONT_SMALL_LIGHT, 38);
+SetObjProperty(caster, "Lastataque", Readgameclock() + 5); 
+else
+send_attack(cast_on,caster, 43);
+var dmg :=  randomint(cint(GetModDuration(magery) / 50) + randomint(cint(GetModDuration(insc) / 50)) + RandomDiceRoll("1d4") );
+if(dmg > 5)
+dmg := randomdiceroll("1d3") + 4;
+endif
+if(dmg < 0)
+dmg := 0;
+endif
+ApplyRawDamage(cast_on,dmg);
+PrintTextAbove(cast_on, " " + dmg + " ", FONT_SMALL_LIGHT, 38);
+SetObjProperty(caster, "Lastataque", Readgameclock() + 5); 
+endif
+endif
+endfunction

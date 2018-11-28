@@ -1,0 +1,21 @@
+//
+// RECONNECT.SRC
+//
+// Called when a player reconnects...
+// Shows the message-of-the-day in a "tips" window :)
+//
+// < Core-related Script >
+//
+// Creator: Myrathi
+// Created: 06/09/2000 --:--
+// Updated: 23/01/2002 11:40
+// <tjh@myrathi.co.uk>
+//
+use uo;
+use os;
+
+include "motdConfig";
+
+program reconnect( who )
+ 
+endprogram

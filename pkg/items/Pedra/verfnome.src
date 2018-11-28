@@ -1,0 +1,64 @@
+use uo;
+use os;
+
+include "include/attributes";
+include "include/client";
+include ":poisonwatcher:poisons";
+
+program nome_verifi(who)
+
+Sendsysmessage(who, "Ola " +who.name+ " seja bem vindo ao Sysco WS! :)", 0,33);
+nome(who);
+var nome1 := CAscZ( who.name );
+foreach  a in nome1
+if (( a  >= 49 ) && (a <= 57))
+who.name:="Nome com Numeros";
+endif
+if (a == 45)
+who.name:="Tracinhos";
+elseif (a == 46)
+who.name:="Pontinhos";
+elseif (a == 44)
+who.name:="Virgulas";
+elseif (a == 59)
+who.name:="Ponto e Virgula";
+endif
+endforeach
+
+
+endprogram
+
+
+function nomeverf1(who)
+var i, validstr:={ "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "$", "*", "&", "#", "@", "!", "?", "+", "-", "^", " "};
+  
+  if(who.name == "")
+  Sendsysmessage(who, "Seu nome eh Invalido." , 0,33);
+  Sendsysmessage(who, "Escolha outro..." , 0,33);
+  who.name:="Char Sem Nome1";
+  nomeverf2(who);
+  endif
+  
+  if(!who.name in validstr)  
+  Sendsysmessage(who, "Seu nome eh Invalido." , 0,33);
+  Sendsysmessage(who, "Escolha outro..." , 0,33);
+  nomeverf2(who);
+  endif
+endfunction
+
+function nomeverf2(who)
+var i, validstr:={ "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "$", "*", "&", "#", "@", "!", "?", "+", "-", "^", " "};
+  
+  var newname := SendTextEntryGump(who, "Escolha um novo nome...", 0, 1, 30, "Digite Abaixo:");
+  if((!newname) || (newname == ""))
+  Sendsysmessage(who, "Escolha invalida." , 0,33);
+  nomeverf2(who);
+  endif
+endfunction
+
+function nome(who)
+var nome1 := CAscZ( who.name );
+foreach  a in nome1
+broadcast ( a);
+endforeach
+endfunction

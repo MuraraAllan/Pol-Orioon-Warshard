@@ -1,0 +1,252 @@
+C:\pol2\pkg\systems\daynight\spyglass.src, Line 3
+program spyglass(who);
+use uo;
+0: get arg 'who'
+if (who.x > 5120)
+1: local #0
+2: get member 'x'
+3: 5120L
+4: >
+5: if false goto 20
+var dungeontext := "The moons are not visible from your location.";
+6: decl local #0
+7: "The moons are not visible from your location."
+8: :=
+9: #
+PrintTextAbovePrivate(who, dungeontext, who);
+10: local #0
+11: local #1
+12: local #0
+13: 3L
+14: 1000L
+15: Func(2,0): PrintTextAbovePrivate
+16: #
+return;
+17: ""
+18: progend
+19: leave block(1)
+var wstuff := GetGlobalProperty("Weather");
+20: decl local #1
+21: "Weather"
+22: Func(2,1): GetGlobalProperty
+23: :=
+24: #
+var tphase := wstuff[2];
+25: decl local #2
+26: local #1
+27: 2L
+28: [] 1
+29: :=
+30: #
+var fphase := wstuff[1];
+31: decl local #3
+32: local #1
+33: 1L
+34: [] 1
+35: :=
+36: #
+var outputtext := "You gaze at the heavens, and note that Trammel ";
+37: decl local #4
+38: "You gaze at the heavens, and note that Trammel "
+39: :=
+40: #
+case (tphase)
+41: local #2
+42: casejmp
+	0: @43
+	1: @48
+	2: @53
+	3: @58
+	4: @63
+	5: @68
+	6: @73
+	7: @78
+	default: @82
+outputtext := outputtext + "is new, and Felucca ";
+43: local #4
+44: "is new, and Felucca "
+45: +
+46: local4 := 
+47: goto82
+outputtext := outputtext + "is in its first crescent, and Felucca ";
+48: local #4
+49: "is in its first crescent, and Felucca "
+50: +
+51: local4 := 
+52: goto82
+outputtext := outputtext + "is in its first quarter, and Felucca ";
+53: local #4
+54: "is in its first quarter, and Felucca "
+55: +
+56: local4 := 
+57: goto82
+outputtext := outputtext + "is waxing gibbous, while Felucca ";
+58: local #4
+59: "is waxing gibbous, while Felucca "
+60: +
+61: local4 := 
+62: goto82
+outputtext := outputtext + "is full, and Felucca ";
+63: local #4
+64: "is full, and Felucca "
+65: +
+66: local4 := 
+67: goto82
+outputtext := outputtext + "is waning gibbous, and Felucca ";
+68: local #4
+69: "is waning gibbous, and Felucca "
+70: +
+71: local4 := 
+72: goto82
+outputtext := outputtext + "is in its last quarter, while Felucca ";
+73: local #4
+74: "is in its last quarter, while Felucca "
+75: +
+76: local4 := 
+77: goto82
+outputtext := outputtext + "is a dying crescent, and Felucca ";
+78: local #4
+79: "is a dying crescent, and Felucca "
+80: +
+81: local4 := 
+case (fphase)
+82: local #3
+83: casejmp
+	0: @84
+	1: @96
+	2: @108
+	3: @120
+	4: @132
+	5: @144
+	6: @156
+	7: @168
+	default: @179
+if (tphase == 0)
+84: local #2
+85: 0L
+86: ==
+87: if false goto 91
+outputtext := "You gaze at the heavens, and see that both moons are new.";
+88: "You gaze at the heavens, and see that both moons are new."
+89: local4 := 
+90: goto95
+outputtext := outputtext + "is new.";
+91: local #4
+92: "is new."
+93: +
+94: local4 := 
+95: goto179
+if (tphase == 1)
+96: local #2
+97: 1L
+98: ==
+99: if false goto 103
+outputtext := "You gaze at the heavens, and note that both moons are a first cr
+100: "You gaze at the heavens, and note that both moons are a first crescent."
+101: local4 := 
+102: goto107
+outputtext := outputtext + "is in its first crescent.";
+103: local #4
+104: "is in its first crescent."
+105: +
+106: local4 := 
+107: goto179
+if (tphase == 2)
+108: local #2
+109: 2L
+110: ==
+111: if false goto 115
+outputtext := "You gaze at the heavens, and see that both moons are in their fi
+112: "You gaze at the heavens, and see that both moons are in their first quarter."
+113: local4 := 
+114: goto119
+outputtext := outputtext + "is in its first quarter.";
+115: local #4
+116: "is in its first quarter."
+117: +
+118: local4 := 
+119: goto179
+if (tphase == 3)
+120: local #2
+121: 3L
+122: ==
+123: if false goto 127
+outputtext := "You gaze at the heavens, and both moons are waxing gibbous.";
+124: "You gaze at the heavens, and both moons are waxing gibbous."
+125: local4 := 
+126: goto131
+outputtext := outputtext + "is a waxing gibbous.";
+127: local #4
+128: "is a waxing gibbous."
+129: +
+130: local4 := 
+131: goto179
+if (tphase == 4)
+132: local #2
+133: 4L
+134: ==
+135: if false goto 139
+outputtext := "You gaze at the heavens, and see that both moons are dazzlingly 
+136: "You gaze at the heavens, and see that both moons are dazzlingly full."
+137: local4 := 
+138: goto143
+outputtext := outputtext + "is full.";
+139: local #4
+140: "is full."
+141: +
+142: local4 := 
+143: goto179
+if (tphase == 5)
+144: local #2
+145: 5L
+146: ==
+147: if false goto 151
+outputtext := "You gaze at the heavens, and note that both moons are waning gib
+148: "You gaze at the heavens, and note that both moons are waning gibbous."
+149: local4 := 
+150: goto155
+outputtext := outputtext + "is waning gibbous.";
+151: local #4
+152: "is waning gibbous."
+153: +
+154: local4 := 
+155: goto179
+if (tphase == 6)
+156: local #2
+157: 6L
+158: ==
+159: if false goto 163
+outputtext := "You gaze at the heavens, and see both moons are in their last qu
+160: "You gaze at the heavens, and see both moons are in their last quarter."
+161: local4 := 
+162: goto167
+outputtext := outputtext + "is in its last quarter.";
+163: local #4
+164: "is in its last quarter."
+165: +
+166: local4 := 
+167: goto179
+if (tphase == 7)
+168: local #2
+169: 7L
+170: ==
+171: if false goto 175
+outputtext := "You gaze at the heavens, and see both moons are a faint last cre
+172: "You gaze at the heavens, and see both moons are a faint last crescent."
+173: local4 := 
+174: goto179
+outputtext := outputtext + "is a dying crescent.";
+175: local #4
+176: "is a dying crescent."
+177: +
+178: local4 := 
+PrintTextAbovePrivate(who, outputtext, who);
+179: local #0
+180: local #4
+181: local #0
+182: 3L
+183: 1000L
+184: Func(2,0): PrintTextAbovePrivate
+185: #
+186: leave block(5)
+187: progend

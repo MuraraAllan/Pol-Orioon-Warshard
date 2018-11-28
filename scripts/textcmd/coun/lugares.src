@@ -1,0 +1,42 @@
+use uo;
+use os;
+include "include/attributes";
+include "../pkg/foundations/gumps/gumps";
+
+
+program arma(who)
+status(who); 
+endprogram
+
+
+function status(who)
+
+  GFInitGump( 250 , 100 );
+  GFNoMove();
+  GFResizePic(50, 5, 5120, 300, 250);
+  GFTextLine( 155 , 20, 1153 , "Comando De Lugares" );
+  var bt2 := GFButtonID( 70, 50, 0xa9a, 0xa9b, 1);
+  var bt3 := GFButtonID( 70, 80, 0xa9a, 0xa9b, 1);
+  var bt4 := GFButtonID( 70, 110, 0xa9a, 0xa9b, 1);
+ 
+
+  GFTextLine(90, 50,  928, "Safe Logout"); 
+  GFTextLine(90, 80,  928, "North Mines"); 
+  GFTextLine(90, 110, 928, "Ice"); 
+ 
+
+  var res := GFSendGump(who);
+
+if(res[bt2.keyid]) 
+ MoveCharacterToLocation( who, 1495,1609,21 );
+endif
+
+if(res[bt3.keyid]) 
+ MoveCharacterToLocation( who, 2478,47,0 );
+endif
+
+if(res[bt4.keyid]) 
+ MoveCharacterToLocation( who, 4208,561,42 );
+endif
+
+endfunction

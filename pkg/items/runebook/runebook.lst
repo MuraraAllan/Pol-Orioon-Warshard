@@ -1,0 +1,5288 @@
+C:/pol2/scripts/include/spellRestrictions.inc, Line 15
+var caster;
+0: decl global #0
+1: #
+var npccfg := ReadConfigFile("::npcdesc");
+2: decl global #1
+3: "::npcdesc"
+4: Func(6,0): ReadConfigFile
+5: :=
+6: #
+C:\pol2\pkg\items\runebook\runebook.src, Line 22
+var maxcharges;
+7: decl global #2
+8: #
+var charges;
+9: decl global #3
+10: #
+var critical_runes := { 3,5,7,9,11,13,15};
+11: decl global #4
+12: array
+13: 3L
+14: +=
+15: 5L
+16: +=
+17: 7L
+18: +=
+19: 9L
+20: +=
+21: 11L
+22: +=
+23: 13L
+24: +=
+25: 15L
+26: +=
+27: :=
+28: #
+var runecount := 0;
+29: decl global #5
+30: 0L
+31: :=
+32: #
+var pagecount := 1;
+33: decl global #6
+34: 1L
+35: :=
+36: #
+var layout := {
+37: decl global #7
+38: array
+39: "page 0"
+40: +=
+41: "gumppic 0   0 2220               "
+42: +=
+43: "page 1"
+44: +=
+45: "button   55  10 2472 2473 1 0 900"
+46: +=
+47: "text     85  12    0    0        "
+48: +=
+49: "text    260  12    0    6        "
+50: +=
+51: "text     85  38    0    1        "
+52: +=
+53: "text    150  38    0    3        "
+54: +=
+55: "text    230  38    0    2        "
+56: +=
+57: "text    333  38    0    4        "
+58: +=
+59: "gumppic  50  50   57             "
+60: +=
+61: "gumppic  70  50   58             "
+62: +=
+63: "gumppic  85  50   58             "
+64: +=
+65: "gumppic 100  50   58             "
+66: +=
+67: "gumppic 115  50   58             "
+68: +=
+69: "gumppic 130  50   58             "
+70: +=
+71: "gumppic 145  50   58             "
+72: +=
+73: "gumppic 160  50   59             "
+74: +=
+75: "gumppic 218  50   57             "
+76: +=
+77: "gumppic 233  50   58             "
+78: +=
+79: "gumppic 248  50   58             "
+80: +=
+81: "gumppic 263  50   58             "
+82: +=
+83: "gumppic 278  50   58             "
+84: +=
+85: "gumppic 293  50   58             "
+86: +=
+87: "gumppic 308  50   58             "
+88: +=
+89: "gumppic 323  50   59             "
+90: +=
+91: :=
+92: #
+var data := {
+93: decl global #8
+94: array
+95: "Rename Book"
+96: +=
+97: "Charges:"
+98: +=
+99: "Max Charges:"
+100: +=
+101: ""
+102: +=
+103: ""
+104: +=
+105: "Set Default"
+106: +=
+107: ""
+108: +=
+109: :=
+110: #
+C:\pol2\pkg\items\runebook\runebook.src, Line 67
+program runebook(who, book)
+111: get arg 'who'
+112: get arg 'book'
+EraseObjProperty(who, "IsMeditating");
+113: local #0
+114: "IsMeditating"
+115: Func(2,24): EraseObjProperty
+116: #
+EraseObjProperty(who, "HealTimer");
+117: local #0
+118: "HealTimer"
+119: Func(2,24): EraseObjProperty
+120: #
+if(!can_access(who, book))
+121: local #0
+122: local #1
+123: 0L
+124: makelocal
+125: jmp userfunc @601
+126: if true goto 129
+return;
+127: ""
+128: progend
+if(!ReserveItem(book))
+129: local #1
+130: Func(2,25): ReserveItem
+131: if true goto 134
+return;
+132: ""
+133: progend
+charges := GetObjProperty(book, "charges");
+134: local #1
+135: "charges"
+136: Func(2,1): GetObjProperty
+137: global3 := 
+if(!charges)
+138: global #3
+139: if true goto 147
+charges := 0;
+140: 0L
+141: global3 := 
+SetObjProperty(book,"charges", charges);
+142: local #1
+143: "charges"
+144: global #3
+145: Func(2,3): SetObjProperty
+146: #
+maxcharges := GetObjProperty(book, "maxcharges");
+147: local #1
+148: "maxcharges"
+149: Func(2,1): GetObjProperty
+150: global2 := 
+if(!maxcharges)
+151: global #2
+152: if true goto 160
+maxcharges := 5;
+153: 5L
+154: global2 := 
+SetObjProperty(book,"maxcharges", maxcharges);
+155: local #1
+156: "maxcharges"
+157: global #2
+158: Func(2,3): SetObjProperty
+159: #
+data[4] := charges;
+160: global #8
+161: 4L
+162: global #3
+163: [] := (1) #
+data[5] := maxcharges;
+164: global #8
+165: 5L
+166: global #2
+167: [] := (1) #
+var selected_rune_struct;
+168: decl local #2
+169: #
+var ret;
+170: decl local #3
+171: #
+FillInArrays(book);
+172: local #1
+173: makelocal
+174: jmp userfunc @1244
+175: #
+var result := SendDialogGump( who, layout, data );
+176: decl local #4
+177: local #0
+178: global #7
+179: global #8
+180: Func(2,41): SendDialogGump
+181: :=
+182: #
+if( result[0] == 0 )
+183: local #4
+184: 0L
+185: [] 1
+186: 0L
+187: ==
+188: if false goto 192
+return;
+189: ""
+190: progend
+191: goto219
+elseif(result[0] == 900)
+192: local #4
+193: 0L
+194: [] 1
+195: 900L
+196: ==
+197: if false goto 219
+if(book.movable == 0)
+198: local #1
+199: get member 'movable'
+200: 0L
+201: ==
+202: if false goto 212
+SendSysMessage(who, "You cannot do that while the book is locked down.");
+203: local #0
+204: "You cannot do that while the book is locked down."
+205: 3L
+206: 1000L
+207: Func(2,20): SendSysMessage
+208: #
+return;
+209: ""
+210: progend
+211: goto219
+renamebook(who, book);
+212: local #0
+213: local #1
+214: makelocal
+215: jmp userfunc @2793
+216: #
+return;
+217: ""
+218: progend
+if(result[0] >= 600)
+219: local #4
+220: 0L
+221: [] 1
+222: 600L
+223: >=
+224: if false goto 293
+if(charges < 1)
+225: global #3
+226: 1L
+227: <
+228: if false goto 237
+SendSysMessage(who,"your book is out of charges.");
+229: local #0
+230: "your book is out of charges."
+231: 3L
+232: 1000L
+233: Func(2,20): SendSysMessage
+234: #
+return;
+235: ""
+236: progend
+var d := (result[0] - 600);
+237: decl local #0
+238: local #4
+239: 0L
+240: [] 1
+241: 600L
+242: -
+243: :=
+244: #
+var defs := GetObjProperty( book, "runedefs" );
+245: decl local #1
+246: local #1
+247: "runedefs"
+248: Func(2,1): GetObjProperty
+249: :=
+250: #
+var runeinfo := defs[d];
+251: decl local #2
+252: local #6
+253: local #5
+254: [] 1
+255: :=
+256: #
+ret := custom_recall(who, runeinfo, book);
+257: local #0
+258: local #7
+259: local #1
+260: makelocal
+261: jmp userfunc @1041
+262: local3 := 
+charges := GetObjProperty(book,"charges") - 1;
+263: local #1
+264: "charges"
+265: Func(2,1): GetObjProperty
+266: 1L
+267: -
+268: global3 := 
+SetObjProperty(book,"charges", charges);
+269: local #1
+270: "charges"
+271: global #3
+272: Func(2,3): SetObjProperty
+273: #
+bookname(who, book);
+274: local #0
+275: local #1
+276: makelocal
+277: jmp userfunc @570
+278: #
+if( ret == 0 )
+279: local #3
+280: 0L
+281: ==
+282: if false goto 289
+SendSysMessage( who, "Recall Failed." );
+283: local #0
+284: "Recall Failed."
+285: 3L
+286: 1000L
+287: Func(2,20): SendSysMessage
+288: #
+return;
+289: ""
+290: progend
+291: leave block(3)
+292: goto454
+elseif(result[0] >= 500)
+293: local #4
+294: 0L
+295: [] 1
+296: 500L
+297: >=
+298: if false goto 358
+if(book.movable == 0)
+299: local #1
+300: get member 'movable'
+301: 0L
+302: ==
+303: if false goto 313
+SendSysMessage(who, "You cannot do that while the book is locked down.");
+304: local #0
+305: "You cannot do that while the book is locked down."
+306: 3L
+307: 1000L
+308: Func(2,20): SendSysMessage
+309: #
+return;
+310: ""
+311: progend
+312: goto357
+var d := (result[0] - 500);
+313: decl local #0
+314: local #4
+315: 0L
+316: [] 1
+317: 500L
+318: -
+319: :=
+320: #
+var defs := GetObjProperty( book, "runedefs" );
+321: decl local #1
+322: local #1
+323: "runedefs"
+324: Func(2,1): GetObjProperty
+325: :=
+326: #
+var runeinfo := defs[d];
+327: decl local #2
+328: local #6
+329: local #5
+330: [] 1
+331: :=
+332: #
+SetObjProperty(book,"x", runeinfo[2]);
+333: local #1
+334: "x"
+335: local #7
+336: 2L
+337: [] 1
+338: Func(2,3): SetObjProperty
+339: #
+SetObjProperty(book,"y", runeinfo[3]);
+340: local #1
+341: "y"
+342: local #7
+343: 3L
+344: [] 1
+345: Func(2,3): SetObjProperty
+346: #
+SetObjProperty(book,"z", runeinfo[4]);
+347: local #1
+348: "z"
+349: local #7
+350: 4L
+351: [] 1
+352: Func(2,3): SetObjProperty
+353: #
+return;
+354: ""
+355: progend
+356: leave block(3)
+357: goto454
+elseif (result[0] >= 81)
+358: local #4
+359: 0L
+360: [] 1
+361: 81L
+362: >=
+363: if false goto 454
+if(book.movable == 0)
+364: local #1
+365: get member 'movable'
+366: 0L
+367: ==
+368: if false goto 378
+SendSysMessage(who, "You cannot do that while the book is locked down.");
+369: local #0
+370: "You cannot do that while the book is locked down."
+371: 3L
+372: 1000L
+373: Func(2,20): SendSysMessage
+374: #
+return;
+375: ""
+376: progend
+377: goto454
+var d := (result[0] - 80);
+378: decl local #0
+379: local #4
+380: 0L
+381: [] 1
+382: 80L
+383: -
+384: :=
+385: #
+var defs := GetObjProperty( book, "runedefs" );
+386: decl local #1
+387: local #1
+388: "runedefs"
+389: Func(2,1): GetObjProperty
+390: :=
+391: #
+var runeinfo := defs[d];
+392: decl local #2
+393: local #6
+394: local #5
+395: [] 1
+396: :=
+397: #
+if(!runeinfo)
+398: local #7
+399: if true goto 408
+SendSysMessage(who, "That rune no longer exists");
+400: local #0
+401: "That rune no longer exists"
+402: 3L
+403: 1000L
+404: Func(2,20): SendSysMessage
+405: #
+return;
+406: ""
+407: progend
+var rune := CreateItemInBackpack(who, 0x1f14);
+408: decl local #3
+409: local #0
+410: 7956L
+411: 1L
+412: Func(2,42): CreateItemInBackpack
+413: :=
+414: #
+SetName(rune, runeinfo[1]);
+415: local #8
+416: local #7
+417: 1L
+418: [] 1
+419: Func(2,43): SetName
+420: #
+SetObjProperty(rune,"x", runeinfo[2]);
+421: local #8
+422: "x"
+423: local #7
+424: 2L
+425: [] 1
+426: Func(2,3): SetObjProperty
+427: #
+SetObjProperty(rune,"y", runeinfo[3]);
+428: local #8
+429: "y"
+430: local #7
+431: 3L
+432: [] 1
+433: Func(2,3): SetObjProperty
+434: #
+SetObjProperty(rune,"z", runeinfo[4]);
+435: local #8
+436: "z"
+437: local #7
+438: 4L
+439: [] 1
+440: Func(2,3): SetObjProperty
+441: #
+defs.erase(d);
+442: local #6
+443: local #5
+444: Call Method erase (1 params)
+445: #
+SetObjProperty(book,"runedefs", defs);
+446: local #1
+447: "runedefs"
+448: local #6
+449: Func(2,3): SetObjProperty
+450: #
+return;
+451: ""
+452: progend
+453: leave block(4)
+var funct := NormalizeReturnValue( result[0] );
+454: decl local #5
+455: local #4
+456: 0L
+457: [] 1
+458: makelocal
+459: jmp userfunc @2768
+460: :=
+461: #
+var newval := result[0];
+462: decl local #6
+463: local #4
+464: 0L
+465: [] 1
+466: :=
+467: #
+if(newval != 1 )
+468: local #6
+469: 1L
+470: <>
+471: if false goto 477
+selected_rune_struct := FindThatRune( book, newval);
+472: local #1
+473: local #6
+474: makelocal
+475: jmp userfunc @2141
+476: local2 := 
+case (funct)
+477: local #5
+478: casejmp
+	0: @479
+	2: @482
+	3: @525
+	default: @568
+return;
+479: ""
+480: progend
+481: goto568
+if(!ConsumeReagents(who, 132 ))
+482: local #0
+483: 132L
+484: Func(2,26): ConsumeReagents
+485: if true goto 508
+SendSysMessage(who,"you do not have enough reagents.");
+486: local #0
+487: "you do not have enough reagents."
+488: 3L
+489: 1000L
+490: Func(2,20): SendSysMessage
+491: #
+PerformAction(who,ANIM_CAST_DIR);
+492: local #0
+493: 16L
+494: Func(2,33): PerformAction
+495: #
+PlaySoundEffect(who,0x005d);
+496: local #0
+497: 93L
+498: Func(2,22): PlaySoundEffect
+499: #
+PlayObjectCenteredEffect(who, 0x3735,0x0a, 0x1e);
+500: local #0
+501: 14133L
+502: 10L
+503: 30L
+504: Func(2,27): PlayObjectCenteredEffect
+505: #
+return;
+506: ""
+507: progend
+ret := custom_recall(who, selected_rune_struct, book);
+508: local #0
+509: local #2
+510: local #1
+511: makelocal
+512: jmp userfunc @1041
+513: local3 := 
+if( ret == 0 )
+514: local #3
+515: 0L
+516: ==
+517: if false goto 524
+SendSysMessage(who, "Recall Failed.");
+518: local #0
+519: "Recall Failed."
+520: 3L
+521: 1000L
+522: Func(2,20): SendSysMessage
+523: #
+524: goto568
+if(!ConsumeReagents(who, 152 ))
+525: local #0
+526: 152L
+527: Func(2,26): ConsumeReagents
+528: if true goto 551
+SendSysMessage(who,"you do not have enough reagents.");
+529: local #0
+530: "you do not have enough reagents."
+531: 3L
+532: 1000L
+533: Func(2,20): SendSysMessage
+534: #
+PerformAction(who,ANIM_CAST_DIR);
+535: local #0
+536: 16L
+537: Func(2,33): PerformAction
+538: #
+PlaySoundEffect(who,0x005d);
+539: local #0
+540: 93L
+541: Func(2,22): PlaySoundEffect
+542: #
+PlayObjectCenteredEffect(who, 0x3735,0x0a, 0x1e);
+543: local #0
+544: 14133L
+545: 10L
+546: 30L
+547: Func(2,27): PlayObjectCenteredEffect
+548: #
+return;
+549: ""
+550: progend
+ret := custom_gate(who, selected_rune_struct, book);
+551: local #0
+552: local #2
+553: local #1
+554: makelocal
+555: jmp userfunc @708
+556: local3 := 
+if( ret == 0 )
+557: local #3
+558: 0L
+559: ==
+560: if false goto 567
+SendSysMessage(who, "Gate Failed.");
+561: local #0
+562: "Gate Failed."
+563: 3L
+564: 1000L
+565: Func(2,20): SendSysMessage
+566: #
+567: goto568
+568: leave block(7)
+569: progend
+C:\pol2\pkg\items\runebook\runebook.src, Line 187
+function bookname(who, book)
+570: pop param 'book'
+571: pop param 'who'
+var name := GetObjProperty(book,"name");
+572: decl local #2
+573: local #0
+574: "name"
+575: Func(2,1): GetObjProperty
+576: :=
+577: #
+if(!name)
+578: local #2
+579: if true goto 582
+name := "a runebook";
+580: "a runebook"
+581: local2 := 
+charges := GetObjProperty(book,"charges");
+582: local #0
+583: "charges"
+584: Func(2,1): GetObjProperty
+585: global3 := 
+var newname := (name + " [charges: " + charges + "]");
+586: decl local #3
+587: local #2
+588: " [charges: "
+589: +
+590: global #3
+591: +
+592: "]"
+593: +
+594: :=
+595: #
+book.name := newname;
+596: local #0
+597: local #3
+598: set member 'name' #
+599: 0L
+600: return
+C:/pol2/scripts/include/canAccess.inc, Line 2
+function can_access(who, item, flags := 0)
+601: pop param 'flags'
+602: pop param 'item'
+603: pop param 'who'
+var owner := Cint(GetObjProperty(item, "Owner"));
+604: decl local #3
+605: local #1
+606: "Owner"
+607: Func(2,1): GetObjProperty
+608: Func(0,0): CInt
+609: :=
+610: #
+if((owner) and (owner != who.serial))
+611: local #3
+612: local #3
+613: local #2
+614: get member 'serial'
+615: <>
+616: &&
+617: if false goto 627
+SendSysMessage(who, "You cannot use that.");
+618: local #2
+619: "You cannot use that."
+620: 3L
+621: 1000L
+622: Func(2,20): SendSysMessage
+623: #
+return 0;
+624: 0L
+625: return
+626: goto706
+elseif(GetObjProperty(item, "Vendored"))
+627: local #1
+628: "Vendored"
+629: Func(2,1): GetObjProperty
+630: if false goto 640
+SendSysMessage(who, "You cannot use that.");
+631: local #2
+632: "You cannot use that."
+633: 3L
+634: 1000L
+635: Func(2,20): SendSysMessage
+636: #
+return 0;
+637: 0L
+638: return
+639: goto706
+elseif(!Accessible(who, item))
+640: local #2
+641: local #1
+642: Func(2,40): Accessible
+643: if true goto 653
+SendSysMessage(who, "You cannot use that.");
+644: local #2
+645: "You cannot use that."
+646: 3L
+647: 1000L
+648: Func(2,20): SendSysMessage
+649: #
+return 0;
+650: 0L
+651: return
+652: goto706
+elseif((!flags["distance"]) and ((Distance(who, item) > 2)))
+653: local #0
+654: "distance"
+655: [] 1
+656: !
+657: local #2
+658: local #1
+659: Func(2,23): Distance
+660: 2L
+661: >
+662: &&
+663: if false goto 673
+SendSysMessage(who, "That item is too far away.");
+664: local #2
+665: "That item is too far away."
+666: 3L
+667: 1000L
+668: Func(2,20): SendSysMessage
+669: #
+return 0;
+670: 0L
+671: return
+672: goto706
+elseif((!flags["unmovable"]) and (item.movable == 0))
+673: local #0
+674: "unmovable"
+675: [] 1
+676: !
+677: local #1
+678: get member 'movable'
+679: 0L
+680: ==
+681: &&
+682: if false goto 692
+SendSysMessage(who, "You cannot use that while locked down.");
+683: local #2
+684: "You cannot use that while locked down."
+685: 3L
+686: 1000L
+687: Func(2,20): SendSysMessage
+688: #
+return 0;
+689: 0L
+690: return
+691: goto706
+elseif(!ReserveItem(item))
+692: local #1
+693: Func(2,25): ReserveItem
+694: if true goto 704
+SendSysMessage(who, "That item is already in use.");
+695: local #2
+696: "That item is already in use."
+697: 3L
+698: 1000L
+699: Func(2,20): SendSysMessage
+700: #
+return 0;
+701: 0L
+702: return
+703: goto706
+return 1;
+704: 1L
+705: return
+706: 0L
+707: return
+C:\pol2\pkg\items\runebook\customSpells.inc, Line 60
+function custom_gate(caster, parms, book)
+708: pop param 'book'
+709: pop param 'parms'
+710: pop param 'caster'
+caster.hidden := 0;
+711: local #2
+712: 0L
+713: set member 'hidden' #
+if(GetMana(caster) < 40)
+714: local #2
+715: makelocal
+716: jmp userfunc @2166
+717: 40L
+718: <
+719: if false goto 751
+caster.frozen :=1;
+720: local #2
+721: 1L
+722: set member 'frozen' #
+PerformAction(caster,ANIM_CAST_DIR);
+723: local #2
+724: 16L
+725: Func(2,33): PerformAction
+726: #
+sleepms(1200);
+727: 1200L
+728: Func(3,4): sleepms
+729: #
+caster.frozen :=0;
+730: local #2
+731: 0L
+732: set member 'frozen' #
+SendSysMessage(caster,"you do not have enough mana to cast that");
+733: local #2
+734: "you do not have enough mana to cast that"
+735: 3L
+736: 1000L
+737: Func(2,20): SendSysMessage
+738: #
+PlaySoundEffect(caster,0x005d);
+739: local #2
+740: 93L
+741: Func(2,22): PlaySoundEffect
+742: #
+PlayObjectCenteredEffect(caster, 0x3735,0x0a, 0x1e);
+743: local #2
+744: 14133L
+745: 10L
+746: 30L
+747: Func(2,27): PlayObjectCenteredEffect
+748: #
+return 0;
+749: 0L
+750: return
+var circle := 7;
+751: decl local #3
+752: 7L
+753: :=
+754: #
+var tox := parms[2];
+755: decl local #4
+756: local #1
+757: 2L
+758: [] 1
+759: :=
+760: #
+var toy := parms[3];
+761: decl local #5
+762: local #1
+763: 3L
+764: [] 1
+765: :=
+766: #
+var toz := parms[4];
+767: decl local #6
+768: local #1
+769: 4L
+770: [] 1
+771: :=
+772: #
+SpeakPowerWords( caster, 52 );
+773: local #2
+774: 52L
+775: Func(2,36): SpeakPowerWords
+776: #
+var delivery := "notarget";
+777: decl local #7
+778: "notarget"
+779: :=
+780: #
+var noto := "neutral";
+781: decl local #8
+782: "neutral"
+783: :=
+784: #
+var result := maincast(caster, delivery, circle, noto, 52);
+785: decl local #9
+786: local #2
+787: local #7
+788: local #3
+789: local #8
+790: 52L
+791: makelocal
+792: jmp userfunc @2173
+793: :=
+794: #
+if(result == 0)
+795: local #9
+796: 0L
+797: ==
+798: if false goto 801
+return;
+799: ""
+800: return
+var multicheck := CreateItemAtLocation(tox, toy, toz, 0xeed, 1);
+801: decl local #10
+802: local #4
+803: local #5
+804: local #6
+805: 3821L
+806: 1L
+807: Func(2,15): CreateItemAtLocation
+808: :=
+809: #
+multicheck.hidden := 1;
+810: local #10
+811: 1L
+812: set member 'hidden' #
+if(multicheck.multi.serial)
+813: local #10
+814: get member 'multi'
+815: get member 'serial'
+816: if false goto 822
+DestroyItem(multicheck);
+817: local #10
+818: Func(2,18): DestroyItem
+819: #
+return;
+820: ""
+821: return
+DestroyItem(multicheck);
+822: local #10
+823: Func(2,18): DestroyItem
+824: #
+var signs := ListItemsNearLocationOfType( tox, toy, toz, 30, 0x7060);
+825: decl local #11
+826: local #4
+827: local #5
+828: local #6
+829: 30L
+830: 28768L
+831: Func(2,37): ListItemsNearLocationOfType
+832: :=
+833: #
+var chk := 0;
+834: decl local #12
+835: 0L
+836: :=
+837: #
+foreach item in signs
+838: local #11
+839: initforeach @877
+var infoarr := GetObjProperty(item, "homeinfo");
+840: decl local #0
+841: local #13
+842: "homeinfo"
+843: Func(2,1): GetObjProperty
+844: :=
+845: #
+if(infoarr)
+846: local #16
+847: if false goto 876
+if((tox >= infoarr[2]) && (tox <= infoarr[4]) && (toy >= infoarr[3]) && (toy <=
+848: local #4
+849: local #16
+850: 2L
+851: [] 1
+852: >=
+853: local #4
+854: local #16
+855: 4L
+856: [] 1
+857: <=
+858: &&
+859: local #5
+860: local #16
+861: 3L
+862: [] 1
+863: >=
+864: &&
+865: local #5
+866: local #16
+867: 5L
+868: [] 1
+869: <=
+870: &&
+871: if false goto 876
+chk := 1;
+872: 1L
+873: local12 := 
+break;
+874: leave block(1)
+875: goto878
+876: leave block(1)
+877: stepforeach @840
+878: leave block(3)
+if(chk == 1)
+879: local #12
+880: 1L
+881: ==
+882: if false goto 885
+return;
+883: ""
+884: return
+set_critical( 1 );
+885: 1L
+886: Func(3,0): set_critical
+887: #
+var wx := caster.x;
+888: decl local #13
+889: local #2
+890: get member 'x'
+891: :=
+892: #
+var wy := caster.y;
+893: decl local #14
+894: local #2
+895: get member 'y'
+896: :=
+897: #
+var wz := caster.z;
+898: decl local #15
+899: local #2
+900: get member 'z'
+901: :=
+902: #
+PlayStationaryEffect( wx, wy, wz, 6899, 1, 30, explode := 0 );
+903: local #13
+904: local #14
+905: local #15
+906: 6899L
+907: 1L
+908: 30L
+909: 0L
+910: Func(2,39): PlayStationaryEffect
+911: #
+PlayStationaryEffect( tox, toy, toz, 6899, 1, 30, explode := 0 );
+912: local #4
+913: local #5
+914: local #6
+915: 6899L
+916: 1L
+917: 30L
+918: 0L
+919: Func(2,39): PlayStationaryEffect
+920: #
+sleepms(2800);
+921: 2800L
+922: Func(3,4): sleepms
+923: #
+set_critical( 1 );
+924: 1L
+925: Func(3,0): set_critical
+926: #
+var gate1 := CreateItemAtLocation( wx, wy, wz, UOBJ_BLUE_MOONGATE, 1 );
+927: decl local #16
+928: local #13
+929: local #14
+930: local #15
+931: 3948L
+932: 1L
+933: Func(2,15): CreateItemAtLocation
+934: :=
+935: #
+gate1.movable := 0;
+936: local #16
+937: 0L
+938: set member 'movable' #
+var gate2 := CreateItemAtLocation( tox, toy, toz, UOBJ_BLUE_MOONGATE, 1 );
+939: decl local #17
+940: local #4
+941: local #5
+942: local #6
+943: 3948L
+944: 1L
+945: Func(2,15): CreateItemAtLocation
+946: :=
+947: #
+gate2.movable := 0;
+948: local #17
+949: 0L
+950: set member 'movable' #
+if(!gate1)
+951: local #16
+952: if true goto 964
+DestroyItem(gate2);
+953: local #17
+954: Func(2,18): DestroyItem
+955: #
+SendSysMessage(caster, "something is interfering with the spell");
+956: local #2
+957: "something is interfering with the spell"
+958: 3L
+959: 1000L
+960: Func(2,20): SendSysMessage
+961: #
+return;
+962: ""
+963: return
+if (!gate2)
+964: local #17
+965: if true goto 977
+DestroyItem(gate1);
+966: local #16
+967: Func(2,18): DestroyItem
+968: #
+SendSysMessage(caster, "something is interfering with the spell");
+969: local #2
+970: "something is interfering with the spell"
+971: 3L
+972: 1000L
+973: Func(2,20): SendSysMessage
+974: #
+return;
+975: ""
+976: return
+SetObjProperty( gate1, "GateDestX", gate2.x );
+977: local #16
+978: "GateDestX"
+979: local #17
+980: get member 'x'
+981: Func(2,3): SetObjProperty
+982: #
+SetObjProperty( gate1, "GateDestY", gate2.y );
+983: local #16
+984: "GateDestY"
+985: local #17
+986: get member 'y'
+987: Func(2,3): SetObjProperty
+988: #
+SetObjProperty( gate1, "GateDestZ", gate2.z );
+989: local #16
+990: "GateDestZ"
+991: local #17
+992: get member 'z'
+993: Func(2,3): SetObjProperty
+994: #
+SetObjProperty( gate2, "GateDestX", gate1.x );
+995: local #17
+996: "GateDestX"
+997: local #16
+998: get member 'x'
+999: Func(2,3): SetObjProperty
+1000: #
+SetObjProperty( gate2, "GateDestY", gate1.y );
+1001: local #17
+1002: "GateDestY"
+1003: local #16
+1004: get member 'y'
+1005: Func(2,3): SetObjProperty
+1006: #
+SetObjProperty( gate2, "GateDestZ", gate1.z );
+1007: local #17
+1008: "GateDestZ"
+1009: local #16
+1010: get member 'z'
+1011: Func(2,3): SetObjProperty
+1012: #
+Detach();
+1013: Func(2,21): Detach
+1014: #
+set_critical( 0 );
+1015: 0L
+1016: Func(3,0): set_critical
+1017: #
+PlaySoundEffect( caster, SFX_SPELL_GATE_TRAVEL );
+1018: local #2
+1019: 527L
+1020: Func(2,22): PlaySoundEffect
+1021: #
+detach();
+1022: Func(2,21): Detach
+1023: #
+sleep(30);
+1024: 30L
+1025: Func(3,3): sleep
+1026: #
+set_critical(1);
+1027: 1L
+1028: Func(3,0): set_critical
+1029: #
+DestroyItem( gate1 );
+1030: local #16
+1031: Func(2,18): DestroyItem
+1032: #
+DestroyItem( gate2 );
+1033: local #17
+1034: Func(2,18): DestroyItem
+1035: #
+set_critical(0);
+1036: 0L
+1037: Func(3,0): set_critical
+1038: #
+return(1);
+1039: 1L
+1040: return
+C:\pol2\pkg\items\runebook\customSpells.inc, Line 9
+function custom_recall(caster, parms, book)
+1041: pop param 'book'
+1042: pop param 'parms'
+1043: pop param 'caster'
+caster.hidden := 0;
+1044: local #2
+1045: 0L
+1046: set member 'hidden' #
+if(GetMana(caster) < 11)
+1047: local #2
+1048: makelocal
+1049: jmp userfunc @2166
+1050: 11L
+1051: <
+1052: if false goto 1084
+caster.frozen :=1;
+1053: local #2
+1054: 1L
+1055: set member 'frozen' #
+PerformAction(caster,ANIM_CAST_DIR);
+1056: local #2
+1057: 16L
+1058: Func(2,33): PerformAction
+1059: #
+sleepms(1200);
+1060: 1200L
+1061: Func(3,4): sleepms
+1062: #
+caster.frozen :=0;
+1063: local #2
+1064: 0L
+1065: set member 'frozen' #
+SendSysMessage(caster,"you do not have enough mana to cast that");
+1066: local #2
+1067: "you do not have enough mana to cast that"
+1068: 3L
+1069: 1000L
+1070: Func(2,20): SendSysMessage
+1071: #
+PlaySoundEffect(caster,0x005d);
+1072: local #2
+1073: 93L
+1074: Func(2,22): PlaySoundEffect
+1075: #
+PlayObjectCenteredEffect(caster, 0x3735,0x0a, 0x1e);
+1076: local #2
+1077: 14133L
+1078: 10L
+1079: 30L
+1080: Func(2,27): PlayObjectCenteredEffect
+1081: #
+return 0;
+1082: 0L
+1083: return
+var failure := 0;
+1084: decl local #3
+1085: 0L
+1086: :=
+1087: #
+var circle := 4;
+1088: decl local #4
+1089: 4L
+1090: :=
+1091: #
+var tox := parms[2];
+1092: decl local #5
+1093: local #1
+1094: 2L
+1095: [] 1
+1096: :=
+1097: #
+var toy := parms[3];
+1098: decl local #6
+1099: local #1
+1100: 3L
+1101: [] 1
+1102: :=
+1103: #
+var toz := parms[4];
+1104: decl local #7
+1105: local #1
+1106: 4L
+1107: [] 1
+1108: :=
+1109: #
+SpeakPowerWords( caster, 32 );
+1110: local #2
+1111: 32L
+1112: Func(2,36): SpeakPowerWords
+1113: #
+var delivery := "notarget";
+1114: decl local #8
+1115: "notarget"
+1116: :=
+1117: #
+var noto := "neutral";
+1118: decl local #9
+1119: "neutral"
+1120: :=
+1121: #
+var result := maincast(caster, delivery, circle, noto, 32);
+1122: decl local #10
+1123: local #2
+1124: local #8
+1125: local #4
+1126: local #9
+1127: 32L
+1128: makelocal
+1129: jmp userfunc @2173
+1130: :=
+1131: #
+if(result[1] == 0)
+1132: local #10
+1133: 1L
+1134: [] 1
+1135: 0L
+1136: ==
+1137: if false goto 1140
+return;
+1138: ""
+1139: return
+var multicheck := CreateItemAtLocation(tox, toy, toz, 0xeed, 1);
+1140: decl local #11
+1141: local #5
+1142: local #6
+1143: local #7
+1144: 3821L
+1145: 1L
+1146: Func(2,15): CreateItemAtLocation
+1147: :=
+1148: #
+multicheck.hidden := 1;
+1149: local #11
+1150: 1L
+1151: set member 'hidden' #
+if(multicheck.multi.serial)
+1152: local #11
+1153: get member 'multi'
+1154: get member 'serial'
+1155: if false goto 1167
+SendSysMessage(caster, "Something is interfering with this spell.");
+1156: local #2
+1157: "Something is interfering with this spell."
+1158: 3L
+1159: 1000L
+1160: Func(2,20): SendSysMessage
+1161: #
+DestroyItem(multicheck);
+1162: local #11
+1163: Func(2,18): DestroyItem
+1164: #
+return;
+1165: ""
+1166: return
+DestroyItem(multicheck);
+1167: local #11
+1168: Func(2,18): DestroyItem
+1169: #
+var signs := ListItemsNearLocationOfType( tox, toy, toz, 30, 0x7060);
+1170: decl local #12
+1171: local #5
+1172: local #6
+1173: local #7
+1174: 30L
+1175: 28768L
+1176: Func(2,37): ListItemsNearLocationOfType
+1177: :=
+1178: #
+foreach item in signs
+1179: local #12
+1180: initforeach @1216
+var infoarr := GetObjProperty( item, "homeinfo" );
+1181: decl local #0
+1182: local #13
+1183: "homeinfo"
+1184: Func(2,1): GetObjProperty
+1185: :=
+1186: #
+if (infoarr)
+1187: local #16
+1188: if false goto 1215
+if ((tox >= infoarr[2]) && (tox <= infoarr[4]) && (toy >= infoarr[3]) && (toy <
+1189: local #5
+1190: local #16
+1191: 2L
+1192: [] 1
+1193: >=
+1194: local #5
+1195: local #16
+1196: 4L
+1197: [] 1
+1198: <=
+1199: &&
+1200: local #6
+1201: local #16
+1202: 3L
+1203: [] 1
+1204: >=
+1205: &&
+1206: local #6
+1207: local #16
+1208: 5L
+1209: [] 1
+1210: <=
+1211: &&
+1212: if false goto 1215
+failure := 1;
+1213: 1L
+1214: local3 := 
+1215: leave block(1)
+1216: stepforeach @1181
+1217: leave block(3)
+if (failure == 0);
+1218: local #3
+1219: 0L
+1220: ==
+1221: if false goto 1230
+MoveCharacterToLocation(caster, tox, toy, toz);
+1222: local #2
+1223: local #5
+1224: local #6
+1225: local #7
+1226: 0L
+1227: Func(2,38): MoveCharacterToLocation
+1228: #
+1229: goto1238
+SendSysMessage(caster, "Something is interfering with this spell.");
+1230: local #2
+1231: "Something is interfering with this spell."
+1232: 3L
+1233: 1000L
+1234: Func(2,20): SendSysMessage
+1235: #
+return 0;
+1236: 0L
+1237: return
+PlaySoundEffect(caster, 0x1fd);
+1238: local #2
+1239: 509L
+1240: Func(2,22): PlaySoundEffect
+1241: #
+return 1;
+1242: 1L
+1243: return
+C:\pol2\pkg\items\runebook\runebook.src, Line 210
+function FillInArrays(book)
+1244: pop param 'book'
+var r := 1;
+1245: decl local #1
+1246: 1L
+1247: :=
+1248: #
+var desc;
+1249: decl local #2
+1250: #
+var i := 5;
+1251: decl local #3
+1252: 5L
+1253: :=
+1254: #
+var datalen;
+1255: decl local #4
+1256: #
+var layoutlen;
+1257: decl local #5
+1258: #
+var line1;
+1259: decl local #6
+1260: #
+var line2;
+1261: decl local #7
+1262: #
+var page_rune_num;
+1263: decl local #8
+1264: #
+var buttonret := 2;
+1265: decl local #9
+1266: 2L
+1267: :=
+1268: #
+var val := 10;
+1269: decl local #10
+1270: 10L
+1271: :=
+1272: #
+var runedefs;
+1273: decl local #11
+1274: #
+if( runedefs != "error" )
+1275: local #11
+1276: "error"
+1277: <>
+1278: if false goto 2139
+layout.append( "page " + CStr(pagecount));
+1279: global #7
+1280: "page "
+1281: global #6
+1282: Func(0,5): CStr
+1283: +
+1284: Call Method append (1 params)
+1285: #
+pagecount := pagecount + 1;
+1286: global #6
+1287: 1L
+1288: +
+1289: global6 := 
+layout.append( "button 320   8 2236 2236 0 " + CStr(pagecount));
+1290: global #7
+1291: "button 320   8 2236 2236 0 "
+1292: global #6
+1293: Func(0,5): CStr
+1294: +
+1295: Call Method append (1 params)
+1296: #
+runedefs := GetObjProperty( book, "runedefs" );
+1297: local #0
+1298: "runedefs"
+1299: Func(2,1): GetObjProperty
+1300: local11 := 
+foreach runed in runedefs
+1301: local #11
+1302: initforeach @1579
+var txt := runed[1];
+1303: decl local #0
+1304: local #12
+1305: 1L
+1306: [] 1
+1307: :=
+1308: #
+if( len(txt) <= 12 )
+1309: local #15
+1310: Func(0,4): len
+1311: 12L
+1312: <=
+1313: if false goto 1317
+desc := txt;
+1314: local #15
+1315: local2 := 
+1316: goto1322
+desc := txt[1,12];
+1317: local #15
+1318: 1L
+1319: 12L
+1320: [,]
+1321: local2 := 
+if (!desc)
+1322: local #2
+1323: if true goto 1326
+desc := "";
+1324: ""
+1325: local2 := 
+datalen := data.size();
+1326: global #8
+1327: Call Method size (0 params)
+1328: local4 := 
+data.append(desc);
+1329: global #8
+1330: local #2
+1331: Call Method append (1 params)
+1332: #
+case(r)
+1333: local #1
+1334: casejmp
+	1: @1335
+	2: @1350
+	3: @1365
+	4: @1380
+	5: @1395
+	6: @1410
+	7: @1425
+	8: @1440
+	9: @1455
+	10: @1470
+	11: @1485
+	12: @1500
+	13: @1515
+	14: @1530
+	15: @1545
+	16: @1560
+	default: @1574
+layout.append("text    76  60    0 " + datalen);
+1335: global #7
+1336: "text    76  60    0 "
+1337: local #4
+1338: +
+1339: Call Method append (1 params)
+1340: #
+layout.append("button  56  62 2118 2117 1 0 " + (r+600));
+1341: global #7
+1342: "button  56  62 2118 2117 1 0 "
+1343: local #1
+1344: 600L
+1345: +
+1346: +
+1347: Call Method append (1 params)
+1348: #
+1349: goto1574
+layout.append("text    76  75    0 " + datalen);
+1350: global #7
+1351: "text    76  75    0 "
+1352: local #4
+1353: +
+1354: Call Method append (1 params)
+1355: #
+layout.append("button  56  77 2118 2117 1 0 " + (r+600));
+1356: global #7
+1357: "button  56  77 2118 2117 1 0 "
+1358: local #1
+1359: 600L
+1360: +
+1361: +
+1362: Call Method append (1 params)
+1363: #
+1364: goto1574
+layout.append("text    76  90    0 " + datalen);
+1365: global #7
+1366: "text    76  90    0 "
+1367: local #4
+1368: +
+1369: Call Method append (1 params)
+1370: #
+layout.append("button  56  92 2118 2117 1 0 " + (r+600));
+1371: global #7
+1372: "button  56  92 2118 2117 1 0 "
+1373: local #1
+1374: 600L
+1375: +
+1376: +
+1377: Call Method append (1 params)
+1378: #
+1379: goto1574
+layout.append("text    76 105    0 " + datalen);
+1380: global #7
+1381: "text    76 105    0 "
+1382: local #4
+1383: +
+1384: Call Method append (1 params)
+1385: #
+layout.append("button  56 107 2118 2117 1 0 " + (r+600));
+1386: global #7
+1387: "button  56 107 2118 2117 1 0 "
+1388: local #1
+1389: 600L
+1390: +
+1391: +
+1392: Call Method append (1 params)
+1393: #
+1394: goto1574
+layout.append("text    76 120    0 " + datalen);
+1395: global #7
+1396: "text    76 120    0 "
+1397: local #4
+1398: +
+1399: Call Method append (1 params)
+1400: #
+layout.append("button  56 122 2118 2117 1 0 " + (r+600));
+1401: global #7
+1402: "button  56 122 2118 2117 1 0 "
+1403: local #1
+1404: 600L
+1405: +
+1406: +
+1407: Call Method append (1 params)
+1408: #
+1409: goto1574
+layout.append("text    76 135    0 " + datalen);
+1410: global #7
+1411: "text    76 135    0 "
+1412: local #4
+1413: +
+1414: Call Method append (1 params)
+1415: #
+layout.append("button  56 137 2118 2117 1 0 " + (r+600));
+1416: global #7
+1417: "button  56 137 2118 2117 1 0 "
+1418: local #1
+1419: 600L
+1420: +
+1421: +
+1422: Call Method append (1 params)
+1423: #
+1424: goto1574
+layout.append("text    76 150    0 " + datalen);
+1425: global #7
+1426: "text    76 150    0 "
+1427: local #4
+1428: +
+1429: Call Method append (1 params)
+1430: #
+layout.append("button  56 152 2118 2117 1 0 " + (r+600));
+1431: global #7
+1432: "button  56 152 2118 2117 1 0 "
+1433: local #1
+1434: 600L
+1435: +
+1436: +
+1437: Call Method append (1 params)
+1438: #
+1439: goto1574
+layout.append("text    76 165    0 " + datalen);
+1440: global #7
+1441: "text    76 165    0 "
+1442: local #4
+1443: +
+1444: Call Method append (1 params)
+1445: #
+layout.append("button  56 167 2118 2117 1 0 " + (r+600));
+1446: global #7
+1447: "button  56 167 2118 2117 1 0 "
+1448: local #1
+1449: 600L
+1450: +
+1451: +
+1452: Call Method append (1 params)
+1453: #
+1454: goto1574
+layout.append("text   226  60    0 " + datalen);
+1455: global #7
+1456: "text   226  60    0 "
+1457: local #4
+1458: +
+1459: Call Method append (1 params)
+1460: #
+layout.append("button 206  62 2118 2117 1 0 " + (r+600));
+1461: global #7
+1462: "button 206  62 2118 2117 1 0 "
+1463: local #1
+1464: 600L
+1465: +
+1466: +
+1467: Call Method append (1 params)
+1468: #
+1469: goto1574
+layout.append("text   226  75    0 " + datalen);
+1470: global #7
+1471: "text   226  75    0 "
+1472: local #4
+1473: +
+1474: Call Method append (1 params)
+1475: #
+layout.append("button 206  77 2118 2117 1 0 " + (r+600));
+1476: global #7
+1477: "button 206  77 2118 2117 1 0 "
+1478: local #1
+1479: 600L
+1480: +
+1481: +
+1482: Call Method append (1 params)
+1483: #
+1484: goto1574
+layout.append("text   226  90    0 " + datalen);
+1485: global #7
+1486: "text   226  90    0 "
+1487: local #4
+1488: +
+1489: Call Method append (1 params)
+1490: #
+layout.append("button 206  92 2118 2117 1 0 " + (r+600));
+1491: global #7
+1492: "button 206  92 2118 2117 1 0 "
+1493: local #1
+1494: 600L
+1495: +
+1496: +
+1497: Call Method append (1 params)
+1498: #
+1499: goto1574
+layout.append("text   226 105    0 " + datalen);
+1500: global #7
+1501: "text   226 105    0 "
+1502: local #4
+1503: +
+1504: Call Method append (1 params)
+1505: #
+layout.append("button 206 107 2118 2117 1 0 " + (r+600));
+1506: global #7
+1507: "button 206 107 2118 2117 1 0 "
+1508: local #1
+1509: 600L
+1510: +
+1511: +
+1512: Call Method append (1 params)
+1513: #
+1514: goto1574
+layout.append("text   226 120    0 " + datalen);
+1515: global #7
+1516: "text   226 120    0 "
+1517: local #4
+1518: +
+1519: Call Method append (1 params)
+1520: #
+layout.append("button 206 122 2118 2117 1 0 " + (r+600));
+1521: global #7
+1522: "button 206 122 2118 2117 1 0 "
+1523: local #1
+1524: 600L
+1525: +
+1526: +
+1527: Call Method append (1 params)
+1528: #
+1529: goto1574
+layout.append("text   226 135    0 " + datalen);
+1530: global #7
+1531: "text   226 135    0 "
+1532: local #4
+1533: +
+1534: Call Method append (1 params)
+1535: #
+layout.append("button 206 137 2118 2117 1 0 " + (r+600));
+1536: global #7
+1537: "button 206 137 2118 2117 1 0 "
+1538: local #1
+1539: 600L
+1540: +
+1541: +
+1542: Call Method append (1 params)
+1543: #
+1544: goto1574
+layout.append("text   226 150    0 " + datalen);
+1545: global #7
+1546: "text   226 150    0 "
+1547: local #4
+1548: +
+1549: Call Method append (1 params)
+1550: #
+layout.append("button 206 152 2118 2117 1 0 " + (r+600));
+1551: global #7
+1552: "button 206 152 2118 2117 1 0 "
+1553: local #1
+1554: 600L
+1555: +
+1556: +
+1557: Call Method append (1 params)
+1558: #
+1559: goto1574
+layout.append("text   226 165    0 " + datalen);
+1560: global #7
+1561: "text   226 165    0 "
+1562: local #4
+1563: +
+1564: Call Method append (1 params)
+1565: #
+layout.append("button 206 167 2118 2117 1 0 " + (r+600));
+1566: global #7
+1567: "button 206 167 2118 2117 1 0 "
+1568: local #1
+1569: 600L
+1570: +
+1571: +
+1572: Call Method append (1 params)
+1573: #
+r := r + 1;
+1574: local #1
+1575: 1L
+1576: +
+1577: local1 := 
+1578: leave block(1)
+1579: stepforeach @1303
+1580: leave block(3)
+layout.append( "page " + CStr(pagecount) );
+1581: global #7
+1582: "page "
+1583: global #6
+1584: Func(0,5): CStr
+1585: +
+1586: Call Method append (1 params)
+1587: #
+runedefs := GetObjProperty( book, "runedefs" );
+1588: local #0
+1589: "runedefs"
+1590: Func(2,1): GetObjProperty
+1591: local11 := 
+layout.append( "button 50 8 2235 2235 0 " + CStr(pagecount - 1) );
+1592: global #7
+1593: "button 50 8 2235 2235 0 "
+1594: global #6
+1595: 1L
+1596: -
+1597: Func(0,5): CStr
+1598: +
+1599: Call Method append (1 params)
+1600: #
+r := 1;
+1601: 1L
+1602: local1 := 
+var counters := 0;
+1603: decl local #0
+1604: 0L
+1605: :=
+1606: #
+foreach runedef in runedefs
+1607: local #11
+1608: initforeach @2136
+var txt := runedef[1];
+1609: decl local #0
+1610: local #13
+1611: 1L
+1612: [] 1
+1613: :=
+1614: #
+runecount := runecount + 1;
+1615: global #5
+1616: 1L
+1617: +
+1618: global5 := 
+datalen := data.size();
+1619: global #8
+1620: Call Method size (0 params)
+1621: local4 := 
+layoutlen := layout.size();
+1622: global #7
+1623: Call Method size (0 params)
+1624: local5 := 
+var runename := txt;
+1625: decl local #1
+1626: local #16
+1627: :=
+1628: #
+if (!runename)
+1629: local #17
+1630: if true goto 1633
+runename := "";
+1631: ""
+1632: local17 := 
+var split := SplitWords( runename );
+1633: decl local #2
+1634: local #17
+1635: Func(0,1): SplitWords
+1636: :=
+1637: #
+var j;
+1638: decl local #3
+1639: #
+for( j := 1; j <= 10; j := j + 1 )
+1640: local #19
+1641: 1L
+1642: :=
+1643: #
+1644: local #19
+1645: 10L
+1646: <=
+1647: if false goto 1663
+if( !split[j] )
+1648: local #18
+1649: local #19
+1650: [] 1
+1651: if true goto 1656
+split[j] := "";
+1652: local #18
+1653: local #19
+1654: ""
+1655: [] := (1) #
+1656: local #19
+1657: local #19
+1658: 1L
+1659: +
+1660: :=
+1661: #
+1662: goto1644
+if( len(runename) <= 16 )
+1663: local #17
+1664: Func(0,4): len
+1665: 16L
+1666: <=
+1667: if false goto 1673
+line1 := runename;
+1668: local #17
+1669: local6 := 
+line2 := "";
+1670: ""
+1671: local7 := 
+1672: goto1793
+elseif( (len(split[1]) + len(split[2]) + len(split[3]) + 2) <= 16 )
+1673: local #18
+1674: 1L
+1675: [] 1
+1676: Func(0,4): len
+1677: local #18
+1678: 2L
+1679: [] 1
+1680: Func(0,4): len
+1681: +
+1682: local #18
+1683: 3L
+1684: [] 1
+1685: Func(0,4): len
+1686: +
+1687: 2L
+1688: +
+1689: 16L
+1690: <=
+1691: if false goto 1719
+line1 := split[1] + " " + split[2] + " " + split[3];
+1692: local #18
+1693: 1L
+1694: [] 1
+1695: " "
+1696: +
+1697: local #18
+1698: 2L
+1699: [] 1
+1700: +
+1701: " "
+1702: +
+1703: local #18
+1704: 3L
+1705: [] 1
+1706: +
+1707: local6 := 
+line2 := split[4] + " " + split[5];
+1708: local #18
+1709: 4L
+1710: [] 1
+1711: " "
+1712: +
+1713: local #18
+1714: 5L
+1715: [] 1
+1716: +
+1717: local7 := 
+1718: goto1793
+elseif( len(split[1]) + len(split[2]) + 1 <= 12 )
+1719: local #18
+1720: 1L
+1721: [] 1
+1722: Func(0,4): len
+1723: local #18
+1724: 2L
+1725: [] 1
+1726: Func(0,4): len
+1727: +
+1728: 1L
+1729: +
+1730: 12L
+1731: <=
+1732: if false goto 1760
+line1 := split[1] + " " + split[2];
+1733: local #18
+1734: 1L
+1735: [] 1
+1736: " "
+1737: +
+1738: local #18
+1739: 2L
+1740: [] 1
+1741: +
+1742: local6 := 
+line2 := split[3] + " " + split[4] + " " + split[5];
+1743: local #18
+1744: 3L
+1745: [] 1
+1746: " "
+1747: +
+1748: local #18
+1749: 4L
+1750: [] 1
+1751: +
+1752: " "
+1753: +
+1754: local #18
+1755: 5L
+1756: [] 1
+1757: +
+1758: local7 := 
+1759: goto1793
+elseif( len(split[1]) <= 12 )
+1760: local #18
+1761: 1L
+1762: [] 1
+1763: Func(0,4): len
+1764: 12L
+1765: <=
+1766: if false goto 1793
+line1 := split[1];
+1767: local #18
+1768: 1L
+1769: [] 1
+1770: local6 := 
+line2 := split[2] + " " + split[3] + " " + split[4] + " " + split[5];
+1771: local #18
+1772: 2L
+1773: [] 1
+1774: " "
+1775: +
+1776: local #18
+1777: 3L
+1778: [] 1
+1779: +
+1780: " "
+1781: +
+1782: local #18
+1783: 4L
+1784: [] 1
+1785: +
+1786: " "
+1787: +
+1788: local #18
+1789: 5L
+1790: [] 1
+1791: +
+1792: local7 := 
+data.append(line1);
+1793: global #8
+1794: local #6
+1795: Call Method append (1 params)
+1796: #
+data.append(line2);
+1797: global #8
+1798: local #7
+1799: Call Method append (1 params)
+1800: #
+data.append(ToSextant(runedef[2], runedef[3]));
+1801: global #8
+1802: local #13
+1803: 2L
+1804: [] 1
+1805: local #13
+1806: 3L
+1807: [] 1
+1808: makelocal
+1809: jmp userfunc @3205
+1810: Call Method append (1 params)
+1811: #
+data.append("Drop Rune");
+1812: global #8
+1813: "Drop Rune"
+1814: Call Method append (1 params)
+1815: #
+if(runecount in critical_runes)
+1816: global #5
+1817: global #4
+1818: in
+1819: if false goto 1839
+pagecount := pagecount + 1;
+1820: global #6
+1821: 1L
+1822: +
+1823: global6 := 
+layout.append("page " + (pagecount));
+1824: global #7
+1825: "page "
+1826: global #6
+1827: +
+1828: Call Method append (1 params)
+1829: #
+layout.append("button 50 8 2235 2235 0 " + CStr(pagecount - 1));
+1830: global #7
+1831: "button 50 8 2235 2235 0 "
+1832: global #6
+1833: 1L
+1834: -
+1835: Func(0,5): CStr
+1836: +
+1837: Call Method append (1 params)
+1838: #
+page_rune_num := CurrentPageRuneNum( pagecount + 1, i );
+1839: global #6
+1840: 1L
+1841: +
+1842: local #3
+1843: makelocal
+1844: jmp userfunc @3549
+1845: local8 := 
+case(page_rune_num)
+1846: local #8
+1847: casejmp
+	1: @1848
+	2: @2016
+	default: @2123
+layout.append("gumppic  50  40   57             ");
+1848: global #7
+1849: "gumppic  50  40   57             "
+1850: Call Method append (1 params)
+1851: #
+layout.append("gumppic  70  40   58             ");
+1852: global #7
+1853: "gumppic  70  40   58             "
+1854: Call Method append (1 params)
+1855: #
+layout.append("gumppic  85  40   58             ");
+1856: global #7
+1857: "gumppic  85  40   58             "
+1858: Call Method append (1 params)
+1859: #
+layout.append("gumppic 100  40   58             ");
+1860: global #7
+1861: "gumppic 100  40   58             "
+1862: Call Method append (1 params)
+1863: #
+layout.append("gumppic 115  40   58             ");
+1864: global #7
+1865: "gumppic 115  40   58             "
+1866: Call Method append (1 params)
+1867: #
+layout.append("gumppic 130  40   58             ");
+1868: global #7
+1869: "gumppic 130  40   58             "
+1870: Call Method append (1 params)
+1871: #
+layout.append("gumppic 145  40   58             ");
+1872: global #7
+1873: "gumppic 145  40   58             "
+1874: Call Method append (1 params)
+1875: #
+layout.append("gumppic 160  40   59             ");
+1876: global #7
+1877: "gumppic 160  40   59             "
+1878: Call Method append (1 params)
+1879: #
+layout.append("gumppic 218  40   57             ");
+1880: global #7
+1881: "gumppic 218  40   57             "
+1882: Call Method append (1 params)
+1883: #
+layout.append("gumppic 233  40   58             ");
+1884: global #7
+1885: "gumppic 233  40   58             "
+1886: Call Method append (1 params)
+1887: #
+layout.append("gumppic 248  40   58             ");
+1888: global #7
+1889: "gumppic 248  40   58             "
+1890: Call Method append (1 params)
+1891: #
+layout.append("gumppic 263  40   58             ");
+1892: global #7
+1893: "gumppic 263  40   58             "
+1894: Call Method append (1 params)
+1895: #
+layout.append("gumppic 278  40   58             ");
+1896: global #7
+1897: "gumppic 278  40   58             "
+1898: Call Method append (1 params)
+1899: #
+layout.append("gumppic 293  40   58             ");
+1900: global #7
+1901: "gumppic 293  40   58             "
+1902: Call Method append (1 params)
+1903: #
+layout.append("gumppic 308  40   58             ");
+1904: global #7
+1905: "gumppic 308  40   58             "
+1906: Call Method append (1 params)
+1907: #
+layout.append("gumppic 323  40   59             ");
+1908: global #7
+1909: "gumppic 323  40   59             "
+1910: Call Method append (1 params)
+1911: #
+layout.append("text     85  28    0    1        ");
+1912: global #7
+1913: "text     85  28    0    1        "
+1914: Call Method append (1 params)
+1915: #
+layout.append("text    228  28    0    2        ");
+1916: global #7
+1917: "text    228  28    0    2        "
+1918: Call Method append (1 params)
+1919: #
+layout.append("text    150  30    0    3        ");
+1920: global #7
+1921: "text    150  30    0    3        "
+1922: Call Method append (1 params)
+1923: #
+layout.append("text    333  28    0    4        ");
+1924: global #7
+1925: "text    333  28    0    4        "
+1926: Call Method append (1 params)
+1927: #
+layout.append("button   85  15 2361 2362 1 0    " + (r+ 500)       );
+1928: global #7
+1929: "button   85  15 2361 2362 1 0    "
+1930: local #1
+1931: 500L
+1932: +
+1933: +
+1934: Call Method append (1 params)
+1935: #
+layout.append("button   50  54 2118 2118 1 0    " + (r+ 600)       );
+1936: global #7
+1937: "button   50  54 2118 2118 1 0    "
+1938: local #1
+1939: 600L
+1940: +
+1941: +
+1942: Call Method append (1 params)
+1943: #
+layout.append("button   62 129 2438 2437 1 0    " + (val + 71)     );
+1944: global #7
+1945: "button   62 129 2438 2437 1 0    "
+1946: local #10
+1947: 71L
+1948: +
+1949: +
+1950: Call Method append (1 params)
+1951: #
+layout.append("button   65 150 2271 2271 1 0    " + buttonret      );
+1952: global #7
+1953: "button   65 150 2271 2271 1 0    "
+1954: local #9
+1955: +
+1956: Call Method append (1 params)
+1957: #
+layout.append("button  125 150 2291 2291 1 0    " + (buttonret + 1)  );
+1958: global #7
+1959: "button  125 150 2291 2291 1 0    "
+1960: local #9
+1961: 1L
+1962: +
+1963: +
+1964: Call Method append (1 params)
+1965: #
+layout.append("text    100  12    0    5        "                  );
+1966: global #7
+1967: "text    100  12    0    5        "
+1968: Call Method append (1 params)
+1969: #
+layout.append("text     66  52    0             " + datalen        );
+1970: global #7
+1971: "text     66  52    0             "
+1972: local #4
+1973: +
+1974: Call Method append (1 params)
+1975: #
+layout.append("text     66  72    0             " + CStr(datalen+1));
+1976: global #7
+1977: "text     66  72    0             "
+1978: local #4
+1979: 1L
+1980: +
+1981: Func(0,5): CStr
+1982: +
+1983: Call Method append (1 params)
+1984: #
+layout.append("text     60 100    0             " + CStr(datalen+2));
+1985: global #7
+1986: "text     60 100    0             "
+1987: local #4
+1988: 2L
+1989: +
+1990: Func(0,5): CStr
+1991: +
+1992: Call Method append (1 params)
+1993: #
+layout.append("text     82 125    0             " + CStr(datalen+3));
+1994: global #7
+1995: "text     82 125    0             "
+1996: local #4
+1997: 3L
+1998: +
+1999: Func(0,5): CStr
+2000: +
+2001: Call Method append (1 params)
+2002: #
+buttonret := buttonret + 1;
+2003: local #9
+2004: 1L
+2005: +
+2006: local9 := 
+val := val + 1;
+2007: local #10
+2008: 1L
+2009: +
+2010: local10 := 
+r := r + 1;
+2011: local #1
+2012: 1L
+2013: +
+2014: local1 := 
+2015: goto2123
+layout.append("button  220  15 2361 2362 1 0    " + (r+ 500)       );
+2016: global #7
+2017: "button  220  15 2361 2362 1 0    "
+2018: local #1
+2019: 500L
+2020: +
+2021: +
+2022: Call Method append (1 params)
+2023: #
+layout.append("button  209  54 2118 2118 1 0    " + (r+ 600)       );
+2024: global #7
+2025: "button  209  54 2118 2118 1 0    "
+2026: local #1
+2027: 600L
+2028: +
+2029: +
+2030: Call Method append (1 params)
+2031: #
+layout.append("button  227 129 2438 2437 1 0    " + (val + 71)     );
+2032: global #7
+2033: "button  227 129 2438 2437 1 0    "
+2034: local #10
+2035: 71L
+2036: +
+2037: +
+2038: Call Method append (1 params)
+2039: #
+layout.append("button  230 150 2271 2271 1 0    " + buttonret      );
+2040: global #7
+2041: "button  230 150 2271 2271 1 0    "
+2042: local #9
+2043: +
+2044: Call Method append (1 params)
+2045: #
+layout.append("button  290 150 2291 2291 1 0    " + (buttonret + 1)  );
+2046: global #7
+2047: "button  290 150 2291 2291 1 0    "
+2048: local #9
+2049: 1L
+2050: +
+2051: +
+2052: Call Method append (1 params)
+2053: #
+layout.append("text    226  52    0             " + datalen        );
+2054: global #7
+2055: "text    226  52    0             "
+2056: local #4
+2057: +
+2058: Call Method append (1 params)
+2059: #
+layout.append("text    226  72    0             " + CStr(datalen+1));
+2060: global #7
+2061: "text    226  72    0             "
+2062: local #4
+2063: 1L
+2064: +
+2065: Func(0,5): CStr
+2066: +
+2067: Call Method append (1 params)
+2068: #
+layout.append("text    212 100    0             " + CStr(datalen+2));
+2069: global #7
+2070: "text    212 100    0             "
+2071: local #4
+2072: 2L
+2073: +
+2074: Func(0,5): CStr
+2075: +
+2076: Call Method append (1 params)
+2077: #
+layout.append("text    247 125    0             " + CStr(datalen+3));
+2078: global #7
+2079: "text    247 125    0             "
+2080: local #4
+2081: 3L
+2082: +
+2083: Func(0,5): CStr
+2084: +
+2085: Call Method append (1 params)
+2086: #
+layout.append("text    235  12    0    5        ");
+2087: global #7
+2088: "text    235  12    0    5        "
+2089: Call Method append (1 params)
+2090: #
+if((counters + 1) < len(runedefs))
+2091: local #12
+2092: 1L
+2093: +
+2094: local #11
+2095: Func(0,4): len
+2096: <
+2097: if false goto 2107
+layout.append("button  320 8 2236 2236 0 "  + CStr(pagecount + 1));
+2098: global #7
+2099: "button  320 8 2236 2236 0 "
+2100: global #6
+2101: 1L
+2102: +
+2103: Func(0,5): CStr
+2104: +
+2105: Call Method append (1 params)
+2106: #
+layout.append("text    333  28    0    4        ");
+2107: global #7
+2108: "text    333  28    0    4        "
+2109: Call Method append (1 params)
+2110: #
+buttonret := buttonret + 1;
+2111: local #9
+2112: 1L
+2113: +
+2114: local9 := 
+val := val + 1;
+2115: local #10
+2116: 1L
+2117: +
+2118: local10 := 
+r := r + 1;
+2119: local #1
+2120: 1L
+2121: +
+2122: local1 := 
+buttonret := buttonret + 1;
+2123: local #9
+2124: 1L
+2125: +
+2126: local9 := 
+counters := counters + 1;
+2127: local #12
+2128: 1L
+2129: +
+2130: local12 := 
+i := i + 1;
+2131: local #3
+2132: 1L
+2133: +
+2134: local3 := 
+2135: leave block(4)
+2136: stepforeach @1609
+2137: leave block(3)
+2138: leave block(1)
+2139: 0L
+2140: return
+C:\pol2\pkg\items\runebook\runebook.src, Line 392
+function FindThatRune(book, button_num )
+2141: pop param 'button_num'
+2142: pop param 'book'
+var runedefs := GetObjProperty( book, "runedefs" );
+2143: decl local #2
+2144: local #1
+2145: "runedefs"
+2146: Func(2,1): GetObjProperty
+2147: :=
+2148: #
+var rune_num := CInt( button_num / 2);
+2149: decl local #3
+2150: local #0
+2151: 2L
+2152: /
+2153: Func(0,0): CInt
+2154: :=
+2155: #
+runedefs[rune_num].append(rune_num);
+2156: local #2
+2157: local #3
+2158: [] 1
+2159: local #3
+2160: Call Method append (1 params)
+2161: #
+return( runedefs[rune_num]);
+2162: local #2
+2163: local #3
+2164: [] 1
+2165: return
+C:/pol2/scripts/include/attributes.inc, Line 460
+function GetMana(who)
+2166: pop param 'who'
+return(GetVital(who, "Mana")/ 100);
+2167: local #0
+2168: "Mana"
+2169: Func(2,10): GetVital
+2170: 100L
+2171: /
+2172: return
+C:/pol2/scripts/include/spellRestrictions.inc, Line 19
+function maincast(parms, delivery, circle, noto, id);
+2173: pop param 'id'
+2174: pop param 'noto'
+2175: pop param 'circle'
+2176: pop param 'delivery'
+2177: pop param 'parms'
+var cast_on;
+2178: decl local #5
+2179: #
+var spellscroll := 0;
+2180: decl local #6
+2181: 0L
+2182: :=
+2183: #
+var scroll;
+2184: decl local #7
+2185: #
+var tgtopt;
+2186: decl local #8
+2187: #
+if(parms[1] == "#MOB")
+2188: local #4
+2189: 1L
+2190: [] 1
+2191: "#MOB"
+2192: ==
+2193: if false goto 2213
+caster := parms[2];
+2194: local #4
+2195: 2L
+2196: [] 1
+2197: global0 := 
+if(mobspellcast(caster, circle, spellscroll) == 0)
+2198: global #0
+2199: local #2
+2200: local #6
+2201: makelocal
+2202: jmp userfunc @2534
+2203: 0L
+2204: ==
+2205: if false goto 2208
+return 0;
+2206: 0L
+2207: return
+cast_on := parms[3];
+2208: local #4
+2209: 3L
+2210: [] 1
+2211: local5 := 
+2212: goto2475
+elseif (parms[1] == "#scroll")
+2213: local #4
+2214: 1L
+2215: [] 1
+2216: "#scroll"
+2217: ==
+2218: if false goto 2350
+spellscroll := 1;
+2219: 1L
+2220: local6 := 
+caster := parms[2];
+2221: local #4
+2222: 2L
+2223: [] 1
+2224: global0 := 
+EraseObjProperty(caster, "IsMeditating");
+2225: global #0
+2226: "IsMeditating"
+2227: Func(2,24): EraseObjProperty
+2228: #
+EraseObjProperty(caster, "HealTimer");
+2229: global #0
+2230: "HealTimer"
+2231: Func(2,24): EraseObjProperty
+2232: #
+if(spellcast(caster, circle, spellscroll, id) == 0)
+2233: global #0
+2234: local #2
+2235: local #6
+2236: local #0
+2237: makelocal
+2238: jmp userfunc @2848
+2239: 0L
+2240: ==
+2241: if false goto 2244
+return 0;
+2242: 0L
+2243: return
+scroll := parms[3];
+2244: local #4
+2245: 3L
+2246: [] 1
+2247: local7 := 
+if(!ReserveItem(scroll))
+2248: local #7
+2249: Func(2,25): ReserveItem
+2250: if true goto 2259
+SendSysMessage(caster,"You lost your concentration.", 3, 40);
+2251: global #0
+2252: "You lost your concentration."
+2253: 3L
+2254: 40L
+2255: Func(2,20): SendSysMessage
+2256: #
+return 0;
+2257: 0L
+2258: return
+if(delivery == "notarget")
+2259: local #3
+2260: "notarget"
+2261: ==
+2262: if false goto 2272
+cast_on := caster;
+2263: global #0
+2264: local5 := 
+if(!can_cast(caster))
+2265: global #0
+2266: makelocal
+2267: jmp userfunc @3317
+2268: if true goto 2271
+cast_on := 0;
+2269: 0L
+2270: local5 := 
+2271: goto2349
+elseif(delivery == "direct")
+2272: local #3
+2273: "direct"
+2274: ==
+2275: if false goto 2327
+if(noto == "helpful")
+2276: local #1
+2277: "helpful"
+2278: ==
+2279: if false goto 2293
+cast_on := CanTargetSpell(caster, circle, TGTOPT_HELPFUL + TGTOPT_CHECK_LOS);
+2280: global #0
+2281: local #2
+2282: 5L
+2283: makelocal
+2284: jmp userfunc @3420
+2285: local5 := 
+if(!can_cast(caster))
+2286: global #0
+2287: makelocal
+2288: jmp userfunc @3317
+2289: if true goto 2292
+cast_on := 0;
+2290: 0L
+2291: local5 := 
+2292: goto2322
+elseif(noto == "neutral")
+2293: local #1
+2294: "neutral"
+2295: ==
+2296: if false goto 2310
+cast_on := CanTargetSpell(caster, circle, TGTOPT_CHECK_LOS);
+2297: global #0
+2298: local #2
+2299: 1L
+2300: makelocal
+2301: jmp userfunc @3420
+2302: local5 := 
+if(!can_cast(caster))
+2303: global #0
+2304: makelocal
+2305: jmp userfunc @3317
+2306: if true goto 2309
+cast_on := 0;
+2307: 0L
+2308: local5 := 
+2309: goto2322
+cast_on := CanTargetSpell(caster, circle, TGTOPT_HARMFUL + TGTOPT_CHECK_LOS);
+2310: global #0
+2311: local #2
+2312: 3L
+2313: makelocal
+2314: jmp userfunc @3420
+2315: local5 := 
+if(!can_cast(caster))
+2316: global #0
+2317: makelocal
+2318: jmp userfunc @3317
+2319: if true goto 2322
+cast_on := 0;
+2320: 0L
+2321: local5 := 
+if(!cast_on)
+2322: local #5
+2323: if true goto 2326
+return 0;
+2324: 0L
+2325: return
+2326: goto2349
+elseif(delivery == "indirect")
+2327: local #3
+2328: "indirect"
+2329: ==
+2330: if false goto 2347
+cast_on := CanTargetArea(caster, circle);
+2331: global #0
+2332: local #2
+2333: makelocal
+2334: jmp userfunc @3362
+2335: local5 := 
+if(!can_cast(caster))
+2336: global #0
+2337: makelocal
+2338: jmp userfunc @3317
+2339: if true goto 2342
+cast_on := 0;
+2340: 0L
+2341: local5 := 
+if (!cast_on)
+2342: local #5
+2343: if true goto 2346
+return 0;
+2344: 0L
+2345: return
+2346: goto2349
+return 0;
+2347: 0L
+2348: return
+2349: goto2475
+caster := parms;
+2350: local #4
+2351: global0 := 
+EraseObjProperty(caster, "IsMeditating");
+2352: global #0
+2353: "IsMeditating"
+2354: Func(2,24): EraseObjProperty
+2355: #
+EraseObjProperty(caster, "HealTimer");
+2356: global #0
+2357: "HealTimer"
+2358: Func(2,24): EraseObjProperty
+2359: #
+if (spellcast(caster, circle, spellscroll, id) == 0)
+2360: global #0
+2361: local #2
+2362: local #6
+2363: local #0
+2364: makelocal
+2365: jmp userfunc @2848
+2366: 0L
+2367: ==
+2368: if false goto 2371
+return 0;
+2369: 0L
+2370: return
+if (!ConsumeReagents(caster, id+100))
+2371: global #0
+2372: local #0
+2373: 100L
+2374: +
+2375: Func(2,26): ConsumeReagents
+2376: if true goto 2385
+SendSysMessage(caster, "You do not have the proper reagents.");
+2377: global #0
+2378: "You do not have the proper reagents."
+2379: 3L
+2380: 1000L
+2381: Func(2,20): SendSysMessage
+2382: #
+return 0;
+2383: 0L
+2384: return
+if(delivery == "notarget")
+2385: local #3
+2386: "notarget"
+2387: ==
+2388: if false goto 2398
+cast_on := caster;
+2389: global #0
+2390: local5 := 
+if(!can_cast(caster))
+2391: global #0
+2392: makelocal
+2393: jmp userfunc @3317
+2394: if true goto 2397
+cast_on := 0;
+2395: 0L
+2396: local5 := 
+2397: goto2475
+elseif(delivery == "direct")
+2398: local #3
+2399: "direct"
+2400: ==
+2401: if false goto 2453
+if(noto == "helpful")
+2402: local #1
+2403: "helpful"
+2404: ==
+2405: if false goto 2419
+cast_on := CanTargetSpell(caster, circle, TGTOPT_HELPFUL + TGTOPT_CHECK_LOS);
+2406: global #0
+2407: local #2
+2408: 5L
+2409: makelocal
+2410: jmp userfunc @3420
+2411: local5 := 
+if(!can_cast(caster))
+2412: global #0
+2413: makelocal
+2414: jmp userfunc @3317
+2415: if true goto 2418
+cast_on := 0;
+2416: 0L
+2417: local5 := 
+2418: goto2448
+elseif(noto == "neutral")
+2419: local #1
+2420: "neutral"
+2421: ==
+2422: if false goto 2436
+cast_on := CanTargetSpell(caster, circle, TGTOPT_CHECK_LOS);
+2423: global #0
+2424: local #2
+2425: 1L
+2426: makelocal
+2427: jmp userfunc @3420
+2428: local5 := 
+if(!can_cast(caster))
+2429: global #0
+2430: makelocal
+2431: jmp userfunc @3317
+2432: if true goto 2435
+cast_on := 0;
+2433: 0L
+2434: local5 := 
+2435: goto2448
+cast_on := CanTargetSpell(caster, circle, TGTOPT_HARMFUL + TGTOPT_CHECK_LOS);
+2436: global #0
+2437: local #2
+2438: 3L
+2439: makelocal
+2440: jmp userfunc @3420
+2441: local5 := 
+if(!can_cast(caster))
+2442: global #0
+2443: makelocal
+2444: jmp userfunc @3317
+2445: if true goto 2448
+cast_on := 0;
+2446: 0L
+2447: local5 := 
+if (!cast_on)
+2448: local #5
+2449: if true goto 2452
+return 0;
+2450: 0L
+2451: return
+2452: goto2475
+elseif(delivery == "indirect")
+2453: local #3
+2454: "indirect"
+2455: ==
+2456: if false goto 2473
+cast_on := CanTargetArea(caster, circle);
+2457: global #0
+2458: local #2
+2459: makelocal
+2460: jmp userfunc @3362
+2461: local5 := 
+if(!can_cast(caster))
+2462: global #0
+2463: makelocal
+2464: jmp userfunc @3317
+2465: if true goto 2468
+cast_on := 0;
+2466: 0L
+2467: local5 := 
+if (!cast_on)
+2468: local #5
+2469: if true goto 2472
+return 0;
+2470: 0L
+2471: return
+2472: goto2475
+return 0;
+2473: 0L
+2474: return
+if(newusemana(caster, circle, cast_on, delivery) == 0)
+2475: global #0
+2476: local #2
+2477: local #5
+2478: local #3
+2479: makelocal
+2480: jmp userfunc @2627
+2481: 0L
+2482: ==
+2483: if false goto 2496
+PlaySoundEffect(caster,0x005d);
+2484: global #0
+2485: 93L
+2486: Func(2,22): PlaySoundEffect
+2487: #
+PlayObjectCenteredEffect(caster, 0x3735,0x0a, 0x1e);
+2488: global #0
+2489: 14133L
+2490: 10L
+2491: 30L
+2492: Func(2,27): PlayObjectCenteredEffect
+2493: #
+return 0;
+2494: 0L
+2495: return
+if(spellscroll == 1)
+2496: local #6
+2497: 1L
+2498: ==
+2499: if false goto 2506
+if(!SubtractAmount(scroll, 1))
+2500: local #7
+2501: 1L
+2502: Func(2,28): SubtractAmount
+2503: if true goto 2506
+return 0;
+2504: 0L
+2505: return
+var points := getpoints(circle, spellscroll, SKILLID_MAGERY);
+2506: decl local #9
+2507: local #2
+2508: local #6
+2509: 25L
+2510: makelocal
+2511: jmp userfunc @3743
+2512: :=
+2513: #
+AwardRawSkillPoints(caster, SKILLID_MAGERY, points);
+2514: global #0
+2515: 25L
+2516: local #9
+2517: makelocal
+2518: jmp userfunc @3305
+2519: #
+var newparms := {};
+2520: decl local #10
+2521: array
+2522: :=
+2523: #
+newparms[1] := caster;
+2524: local #10
+2525: 1L
+2526: global #0
+2527: [] := (1) #
+newparms[2] := cast_on;
+2528: local #10
+2529: 2L
+2530: local #5
+2531: [] := (1) #
+return newparms;
+2532: local #10
+2533: return
+C:/pol2/scripts/include/spellRestrictions.inc, Line 438
+function mobspellcast(me, circle, scroll)
+2534: pop param 'scroll'
+2535: pop param 'circle'
+2536: pop param 'me'
+var diff, points, umana;
+2537: decl local #3
+2538: #
+2539: decl local #4
+2540: #
+2541: decl local #5
+2542: #
+case(circle)
+2543: local #1
+2544: casejmp
+	1: @2545
+	2: @2552
+	3: @2559
+	4: @2566
+	5: @2573
+	6: @2580
+	7: @2587
+	8: @2594
+	default: @2600
+diff := 10;     points :=  20;    umana :=   4;
+2545: 10L
+2546: local3 := 
+points :=  20;    umana :=   4;
+2547: 20L
+2548: local4 := 
+umana :=   4;
+2549: 4L
+2550: local5 := 
+2551: goto2600
+diff := 20;     points :=  40;    umana :=   6;
+2552: 20L
+2553: local3 := 
+points :=  40;    umana :=   6;
+2554: 40L
+2555: local4 := 
+umana :=   6;
+2556: 6L
+2557: local5 := 
+2558: goto2600
+diff := 30;     points :=  80;    umana :=   9;
+2559: 30L
+2560: local3 := 
+points :=  80;    umana :=   9;
+2561: 80L
+2562: local4 := 
+umana :=   9;
+2563: 9L
+2564: local5 := 
+2565: goto2600
+diff := 50;     points := 100;    umana :=  11;
+2566: 50L
+2567: local3 := 
+points := 100;    umana :=  11;
+2568: 100L
+2569: local4 := 
+umana :=  11;
+2570: 11L
+2571: local5 := 
+2572: goto2600
+diff := 60;     points := 130;    umana :=  14;
+2573: 60L
+2574: local3 := 
+points := 130;    umana :=  14;
+2575: 130L
+2576: local4 := 
+umana :=  14;
+2577: 14L
+2578: local5 := 
+2579: goto2600
+diff := 70;     points := 160;    umana :=  20;
+2580: 70L
+2581: local3 := 
+points := 160;    umana :=  20;
+2582: 160L
+2583: local4 := 
+umana :=  20;
+2584: 20L
+2585: local5 := 
+2586: goto2600
+diff := 85;     points := 190;    umana :=  40;
+2587: 85L
+2588: local3 := 
+points := 190;    umana :=  40;
+2589: 190L
+2590: local4 := 
+umana :=  40;
+2591: 40L
+2592: local5 := 
+2593: goto2600
+diff := 95;     points := 210;    umana :=  50;
+2594: 95L
+2595: local3 := 
+points := 210;    umana :=  50;
+2596: 210L
+2597: local4 := 
+umana :=  50;
+2598: 50L
+2599: local5 := 
+if(umana > GetMana(me))
+2600: local #5
+2601: local #2
+2602: makelocal
+2603: jmp userfunc @2166
+2604: >
+2605: if false goto 2608
+return 0;
+2606: 0L
+2607: return
+if(can_cast(me))
+2608: local #2
+2609: makelocal
+2610: jmp userfunc @3317
+2611: if false goto 2625
+if(CheckSkill(me, SKILLID_MAGERY, (diff - 10), points))
+2612: local #2
+2613: 25L
+2614: local #3
+2615: 10L
+2616: -
+2617: local #4
+2618: Func(2,32): CheckSkill
+2619: if false goto 2623
+return 1;
+2620: 1L
+2621: return
+2622: goto2625
+return 0;
+2623: 0L
+2624: return
+2625: 0L
+2626: return
+C:/pol2/scripts/include/spellRestrictions.inc, Line 392
+function newusemana(who, circle, cast_on, delivery)
+2627: pop param 'delivery'
+2628: pop param 'cast_on'
+2629: pop param 'circle'
+2630: pop param 'who'
+if(delivery == "direct")
+2631: local #0
+2632: "direct"
+2633: ==
+2634: if false goto 2648
+if(!CheckLineOfSight(who, cast_on))
+2635: local #3
+2636: local #1
+2637: Func(2,34): CheckLineOfSight
+2638: if true goto 2647
+SendSysMessage(who, "You can't see that.", 3, 40);
+2639: local #3
+2640: "You can't see that."
+2641: 3L
+2642: 40L
+2643: Func(2,20): SendSysMessage
+2644: #
+return 0;
+2645: 0L
+2646: return
+2647: goto2669
+elseif(delivery == "indirect")
+2648: local #0
+2649: "indirect"
+2650: ==
+2651: if false goto 2669
+if(!CheckLosAt(who, cast_on.x, cast_on.y, cast_on.z))
+2652: local #3
+2653: local #1
+2654: get member 'x'
+2655: local #1
+2656: get member 'y'
+2657: local #1
+2658: get member 'z'
+2659: Func(2,16): CheckLosAt
+2660: if true goto 2669
+SendSysMessage(who, "You can't see that.", 3, 40);
+2661: local #3
+2662: "You can't see that."
+2663: 3L
+2664: 40L
+2665: Func(2,20): SendSysMessage
+2666: #
+return 0;
+2667: 0L
+2668: return
+if(cdist(who.x, who.y, cast_on.x, cast_on.y) > 12)
+2669: local #3
+2670: get member 'x'
+2671: local #3
+2672: get member 'y'
+2673: local #1
+2674: get member 'x'
+2675: local #1
+2676: get member 'y'
+2677: makelocal
+2678: jmp userfunc @3467
+2679: 12L
+2680: >
+2681: if false goto 2710
+var check := 0;
+2682: decl local #0
+2683: 0L
+2684: :=
+2685: #
+foreach thing in EnumerateItemsInContainer(who.backpack)
+2686: local #3
+2687: get member 'backpack'
+2688: Func(2,35): EnumerateItemsInContainer
+2689: initforeach @2697
+if(thing == cast_on)
+2690: local #5
+2691: local #1
+2692: ==
+2693: if false goto 2697
+check := 1;
+2694: 1L
+2695: local4 := 
+break;
+2696: goto2698
+2697: stepforeach @2690
+2698: leave block(3)
+if(!check)
+2699: local #4
+2700: if true goto 2709
+SendSysMessage(who,"The target is out of range.", 3, 40);
+2701: local #3
+2702: "The target is out of range."
+2703: 3L
+2704: 40L
+2705: Func(2,20): SendSysMessage
+2706: #
+return 0;
+2707: 0L
+2708: return
+2709: leave block(1)
+var umana;
+2710: decl local #4
+2711: #
+case (circle)
+2712: local #2
+2713: casejmp
+	1: @2714
+	2: @2717
+	3: @2720
+	4: @2723
+	5: @2726
+	6: @2729
+	7: @2732
+	8: @2735
+	default: @2737
+umana :=  4;
+2714: 4L
+2715: local4 := 
+2716: goto2737
+umana :=  6;
+2717: 6L
+2718: local4 := 
+2719: goto2737
+umana :=  9;
+2720: 9L
+2721: local4 := 
+2722: goto2737
+umana := 11;
+2723: 11L
+2724: local4 := 
+2725: goto2737
+umana := 14;
+2726: 14L
+2727: local4 := 
+2728: goto2737
+umana := 20;
+2729: 20L
+2730: local4 := 
+2731: goto2737
+umana := 40;
+2732: 40L
+2733: local4 := 
+2734: goto2737
+umana := 50;
+2735: 50L
+2736: local4 := 
+var mana := GetMana(who);
+2737: decl local #5
+2738: local #3
+2739: makelocal
+2740: jmp userfunc @2166
+2741: :=
+2742: #
+if(mana >= umana)
+2743: local #5
+2744: local #4
+2745: >=
+2746: if false goto 2758
+SetMana(who, Cint(mana - umana));
+2747: local #3
+2748: local #5
+2749: local #4
+2750: -
+2751: Func(0,0): CInt
+2752: makelocal
+2753: jmp userfunc @2836
+2754: #
+return 1;
+2755: 1L
+2756: return
+2757: goto2766
+SendSysMessage(who,"You do not have enough mana to cast that.", 3, 40);
+2758: local #3
+2759: "You do not have enough mana to cast that."
+2760: 3L
+2761: 40L
+2762: Func(2,20): SendSysMessage
+2763: #
+return 0;
+2764: 0L
+2765: return
+2766: 0L
+2767: return
+C:\pol2\pkg\items\runebook\runebook.src, Line 382
+function NormalizeReturnValue( button_num )
+2768: pop param 'button_num'
+if( button_num == 1 )
+2769: local #0
+2770: 1L
+2771: ==
+2772: if false goto 2776
+return 1;
+2773: 1L
+2774: return
+2775: goto2782
+elseif( button_num == 2 )
+2776: local #0
+2777: 2L
+2778: ==
+2779: if false goto 2782
+return 2;
+2780: 2L
+2781: return
+var mod_ret := Mod( button_num, 2);
+2782: decl local #1
+2783: local #0
+2784: 2L
+2785: makelocal
+2786: jmp userfunc @3898
+2787: :=
+2788: #
+return (mod_ret + 2);
+2789: local #1
+2790: 2L
+2791: +
+2792: return
+C:\pol2\pkg\items\runebook\runebook.src, Line 197
+function renamebook(who, book)
+2793: pop param 'book'
+2794: pop param 'who'
+var charges := GetObjProperty(book, "charges");
+2795: decl local #2
+2796: local #0
+2797: "charges"
+2798: Func(2,1): GetObjProperty
+2799: :=
+2800: #
+if(!charges)
+2801: local #2
+2802: if true goto 2805
+charges := 0;
+2803: 0L
+2804: local2 := 
+var name := SendTextEntryGump( who, "enter the new name of the runebook. ", TE_
+2805: decl local #3
+2806: local #1
+2807: "enter the new name of the runebook. "
+2808: 1L
+2809: 1L
+2810: 40L
+2811: ""
+2812: Func(2,44): SendTextEntryGump
+2813: :=
+2814: #
+if((!name) || (name == ""))
+2815: local #3
+2816: !
+2817: local #3
+2818: ""
+2819: ==
+2820: ||
+2821: if false goto 2824
+name := "a runebook";
+2822: "a runebook"
+2823: local3 := 
+SetObjProperty(book,"name", name);
+2824: local #0
+2825: "name"
+2826: local #3
+2827: Func(2,3): SetObjProperty
+2828: #
+bookname(who, book);
+2829: local #1
+2830: local #0
+2831: makelocal
+2832: jmp userfunc @570
+2833: #
+2834: 0L
+2835: return
+C:/pol2/scripts/include/attributes.inc, Line 914
+function SetMana(who, amount)
+2836: pop param 'amount'
+2837: pop param 'who'
+SetVital(who, "Mana", cint(amount*100.0));
+2838: local #1
+2839: "Mana"
+2840: local #0
+2841: 100LF
+2842: *
+2843: Func(0,0): CInt
+2844: Func(2,14): SetVital
+2845: #
+2846: 0L
+2847: return
+C:/pol2/scripts/include/spellRestrictions.inc, Line 309
+function spellcast(me, circle, scroll, id)
+2848: pop param 'id'
+2849: pop param 'scroll'
+2850: pop param 'circle'
+2851: pop param 'me'
+var spellcfg := ReadConfigFile(":spells:spells");
+2852: decl local #4
+2853: ":spells:spells"
+2854: Func(6,0): ReadConfigFile
+2855: :=
+2856: #
+var val := SplitWords(spellcfg[id].val);
+2857: decl local #5
+2858: local #4
+2859: local #0
+2860: [] 1
+2861: get member 'val'
+2862: Func(0,1): SplitWords
+2863: :=
+2864: #
+var times := CInt(val[1]);
+2865: decl local #6
+2866: local #5
+2867: 1L
+2868: [] 1
+2869: Func(0,0): CInt
+2870: :=
+2871: #
+var slp   := CInt(val[2]);
+2872: decl local #7
+2873: local #5
+2874: 2L
+2875: [] 1
+2876: Func(0,0): CInt
+2877: :=
+2878: #
+var mhp := GetHp(me);
+2879: decl local #8
+2880: local #3
+2881: makelocal
+2882: jmp userfunc @3735
+2883: :=
+2884: #
+var umana, diff, points;
+2885: decl local #9
+2886: #
+2887: decl local #10
+2888: #
+2889: decl local #11
+2890: #
+var n := 1;
+2891: decl local #12
+2892: 1L
+2893: :=
+2894: #
+if(scroll == 0)
+2895: local #1
+2896: 0L
+2897: ==
+2898: if false goto 2951
+case (circle)
+2899: local #2
+2900: casejmp
+	1: @2901
+	2: @2906
+	3: @2911
+	4: @2916
+	5: @2921
+	6: @2926
+	7: @2931
+	8: @2936
+	9: @2941
+	10: @2946
+	default: @2950
+umana :=   4;     diff :=  10;
+2901: 4L
+2902: local9 := 
+diff :=  10;
+2903: 10L
+2904: local10 := 
+2905: goto2950
+umana :=   6;     diff :=  20;
+2906: 6L
+2907: local9 := 
+diff :=  20;
+2908: 20L
+2909: local10 := 
+2910: goto2950
+umana :=   9;     diff :=  30;
+2911: 9L
+2912: local9 := 
+diff :=  30;
+2913: 30L
+2914: local10 := 
+2915: goto2950
+umana :=  11;     diff :=  50;
+2916: 11L
+2917: local9 := 
+diff :=  50;
+2918: 50L
+2919: local10 := 
+2920: goto2950
+umana :=  14;     diff :=  60;
+2921: 14L
+2922: local9 := 
+diff :=  60;
+2923: 60L
+2924: local10 := 
+2925: goto2950
+umana :=  20;     diff :=  70;
+2926: 20L
+2927: local9 := 
+diff :=  70;
+2928: 70L
+2929: local10 := 
+2930: goto2950
+umana :=  40;     diff :=  85;
+2931: 40L
+2932: local9 := 
+diff :=  85;
+2933: 85L
+2934: local10 := 
+2935: goto2950
+umana :=  50;     diff :=  95;
+2936: 50L
+2937: local9 := 
+diff :=  95;
+2938: 95L
+2939: local10 := 
+2940: goto2950
+umana :=  75;     diff := 100;
+2941: 75L
+2942: local9 := 
+diff := 100;
+2943: 100L
+2944: local10 := 
+2945: goto2950
+umana := 100;     diff := 100;
+2946: 100L
+2947: local9 := 
+diff := 100;
+2948: 100L
+2949: local10 := 
+2950: goto3009
+elseif(scroll == 1)
+2951: local #1
+2952: 1L
+2953: ==
+2954: if false goto 3007
+case (circle)
+2955: local #2
+2956: casejmp
+	1: @2957
+	2: @2962
+	3: @2967
+	4: @2972
+	5: @2977
+	6: @2982
+	7: @2987
+	8: @2992
+	9: @2997
+	10: @3002
+	default: @3006
+umana :=   4;     diff := 10;
+2957: 4L
+2958: local9 := 
+diff := 10;
+2959: 10L
+2960: local10 := 
+2961: goto3006
+umana :=   6;     diff := 10;
+2962: 6L
+2963: local9 := 
+diff := 10;
+2964: 10L
+2965: local10 := 
+2966: goto3006
+umana :=   9;     diff := 10;
+2967: 9L
+2968: local9 := 
+diff := 10;
+2969: 10L
+2970: local10 := 
+2971: goto3006
+umana :=  11;     diff := 20;
+2972: 11L
+2973: local9 := 
+diff := 20;
+2974: 20L
+2975: local10 := 
+2976: goto3006
+umana :=  14;     diff := 30;
+2977: 14L
+2978: local9 := 
+diff := 30;
+2979: 30L
+2980: local10 := 
+2981: goto3006
+umana :=  20;     diff := 50;
+2982: 20L
+2983: local9 := 
+diff := 50;
+2984: 50L
+2985: local10 := 
+2986: goto3006
+umana :=  40;     diff := 60;
+2987: 40L
+2988: local9 := 
+diff := 60;
+2989: 60L
+2990: local10 := 
+2991: goto3006
+umana :=  50;     diff := 70;
+2992: 50L
+2993: local9 := 
+diff := 70;
+2994: 70L
+2995: local10 := 
+2996: goto3006
+umana :=  75;     diff := 85;
+2997: 75L
+2998: local9 := 
+diff := 85;
+2999: 85L
+3000: local10 := 
+3001: goto3006
+umana := 100;     diff := 95;
+3002: 100L
+3003: local9 := 
+diff := 95;
+3004: 95L
+3005: local10 := 
+3006: goto3009
+return 0;
+3007: 0L
+3008: return
+if((mhp > GetHp(me)) && ((RandomInt(99)+1) > (GetEffectiveSkill(me, SKILLID_WRE
+3009: local #8
+3010: local #3
+3011: makelocal
+3012: jmp userfunc @3735
+3013: >
+3014: 99L
+3015: Func(5,0): RandomInt
+3016: 1L
+3017: +
+3018: local #3
+3019: 43L
+3020: makelocal
+3021: jmp userfunc @3727
+3022: 2L
+3023: /
+3024: >
+3025: &&
+3026: if false goto 3035
+SendSysMessage(me,"You lost your concentration.", 3, 40);
+3027: local #3
+3028: "You lost your concentration."
+3029: 3L
+3030: 40L
+3031: Func(2,20): SendSysMessage
+3032: #
+return 0;
+3033: 0L
+3034: return
+if (umana > GetMana(me))
+3035: local #9
+3036: local #3
+3037: makelocal
+3038: jmp userfunc @2166
+3039: >
+3040: if false goto 3072
+me.frozen :=1;
+3041: local #3
+3042: 1L
+3043: set member 'frozen' #
+PerformAction(me,ANIM_CAST_DIR);
+3044: local #3
+3045: 16L
+3046: Func(2,33): PerformAction
+3047: #
+sleepms(1200);
+3048: 1200L
+3049: Func(3,4): sleepms
+3050: #
+me.frozen :=0;
+3051: local #3
+3052: 0L
+3053: set member 'frozen' #
+SendSysMessage(me,"You do not have enough mana to cast that.", 3, 40);
+3054: local #3
+3055: "You do not have enough mana to cast that."
+3056: 3L
+3057: 40L
+3058: Func(2,20): SendSysMessage
+3059: #
+PlaySoundEffect(me,0x005d);
+3060: local #3
+3061: 93L
+3062: Func(2,22): PlaySoundEffect
+3063: #
+PlayObjectCenteredEffect(me, 0x3735,0x0a, 0x1e);
+3064: local #3
+3065: 14133L
+3066: 10L
+3067: 30L
+3068: Func(2,27): PlayObjectCenteredEffect
+3069: #
+return 0;
+3070: 0L
+3071: return
+if(can_cast(me))
+3072: local #3
+3073: makelocal
+3074: jmp userfunc @3317
+3075: if false goto 3203
+me.frozen :=1;
+3076: local #3
+3077: 1L
+3078: set member 'frozen' #
+for (n:=1; n<=times; n:=n+1)
+3079: local #12
+3080: 1L
+3081: :=
+3082: #
+3083: local #12
+3084: local #6
+3085: <=
+3086: if false goto 3140
+if((mhp > GetHp(me)) && ((RandomInt(99)+1) > (GetEffectiveSkill(me, SKILLID_WRE
+3087: local #8
+3088: local #3
+3089: makelocal
+3090: jmp userfunc @3735
+3091: >
+3092: 99L
+3093: Func(5,0): RandomInt
+3094: 1L
+3095: +
+3096: local #3
+3097: 43L
+3098: makelocal
+3099: jmp userfunc @3727
+3100: 2L
+3101: /
+3102: >
+3103: &&
+3104: if false goto 3126
+SendSysMessage(me,"You lost your concentration.", 3, 40);
+3105: local #3
+3106: "You lost your concentration."
+3107: 3L
+3108: 40L
+3109: Func(2,20): SendSysMessage
+3110: #
+PlaySoundEffect(me,0x005d);
+3111: local #3
+3112: 93L
+3113: Func(2,22): PlaySoundEffect
+3114: #
+PlayObjectCenteredEffect(me, 0x3735,0x0a, 0x1e);
+3115: local #3
+3116: 14133L
+3117: 10L
+3118: 30L
+3119: Func(2,27): PlayObjectCenteredEffect
+3120: #
+me.frozen :=0;
+3121: local #3
+3122: 0L
+3123: set member 'frozen' #
+return 0;
+3124: 0L
+3125: return
+PerformAction(me,ANIM_CAST_DIR);
+3126: local #3
+3127: 16L
+3128: Func(2,33): PerformAction
+3129: #
+sleepms(900);
+3130: 900L
+3131: Func(3,4): sleepms
+3132: #
+3133: local #12
+3134: local #12
+3135: 1L
+3136: +
+3137: :=
+3138: #
+3139: goto3083
+if(slp)
+3140: local #7
+3141: if false goto 3147
+sleepms(slp * 100);
+3142: local #7
+3143: 100L
+3144: *
+3145: Func(3,4): sleepms
+3146: #
+me.frozen :=0;
+3147: local #3
+3148: 0L
+3149: set member 'frozen' #
+if (CheckSkill(me,SKILLID_MAGERY, diff, 0))
+3150: local #3
+3151: 25L
+3152: local #10
+3153: 0L
+3154: Func(2,32): CheckSkill
+3155: if false goto 3185
+if((mhp > GetHp(me)) && ((RandomInt(99)+1) > (GetEffectiveSkill(me, SKILLID_WRE
+3156: local #8
+3157: local #3
+3158: makelocal
+3159: jmp userfunc @3735
+3160: >
+3161: 99L
+3162: Func(5,0): RandomInt
+3163: 1L
+3164: +
+3165: local #3
+3166: 43L
+3167: makelocal
+3168: jmp userfunc @3727
+3169: 2L
+3170: /
+3171: >
+3172: &&
+3173: if false goto 3182
+SendSysMessage(me,"You lost your concentration.", 3, 40);
+3174: local #3
+3175: "You lost your concentration."
+3176: 3L
+3177: 40L
+3178: Func(2,20): SendSysMessage
+3179: #
+return 0;
+3180: 0L
+3181: return
+return 1;
+3182: 1L
+3183: return
+3184: goto3203
+SendSysMessage(me,"The spell fizzles.", 3, 40);
+3185: local #3
+3186: "The spell fizzles."
+3187: 3L
+3188: 40L
+3189: Func(2,20): SendSysMessage
+3190: #
+PlaySoundEffect(me,0x005d);
+3191: local #3
+3192: 93L
+3193: Func(2,22): PlaySoundEffect
+3194: #
+PlayObjectCenteredEffect(me, 0x3735,0x0a, 0x1e);
+3195: local #3
+3196: 14133L
+3197: 10L
+3198: 30L
+3199: Func(2,27): PlayObjectCenteredEffect
+3200: #
+return 0;
+3201: 0L
+3202: return
+3203: 0L
+3204: return
+C:/pol2/scripts/include/coords.inc, Line 4
+function ToSextant(x, y)
+3205: pop param 'y'
+3206: pop param 'x'
+var latitude_direction, longitude_direction;
+3207: decl local #2
+3208: #
+3209: decl local #3
+3210: #
+var latitude_degrees, longitude_degrees;
+3211: decl local #4
+3212: #
+3213: decl local #5
+3214: #
+var latitude_minutes, longitude_minutes;
+3215: decl local #6
+3216: #
+3217: decl local #7
+3218: #
+latitude_degrees := (y-1624)*0.087890625;
+3219: local #0
+3220: 1624L
+3221: -
+3222: 0.0878906LF
+3223: *
+3224: local4 := 
+longitude_degrees := (x-1323)*0.0703125;
+3225: local #1
+3226: 1323L
+3227: -
+3228: 0.0703125LF
+3229: *
+3230: local5 := 
+if(latitude_degrees < 0)
+3231: local #4
+3232: 0L
+3233: <
+3234: if false goto 3238
+latitude_direction := "N";
+3235: "N"
+3236: local2 := 
+3237: goto3240
+latitude_direction := "S";
+3238: "S"
+3239: local2 := 
+if(longitude_degrees < 0)
+3240: local #5
+3241: 0L
+3242: <
+3243: if false goto 3247
+longitude_direction := "W";
+3244: "W"
+3245: local3 := 
+3246: goto3249
+longitude_direction := "E";
+3247: "E"
+3248: local3 := 
+latitude_degrees := Abs(latitude_degrees);
+3249: local #4
+3250: Func(4,2): Abs
+3251: local4 := 
+longitude_degrees := Abs(longitude_degrees);
+3252: local #5
+3253: Func(4,2): Abs
+3254: local5 := 
+latitude_minutes := CInt((CInt((latitude_degrees-Floor(latitude_degrees))*100)*
+3255: local #4
+3256: local #4
+3257: Func(4,3): Floor
+3258: -
+3259: 100L
+3260: *
+3261: Func(0,0): CInt
+3262: 60L
+3263: *
+3264: 100L
+3265: /
+3266: Func(0,0): CInt
+3267: local6 := 
+longitude_minutes := CInt((CInt((longitude_degrees-Floor(longitude_degrees))*10
+3268: local #5
+3269: local #5
+3270: Func(4,3): Floor
+3271: -
+3272: 100L
+3273: *
+3274: Func(0,0): CInt
+3275: 60L
+3276: *
+3277: 100L
+3278: /
+3279: Func(0,0): CInt
+3280: local7 := 
+return(Floor(latitude_degrees) + "o " + latitude_minutes + "'" + latitude_direc
+3281: local #4
+3282: Func(4,3): Floor
+3283: "o "
+3284: +
+3285: local #6
+3286: +
+3287: "'"
+3288: +
+3289: local #2
+3290: +
+3291: ", "
+3292: +
+3293: local #5
+3294: Func(4,3): Floor
+3295: +
+3296: "o "
+3297: +
+3298: local #7
+3299: +
+3300: "'"
+3301: +
+3302: local #3
+3303: +
+3304: return
+C:/pol2/scripts/include/attributes.inc, Line 231
+function AwardRawSkillPoints(who, skillid, rawpoints)
+3305: pop param 'rawpoints'
+3306: pop param 'skillid'
+3307: pop param 'who'
+return AwardRawAttributePoints(who, GetAttributeIdBySkillId(skillid), rawpoints
+3308: local #2
+3309: local #1
+3310: makelocal
+3311: jmp userfunc @3565
+3312: local #0
+3313: local #1
+3314: makelocal
+3315: jmp userfunc @3913
+3316: return
+C:/pol2/scripts/include/spellRestrictions.inc, Line 145
+function can_cast(who)
+3317: pop param 'who'
+var hand1 := (GetEquipmentByLayer(who, 1));
+3318: decl local #1
+3319: local #0
+3320: 1L
+3321: Func(2,29): GetEquipmentByLayer
+3322: :=
+3323: #
+var hand2 := (GetEquipmentByLayer(who, 2));
+3324: decl local #2
+3325: local #0
+3326: 2L
+3327: Func(2,29): GetEquipmentByLayer
+3328: :=
+3329: #
+if(hand1)
+3330: local #1
+3331: if false goto 3345
+if(hand1.graphic != 0x0efa)
+3332: local #1
+3333: get member 'graphic'
+3334: 3834L
+3335: <>
+3336: if false goto 3345
+SendSysMessage(who,"You can't cast spells with things in your hands.", 3, 40);
+3337: local #0
+3338: "You can't cast spells with things in your hands."
+3339: 3L
+3340: 40L
+3341: Func(2,20): SendSysMessage
+3342: #
+return 0;
+3343: 0L
+3344: return
+if(hand2)
+3345: local #2
+3346: if false goto 3360
+if(hand2.graphic != 0x0efa)
+3347: local #2
+3348: get member 'graphic'
+3349: 3834L
+3350: <>
+3351: if false goto 3360
+SendSysMessage(who,"You can't cast spells with things in your hands.", 3, 40);
+3352: local #0
+3353: "You can't cast spells with things in your hands."
+3354: 3L
+3355: 40L
+3356: Func(2,20): SendSysMessage
+3357: #
+return 0;
+3358: 0L
+3359: return
+return 1;
+3360: 1L
+3361: return
+C:/pol2/scripts/include/spellRestrictions.inc, Line 182
+function CanTargetArea(caster, circle)
+3362: pop param 'circle'
+3363: pop param 'caster'
+if (!can_cast(caster))
+3364: local #1
+3365: makelocal
+3366: jmp userfunc @3317
+3367: if true goto 3370
+return 0;
+3368: 0L
+3369: return
+var cast_loc := TargetCoordinates(caster);
+3370: decl local #2
+3371: local #1
+3372: Func(2,19): TargetCoordinates
+3373: :=
+3374: #
+if (!cast_loc.x)
+3375: local #2
+3376: get member 'x'
+3377: if true goto 3380
+return 0;
+3378: 0L
+3379: return
+if (!CheckLosAt(caster, cast_loc.x, cast_loc.y, cast_loc.z))
+3380: local #1
+3381: local #2
+3382: get member 'x'
+3383: local #2
+3384: get member 'y'
+3385: local #2
+3386: get member 'z'
+3387: Func(2,16): CheckLosAt
+3388: if true goto 3397
+SendSysMessage(caster, "You can't see that.", 3, 40);
+3389: local #1
+3390: "You can't see that."
+3391: 3L
+3392: 40L
+3393: Func(2,20): SendSysMessage
+3394: #
+return 0;
+3395: 0L
+3396: return
+if(coordist(caster.x, caster.y, cast_loc.x, cast_loc.y) >= 12)
+3397: local #1
+3398: get member 'x'
+3399: local #1
+3400: get member 'y'
+3401: local #2
+3402: get member 'x'
+3403: local #2
+3404: get member 'y'
+3405: makelocal
+3406: jmp userfunc @3508
+3407: 12L
+3408: >=
+3409: if false goto 3418
+SendSysMessage(caster, "That is too far away.", 3, 40);
+3410: local #1
+3411: "That is too far away."
+3412: 3L
+3413: 40L
+3414: Func(2,20): SendSysMessage
+3415: #
+return 0;
+3416: 0L
+3417: return
+return cast_loc;
+3418: local #2
+3419: return
+C:/pol2/scripts/include/spellRestrictions.inc, Line 163
+function CanTargetSpell(caster, circle, targopt := TGTOPT_CHECK_LOS)
+3420: pop param 'targopt'
+3421: pop param 'circle'
+3422: pop param 'caster'
+if(!can_cast(caster))
+3423: local #2
+3424: makelocal
+3425: jmp userfunc @3317
+3426: if true goto 3429
+return 0;
+3427: 0L
+3428: return
+var cast_on := Target(caster, targopt);
+3429: decl local #3
+3430: local #2
+3431: local #0
+3432: Func(2,30): Target
+3433: :=
+3434: #
+if(!cast_on)
+3435: local #3
+3436: if true goto 3439
+return 0;
+3437: 0L
+3438: return
+if(cast_on.hidden)
+3439: local #3
+3440: get member 'hidden'
+3441: if false goto 3450
+SendSysMessage(caster,"You can't see that.", 3, 40);
+3442: local #2
+3443: "You can't see that."
+3444: 3L
+3445: 40L
+3446: Func(2,20): SendSysMessage
+3447: #
+return 0;
+3448: 0L
+3449: return
+if(dist(caster, cast_on) >= 12)
+3450: local #2
+3451: local #3
+3452: makelocal
+3453: jmp userfunc @3559
+3454: 12L
+3455: >=
+3456: if false goto 3465
+SendSysMessage(caster, "That is too far away.", 3, 40);
+3457: local #2
+3458: "That is too far away."
+3459: 3L
+3460: 40L
+3461: Func(2,20): SendSysMessage
+3462: #
+return 0;
+3463: 0L
+3464: return
+return cast_on;
+3465: local #3
+3466: return
+C:/pol2/scripts/include/spellRestrictions.inc, Line 535
+function cdist(x1, y1, x2, y2)
+3467: pop param 'y2'
+3468: pop param 'x2'
+3469: pop param 'y1'
+3470: pop param 'x1'
+var xd := x1 - x2;
+3471: decl local #4
+3472: local #3
+3473: local #1
+3474: -
+3475: :=
+3476: #
+var yd := y1 - y2;
+3477: decl local #5
+3478: local #2
+3479: local #0
+3480: -
+3481: :=
+3482: #
+if (xd < 0)
+3483: local #4
+3484: 0L
+3485: <
+3486: if false goto 3490
+xd := -xd;
+3487: local #4
+3488: unary -
+3489: local4 := 
+if (yd < 0)
+3490: local #5
+3491: 0L
+3492: <
+3493: if false goto 3497
+yd := -yd;
+3494: local #5
+3495: unary -
+3496: local5 := 
+if (xd > yd)
+3497: local #4
+3498: local #5
+3499: >
+3500: if false goto 3504
+return xd;
+3501: local #4
+3502: return
+3503: goto3506
+return yd;
+3504: local #5
+3505: return
+3506: 0L
+3507: return
+C:/pol2/scripts/include/dist.inc, Line 37
+function coordist( x1, y1, x2, y2 )
+3508: pop param 'y2'
+3509: pop param 'x2'
+3510: pop param 'y1'
+3511: pop param 'x1'
+var xd := x1 - x2;
+3512: decl local #4
+3513: local #3
+3514: local #1
+3515: -
+3516: :=
+3517: #
+var yd := y1 - y2;
+3518: decl local #5
+3519: local #2
+3520: local #0
+3521: -
+3522: :=
+3523: #
+if (xd < 0)
+3524: local #4
+3525: 0L
+3526: <
+3527: if false goto 3531
+xd := -xd;
+3528: local #4
+3529: unary -
+3530: local4 := 
+if (yd < 0)
+3531: local #5
+3532: 0L
+3533: <
+3534: if false goto 3538
+yd := -yd;
+3535: local #5
+3536: unary -
+3537: local5 := 
+if (xd > yd)
+3538: local #4
+3539: local #5
+3540: >
+3541: if false goto 3545
+return xd;
+3542: local #4
+3543: return
+3544: goto3547
+return yd;
+3545: local #5
+3546: return
+3547: 0L
+3548: return
+C:\pol2\pkg\items\runebook\runebook.src, Line 378
+function CurrentPageRuneNum( pagecount, rune_number )
+3549: pop param 'rune_number'
+3550: pop param 'pagecount'
+return( rune_number - ( (pagecount-1) * 2));
+3551: local #0
+3552: local #1
+3553: 1L
+3554: -
+3555: 2L
+3556: *
+3557: -
+3558: return
+C:/pol2/scripts/include/dist.inc, Line 9
+function dist( obj1, obj2 )
+3559: pop param 'obj2'
+3560: pop param 'obj1'
+return Distance( obj1, obj2 );
+3561: local #1
+3562: local #0
+3563: Func(2,23): Distance
+3564: return
+C:/pol2/scripts/include/attributes.inc, Line 250
+function GetAttributeIdBySkillId(skillid)
+3565: pop param 'skillid'
+case(skillid)
+3566: local #0
+3567: casejmp
+	0: @3568
+	1: @3571
+	2: @3574
+	3: @3577
+	4: @3580
+	5: @3583
+	6: @3586
+	7: @3589
+	8: @3592
+	9: @3595
+	10: @3598
+	11: @3601
+	12: @3604
+	13: @3607
+	14: @3610
+	15: @3613
+	16: @3616
+	17: @3619
+	18: @3622
+	19: @3625
+	20: @3628
+	21: @3631
+	22: @3634
+	23: @3637
+	24: @3640
+	25: @3643
+	26: @3646
+	27: @3649
+	28: @3652
+	29: @3655
+	30: @3658
+	31: @3661
+	32: @3664
+	33: @3667
+	34: @3670
+	35: @3673
+	36: @3676
+	37: @3679
+	38: @3682
+	39: @3685
+	40: @3688
+	41: @3691
+	42: @3694
+	43: @3697
+	44: @3700
+	45: @3703
+	46: @3706
+	47: @3709
+	48: @3712
+	default: @3714
+return ATTRIBUTEID_ALCHEMY;
+3568: "alchemy"
+3569: return
+3570: goto3714
+return ATTRIBUTEID_ANATOMY;
+3571: "anatomy"
+3572: return
+3573: goto3714
+return ATTRIBUTEID_ANIMALLORE;
+3574: "animallore"
+3575: return
+3576: goto3714
+return ATTRIBUTEID_ITEMID;
+3577: "itemid"
+3578: return
+3579: goto3714
+return ATTRIBUTEID_ARMSLORE;
+3580: "armslore"
+3581: return
+3582: goto3714
+return ATTRIBUTEID_PARRY;
+3583: "parry"
+3584: return
+3585: goto3714
+return ATTRIBUTEID_BEGGING;
+3586: "begging"
+3587: return
+3588: goto3714
+return ATTRIBUTEID_BLACKSMITHY;
+3589: "blacksmithy"
+3590: return
+3591: goto3714
+return ATTRIBUTEID_BOWCRAFT;
+3592: "bowcraft"
+3593: return
+3594: goto3714
+return ATTRIBUTEID_PEACEMAKING;
+3595: "peacemaking"
+3596: return
+3597: goto3714
+return ATTRIBUTEID_CAMPING;
+3598: "camping"
+3599: return
+3600: goto3714
+return ATTRIBUTEID_CARPENTRY;
+3601: "carpentry"
+3602: return
+3603: goto3714
+return ATTRIBUTEID_CARTOGRAPHY;
+3604: "cartography"
+3605: return
+3606: goto3714
+return ATTRIBUTEID_COOKING;
+3607: "cooking"
+3608: return
+3609: goto3714
+return ATTRIBUTEID_DETECTINGHIDDEN;
+3610: "detectinghidden"
+3611: return
+3612: goto3714
+return ATTRIBUTEID_ENTICEMENT;
+3613: "enticement"
+3614: return
+3615: goto3714
+return ATTRIBUTEID_EVALINT;
+3616: "evaluatingintelligence"
+3617: return
+3618: goto3714
+return ATTRIBUTEID_HEALING;
+3619: "healing"
+3620: return
+3621: goto3714
+return ATTRIBUTEID_FISHING;
+3622: "fishing"
+3623: return
+3624: goto3714
+return ATTRIBUTEID_FORENSICS;
+3625: "forensicevaluation"
+3626: return
+3627: goto3714
+return ATTRIBUTEID_HERDING;
+3628: "herding"
+3629: return
+3630: goto3714
+return ATTRIBUTEID_HIDING;
+3631: "hiding"
+3632: return
+3633: goto3714
+return ATTRIBUTEID_PROVOCATION;
+3634: "provocation"
+3635: return
+3636: goto3714
+return ATTRIBUTEID_INSCRIPTION;
+3637: "inscription"
+3638: return
+3639: goto3714
+return ATTRIBUTEID_LOCKPICKING;
+3640: "lockpicking"
+3641: return
+3642: goto3714
+return ATTRIBUTEID_MAGERY;
+3643: "magery"
+3644: return
+3645: goto3714
+return ATTRIBUTEID_MAGICRESISTANCE;
+3646: "magicresistance"
+3647: return
+3648: goto3714
+return ATTRIBUTEID_TACTICS;
+3649: "tactics"
+3650: return
+3651: goto3714
+return ATTRIBUTEID_SNOOPING;
+3652: "snooping"
+3653: return
+3654: goto3714
+return ATTRIBUTEID_MUSICIANSHIP;
+3655: "musicianship"
+3656: return
+3657: goto3714
+return ATTRIBUTEID_POISONING;
+3658: "poisoning"
+3659: return
+3660: goto3714
+return ATTRIBUTEID_ARCHERY;
+3661: "archery"
+3662: return
+3663: goto3714
+return ATTRIBUTEID_SPIRITSPEAK;
+3664: "spiritspeak"
+3665: return
+3666: goto3714
+return ATTRIBUTEID_STEALING;
+3667: "stealing"
+3668: return
+3669: goto3714
+return ATTRIBUTEID_TAILORING;
+3670: "tailoring"
+3671: return
+3672: goto3714
+return ATTRIBUTEID_TAMING;
+3673: "animaltaming"
+3674: return
+3675: goto3714
+return ATTRIBUTEID_TASTEID;
+3676: "tasteidentification"
+3677: return
+3678: goto3714
+return ATTRIBUTEID_TINKERING;
+3679: "tinkering"
+3680: return
+3681: goto3714
+return ATTRIBUTEID_TRACKING;
+3682: "tracking"
+3683: return
+3684: goto3714
+return ATTRIBUTEID_VETERINARY;
+3685: "veterinary"
+3686: return
+3687: goto3714
+return ATTRIBUTEID_SWORDSMANSHIP;
+3688: "swordsmanship"
+3689: return
+3690: goto3714
+return ATTRIBUTEID_MACEFIGHTING;
+3691: "macefighting"
+3692: return
+3693: goto3714
+return ATTRIBUTEID_FENCING;
+3694: "fencing"
+3695: return
+3696: goto3714
+return ATTRIBUTEID_WRESTLING;
+3697: "wrestling"
+3698: return
+3699: goto3714
+return ATTRIBUTEID_LUMBERJACKING;
+3700: "lumberjacking"
+3701: return
+3702: goto3714
+return ATTRIBUTEID_MINING;
+3703: "mining"
+3704: return
+3705: goto3714
+return ATTRIBUTEID_MEDITATION;
+3706: "meditation"
+3707: return
+3708: goto3714
+return ATTRIBUTEID_STEALTH;
+3709: "stealth"
+3710: return
+3711: goto3714
+return ATTRIBUTEID_REMOVETRAP;
+3712: "removetrap"
+3713: return
+var ret        := error;
+3714: decl local #1
+3715: error
+3716: :=
+3717: #
+ret.+errortext := "No equivalent attributeid found for skillid " + skillid;
+3718: local #1
+3719: "errortext"
+3720: .+
+3721: "No equivalent attributeid found for skillid "
+3722: local #0
+3723: +
+3724: := #
+return ret;
+3725: local #1
+3726: return
+C:/pol2/scripts/include/attributes.inc, Line 431
+function GetEffectiveSkill(who, skillid)
+3727: pop param 'skillid'
+3728: pop param 'who'
+return GetAttribute(who, GetAttributeIdBySkillId(skillid));
+3729: local #1
+3730: local #0
+3731: makelocal
+3732: jmp userfunc @3565
+3733: Func(2,7): GetAttribute
+3734: return
+C:/pol2/scripts/include/attributes.inc, Line 448
+function GetHp(who)
+3735: pop param 'who'
+return Cint(GetVital(who, VITALID_LIFE)/ 100);
+3736: local #0
+3737: "Life"
+3738: Func(2,10): GetVital
+3739: 100L
+3740: /
+3741: Func(0,0): CInt
+3742: return
+C:/pol2/scripts/include/spellRestrictions.inc, Line 462
+function getpoints(c, scroll, skillid)
+3743: pop param 'skillid'
+3744: pop param 'scroll'
+3745: pop param 'c'
+var points;
+3746: decl local #3
+3747: #
+var diff;
+3748: decl local #4
+3749: #
+if(scroll == 1)
+3750: local #1
+3751: 1L
+3752: ==
+3753: if false goto 3796
+case(c)
+3754: local #2
+3755: casejmp
+	1: @3756
+	2: @3761
+	3: @3766
+	4: @3771
+	5: @3776
+	6: @3781
+	7: @3786
+	8: @3791
+	default: @3795
+points :=  10; diff :=  0;
+3756: 10L
+3757: local3 := 
+diff :=  0;
+3758: 0L
+3759: local4 := 
+3760: goto3795
+points :=  20; diff := 10;
+3761: 20L
+3762: local3 := 
+diff := 10;
+3763: 10L
+3764: local4 := 
+3765: goto3795
+points :=  20; diff := 10;
+3766: 20L
+3767: local3 := 
+diff := 10;
+3768: 10L
+3769: local4 := 
+3770: goto3795
+points :=  40; diff := 20;
+3771: 40L
+3772: local3 := 
+diff := 20;
+3773: 20L
+3774: local4 := 
+3775: goto3795
+points :=  60; diff := 30;
+3776: 60L
+3777: local3 := 
+diff := 30;
+3778: 30L
+3779: local4 := 
+3780: goto3795
+points := 100; diff := 50;
+3781: 100L
+3782: local3 := 
+diff := 50;
+3783: 50L
+3784: local4 := 
+3785: goto3795
+points := 120; diff := 60;
+3786: 120L
+3787: local3 := 
+diff := 60;
+3788: 60L
+3789: local4 := 
+3790: goto3795
+points := 140; diff := 70;
+3791: 140L
+3792: local3 := 
+diff := 70;
+3793: 70L
+3794: local4 := 
+3795: goto3837
+case(c)
+3796: local #2
+3797: casejmp
+	1: @3798
+	2: @3803
+	3: @3808
+	4: @3813
+	5: @3818
+	6: @3823
+	7: @3828
+	8: @3833
+	default: @3837
+points :=  20; diff := 20;
+3798: 20L
+3799: local3 := 
+diff := 20;
+3800: 20L
+3801: local4 := 
+3802: goto3837
+points :=  40; diff := 30;
+3803: 40L
+3804: local3 := 
+diff := 30;
+3805: 30L
+3806: local4 := 
+3807: goto3837
+points :=  80; diff := 40;
+3808: 80L
+3809: local3 := 
+diff := 40;
+3810: 40L
+3811: local4 := 
+3812: goto3837
+points := 100; diff := 50;
+3813: 100L
+3814: local3 := 
+diff := 50;
+3815: 50L
+3816: local4 := 
+3817: goto3837
+points := 120; diff := 60;
+3818: 120L
+3819: local3 := 
+diff := 60;
+3820: 60L
+3821: local4 := 
+3822: goto3837
+points := 140; diff := 70;
+3823: 140L
+3824: local3 := 
+diff := 70;
+3825: 70L
+3826: local4 := 
+3827: goto3837
+points := 160; diff := 86;
+3828: 160L
+3829: local3 := 
+diff := 86;
+3830: 86L
+3831: local4 := 
+3832: goto3837
+points := 180; diff := 100;
+3833: 180L
+3834: local3 := 
+diff := 100;
+3835: 100L
+3836: local4 := 
+var skill := GetEffectiveSkill(caster, skillid);
+3837: decl local #5
+3838: global #0
+3839: local #0
+3840: makelocal
+3841: jmp userfunc @3727
+3842: :=
+3843: #
+if(skill > (diff - 20))
+3844: local #5
+3845: local #4
+3846: 20L
+3847: -
+3848: >
+3849: if false goto 3896
+if((skill - diff) <= 5)
+3850: local #5
+3851: local #4
+3852: -
+3853: 5L
+3854: <=
+3855: if false goto 3859
+points := points;
+3856: local #3
+3857: local3 := 
+3858: goto3896
+elseif((skill - diff) <= 10)
+3859: local #5
+3860: local #4
+3861: -
+3862: 10L
+3863: <=
+3864: if false goto 3872
+points := (points * 3) / 4;
+3865: local #3
+3866: 3L
+3867: *
+3868: 4L
+3869: /
+3870: local3 := 
+3871: goto3896
+elseif((skill - diff) <= 15)
+3872: local #5
+3873: local #4
+3874: -
+3875: 15L
+3876: <=
+3877: if false goto 3883
+points := points / 2;
+3878: local #3
+3879: 2L
+3880: /
+3881: local3 := 
+3882: goto3896
+elseif((skill - diff) <= 15)
+3883: local #5
+3884: local #4
+3885: -
+3886: 15L
+3887: <=
+3888: if false goto 3894
+points := points / 4;
+3889: local #3
+3890: 4L
+3891: /
+3892: local3 := 
+3893: goto3896
+points := 0;
+3894: 0L
+3895: local3 := 
+return points;
+3896: local #3
+3897: return
+C:/pol2/scripts/include/math.inc, Line 73
+function Mod(Numerator, Denominator)
+3898: pop param 'Denominator'
+3899: pop param 'Numerator'
+var dividend := Numerator - ( CInt(Numerator/Denominator) * Denominator );
+3900: decl local #2
+3901: local #1
+3902: local #1
+3903: local #0
+3904: /
+3905: Func(0,0): CInt
+3906: local #0
+3907: *
+3908: -
+3909: :=
+3910: #
+return dividend;
+3911: local #2
+3912: return
+C:/pol2/scripts/include/attributes.inc, Line 167
+function AwardRawAttributePoints(who, attributeid, rawpoints, skillid)
+3913: pop param 'skillid'
+3914: pop param 'rawpoints'
+3915: pop param 'attributeid'
+3916: pop param 'who'
+if(!who.isA(POLCLASS_MOBILE))
+3917: local #3
+3918: 3L
+3919: Call Method isa (1 params)
+3920: if true goto 3937
+var ret := error;
+3921: decl local #0
+3922: error
+3923: :=
+3924: #
+ret.+errortext := "Invalid parameter type: " + who + " isn't a mobileref.";
+3925: local #4
+3926: "errortext"
+3927: .+
+3928: "Invalid parameter type: "
+3929: local #3
+3930: +
+3931: " isn't a mobileref."
+3932: +
+3933: := #
+return ret;
+3934: local #4
+3935: return
+3936: leave block(1)
+rawpoints := Cdbl(rawpoints);
+3937: local #1
+3938: Func(0,2): CDbl
+3939: local1 := 
+if(rawpoints == error)
+3940: local #1
+3941: error
+3942: ==
+3943: if false goto 3947
+return rawpoints;
+3944: local #1
+3945: return
+3946: goto3953
+elseif(rawpoints == 0.0)
+3947: local #1
+3948: 0LF
+3949: ==
+3950: if false goto 3953
+return 1;
+3951: 1L
+3952: return
+set_critical(1);
+3953: 1L
+3954: Func(3,0): set_critical
+3955: #
+var initial := GetAttributeBaseValue(who, attributeid);
+3956: decl local #4
+3957: local #3
+3958: local #2
+3959: Func(2,2): GetAttributeBaseValue
+3960: :=
+3961: #
+var current := initial;
+3962: decl local #5
+3963: local #4
+3964: :=
+3965: #
+if(rawpoints > 0)
+3966: local #1
+3967: 0L
+3968: >
+3969: if false goto 4005
+var to_increase := GetNeededRawPointsToIncrease(current);
+3970: decl local #0
+3971: local #5
+3972: makelocal
+3973: jmp userfunc @4169
+3974: :=
+3975: #
+while(rawpoints >= to_increase)
+3976: local #1
+3977: local #6
+3978: >=
+3979: if false goto 3993
+rawpoints  := rawpoints - to_increase;
+3980: local #1
+3981: local #6
+3982: -
+3983: local1 := 
+current    := current + 1;
+3984: local #5
+3985: 1L
+3986: +
+3987: local5 := 
+to_increase := GetNeededRawPointsToIncrease(current);
+3988: local #5
+3989: makelocal
+3990: jmp userfunc @4169
+3991: local6 := 
+3992: goto3976
+if(RandomInt(Cint(to_increase)) < rawpoints)
+3993: local #6
+3994: Func(0,0): CInt
+3995: Func(5,0): RandomInt
+3996: local #1
+3997: <
+3998: if false goto 4003
+current := current + 1;
+3999: local #5
+4000: 1L
+4001: +
+4002: local5 := 
+4003: leave block(1)
+4004: goto4051
+elseif(rawpoints < 0)
+4005: local #1
+4006: 0L
+4007: <
+4008: if false goto 4051
+var to_decrease  := GetNeededRawPointsToIncrease(current-1);
+4009: decl local #0
+4010: local #5
+4011: 1L
+4012: -
+4013: makelocal
+4014: jmp userfunc @4169
+4015: :=
+4016: #
+while(rawpoints >= to_decrease && current > 0)
+4017: local #1
+4018: local #6
+4019: >=
+4020: local #5
+4021: 0L
+4022: >
+4023: &&
+4024: if false goto 4040
+rawpoints  := rawpoints - to_decrease;
+4025: local #1
+4026: local #6
+4027: -
+4028: local1 := 
+current    := current - 1;
+4029: local #5
+4030: 1L
+4031: -
+4032: local5 := 
+to_decrease  := GetNeededRawPointsToIncrease(current-1);
+4033: local #5
+4034: 1L
+4035: -
+4036: makelocal
+4037: jmp userfunc @4169
+4038: local6 := 
+4039: goto4017
+if(RandomInt(Cint(to_decrease))< rawpoints)
+4040: local #6
+4041: Func(0,0): CInt
+4042: Func(5,0): RandomInt
+4043: local #1
+4044: <
+4045: if false goto 4050
+current := current - 1;
+4046: local #5
+4047: 1L
+4048: -
+4049: local5 := 
+4050: leave block(1)
+if(current != initial)
+4051: local #5
+4052: local #4
+4053: <>
+4054: if false goto 4142
+if(who.acctname)
+4055: local #3
+4056: get member 'acctname'
+4057: if false goto 4133
+if(current > CORE_SETTINGS_MAX_ATTRIBUTE)
+4058: local #5
+4059: 60000L
+4060: >
+4061: if false goto 4064
+current := CORE_SETTINGS_MAX_ATTRIBUTE;
+4062: 60000L
+4063: local5 := 
+var pid := getprocess(GetObjProperty(who, "cap_pid"));
+4064: decl local #0
+4065: local #3
+4066: "cap_pid"
+4067: Func(2,1): GetObjProperty
+4068: Func(3,1): getprocess
+4069: :=
+4070: #
+var k := struct;
+4071: decl local #1
+4072: struct
+4073: :=
+4074: #
+if((attributeid == ATTRIBUTEID_STRENGTH) or (attributeid == ATTRIBUTEID_DEXTERI
+4075: local #2
+4076: "strength"
+4077: ==
+4078: local #2
+4079: "dexterity"
+4080: ==
+4081: ||
+4082: local #2
+4083: "intelligence"
+4084: ==
+4085: ||
+4086: if false goto 4112
+k.+skid   := attributeid;
+4087: local #7
+4088: "skid"
+4089: .+
+4090: local #2
+4091: := #
+k.+skil   := skillid;
+4092: local #7
+4093: "skil"
+4094: .+
+4095: local #0
+4096: := #
+k.+type   := EVID_STATCAP;
+4097: local #7
+4098: "type"
+4099: .+
+4100: 4372L
+4101: := #
+k.+base   := current;
+4102: local #7
+4103: "base"
+4104: .+
+4105: local #5
+4106: := #
+pid.sendevent(k);
+4107: local #6
+4108: local #7
+4109: Call Method sendevent (1 params)
+4110: #
+4111: goto4131
+k.+skid   := attributeid;
+4112: local #7
+4113: "skid"
+4114: .+
+4115: local #2
+4116: := #
+k.+type   := EVID_SKILLCAP;
+4117: local #7
+4118: "type"
+4119: .+
+4120: 4371L
+4121: := #
+k.+base   := current;
+4122: local #7
+4123: "base"
+4124: .+
+4125: local #5
+4126: := #
+pid.sendevent(k);
+4127: local #6
+4128: local #7
+4129: Call Method sendevent (1 params)
+4130: #
+4131: leave block(2)
+4132: goto4138
+SetAttributeBaseValue(who, attributeid, current);
+4133: local #3
+4134: local #2
+4135: local #5
+4136: Func(2,5): SetAttributeBaseValue
+4137: #
+DoRecalcVitals(who);
+4138: local #3
+4139: makelocal
+4140: jmp userfunc @4147
+4141: #
+set_critical(0);
+4142: 0L
+4143: Func(3,0): set_critical
+4144: #
+return 1;
+4145: 1L
+4146: return
+C:/pol2/scripts/include/attributes.inc, Line 84
+Function DoRecalcVitals( mob )
+4147: pop param 'mob'
+set_critical(1);
+4148: 1L
+4149: Func(3,0): set_critical
+4150: #
+if(mob.acctname)
+4151: local #0
+4152: get member 'acctname'
+4153: if false goto 4161
+if(mob.ip)
+4154: local #0
+4155: get member 'ip'
+4156: if false goto 4160
+RecalcVitals(mob);
+4157: local #0
+4158: Func(2,0): RecalcVitals
+4159: #
+4160: goto4164
+RecalcVitals(mob);
+4161: local #0
+4162: Func(2,0): RecalcVitals
+4163: #
+set_critical(0);
+4164: 0L
+4165: Func(3,0): set_critical
+4166: #
+4167: 0L
+4168: return
+C:/pol2/scripts/include/attributes.inc, Line 476
+function GetNeededRawPointsToIncrease(basevalue)
+4169: pop param 'basevalue'
+if(basevalue < 200)
+4170: local #0
+4171: 200L
+4172: <
+4173: if false goto 4177
+return 20.48;
+4174: 20.48LF
+4175: return
+4176: goto4195
+elseif(basevalue >= 2800)
+4177: local #0
+4178: 2800L
+4179: >=
+4180: if false goto 4185
+return Cdbl(0x7fffffff);
+4181: 2147483647L
+4182: Func(0,2): CDbl
+4183: return
+4184: goto4195
+return Cdbl(Pow(2.0, Cint(basevalue/100))* 10.24);
+4185: 2LF
+4186: local #0
+4187: 100L
+4188: /
+4189: Func(0,0): CInt
+4190: Func(4,0): Pow
+4191: 10.24LF
+4192: *
+4193: Func(0,2): CDbl
+4194: return
+4195: 0L
+4196: return

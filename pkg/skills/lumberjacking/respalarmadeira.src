@@ -1,0 +1,97 @@
+use uo;
+use os;
+use util;
+
+include "include/attributes";
+include "../pkg/foundations/gumps/gumps";
+
+program respalarmadeira(who,item)
+GFNoMove();
+///GFNoClose();
+GFResizePic(50, 20, 2600, 200, 225);
+
+  GFTextLine( 91 , 45, 1153 , "Tipo da Madeira" );
+  var bt2 := GFButtonID( 80, 81,  0x138a, 0x138b, 1);
+  var bt3 := GFButtonID( 80, 101, 0x138a, 0x138b, 1);
+  var bt4 := GFButtonID( 80, 121, 0x138a, 0x138b, 1);
+  var bt5 := GFButtonID( 80, 141, 0x138a, 0x138b, 1);
+  var bt6 := GFButtonID( 80, 161, 0x138a, 0x138b, 1);
+  var bt7 := GFButtonID( 80, 181, 0x138a, 0x138b, 1);
+ /// var bt8 := GFButtonID( 80, 201, 0x138a, 0x138b, 1);
+ /// var bt9 := GFButtonID( 80, 221, 0x138a, 0x138b, 1);
+ /// var bt10 := GFButtonID( 80, 241, 0x138a, 0x138b, 1);
+ /// var bt11 := GFButtonID( 80, 261, 0x138a, 0x138b, 1);
+
+  GFTextLine(110, 80,  95, "Elfica"); 
+  GFTextLine(110, 100, 33, "Petrificada"); 
+  GFTextLine(110, 120, 95, "Envelhecida"); 
+  GFTextLine(110, 140, 33, "Congelada"); 
+  GFTextLine(110, 160, 95, "Sangue"); 
+  GFTextLine(110, 180, 33, "Gelo"); 
+
+var btselect := GFButtonID( 120, 210, 0x3, 0x4, 1);
+  GFTextLine(137, 205, 33, "Local");
+
+
+  ///GFTextLine( 123 , 265, 167, "#Sysco" );
+
+  var res := GFSendGump(who);
+
+var pressionou := res[0];
+
+var nome;
+case(pressionou)
+1025: setobjproperty(item,"tipomadeira","elfica");	nome:="Elfica";
+1026: setobjproperty(item,"tipomadeira","petrificada");	nome:="Petrificada";
+1027: setobjproperty(item,"tipomadeira","envelhecida");	nome:="Envelhecida";
+1028: setobjproperty(item,"tipomadeira","congelada");	nome:="Congelada";
+1029: setobjproperty(item,"tipomadeira","sangue");	nome:="Sangue";
+1030: setobjproperty(item,"tipomadeira","gelo");	nome:="Gelo";
+1031: trocarlocal(who, item); return;
+default: sendsysmessage(who, "Cancelado",9,89); return;
+endcase
+
+var aa := SendTextEntryGump( who, "Qual a quantia de Madeiras? (15 max) ",  TE_STYLE_NORMAL);;
+if((!aa) || (Cint(aa) <=0))
+sendsysmessage(who, "Cancelado",9,89);
+Eraseobjproperty(item,"tipomadeira");
+return;
+endif
+
+if(Cint(aa) > 15)
+aa:=15;
+endif
+setobjproperty(item,"quantiamadeira", Cint(aa));
+
+var tempo := SendTextEntryGump( who, "Qual o Tempo de Respawn? (Minutos)(Minimo:15, Maximo:250) ",  TE_STYLE_NORMAL);;
+if((!tempo) || (Cint(tempo) <=0))
+sendsysmessage(who, "Cancelado",9,89);
+Eraseobjproperty(item,"tipomadeira");
+return;
+endif
+
+if((Cint(tempo) > 250) || (Cint(tempo) < 15))
+tempo:=RandomInt(150)+30;
+endif
+
+setobjproperty(item,"temporespawn", Cint(tempo));
+
+item.name:="Respawn de " +nome+ "(Quantia:" +Cint(aa)+ ") (Tempo:" +Cint(tempo)+ ")";
+item.invisible := 1;
+item.movable := 0;
+item.color:=1174;
+
+endprogram
+
+function trocarlocal(who, item)
+SendSysMessage(who, "Selecione a arvore que deseja por o respawn...",3,95);
+        var where := TargetCoordinates( who );
+if(!where)
+SendSysMessage(who, "Cancelado.",9,33);
+return;
+endif
+
+item.movable := 1;
+MoveItemToLocation(item, where.x, where.y, where.z, MOVEITEM_FORCELOCATION);
+item.movable := 0;
+endfunction

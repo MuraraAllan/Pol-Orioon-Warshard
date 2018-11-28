@@ -1,0 +1,15 @@
+use uo;
+
+include "include/startEqp";
+
+program ondelete(who)
+  var created := GetObjProperty(who, "OnCreate");
+ var chk := CInt(GetObjProperty(who, "OnCreate"));
+    if(!chk)
+      chk := CInt(ReadGameClock() - 15);
+    endif
+    if(chk >= ReadGameClock())
+      Print( "You must wait to perform another action.");
+      return;
+    endif
+endprogram

@@ -1,0 +1,82 @@
+C:\pol2\pkg\items\sysbook\textcmd\seer\shelfe.src, Line 5
+program textcmd_shelfeast(who);
+use util;
+0: get arg 'who'
+var globalshelves := GetGlobalProperty("shelves");
+1: decl local #1
+2: "shelves"
+3: Func(2,0): GetGlobalProperty
+4: :=
+5: #
+if(!globalshelves)
+6: local #1
+7: if true goto 10
+globalshelves := {};
+8: array
+9: local1 := 
+var shelf := CreateItemAtLocation(who.x, who.y, who.z, 0x0a9f, 1);
+10: decl local #2
+11: local #0
+12: get member 'x'
+13: local #0
+14: get member 'y'
+15: local #0
+16: get member 'z'
+17: 2719L
+18: 1L
+19: Func(2,1): CreateItemAtLocation
+20: :=
+21: #
+var rint;
+22: decl local #3
+23: #
+case (RandomInt(3)+1)
+24: 3L
+25: Func(4,0): RandomInt
+26: 1L
+27: +
+28: casejmp
+	1: @29
+	2: @32
+	3: @35
+	default: @37
+rint := 2713;
+29: 2713L
+30: local3 := 
+31: goto37
+rint := 2714;
+32: 2714L
+33: local3 := 
+34: goto37
+rint := 2716;
+35: 2716L
+36: local3 := 
+shelf.graphic := rint;
+37: local #2
+38: local #3
+39: set member 'graphic' #
+if(shelf)
+40: local #2
+41: if false goto 48
+globalshelves.append(shelf.serial);
+42: local #1
+43: local #2
+44: get member 'serial'
+45: Call Method append (1 params)
+46: #
+47: goto55
+SendSysMessage(who, shelf.errortext);
+48: local #0
+49: local #2
+50: get member 'errortext'
+51: 3L
+52: 1000L
+53: Func(2,2): SendSysMessage
+54: #
+SetGlobalProperty("shelves", globalshelves);
+55: "shelves"
+56: local #1
+57: Func(2,3): SetGlobalProperty
+58: #
+59: leave block(4)
+60: progend

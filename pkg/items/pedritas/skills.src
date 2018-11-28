@@ -1,0 +1,287 @@
+use uo;
+use os;
+
+include "include/client";
+include "include/eventID";
+include "include/attributes";
+include "include/skillLists";
+include "../pkg/foundations/gumps/gumps";
+
+
+program skills ( who )
+
+var player:= who;
+var classe:=GetObjProperty(player, "classe");
+who.frozen := 0; 
+
+if(classe == "guerreiro")
+///if de classe///
+                                  
+              sendsysmessage(player, "Ola nobre guerreiro, escolha suas skills...", 3,89);
+                           
+
+
+
+  GFInitGump( 50, 20 );
+  GFNoMove();
+  GFResizePic(50, 20, 2600, 415, 500);
+GFTextLine(165,  37, 64, "AJUSTE DE SKILLS");
+GFTextLine(80,  70, 1153, "Tactics"); 
+GFTextLine(300, 80, 1153, "Anatomy"); 
+GFTextLine(80, 100, 1153, "Eval Int"); 
+GFTextLine(80,  130, 1153, "Healing"); 
+GFTextLine(80, 160, 1153, "Inscript"); 
+GFTextLine(80, 190, 1153, "Magery"); 
+GFTextLine(80, 220, 1153, "Fencing"); 
+GFTextLine(80, 250, 1153, "Mace"); 
+GFTextLine(80, 280, 1153, "Sword"); 
+GFTextLine(80,  310, 1153, "Archery"); 
+GFTextLine(80,  340, 1153, "Wrest"); 
+GFTextLine(80, 370, 1153, "Parry"); 
+GFTextLine(80, 400, 1153,  "Medit"); 
+GFTextLine(300, 110, 1153, "Lumber"); 
+GFTextLine(300,  140, 1153,"Hiding"); 
+GFTextLine(300, 170, 1153, "Detect"); 
+GFTextLine(300, 200, 1153, "RS:");
+GFTextLine(300, 230, 1153, "Tracking:");
+GFTextLine(300, 260, 1153, "Stealth:");
+///// GFTextLine(300, 230, 33, "Carpentry");
+//// GFTextLine(300, 260, 33, "ArmsLore");
+//// GFTextLine(300, 290, 33, "BS");
+//// GFTextLine(300, 320, 33, "Tamming");
+GFTextLine(200, 300, 33, "Maximo 100 pontos por skill.");
+GFTextLine(200, 320, 33, "Limite de 780 pontos.");
+GFTextLine(200, 340, 33, "Sendo rs obrigatoriamente 80.");
+GFTextLine(200, 360, 33, "Se deseja que seu rs aumente,");
+GFTextLine(200, 380, 33, "nao use os 20 pontos em otra skill.");
+
+
+var TT := GFTextEntry(150, 70, 250, 15, 1153 , 0);
+var Anat := GFTextEntry(400, 80, 250, 15, 1153 , 0); 
+var Eval := GFTextEntry(150, 100, 250, 65, 1153 , 0); 
+var heal := GFTextEntry(150, 130, 250, 65, 1153 , 0); 
+var insc := GFTextEntry(150, 160, 250, 65, 1153 , 0); 
+var mage := GFTextEntry(150, 190, 250, 65, 1153 , 0);
+var fenc := GFTextEntry(150, 220, 250, 65, 1153 , 0); 
+var mace := GFTextEntry(150, 250, 250, 65, 1153 , 0);
+var SW   := GFTextEntry(150, 280, 250, 65, 1153 , 0); 
+var Arch := GFTextEntry(150, 310, 250, 65, 1153 , 0); 
+var Wrest := GFTextEntry(150, 340, 250, 65, 1153 , 0);
+
+
+var parry := GFTextEntry(150, 370, 250, 175, 1153 , 0); 
+var medit := GFTextEntry(150, 400, 250, 175, 1153 , 0);
+var Lumber := GFTextEntry(400, 110,  250, 65, 1153 , 0); 
+var Hid := GFTextEntry(400, 140, 250, 65, 1153 , 0); 
+var Detec := GFTextEntry(400, 170, 250, 65, 1153 , 0);
+  var RS  := GFTextLine(400, 200, 1153, 80);
+var Track := GFTextEntry(400, 230, 250, 65, 1153 , 0);
+var Stealth:= GFTextEntry(400, 260, 250, 65, 1153 , 0); 
+//// var Alore := GFTextEntry(400, 260, 250, 65, 33 , 0); 
+//// var carpentry := GFTextEntry(400, 230, 250, 65, 33 , 0); 
+//// var BS := GFTextEntry(400, 290, 230, 65, 33 , 0);
+var ok := GFButtonID(320, 450, 0xf9, 0xf8, 1);
+var cancel := GFButtonID(130, 450, 0xf3, 0xf2, 1);
+
+var res := GFsendgump(who);
+
+
+ 
+if(res[ok.keyid]) 
+
+var amtstr := Cint(SplitWords(res[tt.keyid])[2]); 
+var amtdex := Cint(SplitWords(res[anat.keyid])[2]); 
+var amtint := Cint(SplitWords(res[Eval.keyid])[2]); 
+var amta := Cint(SplitWords(res[heal.keyid])[2]); 
+var amtb := Cint(SplitWords(res[insc.keyid])[2]); 
+var amtc := Cint(SplitWords(res[mage.keyid])[2]);
+var amtd := Cint(SplitWords(res[fenc.keyid])[2]); 
+var amte := Cint(SplitWords(res[SW.keyid])[2]); 
+var amtf := Cint(SplitWords(res[mace.keyid])[2]);
+var amtg := Cint(SplitWords(res[Arch.keyid])[2]); 
+var amth := Cint(SplitWords(res[Wrest.keyid])[2]); 
+var amti := Cint(SplitWords(res[parry.keyid])[2]);
+var resist := 80; 
+var amtk := Cint(SplitWords(res[medit.keyid])[2]); 
+var amtl := Cint(SplitWords(res[Lumber.keyid])[2]);
+var amtm := Cint(SplitWords(res[Hid.keyid])[2]); 
+var amtn := Cint(SplitWords(res[Detec.keyid])[2]); 
+var amto := Cint(SplitWords(res[Track.keyid])[2]);
+var amtp := Cint(SplitWords(res[Stealth.keyid])[2]); 
+/// var amtq := Cint(SplitWords(res[Carpentry.keyid])[2]);
+/// var amtr := Cint(SplitWords(res[BS.keyid])[2]);
+
+
+var amtq:=0;
+var amtr:=0;
+
+var soma := amtstr+amtdex+amtint+amta+amtb+amtc+amtd+amte+amtf+amtg+amth+amti+resist+amtk+amtl+amtm+amtn+amto+amtp+amtq+amtr;
+
+
+if((amtstr > 100) || (amtdex > 100) || (amtint > 100)||(amta > 100) || (amtb > 100) || (amtc > 100)||(amtd > 100)||(amte > 100)||(amtf > 100)||(amtg > 100)||(amth > 100)||(amti > 100)||(resist > 100)||(amtk > 100)||(amtl > 100)||(amtm > 100)||(amtn > 100)||(amto > 100)||(amtp > 100)||(amtq > 100)||(amtr > 100))
+sendsysmessage(player, "Limite de cada skill eh 100 pontos!", 3,89); 
+who.frozen := 0; 
+
+elseif(soma > 780) 
+sendsysmessage(player, "No maximo 780 pontos de skills!", 3,89); 
+who.frozen := 0; 
+
+else
+   var i;
+for (i := 0; i <= SKILLID__HIGHEST; i := i + 1);
+SetBaseSkillBaseValue(who, i, - 1000 );
+SetAttributeBaseValue(who,"Tactics", amtstr*10);
+SetAttributeBaseValue(who,"Tracking", amto*10);  
+SetAttributeBaseValue(who,"Stealth", amtp*10);  
+SetAttributeBaseValue(who,"Anatomy", amtdex*10); 
+SetAttributeBaseValue(who,"EvaluatingIntelligence", amtint*10); 
+SetAttributeBaseValue(who,"Healing", amta*10); 
+SetAttributeBaseValue(who,"Inscription",amtb*10); 
+SetAttributeBaseValue(who,"Magery", amtc*10); 
+SetAttributeBaseValue(who,"Fencing", amtd*10); 
+SetAttributeBaseValue(who,"Swordsmanship", amte*10); 
+SetAttributeBaseValue(who,"Macefighting", amtf*10); 
+SetAttributeBaseValue(who,"Archery", amtg*10); 
+SetAttributeBaseValue(who,"Wrestling", amth*10); 
+SetAttributeBaseValue(who,"Parry", amti*10); 
+SetAttributeBaseValue(who,"Lumberjacking", amtl*10); 
+SetAttributeBaseValue(who,"Hiding", amtm*10); 
+SetAttributeBaseValue(who,"DetectingHidden", amtn*10); 
+SetAttributeBaseValue(who,"AnimalTaming", amto*10); 
+SetAttributeBaseValue(who,"animallore", amtp*10); 
+SetAttributeBaseValue(who,"MagicResistance", resist*10); 
+SetAttributeBaseValue(who,"Meditation", amtk*10);
+SetAttributeBaseValue(who,"carpentry", amtq*10); 
+SetAttributeBaseValue(who,"Blacksmithy",amtr*10);
+who.frozen := 0; 
+endfor
+sendsysmessage(player, "Feito!Bom Jogo! ", 3,89); 
+
+
+
+endif 
+endif
+
+if(!res[ok.keyid])
+sendsysmessage(who,"Cancelado!",9,89);
+who.frozen := 0;
+endif
+
+endif
+//^ if da classe//
+///////////////////////////TRABALHADOR//////////////////////////
+if(classe == "trabalhador")
+var bolsa := who.backpack;
+
+
+var gplayer:=player.graphic;
+
+if(GetObjProperty(player, "sexo") == "homem")
+var cerrote:=CreateItemInBackpack( who, 0x1034, 1 );
+var martelobs:=CreateItemInBackpack( who, 0x13e3, 1 );
+var kitcouro:=CreateItemInBackpack( who, 0x0F9D, 1 );
+var kitt:=CreateItemInBackpack( who, "tinkertools", 1 );
+sendsysmessage(player, "Ola trabalhador, espere que vou rever suas habilidades...", 3,89);
+sendsysmessage(player, "Pegue, tome aqui este kit de ferramentas...", 3,89);
+cerrote.name:="Serrote de " +player.name+ ", o Trabalhador";
+martelobs.name:="Martelinho de " +player.name+ ", o Trabalhador";
+kitcouro.name:="Kit Para Couros de " +player.name+ ", o Trabalhador";
+kitt.name := "Ferramentas de funileiro de " +player.name + ", o Trabalhador";
+endif
+
+
+if(GetObjProperty(player, "sexo") == "mulher")
+var cerrote:=CreateItemInBackpack( who, 0x1034, 1 );
+var martelobs:=CreateItemInBackpack( who, 0x13e3, 1 );
+var kitcouro:=CreateItemInBackpack( who, 0x0F9D, 1 );
+var kitt:=CreateItemInBackpack( who, "tinkertools", 1 );
+sendsysmessage(player, "Ola trabalhadora, espere que vou rever suas habilidades...", 3,89);
+sendsysmessage(player, "Pegue, tome aqui este kit de ferramentas...", 3,89);
+cerrote.name:="Serrote de " +player.name+ ", a Trabalhadora";
+martelobs.name:="Martelinho de " +player.name+ ", a Trabalhadora";
+kitcouro.name:="Kit Para Couros de " +player.name+ ", a Trabalhadora";
+kitt.name := "Ferramentas de funileiro de " +player.name + ", a Trabalhadora";
+endif
+
+if((gplayer != 400) && (gplayer != 401))
+sendsysmessage(player, player.name+ " voce nao pode usar polymorph antes de treinar, aguarde o efeito sair e tente novamente." ,3,89);
+sendsysmessage(player, player.name+ " caso voce nao esteja sobre efeito da magia polymorph contate um staff." ,3,33);
+endif
+
+var i;
+for (i := 0; i <= SKILLID__HIGHEST; i := i + 1);
+SetBaseSkillBaseValue(who, i, - 1000 );
+SetAttributeBaseValue(who,"EvaluatingIntelligence", 600); 
+SetAttributeBaseValue(who,"Inscription",600); 
+SetAttributeBaseValue(who,"Magery", 800); 
+SetAttributeBaseValue(who,"Wrestling", 800); 
+SetAttributeBaseValue(who,"Lumberjacking", 1000); 
+SetAttributeBaseValue(who,"Hiding", 1000); 
+SetAttributeBaseValue(who,"AnimalTaming", 1000); 
+SetAttributeBaseValue(who,"animallore", 1000); 
+SetAttributeBaseValue(who,"MagicResistance", 700); 
+SetAttributeBaseValue(who,"Meditation", 800);
+SetAttributeBaseValue(who,"carpentry", 1000); 
+SetAttributeBaseValue(who,"Blacksmithy",1000);
+SetAttributeBaseValue(who,"armslore", 1000); 
+SetAttributeBaseValue(who,"bowcraft", 1000); 
+SetAttributeBaseValue(who,"mining", 1000); 
+SetAttributeBaseValue(who,"tailoring", 1000); 
+SetAttributeBaseValue(who,"tinkering", 1000); 
+SetAttributeBaseValue(who,"tracking", 1000); 
+SetAttributeBaseValue(who,"herding", 1000); 
+who.frozen := 0; 
+endfor
+
+
+//
+endif
+///fim do if classe trabalhador//
+
+//////////////if dos sem classe////////////
+if((classe != "trabalhador") && (classe != "guerreiro"))
+player.frozen:=1;
+sendsysmessage(player, player.name+ " voce nao tem uma classe setada." ,3,33);
+sendsysmessage(player, "Selecione oque voce deseja ser...", 3,89);
+        		 sleep(1);
+
+			 
+GFInitGump( 250 , 100 );
+  GFNoClose();
+  GFNoMove();
+  GFResizePic(50, 5, 2600, 265, 230);
+  GFTextLine( 115 , 20, 1153 , "Selecione sua Classe" );
+  var war := GFButtonID( 100, 85, 0x15b9, 0x15ba, 1);
+  var work := GFButtonID( 200, 85, 0x15b3, 0x15b4, 1);
+ 
+  GFTextLine(100, 150, 33 , "Guerreiro"); 
+  GFTextLine(192, 150, 33 , "Trabalhador"); 
+  GFTextLine(155, 190,1153, "#Sysco"); 
+ 
+  var res := GFSendGump(player);
+
+    if(res[war.keyid]) 
+    sendsysmessage(player, "Voce foi setado como Guerreiro!",9,89);
+var a := ", Player Do Sysco WS (Guerreiro)";
+who.title_suffix := ", Player Do Sysco WS (Guerreiro)";
+SetObjProperty( who, "titullo", a );
+SetObjProperty( who, "classe", "guerreiro");
+player.frozen:=0;
+    endif
+
+
+
+    if(res[work.keyid]) 
+    sendsysmessage(player, "Voce foi setado como Trabalhador!",9,89);
+
+var a := ", Player Do Sysco WS (Trabalhador)";
+who.title_suffix := ", Player Do Sysco WS (Trabalhador)";
+SetObjProperty( who, "titullo", a );
+SetObjProperty( who, "classe", "trabalhador");
+player.frozen:=0;
+    endif
+
+endif
+/////////endif dos sem classe/////////
+
+endprogram

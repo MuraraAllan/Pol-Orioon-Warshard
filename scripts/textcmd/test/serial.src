@@ -1,0 +1,18 @@
+use uo;
+use os;
+
+program wiparcasas(who,text)
+if(!text)
+sendsysmessage(who,"Voce precisa entrar com um serial para procurar.");
+return;
+endif
+var aa := cint(text);
+var a := SystemFindObjectBySerial( aa, 2 );
+
+if(a)
+sendsysmessage(who,"Serial Encontrado no X,Y : " + a.x  + " " + a.y);
+MoveCharacterToLocation( who, a.x, a.y, a.z, flags := 0 );
+else
+sendsysmessage(who,"Impossivel achar o serial : " + text);
+endif
+endprogram

@@ -1,0 +1,27 @@
+use uo;
+use os;
+
+include "util/bank";
+//include "util/bancoglobal";
+include "include/utility";
+include "include/teleporters";
+
+print("Abrindo bancos do mundo");
+OpenWorldBank();
+
+print("Inicializando respawn de mercadores");
+find_or_create_storage("Merchant Storage");
+print("Wiping merchant storage");
+start_script("storageWipe");
+
+print("Initializing teleporters");
+CreateTeleporters();
+
+print("Iniciando o sistema de AM");
+start_script("am");
+
+SetGlobalProperty("#Jogadores", 0);
+EraseGlobalProperty("arenaIIemuso");
+EraseGlobalProperty("arenaIemuso");
+//print("Abrindo Banco Global");
+//AbrirBancoGlobal();

@@ -1,0 +1,28 @@
+use uo;
+use os;
+include "include/webPage";
+
+program client(who)
+sendsysmessage(who, "Verificando seu Client...",9,66);
+sleep(2);
+
+var xxx := CAscZ( who.clientversion );
+var b:=0;
+foreach a in xxx
+b:=b+a;
+endforeach
+
+///http://sysco.ma.cx/client/
+if(b != 338)
+sendsysmessage(who, "A versao do seu client nao e autorizada!",9,33);
+sendsysmessage(who, "Baixe o Client da Pagina do Sysco para Logar.",9,33);
+sleep(1);
+OpenWebSite(who, "http://sysco.ma.cx/client/");
+DisconnectClient(who);
+else
+sendsysmessage(who, "Client verificado com sucesso!",9,95);
+///var client:=who.clientversion;
+///DisconnectClient(who);
+endif
+
+endprogram

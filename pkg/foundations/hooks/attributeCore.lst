@@ -1,0 +1,982 @@
+C:\pol2\pkg\foundations\hooks\attributeCore.src, Line 12
+var skillscfg := ReadConfigFile(":*:skills");
+0: decl global #0
+1: ":*:skills"
+2: Func(5,0): ReadConfigFile
+3: :=
+4: #
+C:\pol2\pkg\foundations\hooks\attributeCore.src, Line 14
+program Attribute_server(who)
+5: get arg 'who'
+SetObjProperty(who, "cap_pid", getpid());
+6: local #0
+7: "cap_pid"
+8: Func(3,2): getpid
+9: Func(2,3): SetObjProperty
+10: #
+var ev;
+11: decl local #1
+12: #
+var counter := ReadGameClock() + 300;
+13: decl local #2
+14: Func(2,15): ReadGameClock
+15: 300L
+16: +
+17: :=
+18: #
+while(GetObjProperty(who, "LoggedIn"))
+19: local #0
+20: "LoggedIn"
+21: Func(2,1): GetObjProperty
+22: if false goto 62
+ev := wait_for_event(120);
+23: 120L
+24: Func(3,3): wait_for_event
+25: local1 := 
+if(GetObjProperty(who, "cap_pid") != GetPid())
+26: local #0
+27: "cap_pid"
+28: Func(2,1): GetObjProperty
+29: Func(3,2): getpid
+30: <>
+31: if false goto 33
+break;
+32: goto62
+if(ev)
+33: local #1
+34: if false goto 49
+case(ev.type)
+35: local #1
+36: get member 'type'
+37: casejmp
+	4371: @38
+	4372: @44
+	default: @49
+CheckSkillCap(who, ev);
+38: local #0
+39: local #1
+40: makelocal
+41: jmp userfunc @64
+42: #
+43: goto49
+CheckStatCap(who, ev);
+44: local #0
+45: local #1
+46: makelocal
+47: jmp userfunc @208
+48: #
+if(counter < ReadgameClock())
+49: local #2
+50: Func(2,15): ReadGameClock
+51: <
+52: if false goto 61
+counter := ReadGameClock() + 300;
+53: Func(2,15): ReadGameClock
+54: 300L
+55: +
+56: local2 := 
+Start_Script(":hooks:titleCheck", who);
+57: ":hooks:titleCheck"
+58: local #0
+59: Func(3,4): start_script
+60: #
+61: goto19
+62: leave block(3)
+63: progend
+C:\pol2\pkg\foundations\hooks\attributeCore.src, Line 83
+function CheckSkillCap(who, ev)
+64: pop param 'ev'
+65: pop param 'who'
+var attributeid := ev.skid;
+66: decl local #2
+67: local #0
+68: get member 'skid'
+69: :=
+70: #
+if(GetAttributeBaseValue(who, attributeid) < 1000)
+71: local #1
+72: local #2
+73: Func(2,2): GetAttributeBaseValue
+74: 1000L
+75: <
+76: if false goto 84
+SetAttributeBaseValue(who, attributeid, Cint(ev.base));
+77: local #1
+78: local #2
+79: local #0
+80: get member 'base'
+81: Func(0,0): CInt
+82: Func(2,5): SetAttributeBaseValue
+83: #
+if(GetAttributeBaseValue(who, attributeid) > 1000)
+84: local #1
+85: local #2
+86: Func(2,2): GetAttributeBaseValue
+87: 1000L
+88: >
+89: if false goto 95
+SetAttributeBaseValue(who, attributeid, 1000);
+90: local #1
+91: local #2
+92: 1000L
+93: Func(2,5): SetAttributeBaseValue
+94: #
+var skillarray := GetObjProperty(who,"SkillArray");
+95: decl local #3
+96: local #1
+97: "SkillArray"
+98: Func(2,1): GetObjProperty
+99: :=
+100: #
+var skilltotal := 0;
+101: decl local #4
+102: 0L
+103: :=
+104: #
+var skillval := 0;
+105: decl local #5
+106: 0L
+107: :=
+108: #
+var check := 0;
+109: decl local #6
+110: 0L
+111: :=
+112: #
+var loops := 0;
+113: decl local #7
+114: 0L
+115: :=
+116: #
+var placeholder, holder, newval, final;
+117: decl local #8
+118: #
+119: decl local #9
+120: #
+121: decl local #10
+122: #
+123: decl local #11
+124: #
+var base, mods, true;
+125: decl local #12
+126: #
+127: decl local #13
+128: #
+129: decl local #14
+130: #
+while(check == 0)
+131: local #6
+132: 0L
+133: ==
+134: if false goto 206
+if(loops >= 6)
+135: local #7
+136: 6L
+137: >=
+138: if false goto 140
+break;
+139: goto206
+skilltotal := 0;
+140: 0L
+141: local4 := 
+foreach thing in skillarray
+142: local #3
+143: initforeach @162
+true := GetBaseSkillBaseValue(who, thing);
+144: local #1
+145: local #15
+146: makelocal
+147: jmp userfunc @555
+148: local14 := 
+base := Cint(true - GetAttributeIntrinsicMod(who, GetAttributeIdBySkillId(thing
+149: local #14
+150: local #1
+151: local #15
+152: makelocal
+153: jmp userfunc @377
+154: Func(2,9): GetAttributeIntrinsicMod
+155: -
+156: Func(0,0): CInt
+157: local12 := 
+skilltotal := skilltotal + base;
+158: local #4
+159: local #12
+160: +
+161: local4 := 
+162: stepforeach @144
+163: leave block(3)
+if(skilltotal > CONST_SKILLCAP)
+164: local #4
+165: 7000L
+166: >
+167: if false goto 199
+foreach entry in skillarray
+168: local #3
+169: initforeach @181
+if((GetBaseSkillBaseValue(who, entry)) > 0)
+170: local #1
+171: local #15
+172: makelocal
+173: jmp userfunc @555
+174: 0L
+175: >
+176: if false goto 181
+holder := CInt(entry);
+177: local #15
+178: Func(0,0): CInt
+179: local9 := 
+break;
+180: goto182
+181: stepforeach @170
+182: leave block(3)
+newval := GetBaseSkillBaseValue(who, holder);
+183: local #1
+184: local #9
+185: makelocal
+186: jmp userfunc @555
+187: local10 := 
+final := (newval - 1);
+188: local #10
+189: 1L
+190: -
+191: local11 := 
+SetBaseSkillBaseValue(who, holder, final);
+192: local #1
+193: local #9
+194: local #11
+195: makelocal
+196: jmp userfunc @641
+197: #
+198: goto201
+check := 1;
+199: 1L
+200: local6 := 
+loops := loops + 1;
+201: local #7
+202: 1L
+203: +
+204: local7 := 
+205: goto131
+return 1;
+206: 1L
+207: return
+C:\pol2\pkg\foundations\hooks\attributeCore.src, Line 36
+function CheckStatCap(who, ev)
+208: pop param 'ev'
+209: pop param 'who'
+if(GetAttributeBaseValue(who, ev.skid) < 1000)
+210: local #1
+211: local #0
+212: get member 'skid'
+213: Func(2,2): GetAttributeBaseValue
+214: 1000L
+215: <
+216: if false goto 225
+SetAttributeBaseValue(who, ev.skid, Cint(ev.base));
+217: local #1
+218: local #0
+219: get member 'skid'
+220: local #0
+221: get member 'base'
+222: Func(0,0): CInt
+223: Func(2,5): SetAttributeBaseValue
+224: #
+var skillid := Cint(ev.skil);
+225: decl local #2
+226: local #0
+227: get member 'skil'
+228: Func(0,0): CInt
+229: :=
+230: #
+var stat := skillscfg[skillid]."DropStat";
+231: decl local #3
+232: global #0
+233: local #2
+234: [] 1
+235: get member 'DropStat'
+236: :=
+237: #
+var split := SplitWords(stat);
+238: decl local #4
+239: local #3
+240: Func(0,1): SplitWords
+241: :=
+242: #
+var bs := GetBaseStrength(who);
+243: decl local #5
+244: local #1
+245: makelocal
+246: jmp userfunc @563
+247: :=
+248: #
+var bd := GetBaseDexterity(who);
+249: decl local #6
+250: local #1
+251: makelocal
+252: jmp userfunc @539
+253: :=
+254: #
+var bi := GetBaseIntelligence(who);
+255: decl local #7
+256: local #1
+257: makelocal
+258: jmp userfunc @547
+259: :=
+260: #
+if(bs > 100)
+261: local #5
+262: 100L
+263: >
+264: if false goto 272
+SetBaseStrength(who, 100);
+265: local #1
+266: 100L
+267: makelocal
+268: jmp userfunc @665
+269: #
+bs := 100;
+270: 100L
+271: local5 := 
+if(bd > 100)
+272: local #6
+273: 100L
+274: >
+275: if false goto 283
+SetBaseDexterity(who, 100);
+276: local #1
+277: 100L
+278: makelocal
+279: jmp userfunc @571
+280: #
+bd := 100;
+281: 100L
+282: local6 := 
+if(bi > 100)
+283: local #7
+284: 100L
+285: >
+286: if false goto 294
+SetBaseIntelligence(who, 100);
+287: local #1
+288: 100L
+289: makelocal
+290: jmp userfunc @606
+291: #
+bi := 100;
+292: 100L
+293: local7 := 
+var stattotal := CInt(bs + bi + bd);
+294: decl local #8
+295: local #5
+296: local #7
+297: +
+298: local #6
+299: +
+300: Func(0,0): CInt
+301: :=
+302: #
+if(stattotal > CONST_STATCAP)
+303: local #8
+304: 225L
+305: >
+306: if false goto 375
+var loops := 1;
+307: decl local #0
+308: 1L
+309: :=
+310: #
+while(stattotal > CONST_STATCAP)
+311: local #8
+312: 225L
+313: >
+314: if false goto 374
+if(loops > 5)
+315: local #9
+316: 5L
+317: >
+318: if false goto 320
+break;
+319: goto374
+if(split[2])
+320: local #4
+321: 2L
+322: [] 1
+323: if false goto 331
+stat := split[RandomInt(2) + 1];
+324: local #4
+325: 2L
+326: Func(4,0): RandomInt
+327: 1L
+328: +
+329: [] 1
+330: local3 := 
+case(stat)
+331: local #3
+332: casejmp
+	"str": @333
+	"dex": @343
+	"int": @353
+	default: @362
+bs := bs - 1;
+333: local #5
+334: 1L
+335: -
+336: local5 := 
+SetBaseStrength(who, bs);
+337: local #1
+338: local #5
+339: makelocal
+340: jmp userfunc @665
+341: #
+342: goto362
+bd := bd - 1;
+343: local #6
+344: 1L
+345: -
+346: local6 := 
+SetBaseDexterity(who, bd);
+347: local #1
+348: local #6
+349: makelocal
+350: jmp userfunc @571
+351: #
+352: goto362
+bi := bi - 1;
+353: local #7
+354: 1L
+355: -
+356: local7 := 
+SetBaseIntelligence(who, bi);
+357: local #1
+358: local #7
+359: makelocal
+360: jmp userfunc @606
+361: #
+stattotal := Cint(bs + bd + bi);
+362: local #5
+363: local #6
+364: +
+365: local #7
+366: +
+367: Func(0,0): CInt
+368: local8 := 
+loops := loops + 1;
+369: local #9
+370: 1L
+371: +
+372: local9 := 
+373: goto311
+374: leave block(1)
+return 1;
+375: 1L
+376: return
+C:/pol2/scripts/include/attributes.inc, Line 250
+function GetAttributeIdBySkillId(skillid)
+377: pop param 'skillid'
+case(skillid)
+378: local #0
+379: casejmp
+	0: @380
+	1: @383
+	2: @386
+	3: @389
+	4: @392
+	5: @395
+	6: @398
+	7: @401
+	8: @404
+	9: @407
+	10: @410
+	11: @413
+	12: @416
+	13: @419
+	14: @422
+	15: @425
+	16: @428
+	17: @431
+	18: @434
+	19: @437
+	20: @440
+	21: @443
+	22: @446
+	23: @449
+	24: @452
+	25: @455
+	26: @458
+	27: @461
+	28: @464
+	29: @467
+	30: @470
+	31: @473
+	32: @476
+	33: @479
+	34: @482
+	35: @485
+	36: @488
+	37: @491
+	38: @494
+	39: @497
+	40: @500
+	41: @503
+	42: @506
+	43: @509
+	44: @512
+	45: @515
+	46: @518
+	47: @521
+	48: @524
+	default: @526
+return ATTRIBUTEID_ALCHEMY;
+380: "alchemy"
+381: return
+382: goto526
+return ATTRIBUTEID_ANATOMY;
+383: "anatomy"
+384: return
+385: goto526
+return ATTRIBUTEID_ANIMALLORE;
+386: "animallore"
+387: return
+388: goto526
+return ATTRIBUTEID_ITEMID;
+389: "itemid"
+390: return
+391: goto526
+return ATTRIBUTEID_ARMSLORE;
+392: "armslore"
+393: return
+394: goto526
+return ATTRIBUTEID_PARRY;
+395: "parry"
+396: return
+397: goto526
+return ATTRIBUTEID_BEGGING;
+398: "begging"
+399: return
+400: goto526
+return ATTRIBUTEID_BLACKSMITHY;
+401: "blacksmithy"
+402: return
+403: goto526
+return ATTRIBUTEID_BOWCRAFT;
+404: "bowcraft"
+405: return
+406: goto526
+return ATTRIBUTEID_PEACEMAKING;
+407: "peacemaking"
+408: return
+409: goto526
+return ATTRIBUTEID_CAMPING;
+410: "camping"
+411: return
+412: goto526
+return ATTRIBUTEID_CARPENTRY;
+413: "carpentry"
+414: return
+415: goto526
+return ATTRIBUTEID_CARTOGRAPHY;
+416: "cartography"
+417: return
+418: goto526
+return ATTRIBUTEID_COOKING;
+419: "cooking"
+420: return
+421: goto526
+return ATTRIBUTEID_DETECTINGHIDDEN;
+422: "detectinghidden"
+423: return
+424: goto526
+return ATTRIBUTEID_ENTICEMENT;
+425: "enticement"
+426: return
+427: goto526
+return ATTRIBUTEID_EVALINT;
+428: "evaluatingintelligence"
+429: return
+430: goto526
+return ATTRIBUTEID_HEALING;
+431: "healing"
+432: return
+433: goto526
+return ATTRIBUTEID_FISHING;
+434: "fishing"
+435: return
+436: goto526
+return ATTRIBUTEID_FORENSICS;
+437: "forensicevaluation"
+438: return
+439: goto526
+return ATTRIBUTEID_HERDING;
+440: "herding"
+441: return
+442: goto526
+return ATTRIBUTEID_HIDING;
+443: "hiding"
+444: return
+445: goto526
+return ATTRIBUTEID_PROVOCATION;
+446: "provocation"
+447: return
+448: goto526
+return ATTRIBUTEID_INSCRIPTION;
+449: "inscription"
+450: return
+451: goto526
+return ATTRIBUTEID_LOCKPICKING;
+452: "lockpicking"
+453: return
+454: goto526
+return ATTRIBUTEID_MAGERY;
+455: "magery"
+456: return
+457: goto526
+return ATTRIBUTEID_MAGICRESISTANCE;
+458: "magicresistance"
+459: return
+460: goto526
+return ATTRIBUTEID_TACTICS;
+461: "tactics"
+462: return
+463: goto526
+return ATTRIBUTEID_SNOOPING;
+464: "snooping"
+465: return
+466: goto526
+return ATTRIBUTEID_MUSICIANSHIP;
+467: "musicianship"
+468: return
+469: goto526
+return ATTRIBUTEID_POISONING;
+470: "poisoning"
+471: return
+472: goto526
+return ATTRIBUTEID_ARCHERY;
+473: "archery"
+474: return
+475: goto526
+return ATTRIBUTEID_SPIRITSPEAK;
+476: "spiritspeak"
+477: return
+478: goto526
+return ATTRIBUTEID_STEALING;
+479: "stealing"
+480: return
+481: goto526
+return ATTRIBUTEID_TAILORING;
+482: "tailoring"
+483: return
+484: goto526
+return ATTRIBUTEID_TAMING;
+485: "animaltaming"
+486: return
+487: goto526
+return ATTRIBUTEID_TASTEID;
+488: "tasteidentification"
+489: return
+490: goto526
+return ATTRIBUTEID_TINKERING;
+491: "tinkering"
+492: return
+493: goto526
+return ATTRIBUTEID_TRACKING;
+494: "tracking"
+495: return
+496: goto526
+return ATTRIBUTEID_VETERINARY;
+497: "veterinary"
+498: return
+499: goto526
+return ATTRIBUTEID_SWORDSMANSHIP;
+500: "swordsmanship"
+501: return
+502: goto526
+return ATTRIBUTEID_MACEFIGHTING;
+503: "macefighting"
+504: return
+505: goto526
+return ATTRIBUTEID_FENCING;
+506: "fencing"
+507: return
+508: goto526
+return ATTRIBUTEID_WRESTLING;
+509: "wrestling"
+510: return
+511: goto526
+return ATTRIBUTEID_LUMBERJACKING;
+512: "lumberjacking"
+513: return
+514: goto526
+return ATTRIBUTEID_MINING;
+515: "mining"
+516: return
+517: goto526
+return ATTRIBUTEID_MEDITATION;
+518: "meditation"
+519: return
+520: goto526
+return ATTRIBUTEID_STEALTH;
+521: "stealth"
+522: return
+523: goto526
+return ATTRIBUTEID_REMOVETRAP;
+524: "removetrap"
+525: return
+var ret        := error;
+526: decl local #1
+527: error
+528: :=
+529: #
+ret.+errortext := "No equivalent attributeid found for skillid " + skillid;
+530: local #1
+531: "errortext"
+532: .+
+533: "No equivalent attributeid found for skillid "
+534: local #0
+535: +
+536: := #
+return ret;
+537: local #1
+538: return
+C:/pol2/scripts/include/attributes.inc, Line 394
+function GetBaseDexterity(who)
+539: pop param 'who'
+return Cint(GetAttributeBaseValue(who, ATTRIBUTEID_DEXTERITY)/ 10);
+540: local #0
+541: "dexterity"
+542: Func(2,2): GetAttributeBaseValue
+543: 10L
+544: /
+545: Func(0,0): CInt
+546: return
+C:/pol2/scripts/include/attributes.inc, Line 398
+function GetBaseIntelligence(who)
+547: pop param 'who'
+return Cint(GetAttributeBaseValue(who, ATTRIBUTEID_INTELLIGENCE)/ 10);
+548: local #0
+549: "intelligence"
+550: Func(2,2): GetAttributeBaseValue
+551: 10L
+552: /
+553: Func(0,0): CInt
+554: return
+C:/pol2/scripts/include/attributes.inc, Line 406
+function GetBaseSkillBaseValue(who, skillid)
+555: pop param 'skillid'
+556: pop param 'who'
+return GetAttributeBaseValue(who, GetAttributeIdBySkillId(skillid));
+557: local #1
+558: local #0
+559: makelocal
+560: jmp userfunc @377
+561: Func(2,2): GetAttributeBaseValue
+562: return
+C:/pol2/scripts/include/attributes.inc, Line 410
+function GetBaseStrength(who)
+563: pop param 'who'
+return Cint(GetAttributeBaseValue(who, ATTRIBUTEID_STRENGTH)/ 10);
+564: local #0
+565: "strength"
+566: Func(2,2): GetAttributeBaseValue
+567: 10L
+568: /
+569: Func(0,0): CInt
+570: return
+C:/pol2/scripts/include/attributes.inc, Line 785
+function SetBaseDexterity(who, dexterity)
+571: pop param 'dexterity'
+572: pop param 'who'
+dexterity := Cint(dexterity * 10);
+573: local #0
+574: 10L
+575: *
+576: Func(0,0): CInt
+577: local0 := 
+if(dexterity < 10)
+578: local #0
+579: 10L
+580: <
+581: if false goto 585
+dexterity := 10;
+582: 10L
+583: local0 := 
+584: goto591
+elseif(dexterity > CORE_SETTINGS_MAX_ATTRIBUTE)
+585: local #0
+586: 60000L
+587: >
+588: if false goto 591
+dexterity := CORE_SETTINGS_MAX_ATTRIBUTE;
+589: 60000L
+590: local0 := 
+var ret := SetAttributeBaseValue(who, ATTRIBUTEID_DEXTERITY, dexterity);
+591: decl local #2
+592: local #1
+593: "dexterity"
+594: local #0
+595: Func(2,5): SetAttributeBaseValue
+596: :=
+597: #
+if(ret)
+598: local #2
+599: if false goto 604
+DoRecalcVitals(who);
+600: local #1
+601: makelocal
+602: jmp userfunc @700
+603: #
+return ret;
+604: local #2
+605: return
+C:/pol2/scripts/include/attributes.inc, Line 811
+function SetBaseIntelligence(who, intelligence)
+606: pop param 'intelligence'
+607: pop param 'who'
+intelligence := Cint(intelligence * 10);
+608: local #0
+609: 10L
+610: *
+611: Func(0,0): CInt
+612: local0 := 
+if(intelligence < 10)
+613: local #0
+614: 10L
+615: <
+616: if false goto 620
+intelligence := 10;
+617: 10L
+618: local0 := 
+619: goto626
+elseif(intelligence > CORE_SETTINGS_MAX_ATTRIBUTE)
+620: local #0
+621: 60000L
+622: >
+623: if false goto 626
+intelligence := CORE_SETTINGS_MAX_ATTRIBUTE;
+624: 60000L
+625: local0 := 
+var ret := SetAttributeBaseValue(who, ATTRIBUTEID_INTELLIGENCE, intelligence);
+626: decl local #2
+627: local #1
+628: "intelligence"
+629: local #0
+630: Func(2,5): SetAttributeBaseValue
+631: :=
+632: #
+if(ret)
+633: local #2
+634: if false goto 639
+DoRecalcVitals(who);
+635: local #1
+636: makelocal
+637: jmp userfunc @700
+638: #
+return ret;
+639: local #2
+640: return
+C:/pol2/scripts/include/attributes.inc, Line 841
+function SetBaseSkillBaseValue(who, skillid, skill_tenth)
+641: pop param 'skill_tenth'
+642: pop param 'skillid'
+643: pop param 'who'
+if(skill_tenth < CORE_SETTINGS_MIN_ATTRIBUTE)
+644: local #0
+645: 0L
+646: <
+647: if false goto 651
+skill_tenth := CORE_SETTINGS_MIN_ATTRIBUTE;
+648: 0L
+649: local0 := 
+650: goto657
+elseif(skill_tenth > CORE_SETTINGS_MAX_ATTRIBUTE)
+651: local #0
+652: 60000L
+653: >
+654: if false goto 657
+skill_tenth := CORE_SETTINGS_MAX_ATTRIBUTE;
+655: 60000L
+656: local0 := 
+return SetAttributeBaseValue(who, GetAttributeIdBySkillId(skillid), Cint(skill_
+657: local #2
+658: local #1
+659: makelocal
+660: jmp userfunc @377
+661: local #0
+662: Func(0,0): CInt
+663: Func(2,5): SetAttributeBaseValue
+664: return
+C:/pol2/scripts/include/attributes.inc, Line 850
+function SetBaseStrength(who, strength)
+665: pop param 'strength'
+666: pop param 'who'
+strength := Cint(strength * 10);
+667: local #0
+668: 10L
+669: *
+670: Func(0,0): CInt
+671: local0 := 
+if(strength < 10)
+672: local #0
+673: 10L
+674: <
+675: if false goto 679
+strength := 10;
+676: 10L
+677: local0 := 
+678: goto685
+elseif(strength > CORE_SETTINGS_MAX_ATTRIBUTE)
+679: local #0
+680: 60000L
+681: >
+682: if false goto 685
+strength := CORE_SETTINGS_MAX_ATTRIBUTE;
+683: 60000L
+684: local0 := 
+var ret := SetAttributeBaseValue(who, ATTRIBUTEID_STRENGTH, strength);
+685: decl local #2
+686: local #1
+687: "strength"
+688: local #0
+689: Func(2,5): SetAttributeBaseValue
+690: :=
+691: #
+if(ret)
+692: local #2
+693: if false goto 698
+DoRecalcVitals(who);
+694: local #1
+695: makelocal
+696: jmp userfunc @700
+697: #
+return ret;
+698: local #2
+699: return
+C:/pol2/scripts/include/attributes.inc, Line 84
+Function DoRecalcVitals( mob )
+700: pop param 'mob'
+set_critical(1);
+701: 1L
+702: Func(3,0): set_critical
+703: #
+if(mob.acctname)
+704: local #0
+705: get member 'acctname'
+706: if false goto 714
+if(mob.ip)
+707: local #0
+708: get member 'ip'
+709: if false goto 713
+RecalcVitals(mob);
+710: local #0
+711: Func(2,0): RecalcVitals
+712: #
+713: goto717
+RecalcVitals(mob);
+714: local #0
+715: Func(2,0): RecalcVitals
+716: #
+set_critical(0);
+717: 0L
+718: Func(3,0): set_critical
+719: #
+720: 0L
+721: return

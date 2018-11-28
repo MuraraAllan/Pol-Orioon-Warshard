@@ -1,0 +1,27 @@
+use uo;
+use os;
+include "util/bank";
+
+program dblclick_bancobox( who , bank )
+bank.color:=1102;
+bank.name:="Cofre Bancario";
+OpenBank(who);
+
+function OpenBank(who)
+
+Local bankbox := FindBankBox( who );
+if (bankbox)
+
+if(!who.criminal)
+SendOpenSpecialContainer( who, bankbox );
+////SendSysMessage(who, who.name + ", Voce abriu o seu Banco!",9,89);
+SendSysMessage(who, "Voce abriu seu cofre bancario.",9,89);
+else
+SendSysMessage(who, "Criminosos nao podem abrir o cofre bancario.",9,89);
+endif
+
+endif
+
+endfunction
+
+endprogram

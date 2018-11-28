@@ -1,0 +1,9 @@
+C:\pol2\pkg\systems\combat\setWeaponHit.src, Line 1
+program setweaponhit(wpn)
+0: get arg 'wpn'
+wpn.hitscript := "mainHitScript";
+1: local #0
+2: "mainHitScript"
+3: set member 'hitscript' #
+4: leave block(1)
+5: progend

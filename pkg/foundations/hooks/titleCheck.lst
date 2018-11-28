@@ -1,0 +1,856 @@
+C:\pol2\pkg\foundations\hooks\titleCheck.src, Line 7
+program TitleCheck(who)
+const VITALID_STAMINA              := "Stamina";
+0: get arg 'who'
+var current;
+1: decl local #1
+2: #
+var highskill := Cint(GetObjProperty(who, "HighSkill"));
+3: decl local #2
+4: local #0
+5: "HighSkill"
+6: Func(2,1): GetObjProperty
+7: Func(0,0): CInt
+8: :=
+9: #
+var max_skill := 0;
+10: decl local #3
+11: 0L
+12: :=
+13: #
+var holder := highskill;
+14: decl local #4
+15: local #2
+16: :=
+17: #
+if(highskill)
+18: local #2
+19: if false goto 25
+max_skill := GetBaseSkillBaseValue(who, highskill);
+20: local #0
+21: local #2
+22: makelocal
+23: jmp userfunc @259
+24: local3 := 
+foreach attributeid in GetAttributeIdsWithoutStatIds()
+25: makelocal
+26: jmp userfunc @159
+27: initforeach @42
+current := GetAttributeBaseValue(who, attributeid);
+28: local #0
+29: local #5
+30: Func(2,2): GetAttributeBaseValue
+31: local1 := 
+if( current > max_skill )
+32: local #1
+33: local #3
+34: >
+35: if false goto 42
+max_skill := current;
+36: local #1
+37: local3 := 
+holder := GetSkillIdByAttributeId(attributeid);
+38: local #5
+39: makelocal
+40: jmp userfunc @267
+41: local4 := 
+42: stepforeach @28
+43: leave block(3)
+SetObjProperty(who, "HighSkill", holder);
+44: local #0
+45: "HighSkill"
+46: local #4
+47: Func(2,3): SetObjProperty
+48: #
+var title := "";
+49: decl local #5
+50: ""
+51: :=
+52: #
+var fame := Cint(GetObjProperty(who, "Fame"));
+53: decl local #6
+54: local #0
+55: "Fame"
+56: Func(2,1): GetObjProperty
+57: Func(0,0): CInt
+58: :=
+59: #
+if((max_skill >= 300) and (fame > 5000))
+60: local #3
+61: 300L
+62: >=
+63: local #6
+64: 5000L
+65: >
+66: &&
+67: if false goto 152
+var cfg := ReadConfigFile(":*:skills");
+68: decl local #0
+69: ":*:skills"
+70: Func(4,0): ReadConfigFile
+71: :=
+72: #
+var elem := FindConfigElem(cfg, holder);;
+73: decl local #1
+74: local #7
+75: local #4
+76: Func(4,1): FindConfigElem
+77: :=
+78: #
+title := CStr(elem.Title);
+79: local #8
+80: get member 'Title'
+81: Func(0,4): CStr
+82: local5 := 
+if(max_skill < 400 )
+83: local #3
+84: 400L
+85: <
+86: if false goto 92
+title := ", Neophyte " + title;
+87: ", Neophyte "
+88: local #5
+89: +
+90: local5 := 
+91: goto150
+elseif(max_skill < 500 )
+92: local #3
+93: 500L
+94: <
+95: if false goto 101
+title := ", Novice " + title;
+96: ", Novice "
+97: local #5
+98: +
+99: local5 := 
+100: goto150
+elseif(max_skill < 600 )
+101: local #3
+102: 600L
+103: <
+104: if false goto 110
+title := ", Apprentice " + title;
+105: ", Apprentice "
+106: local #5
+107: +
+108: local5 := 
+109: goto150
+elseif(max_skill < 700 )
+110: local #3
+111: 700L
+112: <
+113: if false goto 119
+title := ", Journeyman " + title;
+114: ", Journeyman "
+115: local #5
+116: +
+117: local5 := 
+118: goto150
+elseif(max_skill < 800 )
+119: local #3
+120: 800L
+121: <
+122: if false goto 128
+title := ", Expert " + title;
+123: ", Expert "
+124: local #5
+125: +
+126: local5 := 
+127: goto150
+elseif(max_skill < 900 )
+128: local #3
+129: 900L
+130: <
+131: if false goto 137
+title := ", Adept " + title;
+132: ", Adept "
+133: local #5
+134: +
+135: local5 := 
+136: goto150
+elseif(max_skill < 1000 )
+137: local #3
+138: 1000L
+139: <
+140: if false goto 146
+title := ", Master " + title;
+141: ", Master "
+142: local #5
+143: +
+144: local5 := 
+145: goto150
+title := ", Grandmaster " + title;
+146: ", Grandmaster "
+147: local #5
+148: +
+149: local5 := 
+150: leave block(2)
+151: goto154
+title := "";
+152: ""
+153: local5 := 
+who.title_suffix := title;
+154: local #0
+155: local #5
+156: set member 'title_suffix' #
+157: leave block(7)
+158: progend
+C:/pol2/scripts/include/attributes.inc, Line 496
+function GetAttributeIdsWithoutStatIds()
+return { ATTRIBUTEID_ALCHEMY,
+159: array
+160: "alchemy"
+161: +=
+162: "anatomy"
+163: +=
+164: "animallore"
+165: +=
+166: "archery"
+167: +=
+168: "armslore"
+169: +=
+170: "begging"
+171: +=
+172: "blacksmithy"
+173: +=
+174: "bowcraft"
+175: +=
+176: "camping"
+177: +=
+178: "carpentry"
+179: +=
+180: "cartography"
+181: +=
+182: "cooking"
+183: +=
+184: "detectinghidden"
+185: +=
+186: "enticement"
+187: +=
+188: "evaluatingintelligence"
+189: +=
+190: "fencing"
+191: +=
+192: "fishing"
+193: +=
+194: "forensicevaluation"
+195: +=
+196: "healing"
+197: +=
+198: "herding"
+199: +=
+200: "hiding"
+201: +=
+202: "inscription"
+203: +=
+204: "itemid"
+205: +=
+206: "lockpicking"
+207: +=
+208: "lumberjacking"
+209: +=
+210: "macefighting"
+211: +=
+212: "magery"
+213: +=
+214: "magicresistance"
+215: +=
+216: "meditation"
+217: +=
+218: "mining"
+219: +=
+220: "musicianship"
+221: +=
+222: "parry"
+223: +=
+224: "peacemaking"
+225: +=
+226: "poisoning"
+227: +=
+228: "provocation"
+229: +=
+230: "removetrap"
+231: +=
+232: "snooping"
+233: +=
+234: "spiritspeak"
+235: +=
+236: "stealing"
+237: +=
+238: "stealth"
+239: +=
+240: "swordsmanship"
+241: +=
+242: "tactics"
+243: +=
+244: "tailoring"
+245: +=
+246: "animaltaming"
+247: +=
+248: "tasteidentification"
+249: +=
+250: "tinkering"
+251: +=
+252: "tracking"
+253: +=
+254: "veterinary"
+255: +=
+256: "wrestling"
+257: +=
+258: return
+C:/pol2/scripts/include/attributes.inc, Line 406
+function GetBaseSkillBaseValue(who, skillid)
+259: pop param 'skillid'
+260: pop param 'who'
+return GetAttributeBaseValue(who, GetAttributeIdBySkillId(skillid));
+261: local #1
+262: local #0
+263: makelocal
+264: jmp userfunc @430
+265: Func(2,2): GetAttributeBaseValue
+266: return
+C:/pol2/scripts/include/attributes.inc, Line 555
+function GetSkillIdByAttributeId(attributeid)
+267: pop param 'attributeid'
+case(Lower(attributeid))
+268: local #0
+269: Func(0,3): lower
+270: casejmp
+	"alchemy": @271
+	"anatomy": @274
+	"animallore": @277
+	"itemid": @280
+	"armslore": @283
+	"parry": @286
+	"begging": @289
+	"blacksmithy": @292
+	"bowcraft": @295
+	"peacemaking": @298
+	"camping": @301
+	"carpentry": @304
+	"cartography": @307
+	"cooking": @310
+	"detectinghidden": @313
+	"detecthidden": @313
+	"enticement": @316
+	"evaluatingintelligence": @319
+	"evaluatingint": @319
+	"evalint": @319
+	"healing": @322
+	"fishing": @325
+	"forensicevaluation": @328
+	"forensiceval": @328
+	"forensics": @328
+	"herding": @331
+	"hiding": @334
+	"provocation": @337
+	"inscription": @340
+	"lockpicking": @343
+	"magery": @346
+	"magicresistance": @349
+	"magicresist": @349
+	"resistingspells": @349
+	"resist": @349
+	"tactics": @352
+	"snooping": @355
+	"musicianship": @358
+	"poisoning": @361
+	"archery": @364
+	"spiritspeak": @367
+	"stealing": @370
+	"tailoring": @373
+	"animaltaming": @376
+	"tasteidentification": @379
+	"tinkering": @382
+	"tracking": @385
+	"veterinary": @388
+	"swordsmanship": @391
+	"swords": @391
+	"macefighting": @394
+	"mace": @394
+	"fencing": @397
+	"wrestling": @400
+	"lumberjacking": @403
+	"mining": @406
+	"meditation": @409
+	"stealth": @412
+	"removetrap": @415
+	default: @417
+return SKILLID_ALCHEMY;
+271: 0L
+272: return
+273: goto417
+return SKILLID_ANATOMY;
+274: 1L
+275: return
+276: goto417
+return SKILLID_ANIMALLORE;
+277: 2L
+278: return
+279: goto417
+return SKILLID_ITEMID;
+280: 3L
+281: return
+282: goto417
+return SKILLID_ARMSLORE;
+283: 4L
+284: return
+285: goto417
+return SKILLID_PARRY;
+286: 5L
+287: return
+288: goto417
+return SKILLID_BEGGING;
+289: 6L
+290: return
+291: goto417
+return SKILLID_BLACKSMITHY;
+292: 7L
+293: return
+294: goto417
+return SKILLID_BOWCRAFT;
+295: 8L
+296: return
+297: goto417
+return SKILLID_PEACEMAKING;
+298: 9L
+299: return
+300: goto417
+return SKILLID_CAMPING;
+301: 10L
+302: return
+303: goto417
+return SKILLID_CARPENTRY;
+304: 11L
+305: return
+306: goto417
+return SKILLID_CARTOGRAPHY;
+307: 12L
+308: return
+309: goto417
+return SKILLID_COOKING;
+310: 13L
+311: return
+312: goto417
+return SKILLID_DETECTINGHIDDEN;
+313: 14L
+314: return
+315: goto417
+return SKILLID_ENTICEMENT;
+316: 15L
+317: return
+318: goto417
+return SKILLID_EVALINT;
+319: 16L
+320: return
+321: goto417
+return SKILLID_HEALING;
+322: 17L
+323: return
+324: goto417
+return SKILLID_FISHING;
+325: 18L
+326: return
+327: goto417
+return SKILLID_FORENSICS;
+328: 19L
+329: return
+330: goto417
+return SKILLID_HERDING;
+331: 20L
+332: return
+333: goto417
+return SKILLID_HIDING;
+334: 21L
+335: return
+336: goto417
+return SKILLID_PROVOCATION;
+337: 22L
+338: return
+339: goto417
+return SKILLID_INSCRIPTION;
+340: 23L
+341: return
+342: goto417
+return SKILLID_LOCKPICKING;
+343: 24L
+344: return
+345: goto417
+return SKILLID_MAGERY;
+346: 25L
+347: return
+348: goto417
+return SKILLID_MAGICRESISTANCE;
+349: 26L
+350: return
+351: goto417
+return SKILLID_TACTICS;
+352: 27L
+353: return
+354: goto417
+return SKILLID_SNOOPING;
+355: 28L
+356: return
+357: goto417
+return SKILLID_MUSICIANSHIP;
+358: 29L
+359: return
+360: goto417
+return SKILLID_POISONING;
+361: 30L
+362: return
+363: goto417
+return SKILLID_ARCHERY;
+364: 31L
+365: return
+366: goto417
+return SKILLID_SPIRITSPEAK;
+367: 32L
+368: return
+369: goto417
+return SKILLID_STEALING;
+370: 33L
+371: return
+372: goto417
+return SKILLID_TAILORING;
+373: 34L
+374: return
+375: goto417
+return SKILLID_TAMING;
+376: 35L
+377: return
+378: goto417
+return SKILLID_TASTEID;
+379: 36L
+380: return
+381: goto417
+return SKILLID_TINKERING;
+382: 37L
+383: return
+384: goto417
+return SKILLID_TRACKING;
+385: 38L
+386: return
+387: goto417
+return SKILLID_VETERINARY;
+388: 39L
+389: return
+390: goto417
+return SKILLID_SWORDSMANSHIP;
+391: 40L
+392: return
+393: goto417
+return SKILLID_MACEFIGHTING;
+394: 41L
+395: return
+396: goto417
+return SKILLID_FENCING;
+397: 42L
+398: return
+399: goto417
+return SKILLID_WRESTLING;
+400: 43L
+401: return
+402: goto417
+return SKILLID_LUMBERJACKING;
+403: 44L
+404: return
+405: goto417
+return SKILLID_MINING;
+406: 45L
+407: return
+408: goto417
+return SKILLID_MEDITATION;
+409: 46L
+410: return
+411: goto417
+return SKILLID_STEALTH;
+412: 47L
+413: return
+414: goto417
+return SKILLID_REMOVETRAP;
+415: 48L
+416: return
+var ret        := error;
+417: decl local #1
+418: error
+419: :=
+420: #
+ret.+errortext := "No equivalent skillid found for attributeid " + attributeid;
+421: local #1
+422: "errortext"
+423: .+
+424: "No equivalent skillid found for attributeid "
+425: local #0
+426: +
+427: := #
+return ret;
+428: local #1
+429: return
+C:/pol2/scripts/include/attributes.inc, Line 250
+function GetAttributeIdBySkillId(skillid)
+430: pop param 'skillid'
+case(skillid)
+431: local #0
+432: casejmp
+	0: @433
+	1: @436
+	2: @439
+	3: @442
+	4: @445
+	5: @448
+	6: @451
+	7: @454
+	8: @457
+	9: @460
+	10: @463
+	11: @466
+	12: @469
+	13: @472
+	14: @475
+	15: @478
+	16: @481
+	17: @484
+	18: @487
+	19: @490
+	20: @493
+	21: @496
+	22: @499
+	23: @502
+	24: @505
+	25: @508
+	26: @511
+	27: @514
+	28: @517
+	29: @520
+	30: @523
+	31: @526
+	32: @529
+	33: @532
+	34: @535
+	35: @538
+	36: @541
+	37: @544
+	38: @547
+	39: @550
+	40: @553
+	41: @556
+	42: @559
+	43: @562
+	44: @565
+	45: @568
+	46: @571
+	47: @574
+	48: @577
+	default: @579
+return ATTRIBUTEID_ALCHEMY;
+433: "alchemy"
+434: return
+435: goto579
+return ATTRIBUTEID_ANATOMY;
+436: "anatomy"
+437: return
+438: goto579
+return ATTRIBUTEID_ANIMALLORE;
+439: "animallore"
+440: return
+441: goto579
+return ATTRIBUTEID_ITEMID;
+442: "itemid"
+443: return
+444: goto579
+return ATTRIBUTEID_ARMSLORE;
+445: "armslore"
+446: return
+447: goto579
+return ATTRIBUTEID_PARRY;
+448: "parry"
+449: return
+450: goto579
+return ATTRIBUTEID_BEGGING;
+451: "begging"
+452: return
+453: goto579
+return ATTRIBUTEID_BLACKSMITHY;
+454: "blacksmithy"
+455: return
+456: goto579
+return ATTRIBUTEID_BOWCRAFT;
+457: "bowcraft"
+458: return
+459: goto579
+return ATTRIBUTEID_PEACEMAKING;
+460: "peacemaking"
+461: return
+462: goto579
+return ATTRIBUTEID_CAMPING;
+463: "camping"
+464: return
+465: goto579
+return ATTRIBUTEID_CARPENTRY;
+466: "carpentry"
+467: return
+468: goto579
+return ATTRIBUTEID_CARTOGRAPHY;
+469: "cartography"
+470: return
+471: goto579
+return ATTRIBUTEID_COOKING;
+472: "cooking"
+473: return
+474: goto579
+return ATTRIBUTEID_DETECTINGHIDDEN;
+475: "detectinghidden"
+476: return
+477: goto579
+return ATTRIBUTEID_ENTICEMENT;
+478: "enticement"
+479: return
+480: goto579
+return ATTRIBUTEID_EVALINT;
+481: "evaluatingintelligence"
+482: return
+483: goto579
+return ATTRIBUTEID_HEALING;
+484: "healing"
+485: return
+486: goto579
+return ATTRIBUTEID_FISHING;
+487: "fishing"
+488: return
+489: goto579
+return ATTRIBUTEID_FORENSICS;
+490: "forensicevaluation"
+491: return
+492: goto579
+return ATTRIBUTEID_HERDING;
+493: "herding"
+494: return
+495: goto579
+return ATTRIBUTEID_HIDING;
+496: "hiding"
+497: return
+498: goto579
+return ATTRIBUTEID_PROVOCATION;
+499: "provocation"
+500: return
+501: goto579
+return ATTRIBUTEID_INSCRIPTION;
+502: "inscription"
+503: return
+504: goto579
+return ATTRIBUTEID_LOCKPICKING;
+505: "lockpicking"
+506: return
+507: goto579
+return ATTRIBUTEID_MAGERY;
+508: "magery"
+509: return
+510: goto579
+return ATTRIBUTEID_MAGICRESISTANCE;
+511: "magicresistance"
+512: return
+513: goto579
+return ATTRIBUTEID_TACTICS;
+514: "tactics"
+515: return
+516: goto579
+return ATTRIBUTEID_SNOOPING;
+517: "snooping"
+518: return
+519: goto579
+return ATTRIBUTEID_MUSICIANSHIP;
+520: "musicianship"
+521: return
+522: goto579
+return ATTRIBUTEID_POISONING;
+523: "poisoning"
+524: return
+525: goto579
+return ATTRIBUTEID_ARCHERY;
+526: "archery"
+527: return
+528: goto579
+return ATTRIBUTEID_SPIRITSPEAK;
+529: "spiritspeak"
+530: return
+531: goto579
+return ATTRIBUTEID_STEALING;
+532: "stealing"
+533: return
+534: goto579
+return ATTRIBUTEID_TAILORING;
+535: "tailoring"
+536: return
+537: goto579
+return ATTRIBUTEID_TAMING;
+538: "animaltaming"
+539: return
+540: goto579
+return ATTRIBUTEID_TASTEID;
+541: "tasteidentification"
+542: return
+543: goto579
+return ATTRIBUTEID_TINKERING;
+544: "tinkering"
+545: return
+546: goto579
+return ATTRIBUTEID_TRACKING;
+547: "tracking"
+548: return
+549: goto579
+return ATTRIBUTEID_VETERINARY;
+550: "veterinary"
+551: return
+552: goto579
+return ATTRIBUTEID_SWORDSMANSHIP;
+553: "swordsmanship"
+554: return
+555: goto579
+return ATTRIBUTEID_MACEFIGHTING;
+556: "macefighting"
+557: return
+558: goto579
+return ATTRIBUTEID_FENCING;
+559: "fencing"
+560: return
+561: goto579
+return ATTRIBUTEID_WRESTLING;
+562: "wrestling"
+563: return
+564: goto579
+return ATTRIBUTEID_LUMBERJACKING;
+565: "lumberjacking"
+566: return
+567: goto579
+return ATTRIBUTEID_MINING;
+568: "mining"
+569: return
+570: goto579
+return ATTRIBUTEID_MEDITATION;
+571: "meditation"
+572: return
+573: goto579
+return ATTRIBUTEID_STEALTH;
+574: "stealth"
+575: return
+576: goto579
+return ATTRIBUTEID_REMOVETRAP;
+577: "removetrap"
+578: return
+var ret        := error;
+579: decl local #1
+580: error
+581: :=
+582: #
+ret.+errortext := "No equivalent attributeid found for skillid " + skillid;
+583: local #1
+584: "errortext"
+585: .+
+586: "No equivalent attributeid found for skillid "
+587: local #0
+588: +
+589: := #
+return ret;
+590: local #1
+591: return

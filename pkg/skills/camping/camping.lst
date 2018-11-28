@@ -1,0 +1,352 @@
+C:\pol2\pkg\skills\camping\camping.src, Line 11
+program UseWood( who, wood )
+include "include/canAccess";
+0: get arg 'who'
+1: get arg 'wood'
+EraseObjProperty(who, "IsMeditating");
+2: local #0
+3: "IsMeditating"
+4: Func(2,19): EraseObjProperty
+5: #
+EraseObjProperty(who, "HealTimer");
+6: local #0
+7: "HealTimer"
+8: Func(2,19): EraseObjProperty
+9: #
+if(!can_access(who, wood))
+10: local #0
+11: local #1
+12: 0L
+13: makelocal
+14: jmp userfunc @157
+15: if true goto 18
+return;
+16: ""
+17: progend
+if(wood.movable == 0)
+18: local #1
+19: get member 'movable'
+20: 0L
+21: ==
+22: if false goto 31
+SendSysMessage(who, "You cannot light that.");
+23: local #0
+24: "You cannot light that."
+25: 3L
+26: 1000L
+27: Func(2,15): SendSysMessage
+28: #
+return;
+29: ""
+30: progend
+var camptimer := GetObjProperty(who, "CampTimer");
+31: decl local #2
+32: local #0
+33: "CampTimer"
+34: Func(2,1): GetObjProperty
+35: :=
+36: #
+if(camptimer)
+37: local #2
+38: if false goto 51
+if(camptimer > ReadGameClock())
+39: local #2
+40: Func(2,20): ReadGameClock
+41: >
+42: if false goto 51
+SendSysMessage(who, "You must wait a few moments to camp again.");
+43: local #0
+44: "You must wait a few moments to camp again."
+45: 3L
+46: 1000L
+47: Func(2,15): SendSysMessage
+48: #
+return;
+49: ""
+50: progend
+SetObjProperty(who, "CampTimer", ReadGameClock() + 5);
+51: local #0
+52: "CampTimer"
+53: Func(2,20): ReadGameClock
+54: 5L
+55: +
+56: Func(2,3): SetObjProperty
+57: #
+if(not Accessible(who, wood))
+58: local #0
+59: local #1
+60: Func(2,16): Accessible
+61: if true goto 71
+PrintTextAbovePrivate( wood, "You can't reach that!", who );
+62: local #1
+63: "You can't reach that!"
+64: local #0
+65: 3L
+66: 1000L
+67: Func(2,21): PrintTextAbovePrivate
+68: #
+return;
+69: ""
+70: progend
+if(wood.container)
+71: local #1
+72: get member 'container'
+73: if false goto 83
+PrintTextAbovePrivate( wood, "Put that on the ground first!", who );
+74: local #1
+75: "Put that on the ground first!"
+76: local #0
+77: 3L
+78: 1000L
+79: Func(2,21): PrintTextAbovePrivate
+80: #
+return;
+81: ""
+82: progend
+if(CheckSkill(who, SKILLID_CAMPING, -1, get_default_points(SKILLID_CAMPING)))
+83: local #0
+84: 10L
+85: -1L
+86: 10L
+87: makelocal
+88: jmp userfunc @264
+89: Func(2,22): CheckSkill
+90: if false goto 148
+var x := wood.x;
+91: decl local #0
+92: local #1
+93: get member 'x'
+94: :=
+95: #
+var y := wood.y;
+96: decl local #1
+97: local #1
+98: get member 'y'
+99: :=
+100: #
+var z := wood.z;
+101: decl local #2
+102: local #1
+103: get member 'z'
+104: :=
+105: #
+Detach();
+106: Func(2,23): Detach
+107: #
+var campfire := CreateItemAtLocation( x, y, z, UOBJ_CAMPFIRE, 1 );
+108: decl local #3
+109: local #3
+110: local #4
+111: local #5
+112: 3555L
+113: 1L
+114: Func(2,24): CreateItemAtLocation
+115: :=
+116: #
+campfire.movable := 0;
+117: local #6
+118: 0L
+119: set member 'movable' #
+SubtractAmount(wood,1);
+120: local #1
+121: 1L
+122: Func(2,25): SubtractAmount
+123: #
+sleep(60);
+124: 60L
+125: Func(4,2): sleep
+126: #
+DestroyItem(campfire);
+127: local #6
+128: Func(2,26): DestroyItem
+129: #
+campfire := CreateItemAtLocation(x,y,z,UOBJ_ASHES,1);
+130: local #3
+131: local #4
+132: local #5
+133: 3562L
+134: 1L
+135: Func(2,24): CreateItemAtLocation
+136: local6 := 
+campfire.movable := 0;
+137: local #6
+138: 0L
+139: set member 'movable' #
+sleep(60);
+140: 60L
+141: Func(4,2): sleep
+142: #
+DestroyItem(campfire);
+143: local #6
+144: Func(2,26): DestroyItem
+145: #
+146: leave block(4)
+147: goto155
+PrintTextAbovePrivate( wood, "You couldn't manage to start the fire.", who );
+148: local #1
+149: "You couldn't manage to start the fire."
+150: local #0
+151: 3L
+152: 1000L
+153: Func(2,21): PrintTextAbovePrivate
+154: #
+155: leave block(3)
+156: progend
+C:/pol2/scripts/include/canAccess.inc, Line 2
+function can_access(who, item, flags := 0)
+157: pop param 'flags'
+158: pop param 'item'
+159: pop param 'who'
+var owner := Cint(GetObjProperty(item, "Owner"));
+160: decl local #3
+161: local #1
+162: "Owner"
+163: Func(2,1): GetObjProperty
+164: Func(0,0): CInt
+165: :=
+166: #
+if((owner) and (owner != who.serial))
+167: local #3
+168: local #3
+169: local #2
+170: get member 'serial'
+171: <>
+172: &&
+173: if false goto 183
+SendSysMessage(who, "You cannot use that.");
+174: local #2
+175: "You cannot use that."
+176: 3L
+177: 1000L
+178: Func(2,15): SendSysMessage
+179: #
+return 0;
+180: 0L
+181: return
+182: goto262
+elseif(GetObjProperty(item, "Vendored"))
+183: local #1
+184: "Vendored"
+185: Func(2,1): GetObjProperty
+186: if false goto 196
+SendSysMessage(who, "You cannot use that.");
+187: local #2
+188: "You cannot use that."
+189: 3L
+190: 1000L
+191: Func(2,15): SendSysMessage
+192: #
+return 0;
+193: 0L
+194: return
+195: goto262
+elseif(!Accessible(who, item))
+196: local #2
+197: local #1
+198: Func(2,16): Accessible
+199: if true goto 209
+SendSysMessage(who, "You cannot use that.");
+200: local #2
+201: "You cannot use that."
+202: 3L
+203: 1000L
+204: Func(2,15): SendSysMessage
+205: #
+return 0;
+206: 0L
+207: return
+208: goto262
+elseif((!flags["distance"]) and ((Distance(who, item) > 2)))
+209: local #0
+210: "distance"
+211: [] 1
+212: !
+213: local #2
+214: local #1
+215: Func(2,17): Distance
+216: 2L
+217: >
+218: &&
+219: if false goto 229
+SendSysMessage(who, "That item is too far away.");
+220: local #2
+221: "That item is too far away."
+222: 3L
+223: 1000L
+224: Func(2,15): SendSysMessage
+225: #
+return 0;
+226: 0L
+227: return
+228: goto262
+elseif((!flags["unmovable"]) and (item.movable == 0))
+229: local #0
+230: "unmovable"
+231: [] 1
+232: !
+233: local #1
+234: get member 'movable'
+235: 0L
+236: ==
+237: &&
+238: if false goto 248
+SendSysMessage(who, "You cannot use that while locked down.");
+239: local #2
+240: "You cannot use that while locked down."
+241: 3L
+242: 1000L
+243: Func(2,15): SendSysMessage
+244: #
+return 0;
+245: 0L
+246: return
+247: goto262
+elseif(!ReserveItem(item))
+248: local #1
+249: Func(2,18): ReserveItem
+250: if true goto 260
+SendSysMessage(who, "That item is already in use.");
+251: local #2
+252: "That item is already in use."
+253: 3L
+254: 1000L
+255: Func(2,15): SendSysMessage
+256: #
+return 0;
+257: 0L
+258: return
+259: goto262
+return 1;
+260: 1L
+261: return
+262: 0L
+263: return
+C:/pol2/scripts/include/skillPoints.inc, Line 3
+function get_default_points(skillid)
+264: pop param 'skillid'
+var cfg := ReadConfigFile("skills");
+265: decl local #1
+266: "skills"
+267: Func(6,0): ReadConfigFile
+268: :=
+269: #
+var default_points := cfg[skillid].default_points;
+270: decl local #2
+271: local #1
+272: local #0
+273: [] 1
+274: get member 'default_points'
+275: :=
+276: #
+if (!default_points)
+277: local #2
+278: if true goto 282
+return 0;
+279: 0L
+280: return
+281: goto284
+return default_points;
+282: local #2
+283: return
+284: 0L
+285: return

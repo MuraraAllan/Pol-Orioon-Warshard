@@ -1,0 +1,13 @@
+use uo;
+use os;
+
+program vergw(who)
+Var alvogw := Target(who);
+var guilda_1 := GetObjProperty(alvogw,"guild_id");
+var guilda1 := FindGuild( guilda_1 );
+var guilda_2 := GetObjProperty(who,"guild_id");
+var guilda2 := FindGuild( guilda_2 );
+if(Guilda1.isenemyguild(guilda2))
+SendSysMessage(who,"Esta pessoa eh da guilda inimiga da sua.");
+endif
+endprogram

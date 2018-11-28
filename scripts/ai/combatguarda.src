@@ -1,0 +1,125 @@
+use npc;
+use basic;
+use os;
+use uo;
+
+include "include/listex";
+include "include/eventID";
+include "include/sysEvent";
+include "include/randName";
+include "include/utility";
+include "include/client";
+include "include/vetement";
+include "include/NPCBackpacks";
+include "util/bank";
+include "include/anchors";
+include "include/dist";
+include "include/skillLists";
+include "include/begging";
+include "include/attributes";
+const MAX_SKILLS      := 48;     // There are currently 48 Skills.
+const UOBJ_GOLDCOIN   := 0x0eed; // A gold coi n
+const UOBJ_METALCHEST := 0x0e7c; // A Metal Chest
+const REACT_THRESHOLD := 2;
+
+set_priority( 50 );
+
+var me := Self();
+var inv_rs, inv_fs, inv_pb, inv_1c;
+var player, counter;
+
+program guarda(who)
+me.name:="Guarda";
+/////////Vestimenta////////////
+var mochila:=CreateItemAtLocation(0, 0, 0, 3701);
+mochila.color:=1153;
+mochila.name:="Mochila Real";
+EquipItem(me, mochila);
+
+var montaria := CreateItemInBackpack(me, 0xF021,1);
+montaria.graphic:=0x3eab;
+EquipItem(me, montaria);
+
+var arma := CreateItemInBackpack(me, 2940, 1 );
+arma.graphic:=3918;
+arma.color:=1161;
+arma.name:="Bardiche da Justica";
+EquipItem(me, arma);
+
+var elmo:=CreateItemInBackpack(me, 5128, 1 );
+elmo.color:=576;
+elmo.name:="Elmo Fechado [Titanio]";
+EquipItem(me, elmo);
+
+var peitoral:=CreateItemInBackpack(me, 5141, 1 );
+peitoral.color:=576;
+peitoral.name:="Peitoral [Titanio]";
+EquipItem(me, peitoral);
+
+var ombreira:=CreateItemInBackpack(me, 5136, 1 );
+ombreira.color:=576;
+ombreira.name:="Ombreiras [Titanio]";
+EquipItem(me, ombreira);
+
+var gorgel:=CreateItemInBackpack(me, 5139, 1 );
+gorgel.color:=576;
+gorgel.name:="Gorgel [Titanio]";
+EquipItem(me, gorgel);
+
+var luva:=CreateItemInBackpack(me, 5140, 1 );
+luva.color:=576;
+luva.name:="Luvas [Titanio]";
+EquipItem(me, luva);
+
+var calca:=CreateItemInBackpack(me, 5137, 1 );
+calca.color:=576;
+calca.name:="Calcas [Titanio]";
+EquipItem(me, calca);
+////////////Fim da Vestimenta////////////////
+var pessoa:=GetObjProperty(me, "atacar");
+
+if(!pessoa)
+sleep(2);
+PrintTextAbove(me, "Estou aqui pra que? Nao me parece haver nenhum criminoso.");
+PrintTextAbove(me, "Kal Ort Por");
+PerformAction(me,ANIM_CAST_DIR);
+sleepms(2500);
+PlaySoundEffect(me, SFX_SPELL_RESSURECTION); 
+movecharactertolocation(me, 0, 0, 0, MOVECHAR_FORCELOCATION);
+DestroyItem(mochila);
+DestroyItem(montaria);
+DestroyItem(arma);
+DestroyItem(elmo);
+DestroyItem(gorgel);
+DestroyItem(peitoral);
+DestroyItem(ombreira);
+DestroyItem(luva);
+DestroyItem(calca);
+RevokePrivilege(me, "invul" );
+Damage( me, 6000 );
+return;
+endif
+
+SetOpponent(pessoa);
+sleepms(350);
+Damage( pessoa, 6000 );
+EraseObjProperty(pessoa, "guarda");
+
+sleep(5);
+PrintTextAbove(me, "Kal Ort Por");
+PerformAction(me,ANIM_CAST_DIR);
+sleepms(2500);
+PlaySoundEffect(me, SFX_SPELL_RESSURECTION); 
+movecharactertolocation(me, 0, 0, 0, MOVECHAR_FORCELOCATION);
+DestroyItem(mochila);
+DestroyItem(montaria);
+DestroyItem(arma);
+DestroyItem(elmo);
+DestroyItem(gorgel);
+DestroyItem(peitoral);
+DestroyItem(ombreira);
+DestroyItem(luva);
+DestroyItem(calca);
+RevokePrivilege(me, "invul" );
+Damage( me, 6000 );
+endprogram

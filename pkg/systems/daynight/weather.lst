@@ -1,0 +1,360 @@
+C:\pol2\pkg\systems\daynight\weather.src, Line 5
+set_critical( 1 );
+0: 1L
+1: Func(3,0): set_critical
+2: #
+var wstuff := GetGlobalProperty("Weather");
+3: decl global #0
+4: "Weather"
+5: Func(2,0): GetGlobalProperty
+6: :=
+7: #
+var day := wstuff[3];
+8: decl global #1
+9: global #0
+10: 3L
+11: [] 1
+12: :=
+13: #
+var doonce := 0;
+14: decl global #2
+15: 0L
+16: :=
+17: #
+C:\pol2\pkg\systems\daynight\weather.src, Line 14
+program WeatherCentre()
+print("Starting Weather System...");
+18: "Starting Weather System..."
+19: Func(1,0): print
+20: #
+while (1)
+21: 1L
+22: if false goto 39
+ChangeWeather();
+23: makelocal
+24: jmp userfunc @40
+25: #
+var addtime := CInt(RandomInt(60) * 60);
+26: decl local #0
+27: 60L
+28: Func(4,0): RandomInt
+29: 60L
+30: *
+31: Func(0,0): CInt
+32: :=
+33: #
+sleep(addtime);
+34: local #0
+35: Func(3,2): sleep
+36: #
+37: leave block(1)
+38: goto21
+39: progend
+C:\pol2\pkg\systems\daynight\weather.inc, Line 2
+function ChangeWeather()
+wstuff := GetGlobalProperty("Weather");
+40: "Weather"
+41: Func(2,0): GetGlobalProperty
+42: global0 := 
+var pweather := wstuff[7];
+43: decl local #0
+44: global #0
+45: 7L
+46: [] 1
+47: :=
+48: #
+var season := wstuff[8];
+49: decl local #1
+50: global #0
+51: 8L
+52: [] 1
+53: :=
+54: #
+var incdec := RandomInt(4);
+55: decl local #2
+56: 4L
+57: Func(4,0): RandomInt
+58: :=
+59: #
+case(season)
+60: local #1
+61: casejmp
+	0: @62
+	1: @67
+	2: @70
+	3: @75
+	default: @77
+incdec := incdec - 1;
+62: local #2
+63: 1L
+64: -
+65: local2 := 
+66: goto77
+incdec := incdec;
+67: local #2
+68: local2 := 
+69: goto77
+incdec := incdec + 1;
+70: local #2
+71: 1L
+72: +
+73: local2 := 
+74: goto77
+incdec := incdec;
+75: local #2
+76: local2 := 
+if (incdec <= 1)
+77: local #2
+78: 1L
+79: <=
+80: if false goto 91
+pweather := pweather - 1;
+81: local #0
+82: 1L
+83: -
+84: local0 := 
+if (pweather < 0)
+85: local #0
+86: 0L
+87: <
+88: if false goto 91
+pweather := 0;
+89: 0L
+90: local0 := 
+if (incdec == 2)
+91: local #2
+92: 2L
+93: ==
+94: if false goto 97
+return;
+95: ""
+96: return
+if (incdec >= 3)
+97: local #2
+98: 3L
+99: >=
+100: if false goto 111
+pweather := pweather + 1;
+101: local #0
+102: 1L
+103: +
+104: local0 := 
+if (pweather >4)
+105: local #0
+106: 4L
+107: >
+108: if false goto 111
+pweather := 4;
+109: 4L
+110: local0 := 
+var pweathercheck := wstuff[7];
+111: decl local #3
+112: global #0
+113: 7L
+114: [] 1
+115: :=
+116: #
+if (pweathercheck == pweather)
+117: local #3
+118: local #0
+119: ==
+120: if false goto 127
+if (doonce == 1)
+121: global #2
+122: 1L
+123: ==
+124: if false goto 127
+return;
+125: ""
+126: return
+doonce := 1;
+127: 1L
+128: global2 := 
+wstuff[7] := pweather;
+129: global #0
+130: 7L
+131: local #0
+132: [] := (1) #
+case(pweather)
+133: local #0
+134: casejmp
+	0: @135
+	1: @139
+	2: @143
+	3: @147
+	4: @151
+	default: @154
+SetSunny();
+135: makelocal
+136: jmp userfunc @225
+137: #
+138: goto154
+SetOvercast();
+139: makelocal
+140: jmp userfunc @185
+141: #
+142: goto154
+SetCloudy();
+143: makelocal
+144: jmp userfunc @160
+145: #
+146: goto154
+SetRain();
+147: makelocal
+148: jmp userfunc @203
+149: #
+150: goto154
+SetThunder();
+151: makelocal
+152: jmp userfunc @243
+153: #
+SetGlobalProperty("Weather", wstuff);
+154: "Weather"
+155: global #0
+156: Func(2,1): SetGlobalProperty
+157: #
+158: 0L
+159: return
+C:\pol2\pkg\systems\daynight\weather.inc, Line 62
+function SetCloudy()
+wstuff[4] := 4;
+160: global #0
+161: 4L
+162: 4L
+163: [] := (1) #
+SetRegionWeatherLevel( "Background", 0, 0, 1, -1);
+164: "Background"
+165: 0L
+166: 0L
+167: 1L
+168: -1L
+169: Func(2,3): SetRegionWeatherLevel
+170: #
+if (day == 1)
+171: global #1
+172: 1L
+173: ==
+174: if false goto 183
+SetRegionLightLevel( "Background", 4);
+175: "Background"
+176: 4L
+177: Func(2,2): SetRegionLightLevel
+178: #
+wstuff[4] := 4;
+179: global #0
+180: 4L
+181: 4L
+182: [] := (1) #
+183: 0L
+184: return
+C:\pol2\pkg\systems\daynight\weather.inc, Line 54
+function SetOvercast()
+wstuff[4] := 2;
+185: global #0
+186: 4L
+187: 2L
+188: [] := (1) #
+if (day == 1)
+189: global #1
+190: 1L
+191: ==
+192: if false goto 201
+SetRegionLightLevel( "Background", 2);
+193: "Background"
+194: 2L
+195: Func(2,2): SetRegionLightLevel
+196: #
+wstuff[6] := 2;
+197: global #0
+198: 6L
+199: 2L
+200: [] := (1) #
+201: 0L
+202: return
+C:\pol2\pkg\systems\daynight\weather.inc, Line 71
+function SetRain()
+wstuff[4] := 6;
+203: global #0
+204: 4L
+205: 6L
+206: [] := (1) #
+if (day == 1)
+207: global #1
+208: 1L
+209: ==
+210: if false goto 219
+SetRegionLightLevel("Background", 6);
+211: "Background"
+212: 6L
+213: Func(2,2): SetRegionLightLevel
+214: #
+wstuff[6] := 6;
+215: global #0
+216: 6L
+217: 6L
+218: [] := (1) #
+start_script( "snowRain", 15);
+219: "snowRain"
+220: 15L
+221: Func(3,1): start_script
+222: #
+223: 0L
+224: return
+C:\pol2\pkg\systems\daynight\weather.inc, Line 46
+function SetSunny()
+wstuff[4] := 0;
+225: global #0
+226: 4L
+227: 0L
+228: [] := (1) #
+if (day == 1)
+229: global #1
+230: 1L
+231: ==
+232: if false goto 241
+SetRegionLightLevel( "Background", 0);
+233: "Background"
+234: 0L
+235: Func(2,2): SetRegionLightLevel
+236: #
+wstuff[6] := 0;
+237: global #0
+238: 6L
+239: 0L
+240: [] := (1) #
+241: 0L
+242: return
+C:\pol2\pkg\systems\daynight\weather.inc, Line 80
+function SetThunder()
+wstuff[4] := 8;
+243: global #0
+244: 4L
+245: 8L
+246: [] := (1) #
+if (day == 1)
+247: global #1
+248: 1L
+249: ==
+250: if false goto 259
+SetRegionLightLevel("Background", 8);
+251: "Background"
+252: 8L
+253: Func(2,2): SetRegionLightLevel
+254: #
+wstuff[6] := 8;
+255: global #0
+256: 6L
+257: 8L
+258: [] := (1) #
+start_script( "wEffect" );
+259: "wEffect"
+260: 0L
+261: Func(3,1): start_script
+262: #
+start_script( "snowRain", 30);
+263: "snowRain"
+264: 30L
+265: Func(3,1): start_script
+266: #
+267: 0L
+268: return

@@ -1,0 +1,141 @@
+use uo;
+use uo;
+use util;
+use http;
+use math;
+use basic;
+include "include/accounts";
+include "include/www";
+
+program account_add()
+DesativarBotaoDireito();
+	WriteHTML ("<html><head><title>Sua Conta - #Sysco - @BrasNet</title></head>");
+	///WriteHTML ("<body text=#000000 bgcolor=#999999>");
+	WriteHTML ("<body text=#999999 bgcolor=#000000>");
+
+	var acctname := QueryParam ("acctname");
+	if (!acctname)
+		WriteHTML ("<form method=GET action=suaconta.ecl>");
+		WriteHTML ("Entre com seu login e senha para acessar as informações.");
+		WriteHTML ("<br>Login: <input name=acctname>");
+		WriteHTML ("<br>Senha: <input name=acctpass>");
+		WriteHTML ("<br><input id=submit1 type=submit value=Ok>");
+		WriteHTML ("</body></html>");
+		return;
+	endif
+
+	var acct := FindAccount (acctname);
+	var acctpass := QueryParam ("acctpass");
+	if (!acct)
+		WriteHTML ("Este login não existe.");
+		return;
+	endif	
+
+	if (!acctpass)
+		WriteHTML ("Você deve digitar a sua senha.");
+		return;
+	endif
+
+	if (acct.checkpassword(acctpass) == 0)
+	WriteHTML ("<br>Senha incorreta.</br>");
+	return;
+	endif
+
+	WriteHTML ("Login: <font color=#0000FF><b>" +acct.name+ "</b></font>");
+
+ var ttempo := acct.getprop("tempojail");
+ var ffaltamseg :=Cint( ttempo - ReadGameClock() );
+
+if((ffaltamseg <= 0) && (acct.enable == 0) && (acct.banned == 0))
+acct.eraseprop("tempojail");
+acct.enable();
+endif
+
+statusacc(acct);
+WriteHTML ("<br><IMG src="+CChr(34)+"images/line.GIF"+CChr(34)+" alt="+CChr(34)+""+CChr(34)+" align="+CChr(34)+"center"+CChr(34)+" border="+CChr(34)+"0"+CChr(34)+" width="+CChr(34)+"345"+CChr(34)+" height="+CChr(34)+"2"+CChr(34)+"></br>");
+
+var charid;
+var i;
+var privilegio:=1;
+for (i:=1; i<=5; i:= i + 1)
+if(acct.GetCharacter(i).cmdlevel > privilegio)
+privilegio:=acct.GetCharacter(i).cmdlevel;
+endif
+charid:=acct.GetCharacter(i).serial;
+if(acct.GetCharacter(i))
+WriteHTML ("<br>Personagem " +Cint(i)+ ": " +acct.GetCharacter(i).name+ "  -  (<A href="+CChr(34)+"?acctname="+acctname+"&acctpass="+acctpass+""+CChr(34)+"onClick="+CChr(34)+"window.open('charinfo.ecl?acctname="+acctname+"&acctpass="+acctpass+"&charid="+charid+"', '','width=270,height=310'); return ok;"+CChr(34)+">mais</A>)");
+endif
+endfor
+WriteHTML ("</br>");
+WriteHTML ("<br><IMG src="+CChr(34)+"images/line.GIF"+CChr(34)+" alt="+CChr(34)+""+CChr(34)+" align="+CChr(34)+"center"+CChr(34)+" border="+CChr(34)+"0"+CChr(34)+" width="+CChr(34)+"345"+CChr(34)+" height="+CChr(34)+"2"+CChr(34)+"></br>");
+
+WriteHTML ("<br>Privilégio:");
+if(privilegio == 1)
+WriteHTML ("Player</br>");
+player();
+elseif(privilegio == 2)
+WriteHTML ("Seer</br>");
+elseif(privilegio == 3)
+WriteHTML ("GM</br>");
+elseif(privilegio == 4)
+WriteHTML ("Admin</br>");
+elseif(privilegio == 5)
+WriteHTML ("Desenvolvedor</br>");
+else
+WriteHTML ("Player</br>");
+return;
+endif
+
+WriteHTML ("</body></html>");
+endprogram
+
+
+/////////Status ACC/////////
+function statusacc(acct)
+WriteHTML ("<br>Status da Conta:");
+if(acct.banned == 1)
+WriteHTML ("<font color=#FF0000><b>Banida</b></font></br>");
+
+elseif(acct.enabled == 0)
+WriteHTML ("<font color=#FFAD5B><b>Jail</b></font></br>");
+ var tempo := acct.getprop("tempojail");
+ var faltamseg :=Cdbl( tempo - ReadGameClock() );
+ var faltammin :=Cdbl( faltamseg / 60 );
+ var faltamhra :=Cdbl(faltammin / 60);
+
+var hra:=Cint(faltammin / 60);
+var minutos:=Cdbl(faltamhra - hra); 
+var minutosreais:=Cint(minutos*60);
+
+
+ if(faltammin > 60)
+
+  if(Cint(faltamhra / 24) > 0)
+    var horarestante:=Cint(faltamhra / 24);
+    horarestante:=Cdbl(Cdbl(faltamhra / 24)-horarestante);
+    horarestante:=Cint(horarestante * 24);
+    WriteHTML ("<br>Tempo para desbloqueamento: " +Cint(faltamhra / 24)+ " dias, " +horarestante+ " horas e " +Cint(minutosreais)+ " minutos.</br>");
+    return;
+  endif
+
+   WriteHTML ("<br>Tempo para desbloqueamento: " +Cint(faltamhra)+ " horas e " +Cint(minutosreais)+ "  minutos.</br>");
+
+ else
+
+   WriteHTML ("<br>Tempo para desbloqueamento: " +Cint(faltammin)+ " minutos.</br>");
+
+
+ endif
+
+elseif(acct.enabled == 1)
+WriteHTML ("<font color=#009300><b>Ativa</b></font></br>");
+endif
+
+
+endfunction
+
+
+////////player////////
+function player()
+
+endfunction

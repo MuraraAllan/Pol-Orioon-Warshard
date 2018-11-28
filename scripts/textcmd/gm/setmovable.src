@@ -1,0 +1,12 @@
+use uo;
+
+program textcmd_setmovable( who, movable )
+    sendsysmessage(who,"Que item voce deseja que mova?",0x9,90);
+    var obj := Target( who );
+    if(!obj)
+    sendsysmessage(who,"Cancelado",0x9,90);
+    endif
+    if (obj)
+        obj.movable := movable;
+    endif
+endprogram

@@ -1,0 +1,34 @@
+use uo;
+
+program gi(who)
+
+SendSysMessage(who, "Kem tu vai coloca ou tira invul pra guarda?",9,90);
+var oi := Target(who, TGTOPT_NOCHECK_LOS);
+if (!oi)
+SendSysMessage(who, "Canceladu!",9,90);
+elseif (oi.isa(POLCLASS_NPC))
+SendSysMessage(who, "NPCs naum precizam disso!",9,90);
+elseif (oi.isa(POLCLASS_ITEM))
+SendSysMessage(who, "Tu ta bebado ou erro o target??",9,90);
+elseif (oi == who)
+if (who.getprop("gi"))
+EraseObjProperty(who, "gi");
+SendSysMessage(who, who.name+" morre pros guarda!",9,90);
+else
+who.setprop("gi", 1);
+SendSysMessage(who, who.name+" NAUM morre pros guarda!",9,90);
+endif
+elseif (oi.cmdlevel < who.cmdlevel)
+if (oi.getprop("gi"))
+EraseObjProperty(oi, "gi");
+SendSysMessage(who, oi.name+" morre pros guarda!",9,90);
+PrintTextAbovePrivate(oi, "Morro pra guardas agora!", oi);
+else
+oi.setprop("gi", 1);
+SendSysMessage(who, oi.name+" NAUM morre pros guarda!",9,90);
+PrintTextAbovePrivate(oi, "NAUM morro pra guardas agora!", oi);
+endif
+else
+SendSysMessage(who, "Tu soh pode sacanea os cara com menus lvl q vc!",9,90);
+endif
+endprogram

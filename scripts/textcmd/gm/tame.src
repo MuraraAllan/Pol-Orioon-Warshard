@@ -1,0 +1,12 @@
+use uo;
+
+program tame( who )
+    SendSysMessage( who, "Selecione o Npc que voce deseja Tamar?",0x9,90 );
+    var npc := Target( who, TGTOPT_NOCHECK_LOS );
+    SetObjProperty( npc, "happiness", 100);
+    SetObjProperty( npc, "master", who.serial );
+    SetObjProperty( npc, "script", npc.script );
+    npc.setmaster( who );
+    npc.script := "tamed";
+    RestartScript(npc);
+endprogram

@@ -1,0 +1,11 @@
+use uo;
+
+
+program textcmd_ident( who )
+    SendSysMessage( who, "O que voce deseja identificar?",0x9,90 );
+
+    var what := Target( who, TGTOPT_NOCHECK_LOS );
+    if (what)
+        SendSysMessage( who, "Serial " + Hex(what.serial) + ", ObjType " + Hex(what.objtype),0x9,90 );
+    endif
+endprogram

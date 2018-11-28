@@ -1,0 +1,16 @@
+use uo;
+use os;
+
+include "include/save";
+program textcmd_savenow(who, temp)
+ var tempo:=Cint(temp)-3;
+
+  if(tempo >= 1)
+    Broadcast( who.name+ " ira Salvar o Mundo em " +tempo+ " Segundos..." ,0,66 );
+    sleep(tempo);
+    salvar();
+  else
+    Broadcast( who.name+ " Esta Salvando o Mundo..." ,0,66 );
+    salvar();
+  endif
+endprogram

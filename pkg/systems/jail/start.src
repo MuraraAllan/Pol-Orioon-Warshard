@@ -1,0 +1,5 @@
+use uo;
+use os;
+
+print("Iniciando Sistema de JAIL");
+start_script("jail");

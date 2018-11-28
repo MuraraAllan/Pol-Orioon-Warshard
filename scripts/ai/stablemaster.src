@@ -1,0 +1,280 @@
+use npc;
+use basic;
+use os;
+use uo;
+
+include "include/eventID";
+include "include/attributes";
+include "include/sysEvent";
+include "include/randName";
+include "include/utility";
+include "include/mrcSpawn2";
+include "include/speech";
+include "include/client";
+include "include/vetement";
+include "include/NPCBackpacks";
+include "util/bank";
+include "include/dist";
+include "include/findCity";
+include "include/skillLists";
+include "include/dist";
+include "include/begging";
+include "include/NPCCast";
+include "include/snooping";
+include "../pkg/foundations/gumps/gumps";
+
+
+
+const MAX_SKILLS      := 48;
+const RESPAWN_MINUTES := 10;    
+const UOBJ_METALCHEST := 0x0E7C; 
+
+var me := Self();
+var storage, inv_fs, inv_pb, inv_1c;
+
+var equipt        := GetObjProperty(me, "Equipt");
+var npccfg        := ReadConfigFile("npcdesc");
+
+set_priority( 50 );
+
+var merchant_type := GetObjProperty( Self(), "MerchantType" );
+
+if( !merchant_type )
+    SetObjProperty( Self(), "MerchantGroup", "Mage" );
+    merchant_type := "Mage";
+endif
+
+start_script("NPCKeeper", me);
+storage := FindStorageArea( "Merchant Storage" );
+if (!storage)
+    exit;
+endif
+
+inv_fs := find_or_create_item( storage, me.serial + " FS", UOBJ_METALCHEST );
+inv_pb := find_or_create_item( storage, me.serial + " PB", UOBJ_METALCHEST );
+inv_1c := find_or_create_item( storage, me.serial + " 1C", UOBJ_METALCHEST );
+
+if (!inv_fs or !inv_pb or !inv_1c)
+    exit;
+endif
+  
+  RestockInventory( merchant_type, inv_fs );
+  var next_restock := ReadGameClock() + RESPAWN_MINUTES*60;
+
+
+  EnableEvents( SYSEVENT_ITEM_GIVEN);
+  // 1 = Range, cada Range = 1 tile 
+  EnableEvents( SYSEVENT_SPEECH, 1);
+  EnableEvents(SYSEVENT_ENGAGED + SYSEVENT_DISENGAGED + SYSEVENT_DAMAGED);
+  EnableEvents(SYSEVENT_ENTEREDAREA, 3);
+
+  if (GetObjProperty(me, "frozen"))
+    me.frozen := 1;
+  endif
+
+
+while (1)
+     
+           
+
+////
+var tipoMini;
+var  mana;
+var me := Self();
+var ev, text;
+var player := ev.source;
+
+
+ev := os::wait_for_event(120);
+
+
+//COMPRAR//
+if(ev.text["comprar"])
+
+                    TurnToward(ev.source);
+                    var res;
+                    res := SendBuyWindow( ev.source, inv_fs, self(), inv_pb );
+
+                    if (!res)
+                    print( "SendBuyWindow failed: " + res.errortext );
+		    endif
+
+
+
+
+
+endif
+
+
+//Comprar//
+
+if(ev.text["vender"])
+ player := ev.source;
+                         TurnToward(ev.source);
+                         say("Qual animal voce deseja me vender?");
+			 sleepms(1500);
+			 var animala := Target(ev.source);
+
+			 
+			 
+    if(!animala)
+   say("Voce deve escolher um animal!");
+   elseif(animala.summoned == 1)
+   say("Esse animal eh sumonado nao pode ser vendido!");
+   elseif(animala.master != player)
+   say("Esse animal nao te pertence.");
+   else
+
+                     var preco := randomint(150) + 120 + cint((GetStrength(animala)/2));
+
+MoveCharacterToLocation(animala, 0, 0, 1, MOVECHAR_FORCELOCATION);
+  SetObjProperty(animala, "guardkill", 1);
+  Damage( animala, GetHp(animala) );
+
+  say("Aqui esta o suas "+preco+ " moedas de ouro");
+createiteminbackpack(ev.source,"3821",preco);
+endif
+   endif
+if(ev.text["estabulo"])
+var animala;
+			 player := ev.source;
+                         TurnToward(ev.source);
+                         say("Qual animal voce deseja deixar sobre meus cuidados?");
+			 sleepms(1500);
+			 animala := Target(ev.source);
+
+			 
+			 
+    if(!animala)
+   say("Voce deve escolher um animal!");
+   elseif(animala.summoned == 1)
+   say("Esse animal eh sumonado nao pode ser encolhido!");
+   elseif(animala.master != player)
+   say("Esse animal nao te pertence.");
+   else
+   
+   var cor := animala.color;
+   var nome := animala.name;
+   case(animala.graphic)
+        204:  TipoMini := 0x2121;
+	200:  TipoMini := 0x2124;
+	226:  TipoMini := 0x211f;
+	228:  TipoMini := 0x2120;
+	220:  TipoMini := 0x20f6;
+	210:  TipoMini := 0x2135;
+	0xdb: TipoMini := 0x2137;
+	218:  TipoMini := 0x2136;
+        221:  TipoMini := 8479; 
+        791:  TipoMini := "0x260f";
+        132:  TipoMini := "0x25a0";
+        122:  TipoMini := "0x25ce";
+        799:  TipoMini := "0x2619";
+        793:  TipoMini := "0x2617";
+        187:  TipoMini := "0x2615";
+        115:  TipoMini := "0x259a";
+        170:  TipoMini := "8487";
+        60:   TipoMini := "8406";
+        211:  TipoMini := "8399";
+	171:  TipoMini := "9652";
+
+    endcase
+
+   if(!TipoMini)
+   say("Nao posso cuidar desse animal!");
+
+   else
+
+
+  MoveCharacterToLocation(animala, 0, 0, 1, MOVECHAR_FORCELOCATION);
+  SetObjProperty(animala, "guardkill", 1);
+  Damage( animala, GetHp(animala) );
+
+  say("Aqui esta o tick de seu animal!");
+
+  player := ev.source;
+  var mini := CreateItemInBackPack(player, tipomini);
+  setobjproperty(mini, "antgnome", nome);
+  mini.name := "Miniatura de "+nome+"";
+  mini.color:= cor;
+  endif
+
+  
+endif
+endif
+
+////Retirar////
+if(ev.text["retirar"])
+
+say("Qual animal voce deseja pegar devolta?");
+sleepms(1500);
+player := ev.source;
+var animala := Target(ev.source);
+
+
+        
+    if(animala.movable == 0)
+    say("O tick parece estar trancado, nao consigo pega-lo!");
+
+    else
+
+case (animala.graphic)
+        0x2121: TipoMini := "horse";
+	0x2124: TipoMini := "horse2";
+	0x211f: TipoMini := "horse3";
+	0x2120: TipoMini := "horse4";
+	8438:	TipoMini := "lhama";
+	0x2135:	TipoMini := "deserto";
+	0x2137:	TipoMini := "floresta";
+	0x2136:	TipoMini := "artico";
+ 	8479:	TipoMini := "selvagem";
+        0x260f: TipoMini := "besoro";
+        0x25ce:	TipoMini := "unicorniolbr";
+	0x25a0:	TipoMini := "kirin";
+ 	0x2617:	TipoMini := "cavaloesqueleto";
+        0x2615: TipoMini := "ridgeback";
+        0x2619: TipoMini := "swamp1";
+        0x259a: TipoMini := "horsefantasma";
+	8487:   TipoMini := "lhamafantasma";
+        8406:   TipoMini := "drake1";
+	9652:   TipoMini := "ostfantasma";
+//ja ta usando no say -  default: SendSysMessage(player, "Isso nao me parece ser um tick!", 0,999); 
+
+endcase
+
+   if(!TipoMini)
+   say("Isso nao me parece ser um tick!");
+   elseif(!IsInContainer(ev.source.backpack, animala))
+    say( "voce quer roubar minha miniatura apos dar - lhe sua montaria ? Voce somente recebera a montaria com a miniatura na bag " );
+  
+  else
+
+  var cor := animala.color;
+  var animcriado := CreateNpcFromTemplate( tipomini ,player.x , player.y, player.z);
+  var nome := getobjproperty(animala, "antgnome");
+  animcriado.name := nome;
+  animcriado.color := cor;
+  SetObjProperty( animcriado, "happiness", 100);
+    SetObjProperty( animcriado, "master", player.serial );
+    SetObjProperty( animcriado, "script", animcriado.script );
+
+
+    animcriado.script := "tamed";
+    animcriado.setmaster(player);
+    animcriado.script := "tamed";
+    RestartScript(animcriado);
+    destroyitem(animala);
+  endif
+endif
+
+function IsInContainer(container, item)
+  foreach thing in EnumerateItemsInContainer(container)
+    if(thing.serial == item.serial)
+      return 1;
+    endif
+  endforeach
+  return 0;
+endfunction
+
+
+endif
+endwhile

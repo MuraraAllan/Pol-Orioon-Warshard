@@ -1,0 +1,36 @@
+use uo;
+use file;
+
+program textcmd_create( who, text )
+  if(text)
+    var params := SplitWords( text );
+    var objtype := CInt( params[1] );
+    var amount := CInt( params[2] );
+    if (!objtype)
+        objtype := GetObjtypeByName( params[1] );
+    endif
+    if (!amount)
+        amount := 1;
+    endif
+    if(amount > 10)
+      SendSysMessage(who, "voce so pode criar 1 item por vez");
+      return;
+    endif
+    SendSysMessage(who, "Objtype: " + CInt(objtype));
+    var i, item;
+    for( i := 1; i <= amount; i := i + 1 )
+      item := CreateItemAtLocation( who.x, who.y, who.z, objtype, 1 );
+      if(item)
+var acc:=who.acct;
+        SetObjProperty(item, "C-" +acc.name, "Login: "+acc.name+", Char: " +who.name);
+	////WriteFile( "c:\pol\criaritens.txt", "Conta: " +acc.name+ " Char: " +who.name+ " Item: " +item);
+var log:="Login: " +who.acct.name+ " criou: " +item.desc+ " - serial: " +item.serial+ ""; 
+LogToFile("log/.create.log", log );
+        item.decayAt := 0;
+      endif
+    endfor
+  else
+    SendSysMessage(who, "Cancelled");
+    return;
+  endif
+endprogram

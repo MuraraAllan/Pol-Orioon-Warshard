@@ -1,0 +1,29 @@
+use os;
+use uo;
+
+const SEARCH_RANGE := 10;
+const TRASH_BARREL := 0x7007;
+
+program maketrash( who, deed )
+
+var casa := who.multi; 
+var dono := GetObjProperty(Casa, "owneracct");
+
+ if(!casa) 
+   SendSysMessage(who, "Voce Nao esta em uma casa!",9,89); 
+   return; 
+ endif
+ if(dono != who.acctname)
+      SendSysMessage(who, "Voce Precisa ser dono da casa para por a lixeira!",9,89); 
+    return;
+
+  else
+  ReserveItem(deed);
+  CreateItemAtLocation( who.x, who.y, who.z, TRASH_BARREL, 1 );
+  SendSysMessage( who, "Voce pos com sucesso a lixeira.",9,89);
+  DestroyItem(deed);
+  endif
+
+ 
+  
+endprogram

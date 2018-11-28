@@ -1,0 +1,674 @@
+C:\pol2\pkg\skills\musicianship\entice.src, Line 11
+program enticement(who)
+include "include/eventID";
+0: get arg 'who'
+var subject := Target(who, TGTOPT_NOCHECK_LOS );
+1: decl local #1
+2: local #0
+3: 0L
+4: Func(2,18): Target
+5: :=
+6: #
+if ((!subject) || (!subject.npctemplate))
+7: local #1
+8: !
+9: local #1
+10: get member 'npctemplate'
+11: !
+12: ||
+13: if false goto 22
+SendSysMessage(who, "Cancelled.");
+14: local #0
+15: "Cancelled."
+16: 3L
+17: 1000L
+18: Func(2,19): SendSysMessage
+19: #
+return;
+20: ""
+21: progend
+if(subject.script == ":musicianship:enticedAI")
+22: local #1
+23: get member 'script'
+24: ":musicianship:enticedAI"
+25: ==
+26: if false goto 35
+SendSysMessage(who, "Seems already under influence.");
+27: local #0
+28: "Seems already under influence."
+29: 3L
+30: 1000L
+31: Func(2,19): SendSysMessage
+32: #
+return;
+33: ""
+34: progend
+var cfg := ReadConfigFile("::npcdesc");
+35: decl local #2
+36: "::npcdesc"
+37: Func(5,0): ReadConfigFile
+38: :=
+39: #
+var diff := Cint(cfg[subject.npctemplate]."provoke");
+40: decl local #3
+41: local #2
+42: local #1
+43: get member 'npctemplate'
+44: [] 1
+45: get member 'provoke'
+46: Func(0,0): CInt
+47: :=
+48: #
+if(!diff)
+49: local #3
+50: if true goto 59
+SendSysMessage(who, "You can't entice him!");
+51: local #0
+52: "You can't entice him!"
+53: 3L
+54: 1000L
+55: Func(2,19): SendSysMessage
+56: #
+return;
+57: ""
+58: progend
+var instrument := findinstrument(who);
+59: decl local #4
+60: local #0
+61: makelocal
+62: jmp userfunc @193
+63: :=
+64: #
+if(!instrument)
+65: local #4
+66: if true goto 75
+SendSysMessage(who, "You don't have an instrument to play!");
+67: local #0
+68: "You don't have an instrument to play!"
+69: 3L
+70: 1000L
+71: Func(2,19): SendSysMessage
+72: #
+return;
+73: ""
+74: progend
+var success := play(who, diff, instrument, SKILLID_ENTICEMENT);
+75: decl local #5
+76: local #0
+77: local #3
+78: local #4
+79: 15L
+80: makelocal
+81: jmp userfunc @227
+82: :=
+83: #
+if(success)
+84: local #5
+85: if false goto 139
+var ev := array;
+86: decl local #0
+87: array
+88: :=
+89: #
+ev.+type := EVID_ALL_FOLLOW_CMD;
+90: local #6
+91: "type"
+92: .+
+93: 17L
+94: := #
+ev.+source := who;
+95: local #6
+96: "source"
+97: .+
+98: local #0
+99: := #
+ev.+x := who.x;
+100: local #6
+101: "x"
+102: .+
+103: local #0
+104: get member 'x'
+105: := #
+ev.+y := who.y;
+106: local #6
+107: "y"
+108: .+
+109: local #0
+110: get member 'y'
+111: := #
+SetObjProperty( subject, "oldai", subject.script);
+112: local #1
+113: "oldai"
+114: local #1
+115: get member 'script'
+116: Func(2,3): SetObjProperty
+117: #
+subject.script := ":musicianship:enticedAI";
+118: local #1
+119: ":musicianship:enticedAI"
+120: set member 'script' #
+RestartScript(subject);
+121: local #1
+122: Func(2,20): RestartScript
+123: #
+SendEvent(subject, ev);
+124: local #1
+125: local #6
+126: Func(2,4): SendEvent
+127: #
+PrintTextAbove(subject, subject.name+" seems enticed by the music");
+128: local #1
+129: local #1
+130: get member 'name'
+131: " seems enticed by the music"
+132: +
+133: 3L
+134: 1000L
+135: Func(2,21): PrintTextAbove
+136: #
+137: leave block(1)
+138: goto191
+PrintTextAbovePrivate(subject, "Your music doesnt seem to have any effect.", wh
+139: local #1
+140: "Your music doesnt seem to have any effect."
+141: local #0
+142: 3L
+143: 1000L
+144: Func(2,22): PrintTextAbovePrivate
+145: #
+if ((Randomint(10)+1)<= 3)
+146: 10L
+147: Func(4,0): RandomInt
+148: 1L
+149: +
+150: 3L
+151: <=
+152: if false goto 191
+var ev := {};
+153: decl local #0
+154: array
+155: :=
+156: #
+ev.+source := who;
+157: local #6
+158: "source"
+159: .+
+160: local #0
+161: := #
+ev.+type := EVID_PEACEMADE;
+162: local #6
+163: "type"
+164: .+
+165: 2147483647L
+166: := #
+SendEvent(subject,ev);
+167: local #1
+168: local #6
+169: Func(2,4): SendEvent
+170: #
+ev.type := EVID_DAMAGED;
+171: local #6
+172: 8L
+173: set member 'type' #
+SendEvent(subject, ev);
+174: local #1
+175: local #6
+176: Func(2,4): SendEvent
+177: #
+PrintTextAbove(subject, subject.name+" is irritated by the music of "+who.name)
+178: local #1
+179: local #1
+180: get member 'name'
+181: " is irritated by the music of "
+182: +
+183: local #0
+184: get member 'name'
+185: +
+186: 3L
+187: 1000L
+188: Func(2,21): PrintTextAbove
+189: #
+190: leave block(1)
+191: leave block(6)
+192: progend
+C:/pol2/scripts/include/bard.inc, Line 32
+function findinstrument(character)
+193: pop param 'character'
+var instruments := {0x0eb1, 0x0eb2, 0x0eb3, 0x0eb4, 0x0e9c, 0x0e9d, 0x0e9e};
+194: decl local #1
+195: array
+196: 3761L
+197: +=
+198: 3762L
+199: +=
+200: 3763L
+201: +=
+202: 3764L
+203: +=
+204: 3740L
+205: +=
+206: 3741L
+207: +=
+208: 3742L
+209: +=
+210: :=
+211: #
+foreach item in EnumerateItemsInContainer(character.backpack)
+212: local #0
+213: get member 'backpack'
+214: Func(2,17): EnumerateItemsInContainer
+215: initforeach @223
+if(item.graphic in instruments)
+216: local #2
+217: get member 'graphic'
+218: local #1
+219: in
+220: if false goto 223
+return item;
+221: local #2
+222: return
+223: stepforeach @216
+224: leave block(3)
+225: 0L
+226: return
+C:/pol2/scripts/include/bard.inc, Line 6
+function play(character, theskill, item, skil)
+227: pop param 'skil'
+228: pop param 'item'
+229: pop param 'theskill'
+230: pop param 'character'
+var success, fail;
+231: decl local #4
+232: #
+233: decl local #5
+234: #
+case(item.graphic)
+235: local #1
+236: get member 'graphic'
+237: casejmp
+	3761: @238
+	3762: @243
+	3763: @248
+	3764: @253
+	3740: @258
+	3741: @263
+	3742: @268
+	default: @272
+success := 0x44;  fail := 0x45;
+238: 68L
+239: local4 := 
+fail := 0x45;
+240: 69L
+241: local5 := 
+242: goto272
+success := 0x46;  fail := 0x47;
+243: 70L
+244: local4 := 
+fail := 0x47;
+245: 71L
+246: local5 := 
+247: goto272
+success := 0x4d;  fail := 0x4e;
+248: 77L
+249: local4 := 
+fail := 0x4e;
+250: 78L
+251: local5 := 
+252: goto272
+success := 0x4d;  fail := 0x4e;
+253: 77L
+254: local4 := 
+fail := 0x4e;
+255: 78L
+256: local5 := 
+257: goto272
+success := 0x39;  fail := 0x3a;
+258: 57L
+259: local4 := 
+fail := 0x3a;
+260: 58L
+261: local5 := 
+262: goto272
+success := 0x53;  fail := 0x54;
+263: 83L
+264: local4 := 
+fail := 0x54;
+265: 84L
+266: local5 := 
+267: goto272
+success := 0x53;  fail := 0x54;
+268: 83L
+269: local4 := 
+fail := 0x54;
+270: 84L
+271: local5 := 
+var thepoints := GetEffectiveSkill(character, SKILLID_MUSICIANSHIP);
+272: decl local #6
+273: local #3
+274: 29L
+275: makelocal
+276: jmp userfunc @315
+277: :=
+278: #
+if(CheckSkill(character, SKILLID_MUSICIANSHIP, theskill, thepoints))
+279: local #3
+280: 29L
+281: local #2
+282: local #6
+283: Func(2,15): CheckSkill
+284: if false goto 307
+if(CheckSkill(character, skil, theskill, thepoints * 2))
+285: local #3
+286: local #0
+287: local #2
+288: local #6
+289: 2L
+290: *
+291: Func(2,15): CheckSkill
+292: if false goto 300
+PlaySoundEffect( character, success);
+293: local #3
+294: local #4
+295: Func(2,16): PlaySoundEffect
+296: #
+return 1;
+297: 1L
+298: return
+299: goto306
+PlaySoundEffect( character, fail);
+300: local #3
+301: local #5
+302: Func(2,16): PlaySoundEffect
+303: #
+return 0;
+304: 0L
+305: return
+306: goto313
+PlaySoundEffect( character, fail);
+307: local #3
+308: local #5
+309: Func(2,16): PlaySoundEffect
+310: #
+return 0;
+311: 0L
+312: return
+313: 0L
+314: return
+C:/pol2/scripts/include/attributes.inc, Line 431
+function GetEffectiveSkill(who, skillid)
+315: pop param 'skillid'
+316: pop param 'who'
+return GetAttribute(who, GetAttributeIdBySkillId(skillid));
+317: local #1
+318: local #0
+319: makelocal
+320: jmp userfunc @323
+321: Func(2,7): GetAttribute
+322: return
+C:/pol2/scripts/include/attributes.inc, Line 250
+function GetAttributeIdBySkillId(skillid)
+323: pop param 'skillid'
+case(skillid)
+324: local #0
+325: casejmp
+	0: @326
+	1: @329
+	2: @332
+	3: @335
+	4: @338
+	5: @341
+	6: @344
+	7: @347
+	8: @350
+	9: @353
+	10: @356
+	11: @359
+	12: @362
+	13: @365
+	14: @368
+	15: @371
+	16: @374
+	17: @377
+	18: @380
+	19: @383
+	20: @386
+	21: @389
+	22: @392
+	23: @395
+	24: @398
+	25: @401
+	26: @404
+	27: @407
+	28: @410
+	29: @413
+	30: @416
+	31: @419
+	32: @422
+	33: @425
+	34: @428
+	35: @431
+	36: @434
+	37: @437
+	38: @440
+	39: @443
+	40: @446
+	41: @449
+	42: @452
+	43: @455
+	44: @458
+	45: @461
+	46: @464
+	47: @467
+	48: @470
+	default: @472
+return ATTRIBUTEID_ALCHEMY;
+326: "alchemy"
+327: return
+328: goto472
+return ATTRIBUTEID_ANATOMY;
+329: "anatomy"
+330: return
+331: goto472
+return ATTRIBUTEID_ANIMALLORE;
+332: "animallore"
+333: return
+334: goto472
+return ATTRIBUTEID_ITEMID;
+335: "itemid"
+336: return
+337: goto472
+return ATTRIBUTEID_ARMSLORE;
+338: "armslore"
+339: return
+340: goto472
+return ATTRIBUTEID_PARRY;
+341: "parry"
+342: return
+343: goto472
+return ATTRIBUTEID_BEGGING;
+344: "begging"
+345: return
+346: goto472
+return ATTRIBUTEID_BLACKSMITHY;
+347: "blacksmithy"
+348: return
+349: goto472
+return ATTRIBUTEID_BOWCRAFT;
+350: "bowcraft"
+351: return
+352: goto472
+return ATTRIBUTEID_PEACEMAKING;
+353: "peacemaking"
+354: return
+355: goto472
+return ATTRIBUTEID_CAMPING;
+356: "camping"
+357: return
+358: goto472
+return ATTRIBUTEID_CARPENTRY;
+359: "carpentry"
+360: return
+361: goto472
+return ATTRIBUTEID_CARTOGRAPHY;
+362: "cartography"
+363: return
+364: goto472
+return ATTRIBUTEID_COOKING;
+365: "cooking"
+366: return
+367: goto472
+return ATTRIBUTEID_DETECTINGHIDDEN;
+368: "detectinghidden"
+369: return
+370: goto472
+return ATTRIBUTEID_ENTICEMENT;
+371: "enticement"
+372: return
+373: goto472
+return ATTRIBUTEID_EVALINT;
+374: "evaluatingintelligence"
+375: return
+376: goto472
+return ATTRIBUTEID_HEALING;
+377: "healing"
+378: return
+379: goto472
+return ATTRIBUTEID_FISHING;
+380: "fishing"
+381: return
+382: goto472
+return ATTRIBUTEID_FORENSICS;
+383: "forensicevaluation"
+384: return
+385: goto472
+return ATTRIBUTEID_HERDING;
+386: "herding"
+387: return
+388: goto472
+return ATTRIBUTEID_HIDING;
+389: "hiding"
+390: return
+391: goto472
+return ATTRIBUTEID_PROVOCATION;
+392: "provocation"
+393: return
+394: goto472
+return ATTRIBUTEID_INSCRIPTION;
+395: "inscription"
+396: return
+397: goto472
+return ATTRIBUTEID_LOCKPICKING;
+398: "lockpicking"
+399: return
+400: goto472
+return ATTRIBUTEID_MAGERY;
+401: "magery"
+402: return
+403: goto472
+return ATTRIBUTEID_MAGICRESISTANCE;
+404: "magicresistance"
+405: return
+406: goto472
+return ATTRIBUTEID_TACTICS;
+407: "tactics"
+408: return
+409: goto472
+return ATTRIBUTEID_SNOOPING;
+410: "snooping"
+411: return
+412: goto472
+return ATTRIBUTEID_MUSICIANSHIP;
+413: "musicianship"
+414: return
+415: goto472
+return ATTRIBUTEID_POISONING;
+416: "poisoning"
+417: return
+418: goto472
+return ATTRIBUTEID_ARCHERY;
+419: "archery"
+420: return
+421: goto472
+return ATTRIBUTEID_SPIRITSPEAK;
+422: "spiritspeak"
+423: return
+424: goto472
+return ATTRIBUTEID_STEALING;
+425: "stealing"
+426: return
+427: goto472
+return ATTRIBUTEID_TAILORING;
+428: "tailoring"
+429: return
+430: goto472
+return ATTRIBUTEID_TAMING;
+431: "animaltaming"
+432: return
+433: goto472
+return ATTRIBUTEID_TASTEID;
+434: "tasteidentification"
+435: return
+436: goto472
+return ATTRIBUTEID_TINKERING;
+437: "tinkering"
+438: return
+439: goto472
+return ATTRIBUTEID_TRACKING;
+440: "tracking"
+441: return
+442: goto472
+return ATTRIBUTEID_VETERINARY;
+443: "veterinary"
+444: return
+445: goto472
+return ATTRIBUTEID_SWORDSMANSHIP;
+446: "swordsmanship"
+447: return
+448: goto472
+return ATTRIBUTEID_MACEFIGHTING;
+449: "macefighting"
+450: return
+451: goto472
+return ATTRIBUTEID_FENCING;
+452: "fencing"
+453: return
+454: goto472
+return ATTRIBUTEID_WRESTLING;
+455: "wrestling"
+456: return
+457: goto472
+return ATTRIBUTEID_LUMBERJACKING;
+458: "lumberjacking"
+459: return
+460: goto472
+return ATTRIBUTEID_MINING;
+461: "mining"
+462: return
+463: goto472
+return ATTRIBUTEID_MEDITATION;
+464: "meditation"
+465: return
+466: goto472
+return ATTRIBUTEID_STEALTH;
+467: "stealth"
+468: return
+469: goto472
+return ATTRIBUTEID_REMOVETRAP;
+470: "removetrap"
+471: return
+var ret        := error;
+472: decl local #1
+473: error
+474: :=
+475: #
+ret.+errortext := "No equivalent attributeid found for skillid " + skillid;
+476: local #1
+477: "errortext"
+478: .+
+479: "No equivalent attributeid found for skillid "
+480: local #0
+481: +
+482: := #
+return ret;
+483: local #1
+484: return

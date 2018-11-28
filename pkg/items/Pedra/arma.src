@@ -1,0 +1,112 @@
+use uo;
+use os;
+include "include/attributes";
+include "../pkg/foundations/gumps/gumps";
+
+
+program arma(who,item)
+status(who,item); 
+endprogram
+
+
+function status(who,item)
+DestroyItem(item);
+return;
+
+  GFInitGump( 250 , 100 );
+  GFNoMove();
+  GFResizePic(50, 5, 5120, 290, 230);
+  GFTextLine( 155 , 20, 1153 , "Pedra De Armas" );
+  var bt2 := GFButtonID( 70, 55, 0x04b9, 0x04b9, 1);
+  var bt3 := GFButtonID( 70, 85, 0x04b9, 0x04b9, 1);
+  var bt4 := GFButtonID( 70, 115,0x04b9, 0x04b9, 1);
+  var bt5 := GFButtonID( 70, 145,0x04b9, 0x04b9, 1);
+  var bt6 := GFButtonID( 70, 175,0x04b9, 0x04b9, 1);
+
+  var bt7 := GFButtonID( 185, 55, 0x04b9, 0x04b9, 1);
+  var bt8 := GFButtonID( 185, 85, 0x04b9, 0x04b9, 1);
+ 
+
+  var bt9 := GFButtonID( 185, 115, 0x04b9, 0x04b9, 1);
+  var bt10 := GFButtonID( 185, 145, 0x04b9, 0x04b9, 1);
+  var bt11 := GFButtonID( 185, 175, 0x04b9, 0x04b9, 1);
+
+  GFTextLine(90, 50, 1154 , "Kopesh"); 
+  GFTextLine(90, 80, 1154 , "Katana"); 
+  GFTextLine(90, 110, 1154 , "Alabarda"); 
+  GFTextLine(90, 140,1154 , "Bastarda"); 
+  GFTextLine(90, 170, 1154 , "Lanca"); 
+
+  GFTextLine(205, 50,1154 , "Lanca Pequena");
+  GFTextLine(205, 80, 1154 , "Machado Duplo"); 
+  GFTextLine(205, 110, 1154 , "Cajado Negro");
+  GFTextLine(205, 140, 1154 , "Martelo de Guerra");
+  GFTextLine(205, 170, 1154 , "Maca de Guerra");
+  GFTextLine(165, 200,33, "ORIOON"); 
+ 
+
+  var res := GFSendGump(who);
+
+if(res[bt2.keyid]) 
+var item := CreateItemInBackpack(who, 0x1401, 1);
+    sendsysmessage(who, "Kopesh Criada Com sucesso!",9,89);
+    equipitem(who, item);
+endif
+
+if(res[bt3.keyid]) 
+var item := CreateItemInBackpack(who, 0x13fe, 1);
+    sendsysmessage(who, "Katana Criada Com sucesso!",9,89);
+    equipitem(who, item);
+endif
+
+if(res[bt4.keyid]) 
+var item := CreateItemInBackpack(who, 0x143e, 1);   
+    sendsysmessage(who, "alabarda Criada Com sucesso!",9,89);
+    equipitem(who, item);
+endif
+
+if(res[bt5.keyid]) 
+var item := CreateItemInBackpack(who, 0x13b9, 1);  
+    sendsysmessage(who, "Espada Bastarda Criada Com sucesso!",9,89);
+    equipitem(who, item);
+endif
+
+if(res[bt6.keyid]) 
+var item := CreateItemInBackpack(who, 0x0f63, 1);  
+    sendsysmessage(who, "Lanca Criada Com sucesso!",9,89);
+    equipitem(who, item);
+endif
+
+if(res[bt7.keyid]) 
+var item := CreateItemInBackpack(who, 0x1402, 1);  
+    sendsysmessage(who, "Lanca pequena Criada Com sucesso!",9,89);
+    equipitem(who, item);  
+endif
+
+if(res[bt8.keyid]) 
+var item := CreateItemInbackpack(who, 0x0f4b, 1);
+    sendsysmessage(who, "Machado duplo criado Com sucesso!",9,89);
+    equipitem(who, item);  
+endif
+
+if(res[bt9.keyid]) 
+var item := CreateItemInbackpack(who, 0x0DF0, 1);
+    sendsysmessage(who, "Cajado Negro criado Com sucesso!",9,89);
+    equipitem(who, item);  
+endif
+
+if(res[bt10.keyid]) 
+var item := CreateItemInbackpack(who, 0x1438, 1);
+    sendsysmessage(who, "Martelo de Guerra criado Com sucesso!",9,89);
+    equipitem(who, item);  
+endif
+
+if(res[bt11.keyid]) 
+var item := CreateItemInbackpack(who, 0x1406, 1);
+    sendsysmessage(who, "Maca de Guerra criada Com sucesso!",9,89);
+    equipitem(who, item);  
+endif
+
+who.equip := 1; 
+
+endfunction

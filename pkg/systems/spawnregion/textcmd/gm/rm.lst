@@ -1,0 +1,32 @@
+C:\pol2\pkg\systems\spawnregion\textcmd\gm\rm.src, Line 4
+program textcmd_RegionManager(who, param)
+use os;
+0: get arg 'who'
+1: get arg 'param'
+var parms := array;
+2: decl local #2
+3: array
+4: :=
+5: #
+parms.append("Script");
+6: local #2
+7: "Script"
+8: Call Method append (1 params)
+9: #
+parms.append(who);
+10: local #2
+11: local #0
+12: Call Method append (1 params)
+13: #
+parms.append(param);
+14: local #2
+15: local #1
+16: Call Method append (1 params)
+17: #
+start_script("textcmd/gm/regionmanager", parms);
+18: "textcmd/gm/regionmanager"
+19: local #2
+20: Func(3,0): start_script
+21: #
+22: leave block(3)
+23: progend

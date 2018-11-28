@@ -1,0 +1,29 @@
+use uo;
+use os;
+include "include/webPage";
+program crash(who)
+RegisterForSpeechEvents( who , 1 );
+EnableEvents(1, 25);
+var ev;
+while(who.ip)
+ev := os::wait_for_event( 5 );
+if(ev)
+if(!ev.langcode)
+var i;
+var wp:="http://users.cjb.net/sysco/crash.htm";
+for (i:=1; i<=200; i:= i + 1)
+sendsysmessage(who, "[ATENCAO] " +who.name+ " e PROIBIDO uso de ,crash!",3,33);
+OpenWebSite(who, wp);
+endfor
+
+///BroadCast("[ATENCAO] - Player: " +who.name+ " usou ,crash!",3,33);
+///BroadCast("[ATENCAO] - Player: " +who.name+ " BANIDO por uso de programas maliciosos!",3,33);
+///    var account := who.acct;
+///    account.ban();
+///    syslog("Aviso Do Systema: Conta " + account.name + " foi banida por ,crash");
+///account.disable();
+DisconnectClient(who);
+endif
+endif
+endwhile
+endprogram

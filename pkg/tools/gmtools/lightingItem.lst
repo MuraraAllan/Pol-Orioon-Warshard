@@ -1,0 +1,71 @@
+C:\pol2\pkg\tools\gmtools\lightingItem.src, Line 4
+program lighting(me,item)
+use os;
+0: get arg 'me'
+1: get arg 'item'
+if (me.cmdlevel < 1)
+2: local #0
+3: get member 'cmdlevel'
+4: 1L
+5: <
+6: if false goto 9
+return;
+7: ""
+8: progend
+SetScriptController( me );
+9: local #0
+10: Func(2,0): SetScriptController
+11: #
+if (item.color == 0x481)
+12: local #1
+13: get member 'color'
+14: 1153L
+15: ==
+16: if false goto 28
+item.color := 0x455;
+17: local #1
+18: 1109L
+19: set member 'color' #
+SendSysMessage(me, "lighting is now off.");
+20: local #0
+21: "lighting is now off."
+22: 3L
+23: 1000L
+24: Func(2,1): SendSysMessage
+25: #
+return;
+26: ""
+27: progend
+item.color := 0x481;
+28: local #1
+29: 1153L
+30: set member 'color' #
+Detach();
+31: Func(2,2): Detach
+32: #
+while (item.color == 0x481)
+33: local #1
+34: get member 'color'
+35: 1153L
+36: ==
+37: if false goto 53
+SendSysMessage(me, "maintaining light");
+38: local #0
+39: "maintaining light"
+40: 3L
+41: 1000L
+42: Func(2,1): SendSysMessage
+43: #
+me.setlightlevel( 0, 60 );
+44: local #0
+45: 0L
+46: 60L
+47: Call Method setlightlevel (2 params)
+48: #
+sleep(60);
+49: 60L
+50: Func(3,0): sleep
+51: #
+52: goto33
+53: leave block(2)
+54: progend

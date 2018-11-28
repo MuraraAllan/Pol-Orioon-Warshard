@@ -1,0 +1,739 @@
+C:\pol2\pkg\systems\spawnpoint\spawnPoint.src, Line 5
+var spawneditlayout :=
+0: decl global #0
+1: array
+2: "page 0                           "
+3: +=
+4: "gumppic    30   0  101           "
+5: +=
+6: "button    118  90 2130 2129  1 0 100"
+7: +=
+8: "text       80 120  33           0"
+9: +=
+10: "text       85 140   0           1"
+11: +=
+12: "text       85 156   0           2"
+13: +=
+14: "text       85 180  33           3"
+15: +=
+16: "text      100 196   0           4"
+17: +=
+18: "text      100 212   0           5"
+19: +=
+20: "text       95 250  33           6"
+21: +=
+22: "text       95 235  33          12"
+23: +=
+24: "group 1                          "
+25: +=
+26: "radio     180 235 210 211    0 99"
+27: +=
+28: "textentry 160 140  40  15 50 1  7"
+29: +=
+30: "textentry 160 156  40  15 50 2  8"
+31: +=
+32: "textentry 155 196  30  15 50 3  9"
+33: +=
+34: "textentry 155 212  30  15 50 4 10"
+35: +=
+36: "textentry  65 268 160  15 50 5 11"
+37: +=
+38: :=
+39: #
+var spawneditdata :=
+40: decl global #1
+41: array
+42: "Spawn Point Data"
+43: +=
+44: "Amount: "
+45: +=
+46: "Range: "
+47: +=
+48: "Delay (Minutes)"
+49: +=
+50: "Min: "
+51: +=
+52: "Max: "
+53: +=
+54: "Monster Type"
+55: +=
+56: "0"
+57: +=
+58: "0"
+59: +=
+60: "0"
+61: +=
+62: "0"
+63: +=
+64: "NONE"
+65: +=
+66: "Ignore LOS"
+67: +=
+68: :=
+69: #
+C:\pol2\pkg\systems\spawnpoint\spawnPoint.src, Line 44
+program use_spawnpoint(who, spawnpoint)
+70: get arg 'who'
+71: get arg 'spawnpoint'
+EraseObjProperty(spawnpoint, "IgnoreLOS");
+72: local #1
+73: "IgnoreLOS"
+74: Func(2,15): EraseObjProperty
+75: #
+if(who.cmdlevel < 2)
+76: local #0
+77: get member 'cmdlevel'
+78: 2L
+79: <
+80: if false goto 83
+return;
+81: ""
+82: progend
+var spawn := GetObjProperty(spawnpoint, "Spawn");
+83: decl local #2
+84: local #1
+85: "Spawn"
+86: Func(2,1): GetObjProperty
+87: :=
+88: #
+var amount := GetObjProperty(spawnpoint, "Amount");
+89: decl local #3
+90: local #1
+91: "Amount"
+92: Func(2,1): GetObjProperty
+93: :=
+94: #
+var mindelay := GetObjProperty(spawnpoint, "MinDelay");
+95: decl local #4
+96: local #1
+97: "MinDelay"
+98: Func(2,1): GetObjProperty
+99: :=
+100: #
+var maxdelay := GetObjProperty(spawnpoint, "MaxDelay");
+101: decl local #5
+102: local #1
+103: "MaxDelay"
+104: Func(2,1): GetObjProperty
+105: :=
+106: #
+var range := GetObjProperty(spawnpoint, "Range");
+107: decl local #6
+108: local #1
+109: "Range"
+110: Func(2,1): GetObjProperty
+111: :=
+112: #
+var i, x;
+113: decl local #7
+114: #
+115: decl local #8
+116: #
+if(spawn == "NONE")
+117: local #2
+118: "NONE"
+119: ==
+120: if false goto 128
+SendSysMessage(who, "Initializing new spawnpoint...");
+121: local #0
+122: "Initializing new spawnpoint..."
+123: 3L
+124: 1000L
+125: Func(2,16): SendSysMessage
+126: #
+127: goto153
+spawneditdata[8] := CStr(amount);
+128: global #1
+129: 8L
+130: local #3
+131: Func(0,4): CStr
+132: [] := (1) #
+spawneditdata[9] := CStr(range);
+133: global #1
+134: 9L
+135: local #6
+136: Func(0,4): CStr
+137: [] := (1) #
+spawneditdata[10] := CStr(mindelay);
+138: global #1
+139: 10L
+140: local #4
+141: Func(0,4): CStr
+142: [] := (1) #
+spawneditdata[11] := CStr(maxdelay);
+143: global #1
+144: 11L
+145: local #5
+146: Func(0,4): CStr
+147: [] := (1) #
+spawneditdata[12] := CStr(spawn);
+148: global #1
+149: 12L
+150: local #2
+151: Func(0,4): CStr
+152: [] := (1) #
+var res := SendDialogGump(who, spawneditlayout, spawneditdata);
+153: decl local #9
+154: local #0
+155: global #0
+156: global #1
+157: Func(2,17): SendDialogGump
+158: :=
+159: #
+if(res[0] != 100)
+160: local #9
+161: 0L
+162: [] 1
+163: 100L
+164: <>
+165: if false goto 174
+SendSysMessage(who, "Aborted.");
+166: local #0
+167: "Aborted."
+168: 3L
+169: 1000L
+170: Func(2,16): SendSysMessage
+171: #
+return;
+172: ""
+173: progend
+for(i:=1; i<=5; i:=i+1);
+174: local #7
+175: 1L
+176: :=
+177: #
+178: local #7
+179: 5L
+180: <=
+181: if false goto 201
+if(!res[i])
+182: local #9
+183: local #7
+184: [] 1
+185: if true goto 194
+SendSysMessage(who, "Error: spawn data incomplete.  Aborting.");
+186: local #0
+187: "Error: spawn data incomplete.  Aborting."
+188: 3L
+189: 1000L
+190: Func(2,16): SendSysMessage
+191: #
+return;
+192: ""
+193: progend
+194: local #7
+195: local #7
+196: 1L
+197: +
+198: :=
+199: #
+200: goto178
+x := len(res[1]);
+201: local #9
+202: 1L
+203: [] 1
+204: Func(0,5): len
+205: local8 := 
+i := res[1];
+206: local #9
+207: 1L
+208: [] 1
+209: local7 := 
+i := i[4, (x-3)];
+210: local #7
+211: 4L
+212: local #8
+213: 3L
+214: -
+215: [,]
+216: local7 := 
+amount := CInt(i);
+217: local #7
+218: Func(0,0): CInt
+219: local3 := 
+x := len(res[2]);
+220: local #9
+221: 2L
+222: [] 1
+223: Func(0,5): len
+224: local8 := 
+i := res[2];
+225: local #9
+226: 2L
+227: [] 1
+228: local7 := 
+i := i[4, (x-3)];
+229: local #7
+230: 4L
+231: local #8
+232: 3L
+233: -
+234: [,]
+235: local7 := 
+range := CInt(i);
+236: local #7
+237: Func(0,0): CInt
+238: local6 := 
+x := len(res[3]);
+239: local #9
+240: 3L
+241: [] 1
+242: Func(0,5): len
+243: local8 := 
+i := res[3];
+244: local #9
+245: 3L
+246: [] 1
+247: local7 := 
+i := i[4, (x-3)];
+248: local #7
+249: 4L
+250: local #8
+251: 3L
+252: -
+253: [,]
+254: local7 := 
+mindelay := CInt(i);
+255: local #7
+256: Func(0,0): CInt
+257: local4 := 
+x := len(res[4]);
+258: local #9
+259: 4L
+260: [] 1
+261: Func(0,5): len
+262: local8 := 
+i := res[4];
+263: local #9
+264: 4L
+265: [] 1
+266: local7 := 
+i := i[4, (x-3)];
+267: local #7
+268: 4L
+269: local #8
+270: 3L
+271: -
+272: [,]
+273: local7 := 
+maxdelay := CInt(i);
+274: local #7
+275: Func(0,0): CInt
+276: local5 := 
+if((amount < 1) || (amount > 32))
+277: local #3
+278: 1L
+279: <
+280: local #3
+281: 32L
+282: >
+283: ||
+284: if false goto 293
+SendSysMessage(who, "Amount must be between 1 and 32.  Setting to 1.");
+285: local #0
+286: "Amount must be between 1 and 32.  Setting to 1."
+287: 3L
+288: 1000L
+289: Func(2,16): SendSysMessage
+290: #
+amount := 1;
+291: 1L
+292: local3 := 
+if((range < 1) || (range > 32))
+293: local #6
+294: 1L
+295: <
+296: local #6
+297: 32L
+298: >
+299: ||
+300: if false goto 309
+SendSysMessage(who, "Range must be between 1 and 32.  Setting to 1.");
+301: local #0
+302: "Range must be between 1 and 32.  Setting to 1."
+303: 3L
+304: 1000L
+305: Func(2,16): SendSysMessage
+306: #
+range := 1;
+307: 1L
+308: local6 := 
+if((mindelay < 0) || (mindelay > 1440))
+309: local #4
+310: 0L
+311: <
+312: local #4
+313: 1440L
+314: >
+315: ||
+316: if false goto 325
+SendSysMessage(who, "MinDelay must be between 0 and 1440.  Setting to 1.");
+317: local #0
+318: "MinDelay must be between 0 and 1440.  Setting to 1."
+319: 3L
+320: 1000L
+321: Func(2,16): SendSysMessage
+322: #
+mindelay := 1;
+323: 1L
+324: local4 := 
+if((maxdelay < 0) || (maxdelay > 1440))
+325: local #5
+326: 0L
+327: <
+328: local #5
+329: 1440L
+330: >
+331: ||
+332: if false goto 341
+SendSysMessage(who, "MaxDelay must be between 0 and 1440.  Setting to 1.");
+333: local #0
+334: "MaxDelay must be between 0 and 1440.  Setting to 1."
+335: 3L
+336: 1000L
+337: Func(2,16): SendSysMessage
+338: #
+maxdelay := 1;
+339: 1L
+340: local5 := 
+if(maxdelay < mindelay)
+341: local #5
+342: local #4
+343: <
+344: if false goto 353
+SendSysMessage(who, "MaxDelay cannot be less than MinDelay.   Setting equal.");
+345: local #0
+346: "MaxDelay cannot be less than MinDelay.   Setting equal."
+347: 3L
+348: 1000L
+349: Func(2,16): SendSysMessage
+350: #
+maxdelay := mindelay;
+351: local #4
+352: local5 := 
+x := len(res[5]);
+353: local #9
+354: 5L
+355: [] 1
+356: Func(0,5): len
+357: local8 := 
+i := res[5];
+358: local #9
+359: 5L
+360: [] 1
+361: local7 := 
+i := i[4, (x-3)];
+362: local #7
+363: 4L
+364: local #8
+365: 3L
+366: -
+367: [,]
+368: local7 := 
+spawn := i;
+369: local #7
+370: local2 := 
+foreach thing in (res.keys)
+371: local #9
+372: get member 'keys'
+373: initforeach @384
+if(thing == 99)
+374: local #10
+375: 99L
+376: ==
+377: if false goto 384
+SetObjProperty(spawnpoint, "IgnoreLOS", 1);
+378: local #1
+379: "IgnoreLOS"
+380: 1L
+381: Func(2,3): SetObjProperty
+382: #
+break;
+383: goto385
+384: stepforeach @374
+385: leave block(3)
+SendSysMessage(who, i);
+386: local #0
+387: local #7
+388: 3L
+389: 1000L
+390: Func(2,16): SendSysMessage
+391: #
+var critterarray := {"ettins", "orchorde", "trolls", "lesserundead", "undead", 
+392: decl local #10
+393: array
+394: "ettins"
+395: +=
+396: "orchorde"
+397: +=
+398: "trolls"
+399: +=
+400: "lesserundead"
+401: +=
+402: "undead"
+403: +=
+404: "vermin"
+405: +=
+406: "orcs"
+407: +=
+408: "dracos"
+409: +=
+410: "lizardmen"
+411: +=
+412: "ratmen"
+413: +=
+414: :=
+415: #
+if(!i in critterarray)
+416: local #7
+417: !
+418: local #10
+419: in
+420: if false goto 459
+var thecritter := CreateNpcFromTemplate(i, spawnpoint.x, spawnpoint.y, spawnpoi
+421: decl local #0
+422: local #7
+423: local #1
+424: get member 'x'
+425: local #1
+426: get member 'y'
+427: local #1
+428: get member 'z'
+429: 0L
+430: Func(2,18): CreateNpcFromTemplate
+431: :=
+432: #
+if(!thecritter)
+433: local #11
+434: if true goto 444
+SendSysMessage(who, "Invalid creature type.");
+435: local #0
+436: "Invalid creature type."
+437: 3L
+438: 1000L
+439: Func(2,16): SendSysMessage
+440: #
+spawn := "NONE";
+441: "NONE"
+442: local2 := 
+443: goto457
+SetObjProperty(thecritter, "summoned", 1);
+444: local #11
+445: "summoned"
+446: 1L
+447: Func(2,3): SetObjProperty
+448: #
+ApplyRawDamage(thecritter, GetHp(thecritter)+3);
+449: local #11
+450: local #11
+451: makelocal
+452: jmp userfunc @614
+453: 3L
+454: +
+455: Func(2,19): ApplyRawDamage
+456: #
+457: leave block(1)
+458: goto498
+var thecritter := CreateNpcFromTemplate(GetCritter(i), spawnpoint.x, spawnpoint
+459: decl local #0
+460: local #7
+461: makelocal
+462: jmp userfunc @539
+463: local #1
+464: get member 'x'
+465: local #1
+466: get member 'y'
+467: local #1
+468: get member 'z'
+469: 0L
+470: Func(2,18): CreateNpcFromTemplate
+471: :=
+472: #
+if(!thecritter)
+473: local #11
+474: if true goto 484
+SendSysMessage(who, "Invalid creature type.");
+475: local #0
+476: "Invalid creature type."
+477: 3L
+478: 1000L
+479: Func(2,16): SendSysMessage
+480: #
+spawn := "NONE";
+481: "NONE"
+482: local2 := 
+483: goto497
+SetObjProperty(thecritter, "summoned", 1);
+484: local #11
+485: "summoned"
+486: 1L
+487: Func(2,3): SetObjProperty
+488: #
+ApplyRawDamage(thecritter, GetHp(thecritter)+3);
+489: local #11
+490: local #11
+491: makelocal
+492: jmp userfunc @614
+493: 3L
+494: +
+495: Func(2,19): ApplyRawDamage
+496: #
+497: leave block(1)
+SetObjProperty(spawnpoint, "Amount",   amount);
+498: local #1
+499: "Amount"
+500: local #3
+501: Func(2,3): SetObjProperty
+502: #
+SetObjProperty(spawnpoint, "Range",    range);
+503: local #1
+504: "Range"
+505: local #6
+506: Func(2,3): SetObjProperty
+507: #
+SetObjProperty(spawnpoint, "MinDelay", mindelay);
+508: local #1
+509: "MinDelay"
+510: local #4
+511: Func(2,3): SetObjProperty
+512: #
+SetObjProperty(spawnpoint, "MaxDelay", maxdelay);
+513: local #1
+514: "MaxDelay"
+515: local #5
+516: Func(2,3): SetObjProperty
+517: #
+SetObjProperty(spawnpoint, "Spawn",    spawn);
+518: local #1
+519: "Spawn"
+520: local #2
+521: Func(2,3): SetObjProperty
+522: #
+SetObjProperty(spawnpoint, "ResetMe",  1);
+523: local #1
+524: "ResetMe"
+525: 1L
+526: Func(2,3): SetObjProperty
+527: #
+SendSysMessage(who, "Spawnpoint initialized.  Resetting spawn.  This may take a
+528: local #0
+529: "Spawnpoint initialized.  Resetting spawn.  This may take a minute..."
+530: 3L
+531: 1000L
+532: Func(2,16): SendSysMessage
+533: #
+spawnpoint.invisible := 1;
+534: local #1
+535: 1L
+536: set member 'invisible' #
+537: leave block(11)
+538: progend
+C:\pol2\pkg\systems\spawnpoint\spawnPoint.src, Line 152
+function GetCritter(type)
+539: pop param 'type'
+if(type == "vermin")
+540: local #0
+541: "vermin"
+542: ==
+543: if false goto 547
+return "grat";
+544: "grat"
+545: return
+546: goto612
+elseif(type == "orcs")
+547: local #0
+548: "orcs"
+549: ==
+550: if false goto 554
+return "orc1";
+551: "orc1"
+552: return
+553: goto612
+elseif(type == "orchorde")
+554: local #0
+555: "orchorde"
+556: ==
+557: if false goto 561
+return "orclord";
+558: "orclord"
+559: return
+560: goto612
+elseif(type == "ratmen")
+561: local #0
+562: "ratmen"
+563: ==
+564: if false goto 568
+return "ratman1";
+565: "ratman1"
+566: return
+567: goto612
+elseif(type == "lizardmen")
+568: local #0
+569: "lizardmen"
+570: ==
+571: if false goto 575
+return "lizardman1";
+572: "lizardman1"
+573: return
+574: goto612
+elseif(type == "dracos")
+575: local #0
+576: "dracos"
+577: ==
+578: if false goto 582
+return "dragon1";
+579: "dragon1"
+580: return
+581: goto612
+elseif(type == "trolls")
+582: local #0
+583: "trolls"
+584: ==
+585: if false goto 589
+return "troll1";
+586: "troll1"
+587: return
+588: goto612
+elseif(type == "undead")
+589: local #0
+590: "undead"
+591: ==
+592: if false goto 596
+return "shade";
+593: "shade"
+594: return
+595: goto612
+elseif(type == "lesserundead")
+596: local #0
+597: "lesserundead"
+598: ==
+599: if false goto 603
+return "zombie";
+600: "zombie"
+601: return
+602: goto612
+elseif(type == "ettins")
+603: local #0
+604: "ettins"
+605: ==
+606: if false goto 610
+return "ettin";
+607: "ettin"
+608: return
+609: goto612
+return type;
+610: local #0
+611: return
+612: 0L
+613: return
+C:/pol2/scripts/include/attributes.inc, Line 448
+function GetHp(who)
+614: pop param 'who'
+return Cint(GetVital(who, VITALID_LIFE)/ 100);
+615: local #0
+616: "Life"
+617: Func(2,10): GetVital
+618: 100L
+619: /
+620: Func(0,0): CInt
+621: return

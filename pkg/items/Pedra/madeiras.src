@@ -1,0 +1,104 @@
+use uo;
+use os;
+
+include "../pkg/foundations/gumps/gumps";
+
+
+program ar_color(who, item)
+
+GumpPrincipal(who); 
+endprogram
+
+
+Function GumpPrincipal(who)
+
+ var chk := CInt(GetObjProperty(who, "b"));
+    if(!chk)
+      chk := CInt(ReadGameClock() - 600);
+    endif
+    if(chk >= ReadGameClock())
+      SendSysMessage(who, "Voce so pode pegar 100 Madeiras por cada 10 minutos ( para evitar ecesso de items pelo hall e pelo shard)",9,89);
+      return;
+    endif
+ 
+
+
+  GFInitGump( 250 , 100 );
+  GFNoMove();
+  GFResizePic(50, 5, 5120, 200, 280);
+  GFTextLine( 155 , 20, 1154 , "Madeiras..." );
+  var bt1 := GFButtonID(115, 245, 0x0817,0x0817, 1);
+  var bt2 := GFButtonID( 70, 55,  0x04b9, 0x04b9, 1);
+  var bt3 := GFButtonID( 70, 105, 0x04b9, 0x04b9, 1);
+  var bt4 := GFButtonID( 70, 155, 0x04b9, 0x04b9, 1);
+  var bt5 := GFButtonID( 70, 205, 0x04b9, 0x04b9, 1);
+
+  GFTextLine(95, 50, 1154 , "Normal");
+  GFTextLine(95, 100, 1154 , "Madeiras de CANELA");
+  GFTextLine(95, 150, 1154 , "Madeiras de IMBUIA");
+  GFTextLine(95, 200, 1154 , "Madeiras de BLUESHAWN");
+  GFTextLine(95, 220,1153, "#ORIOON"); 
+  var res := GFSendGump( who );
+
+
+if(res[bt2.keyid])
+
+CreateItemInBackpack(who, 0x1034, 1);
+SendSysMessage(who, "Voce pegou 100 Madeiras Normais!",9,89);  
+var bandage := CreateItemInBackpack(who, 0x1bdd, 100);
+  var i;
+    for (i := 0x1f2d; i <= 0x1f6c; i := i + 1)
+        CreateItemInContainer(bandage,  i, 1);
+   SetObjProperty(who, "b", ReadGameClock() + 600 );
+ endfor
+endif 
+
+if(res[bt3.keyid])
+
+CreateItemInBackpack(who, 0x1034, 1);
+SendSysMessage(who, "Voce pegou 100 Madeiras Do CANELA!",9,89);  
+var bandage := CreateItemInBackpack(who,0xac55, 100);
+    var i;
+    for (i := 0x1f2d; i <= 0x1f6c; i := i + 1)
+        CreateItemInContainer(bandage,  i, 1);
+   SetObjProperty(who, "b", ReadGameClock() + 600 );
+   endfor
+endif 
+
+
+if(res[bt4.keyid])
+
+CreateItemInBackpack(who, 0x1034, 1);
+SendSysMessage(who, "Voce pegou 100 Madeiras de IMBUIA!!",9,89);  
+var bandage := CreateItemInBackpack(who,0xac54, 100);
+    var i;
+    for (i := 0x1f2d; i <= 0x1f6c; i := i + 1)
+        CreateItemInContainer(bandage,  i, 1);
+   SetObjProperty(who, "b", ReadGameClock() + 600 );
+   endfor
+
+endif
+
+
+if(res[bt5.keyid])
+
+CreateItemInBackpack(who, 0x1034, 1);
+SendSysMessage(who, "Voce pegou 100 Madeiras BLUESHAWN!",9,89);  
+var bandage := CreateItemInBackpack(who,0xac53, 100);
+   SetObjProperty(who, "b", ReadGameClock() + 600 );
+    var i;
+    for (i := 0x1f2d; i <= 0x1f6c; i := i + 1)
+        CreateItemInContainer(bandage,  i, 1);
+   endfor
+
+endif 
+
+
+if(res[bt1.keyid])
+
+sendsysmessage(who,"Cancelado",9,90);
+return;
+
+endif
+
+endfunction

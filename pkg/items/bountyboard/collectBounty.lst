@@ -1,0 +1,546 @@
+C:/pol2/scripts/include/datafile.inc, Line 57
+var DF_DEBUG_MODE	:= 1;
+0: decl global #0
+1: 1L
+2: :=
+3: #
+C:/pol2/scripts/include/bounty.inc, Line 3
+var bountyfile := DFOPenDataFile("BountySystem", 1);
+4: decl global #1
+5: "BountySystem"
+6: 1L
+7: 0L
+8: makelocal
+9: jmp userfunc @139
+10: :=
+11: #
+C:\pol2\pkg\items\bountyboard\collectBounty.src, Line 9
+program collectBounty(parms)
+const EXTOBJ_HOLD            := 0xf013;
+12: get arg 'parms'
+print("P: " + parms);
+13: "P: "
+14: local #0
+15: +
+16: Func(1,0): print
+17: #
+var me   := parms[1];
+18: decl local #1
+19: local #0
+20: 1L
+21: [] 1
+22: :=
+23: #
+var who  := parms[2];
+24: decl local #2
+25: local #0
+26: 2L
+27: [] 1
+28: :=
+29: #
+var item := parms[3];
+30: decl local #3
+31: local #0
+32: 3L
+33: [] 1
+34: :=
+35: #
+if(!ReserveItem(item))
+36: local #3
+37: Func(2,6): ReserveItem
+38: if true goto 44
+print("!");
+39: "!"
+40: Func(1,0): print
+41: #
+return;
+42: ""
+43: progend
+var serial := GetObjProperty(item, "serial");
+44: decl local #4
+45: local #3
+46: "serial"
+47: Func(2,7): GetObjProperty
+48: :=
+49: #
+var bounty := FindBounty(who, serial);
+50: decl local #5
+51: local #2
+52: local #4
+53: makelocal
+54: jmp userfunc @234
+55: :=
+56: #
+if(!bounty)
+57: local #5
+58: if true goto 71
+PrintTextAbove(me, "I'm sorry, but there doesnt seem to be a bounty on that hea
+59: local #1
+60: "I'm sorry, but there doesnt seem to be a bounty on that head."
+61: 3L
+62: 1000L
+63: Func(2,8): PrintTextAbove
+64: #
+DestroyItem(item);
+65: local #3
+66: Func(2,9): DestroyItem
+67: #
+return;
+68: ""
+69: progend
+70: goto137
+PrintTextAbove(me, "You have brought in the head of " + bounty[1] + ". That fie
+71: local #1
+72: "You have brought in the head of "
+73: local #5
+74: 1L
+75: [] 1
+76: +
+77: ". That fiend was responsible for "
+78: +
+79: local #5
+80: 3L
+81: [] 1
+82: +
+83: " murders."
+84: +
+85: 3L
+86: 1000L
+87: Func(2,8): PrintTextAbove
+88: #
+PrintTextAbove(me, "Lord British has offered a reward of " + bounty[2] + " gold
+89: local #1
+90: "Lord British has offered a reward of "
+91: local #5
+92: 2L
+93: [] 1
+94: +
+95: " gold pieces, which I shall place in your bankbox."
+96: +
+97: 3L
+98: 1000L
+99: Func(2,8): PrintTextAbove
+100: #
+var gold := Cint(bounty[2]);
+101: decl local #0
+102: local #5
+103: 2L
+104: [] 1
+105: Func(0,1): CInt
+106: :=
+107: #
+var bank := FindBankBox(who);
+108: decl local #1
+109: local #2
+110: makelocal
+111: jmp userfunc @198
+112: :=
+113: #
+while(gold >= 60000)
+114: local #6
+115: 60000L
+116: >=
+117: if false goto 128
+gold := gold - 60000;
+118: local #6
+119: 60000L
+120: -
+121: local6 := 
+CreateItemInContainer(bank, 0xeed, 60000);
+122: local #7
+123: 3821L
+124: 60000L
+125: Func(2,10): CreateItemInContainer
+126: #
+127: goto114
+CreateItemInContainer(bank, 0xeed, gold);
+128: local #7
+129: 3821L
+130: local #6
+131: Func(2,10): CreateItemInContainer
+132: #
+DestroyItem(item);
+133: local #3
+134: Func(2,9): DestroyItem
+135: #
+136: leave block(2)
+137: leave block(6)
+138: progend
+C:/pol2/scripts/include/datafile.inc, Line 59
+function DFOpenDataFile(filename, create:=DF_NO_CREATE, flags:=DF_KEYTYPE_STRIN
+139: pop param 'flags'
+140: pop param 'create'
+141: pop param 'filename'
+var temp := OpenDataFile(filename);
+142: decl local #3
+143: local #2
+144: Func(4,0): OpenDataFile
+145: :=
+146: #
+if ( (!temp) && (create) )
+147: local #3
+148: !
+149: local #1
+150: &&
+151: if false goto 165
+DF_OutPut("Creating data file: " + filename);
+152: "Creating data file: "
+153: local #2
+154: +
+155: makelocal
+156: jmp userfunc @308
+157: #
+CreateDataFile(filename, flags);
+158: local #2
+159: local #0
+160: Func(4,1): CreateDataFile
+161: #
+temp := OpenDataFile(filename);
+162: local #2
+163: Func(4,0): OpenDataFile
+164: local3 := 
+if ( temp )
+165: local #3
+166: if false goto 170
+return temp;
+167: local #3
+168: return
+169: goto196
+elseif ( create ) 
+170: local #1
+171: if false goto 196
+var errmsg := error;
+172: decl local #0
+173: error
+174: :=
+175: #
+errmsg.+errortext := "Could not open " + filename + ":" + temp.errortext;
+176: local #4
+177: "errortext"
+178: .+
+179: "Could not open "
+180: local #2
+181: +
+182: ":"
+183: +
+184: local #3
+185: get member 'errortext'
+186: +
+187: := #
+DF_OutPut(errmsg.errortext);
+188: local #4
+189: get member 'errortext'
+190: makelocal
+191: jmp userfunc @308
+192: #
+return errmsg;
+193: local #4
+194: return
+195: leave block(1)
+196: 0L
+197: return
+C:/pol2/scripts/util/bank.inc, Line 14
+function FindBankBox( character )
+198: pop param 'character'
+var worldbank := OpenWorldBank();
+199: decl local #1
+200: makelocal
+201: jmp userfunc @291
+202: :=
+203: #
+var bank_obj_name := "Bankbox of " + character.serial;
+204: decl local #2
+205: "Bankbox of "
+206: local #0
+207: get member 'serial'
+208: +
+209: :=
+210: #
+var bankbox := FindRootItemInStorageArea( worldbank, bank_obj_name );
+211: decl local #3
+212: local #1
+213: local #2
+214: Func(2,1): FindRootItemInStorageArea
+215: :=
+216: #
+if (!bankbox)
+217: local #3
+218: if true goto 224
+bankbox := CreateRootItemInStorageArea( worldbank, bank_obj_name, UOBJ_BANKBOX 
+219: local #1
+220: local #2
+221: 3648L
+222: Func(2,2): CreateRootItemInStorageArea
+223: local3 := 
+if(!bankbox)
+224: local #3
+225: if true goto 232
+syslog( "Unable to find or create bankbox for " + character.serial );
+226: "Unable to find or create bankbox for "
+227: local #0
+228: get member 'serial'
+229: +
+230: Func(3,0): syslog
+231: #
+return bankbox;
+232: local #3
+233: return
+C:/pol2/scripts/include/bounty.inc, Line 14
+function FindBounty(who, serial)
+234: pop param 'serial'
+235: pop param 'who'
+var elem := DFFindElement(bountyfile, Cstr(serial));
+236: decl local #2
+237: global #1
+238: local #0
+239: Func(0,0): CStr
+240: 0L
+241: makelocal
+242: jmp userfunc @316
+243: :=
+244: #
+if(elem)
+245: local #2
+246: if false goto 287
+var holder := array;
+247: decl local #0
+248: array
+249: :=
+250: #
+holder.append(DFGetProp(elem, "Name"));
+251: local #3
+252: local #2
+253: "Name"
+254: 0L
+255: 0L
+256: makelocal
+257: jmp userfunc @381
+258: Call Method append (1 params)
+259: #
+holder.append(DFGetProp(elem, "Bounty"));
+260: local #3
+261: local #2
+262: "Bounty"
+263: 0L
+264: 0L
+265: makelocal
+266: jmp userfunc @381
+267: Call Method append (1 params)
+268: #
+holder.append(DFGetProp(elem, "Murders"));
+269: local #3
+270: local #2
+271: "Murders"
+272: 0L
+273: 0L
+274: makelocal
+275: jmp userfunc @381
+276: Call Method append (1 params)
+277: #
+bountyfile.DeleteElement(Cstr(serial));
+278: global #1
+279: local #0
+280: Func(0,0): CStr
+281: Call Method deleteelement (1 params)
+282: #
+return holder;
+283: local #3
+284: return
+285: leave block(1)
+286: goto289
+return 0;
+287: 0L
+288: return
+289: 0L
+290: return
+C:/pol2/scripts/util/bank.inc, Line 34
+function OpenWorldBank()
+var bank := FindStorageArea( "World Bank" );
+291: decl local #0
+292: "World Bank"
+293: Func(2,4): FindStorageArea
+294: :=
+295: #
+if (!bank)
+296: local #0
+297: if true goto 301
+bank := CreateStorageArea( "World Bank" );
+298: "World Bank"
+299: Func(2,5): CreateStorageArea
+300: local0 := 
+if (!bank)
+301: local #0
+302: if true goto 306
+syslog( "Unable to open or create world bank!" );
+303: "Unable to open or create world bank!"
+304: Func(3,0): syslog
+305: #
+return bank;
+306: local #0
+307: return
+C:/pol2/scripts/include/datafile.inc, Line 140
+function DF_OutPut(text)
+308: pop param 'text'
+if ( DF_DEBUG_MODE )
+309: global #0
+310: if false goto 314
+SysLog(text);
+311: local #0
+312: Func(3,0): syslog
+313: #
+314: 0L
+315: return
+C:/pol2/scripts/include/datafile.inc, Line 89
+function DFFindElement(byref file_ref, elem_name, create:=DF_NO_CREATE)
+316: pop param 'create'
+317: pop param 'elem_name'
+318: pop param byref 'file_ref'
+var temp := file_ref.FindElement( cstr(elem_name) );
+319: decl local #3
+320: local #2
+321: local #1
+322: Func(0,0): CStr
+323: Call Method findelement (1 params)
+324: :=
+325: #
+if (!temp && create)
+326: local #3
+327: !
+328: local #0
+329: &&
+330: if false goto 348
+DF_OutPut("Creating elem: " +  cstr(elem_name) );
+331: "Creating elem: "
+332: local #1
+333: Func(0,0): CStr
+334: +
+335: makelocal
+336: jmp userfunc @308
+337: #
+file_ref.CreateElement( cstr(elem_name) );
+338: local #2
+339: local #1
+340: Func(0,0): CStr
+341: Call Method createelement (1 params)
+342: #
+temp := file_ref.FindElement( cstr(elem_name) );
+343: local #2
+344: local #1
+345: Func(0,0): CStr
+346: Call Method findelement (1 params)
+347: local3 := 
+if ( temp )
+348: local #3
+349: if false goto 353
+return temp;
+350: local #3
+351: return
+352: goto379
+elseif (create)
+353: local #0
+354: if false goto 379
+var errmsg := error;
+355: decl local #0
+356: error
+357: :=
+358: #
+errmsg.+errortext := "Could not open data elem " + elem_name + ":" + temp.error
+359: local #4
+360: "errortext"
+361: .+
+362: "Could not open data elem "
+363: local #1
+364: +
+365: ":"
+366: +
+367: local #3
+368: get member 'errortext'
+369: +
+370: := #
+DF_OutPut(errmsg.errortext);
+371: local #4
+372: get member 'errortext'
+373: makelocal
+374: jmp userfunc @308
+375: #
+return errmsg;
+376: local #4
+377: return
+378: leave block(1)
+379: 0L
+380: return
+C:/pol2/scripts/include/datafile.inc, Line 119
+function DFGetProp(byref elem_ref, prop_name, create:=DF_NO_CREATE, assignval:=
+381: pop param 'assignval'
+382: pop param 'create'
+383: pop param 'prop_name'
+384: pop param byref 'elem_ref'
+var temp := elem_ref.GetProp(prop_name);
+385: decl local #4
+386: local #3
+387: local #2
+388: Call Method getprop (1 params)
+389: :=
+390: #
+if ( (!temp) && (create) )
+391: local #4
+392: !
+393: local #1
+394: &&
+395: if false goto 405
+elem_ref.SetProp(prop_name, assignval);
+396: local #3
+397: local #2
+398: local #0
+399: Call Method setprop (2 params)
+400: #
+temp := elem_ref.GetProp(prop_name);
+401: local #3
+402: local #2
+403: Call Method getprop (1 params)
+404: local4 := 
+if ( temp || (create) && (!assignval) )
+405: local #4
+406: local #1
+407: local #0
+408: !
+409: &&
+410: ||
+411: if false goto 415
+return temp;
+412: local #4
+413: return
+414: goto441
+elseif (create)
+415: local #1
+416: if false goto 441
+var errmsg := error;
+417: decl local #0
+418: error
+419: :=
+420: #
+errmsg.+errortext := "Could not read data file property " + prop_name + ":" + t
+421: local #5
+422: "errortext"
+423: .+
+424: "Could not read data file property "
+425: local #2
+426: +
+427: ":"
+428: +
+429: local #4
+430: get member 'errortext'
+431: +
+432: := #
+DF_OutPut(errmsg.errortext);
+433: local #5
+434: get member 'errortext'
+435: makelocal
+436: jmp userfunc @308
+437: #
+return errmsg;
+438: local #5
+439: return
+440: leave block(1)
+441: 0L
+442: return

@@ -1,0 +1,14 @@
+C:\pol2\pkg\items\sysbook\openBook.src, Line 3
+program openbook(chr,book)
+use uo;
+0: get arg 'chr'
+1: get arg 'book'
+var res := SendOpenBook( chr, book );
+2: decl local #2
+3: local #0
+4: local #1
+5: Func(2,0): SendOpenBook
+6: :=
+7: #
+8: leave block(3)
+9: progend

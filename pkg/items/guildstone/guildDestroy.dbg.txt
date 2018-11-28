@@ -1,0 +1,17 @@
+File 0: 
+File 1: c:\pol\pkg\items\guildstone\guildDestroy.src
+File 2: c:/pol/scripts/uo.em
+File 3: c:/pol/scripts/os.em
+File 4: c:/pol/scripts/basic.em
+File 5: c:/pol/scripts/basicio.em
+Ins 0: File 1, Line 4, Block 1 StatementBegin
+Ins 1: File 1, Line 5, Block 1 StatementBegin
+Ins 2: File 1, Line 5, Block 1 
+Ins 3: File 1, Line 6, Block 1 
+Ins 4: File 1, Line 6, Block 0 
+Block 0:
+  Parent block: 0
+Block 1:
+  Parent block: 0
+  Local variables 0-0: 
+      0: stone

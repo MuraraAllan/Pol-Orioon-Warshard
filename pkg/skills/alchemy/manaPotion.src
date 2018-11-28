@@ -1,0 +1,44 @@
+use os;
+use uo;
+use util;
+include "drinkPotion";
+include "include/canAccess";
+include "include/attributes";
+
+program drink_blue (who, potion)
+EraseObjProperty(who, "IsMeditating");
+EraseObjProperty(who, "HealTimer");
+var manaa := RandomDiceRoll("1d22+5");
+var manab := RandomDiceRoll("1d38+3");
+var manac := RandomDiceRoll("1d10+5");
+var a := GetMana(who);
+  if((who.x >= 5944) && (who.x <= 5963) && (who.y >= 1170) && (who.y <= 1151))
+Sendsysmessage(who, "Pvp sem pots ok!?",9,89);
+return;
+endif
+if(!can_access(who, potion))
+    return;
+  endif
+  if(potion.movable == 0)
+    SendSysMessage(who, "Voce nao pode beber isto.");
+    return;
+  endif
+  if(!checkifcandrink(who, "mana"))
+    return;
+  endif
+if(potion.objtype == 0xdc18)
+SetMana(who, a + manaa);
+PrintTextAbove(who, " " + manaa + " ", FONT_SMALL_LIGHT, 2); 
+endif
+if(potion.objtype == 0xdc19)
+SetMana(who, a + manab);
+PrintTextAbove(who, " " + manab + " ", FONT_SMALL_LIGHT, 2); 
+endif
+if(potion.objtype == 0xdc23)
+SetMana(who, a + manac);
+PrintTextAbove(who, " " + manac + " ", FONT_SMALL_LIGHT, 2); 
+endif
+empty_bottle(who, potion);
+
+PlaySoundEffect( who,  0x135 );
+endprogram

@@ -1,0 +1,12 @@
+C:\pol2\pkg\systems\daynight\start.src, Line 11
+start_script( "dayNight" );
+0: "dayNight"
+1: 0L
+2: Func(3,0): start_script
+3: #
+start_script( "weather" );
+4: "weather"
+5: 0L
+6: Func(3,0): start_script
+7: #
+8: progend

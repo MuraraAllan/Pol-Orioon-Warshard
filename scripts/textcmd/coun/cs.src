@@ -1,0 +1,78 @@
+
+use os; 
+use uo; 
+use math; 
+
+include "include/math"; 
+set_priority( 50 ); 
+
+program textcmd_checkspeed( who, text ) 
+
+   var X, Y, lastX, lastY, deltaX, deltaY, rate, i; 
+
+   var ciclo := Cint( text ); 
+
+   if( ciclo > 100 ) 
+      Sendsysmessage( who, "Use ciclos de ate 100 segundos!" ); 
+      return; 
+   endif 
+
+   if( !text ) 
+      Sendsysmessage( who, "Uso: .cs [tempo de verificacao] (max 100)" ); 
+      Sendsysmessage( who, "Exemplo: .cs 60" ); 
+      return; 
+   endif 
+
+   SendSysmessage( who , "Selecione o alvo" ); 
+
+   var alvo := target( who ); 
+   SendSysmessage( who , "Alvo selecionado: " + alvo.name ); 
+
+   if( !alvo ) 
+      SendSysMessage( who, "Cancelado!" ); 
+      return; 
+   endif 
+
+
+   for( i := 1; i <= ciclo; i := i + 1 ) 
+
+// Pega o X inicial do alvo; 
+      X := alvo.x; 
+// Pega o Y inicial do alvo; 
+      Y := alvo.y; 
+// Pausa de 1 segundo; 
+      sleep(1); 
+// Pega o novo X do alvo; 
+      lastX := alvo.x; 
+// Pega o novo Y do alvo; 
+      lastY := alvo.y; 
+
+// X final - X inicial, retornando a distancia na coord X andada pelo alvo 
+      deltaX := lastX - X; 
+// Y final - Y inicial, retornando a distancia na coord Y andada pelo alvo 
+      deltaY := lastY - Y; 
+// Eleva a 2 o resultado do deltaX 
+      deltaX := deltaX * deltaX; 
+// Eleva a 2 o resultado do deltaY 
+      deltaY := deltaY * deltaY; 
+// Retorna a raiz do deltaX + deltaY, em caso de numero decimal esse valor eh jogado pra cima 
+      rate := ceil( sqrt( deltaX + deltaY ) ); 
+
+// Verifica se esta em montaria; 
+      if( GetEquipmentByLayer( alvo, 25 ) ) 
+         if( rate > 16 ) 
+            SendSysmessage( who , "EXCESSO DE VELOCIDADE (max 16) : " + alvo.name + " = " + rate ) ; 
+         else 
+            SendSysmessage( who , "Km/h (max 16) : " + alvo.name + " = " + rate ); 
+         endif 
+      else 
+         if( rate > 9 ) 
+            SendSysmessage( who , "EXCESSO DE VELOCIDADE (max 9) : " + alvo.name + " = " + rate ) ; 
+         else 
+            SendSysmessage( who , "Km/h (max 9) : " + alvo.name + " = " + rate ); 
+         endif 
+      endif 
+
+   endfor 
+
+endprogram

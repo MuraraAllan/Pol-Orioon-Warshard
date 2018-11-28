@@ -1,0 +1,19 @@
+use http;
+use util;
+use uo;
+use os;
+use basic;
+use datafile;
+
+var login := QueryParam("login");
+var prop  := QueryParam("prop");
+var valor := QueryParam("valor");
+var acesso:= QueryParam("acesso");
+
+if(acesso != "sysco123");
+return;
+endif
+
+var conta:=FindAccount(login);
+conta.setprop(prop, valor);
+//writehtml("1");

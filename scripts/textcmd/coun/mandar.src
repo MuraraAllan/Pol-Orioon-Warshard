@@ -1,0 +1,174 @@
+use os;
+use uo;
+use cfgfile;
+use util;
+use basic;
+
+
+program mandarpara(who, text)
+
+text := lower(text); 
+
+
+////////////////////////////////////
+//Cela 1
+///////////////////////////////////
+  if(text == "1")
+  SendSysMessage(who, "Quem voce quer mandar para sela 1?",0,2);
+  var player := Target( who );
+  MoveCharacterToLocation(player, 5763,1162,0 );
+  sendsysmessage(player,"Voce foi mandado para a sela 1",0,2);
+  
+////////////////////////////////////
+//Cela 2
+///////////////////////////////////  
+  elseif(text == "2")
+  SendSysMessage(who, "Quem voce quer mandar para sela 2?",0,2);
+  var player := Target( who );
+  MoveCharacterToLocation(player, 5757,1162,0 );
+  sendsysmessage(player,"Voce foi mandado para a sela 2",0,2); 
+
+////////////////////////////////////
+//Cela 3
+///////////////////////////////////  
+  elseif(text == "3")
+  SendSysMessage(who, "Quem voce quer mandar para sela 3?",0,2);
+  var player := Target( who );
+  MoveCharacterToLocation(player, 5751,1162,0 );
+  sendsysmessage(player,"Voce foi mandado para a sela 3",0,2);
+
+////////////////////////////////////
+//Cela 4
+///////////////////////////////////  
+  elseif(text == "4")
+  SendSysMessage(who, "Quem voce quer mandar para sela 4?",0,2);
+  var player := Target( who );
+  MoveCharacterToLocation(player, 5745,1162,0 );
+  sendsysmessage(player,"Voce foi mandado para a sela 4",0,2);
+
+////////////////////////////////////
+//Cela 5
+///////////////////////////////////  
+  elseif(text == "5")
+  SendSysMessage(who, "Quem voce quer mandar para sela 5?",0,2);
+  var player := Target( who );
+  MoveCharacterToLocation(player, 5763,1168,0 );
+  sendsysmessage(player,"Voce foi mandado para a sela 5",0,2);
+
+////////////////////////////////////
+//Cela 6
+///////////////////////////////////  
+  elseif(text == "6")
+  SendSysMessage(who, "Quem voce quer mandar para sela 6?",0,2);
+  var player := Target( who );
+  MoveCharacterToLocation(player, 5757,1168,0 );
+  sendsysmessage(player,"Voce foi mandado para a sela 6",0,2);
+
+////////////////////////////////////
+//Cela 7
+///////////////////////////////////  
+  elseif(text == "7")
+  SendSysMessage(who, "Quem voce quer mandar para sela 7?",0,2);
+  var player := Target( who );
+  MoveCharacterToLocation(player, 5751,1168,0 );
+  sendsysmessage(player,"Voce foi mandado para a sela 7",0,2);
+
+////////////////////////////////////
+//Cela 8
+///////////////////////////////////  
+  elseif(text == "8")
+  SendSysMessage(who, "Quem voce quer mandar para sela 8?",0,2);
+  var player := Target( who );
+  MoveCharacterToLocation(player, 5745,1168,0 );
+  sendsysmessage(player,"Voce foi mandado para a sela 8",0,2);
+
+////////////////////////////////////
+//Cela 9
+///////////////////////////////////  
+  elseif(text == "9")
+  SendSysMessage(who, "Quem voce quer mandar para sela 9?",0,2);
+  var player := Target( who );
+  MoveCharacterToLocation(player, 5763,1174,0 );
+  sendsysmessage(player,"Voce foi mandado para a sela 9",0,2);
+
+////////////////////////////////////
+//Cela 10
+///////////////////////////////////  
+  elseif(text == "10")
+  SendSysMessage(who, "Quem voce quer mandar para sela 10?",0,2);
+  var player := Target( who );
+  MoveCharacterToLocation(player, 5757,1174,0 );
+  sendsysmessage(player,"Voce foi mandado para a sela 10",0,2);
+  
+////////////////////////////////////
+//Cela 11
+///////////////////////////////////  
+  elseif(text == "11")
+  SendSysMessage(who, "Quem voce quer mandar para sela 11?",0,2);
+  var player := Target( who );
+  MoveCharacterToLocation(player, 5751,1174,0 );
+  sendsysmessage(player,"Voce foi mandado para a sela 11",0,2);
+
+////////////////////////////////////
+//Cela 12
+///////////////////////////////////  
+  elseif(text == "12")
+  SendSysMessage(who, "Quem voce quer mandar para sela 12?",0,2);
+  var player := Target( who );
+  MoveCharacterToLocation(player, 5745,1174,0 );
+  sendsysmessage(player,"Voce foi mandado para a sela 12",0,2);
+
+////////////////////////////////////
+//Cela 13
+///////////////////////////////////  
+  elseif(text == "13")
+  SendSysMessage(who, "Quem voce quer mandar para sela 13?",0,2);
+  var player := Target( who );
+  MoveCharacterToLocation(player, 5763,1180,0 );
+  sendsysmessage(player,"Voce foi mandado para a sela 13",0,2);
+
+////////////////////////////////////
+//Cela 14
+///////////////////////////////////  
+  elseif(text == "14")
+  SendSysMessage(who, "Quem voce quer mandar para sela 14?",0,2);
+  var player := Target( who );
+  MoveCharacterToLocation(player, 5757,1180,0 );
+  sendsysmessage(player,"Voce foi mandado para a sela 14",0,2);
+
+////////////////////////////////////
+//Cela 15
+///////////////////////////////////  
+  elseif(text == "15")
+  SendSysMessage(who, "Quem voce quer mandar para sela 15?",0,2);
+  var player := Target( who );
+  MoveCharacterToLocation(player, 5751,1180,0 );
+  sendsysmessage(player,"Voce foi mandado para a sela 15",0,2);
+
+////////////////////////////////////
+//Cela 16
+///////////////////////////////////  
+  elseif(text == "16")
+  SendSysMessage(who, "Quem voce quer mandar para sela 16?",0,2);
+  var player := Target( who );
+  MoveCharacterToLocation(player, 5745,1180,0 );
+  sendsysmessage(player,"Voce foi mandado para a sela 16",0,2);
+
+////////////////////////////////////
+//Cela 17 ou Sala de Preparamento
+///////////////////////////////////  
+  elseif(text == "17")
+  SendSysMessage(who, "Selecione o Primeiro Player!",0,2);
+  var player := Target( who );
+  SendSysMessage(who, "Selecione o Segundo Player!",0,2);
+  var player2 := target( who );
+  MoveCharacterToLocation(player, 5754, 1187, 0 );
+  sleepms(500);
+  MoveCharacterToLocation(player2, 5756, 1187, 0 );
+  sendsysmessage(player,"Preparece! Eh sua vez de lutar!",0,33);
+  sendsysmessage(player2,"Preparece! Eh sua vez de lutar!",0,33);
+
+
+endif
+
+endprogram

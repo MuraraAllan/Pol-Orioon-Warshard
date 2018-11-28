@@ -1,0 +1,80 @@
+use uo;
+use os;
+
+include "include/attributes";
+include "include/casas";
+
+program expulsar(who)
+var casa := who.multi; 
+
+if(!casa)
+SendSysMessage(who,"Voce nao esta em uma casa.");
+return;
+endif
+
+
+if(!Socio(who,casa))
+SendSysMessage(who, "Voce Precisa ser dono ou socio da casa para poder usar esse comando!"); 
+return;
+endif
+
+SendSysMessage(who,"Selecione quem voce deseja expulsar...");
+var expulsado := Target(who);
+
+if((!Expulsado) || (GetMana(expulsado) == error))
+SendSysMessage(who,"Cancelado.");
+return;
+endif
+
+if(expulsado.multi.serial != casa.serial)
+SendSysmessage(who,"Isto nao esta em sua casa.");
+return;
+endif
+
+var placa := AcharPlaca(casa);
+  if(!placa) 
+    SendSysMessage(who, "Esta casa nao tem placa? Contate um Staff!",3,33); 
+    return;
+endif
+
+MoveCharacterToLocation(expulsado, placa.x, placa.y, placa.z, MOVECHAR_FORCELOCATION);
+SendSysMessage(expulsado, "Voce foi expulso da casa."); 
+
+endprogram
+
+
+
+function achaplaca(expulsado)
+  var casa := expulsado.multi;
+  var comp := casa.components;
+  foreach placa in comp 
+if ((placa.objtype >= 3000) && (placa.objtype <= 3086)) 
+return placa;
+endif
+  endforeach
+return 0;
+endfunction 
+
+
+function sousocio(who, socios)
+
+foreach ssocio in socios
+
+if(ssocio == who.serial)
+return ssocio;
+endif
+
+endforeach
+
+endfunction
+
+function achaplacaa(who)
+  var casa := who.multi.components;
+
+  foreach placaa in casa
+if ((placaa.objtype >= 3000) && (placaa.objtype <= 3086)) 
+return placaa;
+endif
+  endforeach
+return 0;
+endfunction

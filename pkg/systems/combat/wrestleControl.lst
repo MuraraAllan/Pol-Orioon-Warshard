@@ -1,0 +1,28 @@
+C:\pol2\pkg\systems\combat\wrestleControl.src, Line 5
+program itemcontrol(item)
+use cfgfile;
+0: get arg 'item'
+var cfgfile  := ReadConfigFile(":combat:itemdesc");
+1: decl local #1
+2: ":combat:itemdesc"
+3: Func(4,0): ReadConfigFile
+4: :=
+5: #
+var dmg      := cfgfile[item.objtype].damage;
+6: decl local #2
+7: local #1
+8: local #0
+9: get member 'objtype'
+10: [] 1
+11: get member 'damage'
+12: :=
+13: #
+if(dmg)
+14: local #2
+15: if false goto 19
+item.hitscript := "wrestlingHitScript";
+16: local #0
+17: "wrestlingHitScript"
+18: set member 'hitscript' #
+19: leave block(3)
+20: progend

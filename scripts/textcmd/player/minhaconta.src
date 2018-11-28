@@ -1,0 +1,44 @@
+use uo;
+use os;
+use util;
+use math;
+use cfgfile;
+
+include "include/yesNo";
+include "include/canAccess";
+include ":gumps:gumps";
+include "include/webPage";
+include "include/eventID";
+include "include/myUtil";
+include "include/attributes";
+
+
+Program minhaconta(who)
+var conta:=who.acct;
+  GFInitGump( 40 , 90 );
+  GFNoMove();
+   GFPage(0);
+  GFResizePic( 30,  30, 2620, 540, 260);
+////  GFResizePic( 20,   0, 5120, 560, 340);
+  GFResizePic( 30, 300, 3500, 540,  30);
+  GFTextLine ( 30,  5,  33, "INFORMACOES & MARCAS DE SUA CONTA");
+var message := conta.getprop("counts");
+var i;
+var y := 40;
+var d:=666;
+
+    for(i:=3; i<=9; i:=i+1)
+     if(message[i-2] != error)
+        GFTextLine(40, y, 1153, message[i-2]);
+     else
+        GFTextLine(40, y, 1153, "");
+     endif
+      y := y + 20;
+      d := d+1;
+   endfor
+
+  GFTextLine( 65, 303, 0, "L: " +conta.name+ " - Ult. IP/Char Log.: " +conta.getprop("LastIP"));
+  
+var box:=GFSendGump(who);
+
+endprogram

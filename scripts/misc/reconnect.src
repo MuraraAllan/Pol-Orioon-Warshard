@@ -1,0 +1,50 @@
+use uo;
+use os;
+
+
+program reconnect(who)
+
+
+if(who.paralyzed == 1)
+who.paralyzed := 0;
+endif
+
+if((who.x == 1) && (who.y == 45) && (who.z == 1))
+var whoo:= { who.serial, who };
+start_script("enviarpvp", whoo);
+endif
+
+if(who.cmdlevel <= 1)
+///start_script("verclient", who);
+disconnectnome(who);
+/// var propwho:=getobjproperty(who, "verf_nome");
+/// if(propwho == "deletar")
+/// Sendsysmessage(who, "Este char deve ser deletado! DELETE-O!" , 0,33);
+/// DisconnectClient(who);
+/// endif
+endif
+
+  var mount := GetEquipmentByLayer(who, 25 );
+  if (mount)
+    var animal := SystemFindObjectBySerial(CInt(GetObjProperty(mount,"serial")));
+    EraseObjProperty(animal,"onhold");
+  endif
+  run_script_to_completion( ":motd:textcmd/player/motd", who );
+  var ppl := EnumerateOnlineCharacters();
+  if (GetObjProperty(who, "StealthLogin") )
+    return;
+  endif
+  foreach staff in ppl
+    if((staff.cmdlevel > 0) && (CInt(GetObjProperty(staff, "LogNotify") ) == 1) )
+      SendSysMessage(staff, CStr(who.name) + " (Conta: " + CStr(who.acctname) + ") Reconectou Seu IP Eh: " + CStr(who.ip) );
+    endif
+  endforeach
+endprogram
+
+function disconnectnome(who)
+var propwho:=getobjproperty(who, "verf_nome");
+ if(propwho == "deletar")
+ Sendsysmessage(who, "Este char deve ser deletado! DELETE-O!" , 0,33);
+ DisconnectClient(who);
+ endif
+endfunction

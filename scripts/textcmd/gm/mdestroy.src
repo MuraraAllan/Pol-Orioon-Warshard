@@ -1,0 +1,23 @@
+//
+// Destroy an item
+//
+
+use uo;
+
+program textcmd_destroy( who, range )
+
+    if (!range)
+        range := 1;
+    endif
+    range := CInt(range);
+
+if((who.cmdlevel < 5) && (range > 4))
+SendSysMessage(who, "Maximo 4 Tiles!",3,33);
+return;
+endif
+
+    var tgt := ListItemsNearLocation(who.x, who.y, who.z, range );
+    foreach x in tgt
+            DestroyItem( x );
+    endforeach
+endprogram

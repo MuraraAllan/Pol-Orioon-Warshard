@@ -1,0 +1,286 @@
+C:\pol2\pkg\systems\timer\timers.src, Line 8
+program timers()
+while(1)
+0: 1L
+1: if false goto 37
+foreach character in EnumerateOnlineCharacters()
+2: Func(2,0): EnumerateOnlineCharacters
+3: initforeach @31
+var sessiontime := ReadGameClock() - GetObjProperty(character,"logontime");
+4: decl local #0
+5: Func(2,1): ReadGameClock
+6: local #0
+7: "logontime"
+8: Func(2,2): GetObjProperty
+9: -
+10: :=
+11: #
+var timer := CInt(GetObjProperty(character, "onlinetimer"));
+12: decl local #1
+13: local #0
+14: "onlinetimer"
+15: Func(2,2): GetObjProperty
+16: Func(0,0): CInt
+17: :=
+18: #
+SetObjProperty(character,"onlinetimer", timer + sessiontime);
+19: local #0
+20: "onlinetimer"
+21: local #4
+22: local #3
+23: +
+24: Func(2,3): SetObjProperty
+25: #
+CheckMurderCountDecay(character);
+26: local #0
+27: makelocal
+28: jmp userfunc @38
+29: #
+30: leave block(2)
+31: stepforeach @4
+32: leave block(3)
+sleep(300);
+33: 300L
+34: Func(3,0): sleep
+35: #
+36: goto0
+37: progend
+C:\pol2\pkg\systems\timer\timers.src, Line 19
+function CheckMurderCountDecay(character);
+38: pop param 'character'
+var long_term_counts := CInt(GetObjProperty(character,"longmurders"));
+39: decl local #1
+40: local #0
+41: "longmurders"
+42: Func(2,2): GetObjProperty
+43: Func(0,0): CInt
+44: :=
+45: #
+if(long_term_counts > 0)
+46: local #1
+47: 0L
+48: >
+49: if false goto 54
+CheckLongTermCounts(character);
+50: local #0
+51: makelocal
+52: jmp userfunc @160
+53: #
+var short_term_counts := CInt(GetObjProperty(character,"shortmurders"));
+54: decl local #2
+55: local #0
+56: "shortmurders"
+57: Func(2,2): GetObjProperty
+58: Func(0,0): CInt
+59: :=
+60: #
+if(short_term_counts > 0)
+61: local #2
+62: 0L
+63: >
+64: if false goto 69
+CheckShortTermCounts(character);
+65: local #0
+66: makelocal
+67: jmp userfunc @71
+68: #
+69: 0L
+70: return
+C:\pol2\pkg\systems\timer\timers.src, Line 51
+function CheckShortTermCounts(character);
+71: pop param 'character'
+var shortdecaytime := GetObjProperty(character, "decayshortcountat");
+72: decl local #1
+73: local #0
+74: "decayshortcountat"
+75: Func(2,2): GetObjProperty
+76: :=
+77: #
+var onlinetime := GetObjProperty(character, "onlinetimer");
+78: decl local #2
+79: local #0
+80: "onlinetimer"
+81: Func(2,2): GetObjProperty
+82: :=
+83: #
+if(!shortdecaytime)
+84: local #1
+85: if true goto 97
+shortdecaytime := onlinetime + SHORT_COUNT_DECAY_TIME;
+86: local #2
+87: 28800L
+88: +
+89: local1 := 
+SetObjProperty(character, "decayshortcountat", shortdecaytime);
+90: local #0
+91: "decayshortcountat"
+92: local #1
+93: Func(2,3): SetObjProperty
+94: #
+return;
+95: ""
+96: return
+if(onlinetime > shortdecaytime)
+97: local #2
+98: local #1
+99: >
+100: if false goto 158
+var shortcount := GetObjProperty(character, "shortmurders");
+101: decl local #0
+102: local #0
+103: "shortmurders"
+104: Func(2,2): GetObjProperty
+105: :=
+106: #
+shortcount := shortcount - 1;
+107: local #3
+108: 1L
+109: -
+110: local3 := 
+SetObjProperty(character, "shortmurders", shortcount);
+111: local #0
+112: "shortmurders"
+113: local #3
+114: Func(2,3): SetObjProperty
+115: #
+if(shortcount == 4)
+116: local #3
+117: 4L
+118: ==
+119: if false goto 146
+var pingpong := CInt(GetObjProperty(character, "pingpong"));
+120: decl local #0
+121: local #0
+122: "pingpong"
+123: Func(2,2): GetObjProperty
+124: Func(0,0): CInt
+125: :=
+126: #
+pingpong := pingpong + 1;
+127: local #4
+128: 1L
+129: +
+130: local4 := 
+SetObjProperty(character, "pingpong", pingpong);
+131: local #0
+132: "pingpong"
+133: local #4
+134: Func(2,3): SetObjProperty
+135: #
+if(pingpong >= 5)
+136: local #4
+137: 5L
+138: >=
+139: if false goto 145
+SetObjProperty(character, "permared", 1);
+140: local #0
+141: "permared"
+142: 1L
+143: Func(2,3): SetObjProperty
+144: #
+145: leave block(1)
+if(shortcount > 0)
+146: local #3
+147: 0L
+148: >
+149: if false goto 157
+SetObjProperty(character, "decayshortcountat", onlinetime + SHORT_COUNT_DECAY_T
+150: local #0
+151: "decayshortcountat"
+152: local #2
+153: 28800L
+154: +
+155: Func(2,3): SetObjProperty
+156: #
+157: leave block(1)
+158: 0L
+159: return
+C:\pol2\pkg\systems\timer\timers.src, Line 30
+function CheckLongTermCounts(character);
+160: pop param 'character'
+var longdecaytime := CInt(GetObjProperty(character, "decaylongcountat"));
+161: decl local #1
+162: local #0
+163: "decaylongcountat"
+164: Func(2,2): GetObjProperty
+165: Func(0,0): CInt
+166: :=
+167: #
+var onlinetime := GetObjProperty(character, "onlinetimer");
+168: decl local #2
+169: local #0
+170: "onlinetimer"
+171: Func(2,2): GetObjProperty
+172: :=
+173: #
+if(!longdecaytime)
+174: local #1
+175: if true goto 187
+longdecaytime := onlinetime + LONG_COUNT_DECAY_TIME;
+176: local #2
+177: 144000L
+178: +
+179: local1 := 
+SetObjProperty(character, "decaylongcountat", longdecaytime);
+180: local #0
+181: "decaylongcountat"
+182: local #1
+183: Func(2,3): SetObjProperty
+184: #
+return;
+185: ""
+186: return
+if(onlinetime > longdecaytime)
+187: local #2
+188: local #1
+189: >
+190: if false goto 231
+var longcount := GetObjProperty(character, "longmurders");
+191: decl local #0
+192: local #0
+193: "longmurders"
+194: Func(2,2): GetObjProperty
+195: :=
+196: #
+longcount := longcount - 1;
+197: local #3
+198: 1L
+199: -
+200: local3 := 
+SetObjProperty(character, "longmurders", longcount);
+201: local #0
+202: "longmurders"
+203: local #3
+204: Func(2,3): SetObjProperty
+205: #
+if(longcount > 0)
+206: local #3
+207: 0L
+208: >
+209: if false goto 230
+SetObjProperty(character, "decaylongcountat", (onlinetime + LONG_COUNT_DECAY_TI
+210: local #0
+211: "decaylongcountat"
+212: local #2
+213: 144000L
+214: +
+215: Func(2,3): SetObjProperty
+216: #
+if((longcount < 5) && (!GetObjProperty(character, "permared")) )
+217: local #3
+218: 5L
+219: <
+220: local #0
+221: "permared"
+222: Func(2,2): GetObjProperty
+223: !
+224: &&
+225: if false goto 230
+character.setMurderer(0);
+226: local #0
+227: 0L
+228: Call Method setmurderer (1 params)
+229: #
+230: leave block(1)
+231: 0L
+232: return

@@ -1,0 +1,213 @@
+use os;
+use uo;
+use cfgfile;
+use util;
+use basic;
+include "../pkg/foundations/gumps/gumps";
+
+
+
+
+program mandarpara(who, text, cmd)
+var regra;
+var regra1;
+var regra2;
+var regra3;
+var regra4;
+var regra5;
+var regra6;
+var regra7;
+var regra8;
+var regra9;
+var regra10;
+
+
+ 
+text := lower(text); 
+
+  if(text == "valor")
+ 
+ if(who.cmdlevel < 1)
+ Sendsysmessage(who, "Somente staffs podem alterar as regras!", 0,33);
+ return;
+ endif
+
+  var  inscr := SendTextEntryGump( who, "Inscricao: ", 40);
+  SetGlobalProperty("inscr",inscr);
+    
+  
+  elseif(text == "vagas")
+   if(who.cmdlevel < 1)
+   Sendsysmessage(who, "Somente staffs podem alterar as regras!", 0,33);
+   return;
+   endif
+  
+  var vagas := SendTextEntryGump( who, "Vagas: ", 40);
+  SetGlobalProperty("vagas",vagas);
+
+  elseif(text == "evento")
+   if(who.cmdlevel < 1)
+   Sendsysmessage(who, "Somente staffs podem alterar as regras!", 0,33);
+   return;
+   endif
+  
+  var evento := SendTextEntryGump( who, "Evento: ", 40);
+  SetGlobalProperty("evento",evento);
+  
+
+  elseif(text == "alterar")
+
+ if(who.cmdlevel < 1)
+ Sendsysmessage(who, "Somente staffs podem alterar as regras!", 0,33);
+ return;
+ endif
+  
+  regra1 := SendTextEntryGump( who, "Regra 1: ", 40);
+  SetGlobalProperty("regra1",regra1);
+  
+  regra2 := SendTextEntryGump( who, "Regra 2: ", 40);
+  SetGlobalProperty("regra2",regra2); 
+
+  regra3 := SendTextEntryGump( who, "Regra 3: ", 40);
+  SetGlobalProperty("regra3",regra3); 
+
+  regra4 := SendTextEntryGump( who, "Regra 4: ", 40);
+  SetGlobalProperty("regra4",regra4); 
+
+  regra5 := SendTextEntryGump( who, "Regra 5: ", 40);
+  SetGlobalProperty("regra5",regra5); 
+  
+  regra6 := SendTextEntryGump( who, "Regra 6: ", 40);
+  SetGlobalProperty("regra6",regra6);
+  
+  regra7 := SendTextEntryGump( who, "Regra 7: ", 40);
+  SetGlobalProperty("regra7",regra7);  
+
+  regra8 := SendTextEntryGump( who, "Regra 8: ", 40);
+  SetGlobalProperty("regra8",regra8);
+
+  regra9 := SendTextEntryGump( who, "Regra 9: ", 40);
+  SetGlobalProperty("regra9",regra9); 
+
+  regra10 := SendTextEntryGump( who, "Regra 10: ", 40);
+  SetGlobalProperty("regra10",regra10);  
+
+
+
+else 
+
+ if(who.cmdlevel > 1)
+ Sendsysmessage(who, "Para alterar as regras digite .regras alterar", 0,55);
+ Sendsysmessage(who, "Para alterar o valor da inscricao digite .regras valor", 0,55);
+ Sendsysmessage(who, "Para alterar o nome do evento digite .regras evento", 0,55);
+ Sendsysmessage(who, "Para alterar o numero de vagas digite .regras vagas", 0,55);
+ endif
+
+
+  GFInitGump( 250 , 100 );
+
+  GFResizePic(50, 5, 5120, 300, 470);
+  GFTextLine( 175 , 15, 1153 , "Regras" );
+  
+  GFTextLine(65, 45,  62, "Evento: ");
+  GFGumpPic(120,47, 0x464);
+  GFResizePic(120,47, 0x464,220,15);
+  var evento:=GFTextEntry(120, 45, 220, 15, 62 , GetGlobalProperty("evento"));
+
+
+  GFTextLine(65, 80,  2, "Regra 1: ");
+  GFGumpPic(135,82, 0x464);
+  GFResizePic(135,82, 0x464,210,15); 
+  var regra1:=GFTextEntry(135, 80, 210, 15, 2 , GetGlobalProperty("regra1"));
+
+  GFTextLine(65, 110,  33, "Regra 2: ");
+  GFGumpPic(135,112, 0x464);
+  GFResizePic(135,112, 0x464,210,15);  
+  var regra2:=GFTextEntry(135, 110, 220, 15, 33 , GetGlobalProperty("regra2"));
+
+  GFTextLine(65, 140, 2, "Regra 3: ");
+  GFGumpPic(135,142, 0x464);
+  GFResizePic(135,142, 0x464,210,15); 
+  var regra3:=GFTextEntry(135, 140, 220, 15, 2 , GetGlobalProperty("regra3"));
+
+  GFTextLine(65, 170, 33, "Regra 4: "); 
+  GFGumpPic(135,172, 0x464);
+  GFResizePic(135,172, 0x464,210,15); 
+  var regra4:=GFTextEntry(135, 170, 220, 15, 33 , GetGlobalProperty("regra4"));
+
+  GFTextLine(65, 200, 2, "Regra 5: "); 
+  GFGumpPic(135,202, 0x464);
+  GFResizePic(135,202, 0x464,210,15); 
+  var regra5:=GFTextEntry(135, 200, 220, 15,2 , GetGlobalProperty("regra5"));
+
+  GFTextLine(65, 230, 33, "Regra 6: ");
+  GFGumpPic(135,232, 0x464);
+  GFResizePic(135,232, 0x464,210,15); 
+  var regra6:=GFTextEntry(135, 230, 220, 15,33 , GetGlobalProperty("regra6"));
+
+  GFTextLine(65, 260, 2, "Regra 7: "); 
+  GFGumpPic(135,262, 0x464);
+  GFResizePic(135,262, 0x464,210,15); 
+  var regra7:=GFTextEntry(135, 260, 220, 15,2 , GetGlobalProperty("regra7"));
+
+  GFTextLine(65, 290, 33, "Regra 8: "); 
+  GFGumpPic(135,292, 0x464);
+  GFResizePic(135,292, 0x464,210,15); 
+  var regra8:=GFTextEntry(135, 290, 220, 15,33 , GetGlobalProperty("regra8"));
+
+  GFTextLine(65, 320, 2, "Regra 9: ");
+  GFGumpPic(135,322, 0x464);
+  GFResizePic(135,322, 0x464,210,15); 
+  var regra9:=GFTextEntry(135, 320, 220, 15,2 , GetGlobalProperty("regra9"));
+
+  GFTextLine(65, 350, 33, "Regra 10: ");
+  GFGumpPic(135,352, 0x464);
+  GFResizePic(135,352, 0x464,210,15); 
+  var regra10:=GFTextEntry(135, 350, 220, 15,33 , SplitWords(GetGlobalProperty("regra10")));
+
+  GFTextLine(65, 380, 53, "Inscricao: ");
+  GFGumpPic(135,382, 0x464);
+  GFResizePic(135,382, 0x464,210,15); 
+  var valor:=GFTextEntry(135, 380, 220, 15,33 , GetGlobalProperty("inscr"));
+
+  GFTextLine(65, 410, 53, "Vagas: ");
+  GFGumpPic(125,412, 0x464);
+  GFResizePic(125,412, 0x464,210,15); 
+  var vagas:=GFTextEntry(125, 410, 220, 15,33 , GetGlobalProperty("vagas"));
+
+  var ok := GFButtonID(170, 440, 0xf9, 0xf8, 1);
+  var res:=GFSendGump(who);
+
+
+if(res[ok.keyid]) 
+SetGlobalProperty("regra1",Cdbl(regra1)); 
+SetGlobalProperty("regra2",Cdbl(regra2)); 
+SetGlobalProperty("regra3",Cdbl(regra3)); 
+SetGlobalProperty("regra4",Cdbl(regra4)); 
+SetGlobalProperty("regra5",Cdbl(regra5)); 
+SetGlobalProperty("regra6",Cdbl(regra6)); 
+SetGlobalProperty("regra7",Cdbl(regra7)); 
+SetGlobalProperty("regra8",Cdbl(regra8)); 
+SetGlobalProperty("regra9",Cdbl(regra9)); 
+SetGlobalProperty("regra10",regra10); 
+
+endif
+    
+
+//SplitWords( str );
+
+
+
+
+
+
+ 
+
+ 
+ 
+
+
+
+endif
+
+endprogram

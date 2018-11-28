@@ -1,0 +1,123 @@
+use uo;
+
+program montaria_teste(npc, aa, who)
+
+var mont;
+sendsysmessage(who,"Quem voce deseja que monte?",0x9,90);
+var eu := Target(npc);
+
+var x := GetEquipmentByLayer(eu, 25);
+DestroyItem(x);
+
+if (aa == "cavalo1")
+mont := CreateItemAtLocation(0, 0, 0, 0xF021);
+mont.graphic := 0x3ea2;
+EquipItem(eu, mont);
+endif
+
+if (aa == "cavalo2")
+mont := CreateItemAtLocation(0, 0, 0, 0xF021);
+mont.graphic := 0x3e9f;
+EquipItem(eu, mont);
+endif
+
+if (aa == "cavalo3")
+mont := CreateItemAtLocation(0, 0, 0, 0xF021);
+mont.graphic := 0x3ea0;
+EquipItem(eu, mont);
+endif
+
+if (aa == "cavalo4")
+mont := CreateItemAtLocation(0, 0, 0, 0xF021);
+mont.graphic := 0x3ea1;
+EquipItem(eu, mont);
+endif
+
+if (aa == "lhama")
+mont := CreateItemAtLocation(0, 0, 0, 0xF021);
+mont.graphic := 0x3ea6;
+EquipItem(eu, mont);
+endif
+
+if (aa == "od")
+mont := CreateItemAtLocation(0, 0, 0, 0xF021);
+mont.graphic := 0x3ea3;
+EquipItem(eu, mont);
+endif
+
+if (aa == "oa")
+mont := CreateItemAtLocation(0, 0, 0, 0xF021);
+mont.graphic := 0x3ea4;
+EquipItem(eu, mont);
+endif
+
+if (aa == "ostraro")
+mont := CreateItemAtLocation(0, 0, 0, 0xF021);
+mont.graphic := 0x3ea4;
+mont.color := 1154;
+EquipItem(eu, mont);
+endif
+
+if (aa == "of")
+mont := CreateItemAtLocation(0, 0, 0, 0xF021);
+mont.graphic := 0x3ea5;
+EquipItem(eu, mont);
+endif
+
+if (aa == "fantasma")
+mont := CreateItemAtLocation(0, 0, 0, 0xF021);
+mont.graphic := 0;
+EquipItem(eu, mont);
+endif
+
+if (aa == "unicornio")
+mont := CreateItemAtLocation(0, 0, 0, 0xF021);
+mont.graphic := 0x3e9f;
+mont.color := 1153;
+EquipItem(eu, mont);
+endif
+
+if (aa == "pesadelo")
+mont := CreateItemAtLocation(0, 0, 0, 0xF021);
+mont.graphic := 0x3e9f;
+mont.color := 1109;
+EquipItem(eu, mont);
+endif
+
+if (aa == "sb")
+mont := CreateItemAtLocation(0, 0, 0, 0xF021);
+mont.graphic := 0x3ea1;
+mont.color := 1154;
+EquipItem(eu, mont);
+endif
+
+if (aa == "cs")
+mont := CreateItemAtLocation(0, 0, 0, 0xF021);
+mont.graphic := 0x3ea1;
+mont.color := 637;
+EquipItem(eu, mont);
+endif
+
+if (aa == "corcel")
+mont := CreateItemAtLocation(0, 0, 0, 0xF021);
+mont.graphic := 0x3e9f;
+mont.color := 1106;
+EquipItem(eu, mont);
+endif
+
+if (aa == "swamp1")
+mont := CreateItemAtLocation(0, 0, 0, 0x3c);
+mont.graphic := 0x03f0e;
+mont.color := 0;
+EquipItem(eu, mont);
+endif
+
+if (aa == "unifantasma")
+mont := CreateItemAtLocation(0, 0, 0, 0xF021);
+mont.graphic := 0x3e9d;
+///mont.color := 0;
+EquipItem(eu, mont);
+endif
+
+
+endprogram

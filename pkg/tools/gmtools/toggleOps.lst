@@ -1,0 +1,40 @@
+C:\pol2\pkg\tools\gmtools\toggleOps.src, Line 3
+program toggleops(who, item)
+use uo;
+0: get arg 'who'
+1: get arg 'item'
+print("toggleops");
+2: "toggleops"
+3: Func(1,0): print
+4: #
+if(who.cmdlevel > 0)
+5: local #0
+6: get member 'cmdlevel'
+7: 0L
+8: >
+9: if false goto 20
+who.cmdlevel := 0;
+10: local #0
+11: 0L
+12: set member 'cmdlevel' #
+SendSysMessage(who, "You're a player.");
+13: local #0
+14: "You're a player."
+15: 3L
+16: 1000L
+17: Func(2,0): SendSysMessage
+18: #
+19: goto29
+who.cmdlevel := 5;
+20: local #0
+21: 5L
+22: set member 'cmdlevel' #
+SendSysMessage(who, "You're an admin.");
+23: local #0
+24: "You're an admin."
+25: 3L
+26: 1000L
+27: Func(2,0): SendSysMessage
+28: #
+29: leave block(2)
+30: progend

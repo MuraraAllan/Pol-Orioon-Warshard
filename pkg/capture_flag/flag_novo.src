@@ -1,0 +1,19 @@
+use uo;
+use os;
+
+program flag_walk(flag)
+
+var x:=flag[1];
+var y:=flag[2];
+var z:=flag[3];
+
+BroadCast("X: " +x );
+BroadCast("y: " +y );
+BroadCast("z: " +z );
+sleepms(20);
+ var newflag:=CreateItemAtLocation( x, y, z+1, 0x666001, 1 );
+ if(!newflag)
+  BroadCast("Erro!");
+ endif
+ newflag.movable:=0;
+endprogram

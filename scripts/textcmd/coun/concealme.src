@@ -1,0 +1,22 @@
+use uo;
+use os;
+
+include "include/client";
+
+program concealme(who, txt)
+PlaySoundEffect( who, SFX_SPELL_EXPLOSION );
+PlayStationaryEffect( who.x,who.y,who.z, FX_EXPLODE_3, 7, 0x10 );
+PlayObjectCenteredEffect(who, 0x3709, 0x0a, 0x1e );
+PlayObjectCenteredEffect(who, 0x3740, 0x0a, 0x1e );
+PlaySoundEffect( who, SFX_SPELL_FLAME_STRIKE );
+sleep(2);
+txt := CInt(txt);
+  if(!txt)
+    txt := 1;
+  endif
+  if(txt > who.cmdlevel)
+    txt := who.cmdlevel;
+  endif
+  who.concealed := txt;
+  sendsysmessage(who,"testando cor",9,89);
+endprogram

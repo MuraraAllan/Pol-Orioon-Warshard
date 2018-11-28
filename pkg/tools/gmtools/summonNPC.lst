@@ -1,0 +1,344 @@
+C:\pol2\pkg\tools\gmtools\summonNPC.src, Line 5
+program summonnpc(who,item)
+use util;
+0: get arg 'who'
+1: get arg 'item'
+if (who.cmdlevel < 2)
+2: local #0
+3: get member 'cmdlevel'
+4: 2L
+5: <
+6: if false goto 9
+return;
+7: ""
+8: progend
+var monlink := GetObjProperty(item,"mobilearray");
+9: decl local #2
+10: local #1
+11: "mobilearray"
+12: Func(2,0): GetObjProperty
+13: :=
+14: #
+if (!monlink)
+15: local #2
+16: if true goto 25
+SendSysMessage(who, "no mobiles attached.");
+17: local #0
+18: "no mobiles attached."
+19: 3L
+20: 1000L
+21: Func(2,1): SendSysMessage
+22: #
+return;
+23: ""
+24: progend
+var radius := CInt(SendTextEntryGump( who, "what radius would you like them to 
+25: decl local #3
+26: local #0
+27: "what radius would you like them to spawn in? (Min 1, Max 10)"
+28: 40L
+29: 1L
+30: 40L
+31: ""
+32: Func(2,2): SendTextEntryGump
+33: Func(0,0): CInt
+34: :=
+35: #
+if(!radius)
+36: local #3
+37: if true goto 40
+return;
+38: ""
+39: progend
+var arraysize := len(monlink);
+40: decl local #4
+41: local #2
+42: Func(0,1): len
+43: :=
+44: #
+var i := 0;
+45: decl local #5
+46: 0L
+47: :=
+48: #
+var newx, newy, newz;
+49: decl local #6
+50: #
+51: decl local #7
+52: #
+53: decl local #8
+54: #
+for (i:=1;i<=arraysize;i:=i+1)
+55: local #5
+56: 1L
+57: :=
+58: #
+59: local #5
+60: local #4
+61: <=
+62: if false goto 289
+var monstr := SystemFindObjectBySerial(monlink[i]);
+63: decl local #0
+64: local #2
+65: local #5
+66: [] 1
+67: 0L
+68: Func(2,3): SystemFindObjectBySerial
+69: :=
+70: #
+case(radius)
+71: local #3
+72: casejmp
+	1: @73
+	2: @92
+	3: @111
+	4: @130
+	5: @149
+	6: @168
+	7: @187
+	8: @206
+	9: @225
+	10: @244
+	default: @262
+newx := who.x + RandomInt( 1) - RandomInt( 1);    newy := who.y + RandomInt( 1)
+73: local #0
+74: get member 'x'
+75: 1L
+76: Func(4,0): RandomInt
+77: +
+78: 1L
+79: Func(4,0): RandomInt
+80: -
+81: local6 := 
+newy := who.y + RandomInt( 1) - RandomInt( 1);
+82: local #0
+83: get member 'y'
+84: 1L
+85: Func(4,0): RandomInt
+86: +
+87: 1L
+88: Func(4,0): RandomInt
+89: -
+90: local7 := 
+91: goto262
+newx := who.x + RandomInt( 2) - RandomInt( 2);    newy := who.y + RandomInt( 2)
+92: local #0
+93: get member 'x'
+94: 2L
+95: Func(4,0): RandomInt
+96: +
+97: 2L
+98: Func(4,0): RandomInt
+99: -
+100: local6 := 
+newy := who.y + RandomInt( 2) - RandomInt( 2);
+101: local #0
+102: get member 'y'
+103: 2L
+104: Func(4,0): RandomInt
+105: +
+106: 2L
+107: Func(4,0): RandomInt
+108: -
+109: local7 := 
+110: goto262
+newx := who.x + RandomInt( 3) - RandomInt( 3);    newy := who.y + RandomInt( 3)
+111: local #0
+112: get member 'x'
+113: 3L
+114: Func(4,0): RandomInt
+115: +
+116: 3L
+117: Func(4,0): RandomInt
+118: -
+119: local6 := 
+newy := who.y + RandomInt( 3) - RandomInt( 3);
+120: local #0
+121: get member 'y'
+122: 3L
+123: Func(4,0): RandomInt
+124: +
+125: 3L
+126: Func(4,0): RandomInt
+127: -
+128: local7 := 
+129: goto262
+newx := who.x + RandomInt( 4) - RandomInt( 4);    newy := who.y + RandomInt( 4)
+130: local #0
+131: get member 'x'
+132: 4L
+133: Func(4,0): RandomInt
+134: +
+135: 4L
+136: Func(4,0): RandomInt
+137: -
+138: local6 := 
+newy := who.y + RandomInt( 4) - RandomInt( 4);
+139: local #0
+140: get member 'y'
+141: 4L
+142: Func(4,0): RandomInt
+143: +
+144: 4L
+145: Func(4,0): RandomInt
+146: -
+147: local7 := 
+148: goto262
+newx := who.x + RandomInt( 5) - RandomInt( 5);    newy := who.y + RandomInt( 5)
+149: local #0
+150: get member 'x'
+151: 5L
+152: Func(4,0): RandomInt
+153: +
+154: 5L
+155: Func(4,0): RandomInt
+156: -
+157: local6 := 
+newy := who.y + RandomInt( 5) - RandomInt( 5);
+158: local #0
+159: get member 'y'
+160: 5L
+161: Func(4,0): RandomInt
+162: +
+163: 5L
+164: Func(4,0): RandomInt
+165: -
+166: local7 := 
+167: goto262
+newx := who.x + RandomInt( 6) - RandomInt( 6);    newy := who.y + RandomInt( 6)
+168: local #0
+169: get member 'x'
+170: 6L
+171: Func(4,0): RandomInt
+172: +
+173: 6L
+174: Func(4,0): RandomInt
+175: -
+176: local6 := 
+newy := who.y + RandomInt( 6) - RandomInt( 6);
+177: local #0
+178: get member 'y'
+179: 6L
+180: Func(4,0): RandomInt
+181: +
+182: 6L
+183: Func(4,0): RandomInt
+184: -
+185: local7 := 
+186: goto262
+newx := who.x + RandomInt( 7) - RandomInt( 7);    newy := who.y + RandomInt( 7)
+187: local #0
+188: get member 'x'
+189: 7L
+190: Func(4,0): RandomInt
+191: +
+192: 7L
+193: Func(4,0): RandomInt
+194: -
+195: local6 := 
+newy := who.y + RandomInt( 7) - RandomInt( 7);
+196: local #0
+197: get member 'y'
+198: 7L
+199: Func(4,0): RandomInt
+200: +
+201: 7L
+202: Func(4,0): RandomInt
+203: -
+204: local7 := 
+205: goto262
+newx := who.x + RandomInt( 8) - RandomInt( 8);    newy := who.y + RandomInt( 8)
+206: local #0
+207: get member 'x'
+208: 8L
+209: Func(4,0): RandomInt
+210: +
+211: 8L
+212: Func(4,0): RandomInt
+213: -
+214: local6 := 
+newy := who.y + RandomInt( 8) - RandomInt( 8);
+215: local #0
+216: get member 'y'
+217: 8L
+218: Func(4,0): RandomInt
+219: +
+220: 8L
+221: Func(4,0): RandomInt
+222: -
+223: local7 := 
+224: goto262
+newx := who.x + RandomInt( 9) - RandomInt( 9);    newy := who.y + RandomInt( 9)
+225: local #0
+226: get member 'x'
+227: 9L
+228: Func(4,0): RandomInt
+229: +
+230: 9L
+231: Func(4,0): RandomInt
+232: -
+233: local6 := 
+newy := who.y + RandomInt( 9) - RandomInt( 9);
+234: local #0
+235: get member 'y'
+236: 9L
+237: Func(4,0): RandomInt
+238: +
+239: 9L
+240: Func(4,0): RandomInt
+241: -
+242: local7 := 
+243: goto262
+newx := who.x + RandomInt(10) - RandomInt(10);    newy := who.y + RandomInt(10)
+244: local #0
+245: get member 'x'
+246: 10L
+247: Func(4,0): RandomInt
+248: +
+249: 10L
+250: Func(4,0): RandomInt
+251: -
+252: local6 := 
+newy := who.y + RandomInt(10) - RandomInt(10);
+253: local #0
+254: get member 'y'
+255: 10L
+256: Func(4,0): RandomInt
+257: +
+258: 10L
+259: Func(4,0): RandomInt
+260: -
+261: local7 := 
+newz:= GetWorldHeight(newx, newy);
+262: local #6
+263: local #7
+264: Func(2,4): GetWorldHeight
+265: local8 := 
+if ( !MoveCharacterToLocation(monstr, newx, newy, newz, MOVECHAR_FORCELOCATION)
+266: local #9
+267: local #6
+268: local #7
+269: local #8
+270: 1073741824L
+271: Func(2,5): MoveCharacterToLocation
+272: if true goto 281
+SendSysMessage(who, "NPC no longer exists.");
+273: local #0
+274: "NPC no longer exists."
+275: 3L
+276: 1000L
+277: Func(2,1): SendSysMessage
+278: #
+return;
+279: ""
+280: progend
+281: leave block(1)
+282: local #5
+283: local #5
+284: 1L
+285: +
+286: :=
+287: #
+288: goto59
+289: leave block(9)
+290: progend

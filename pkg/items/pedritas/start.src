@@ -1,0 +1,123 @@
+use uo;
+use os;
+
+include "include/client";
+include "include/eventID";
+include "include/attributes";
+include "include/skillLists";
+include "../pkg/foundations/gumps/gumps";
+
+
+program start ( who )
+
+var classe:=GetObjProperty(who, "classe");
+
+
+if((classe == "trabalhador") || (classe == "guerreiro"))
+sendsysmessage(who, "Voce ja possui uma classe...", 3,89);
+gumpcidade(who);
+return;
+endif
+
+///sexo///
+if(who.graphic == 400)
+SetObjProperty( who, "sexo", "homem");
+endif
+
+if(who.graphic == 401)
+SetObjProperty( who, "sexo", "mulher");
+endif
+///sexo///
+who.paralyzed:=1;
+sendsysmessage(who, "Selecione sua classe...", 3,89);
+
+  GFInitGump( 250 , 100 );
+  GFNoClose();
+  GFNoMove();
+  GFResizePic(50, 5, 2600, 265, 230);
+  GFTextLine( 115 , 20, 1153 , "Selecione sua Classe" );
+  var war := GFButtonID( 100, 85, 0x15b9, 0x15ba, 1);
+  var work := GFButtonID( 200, 85, 0x15b3, 0x15b4, 1);
+ 
+  GFTextLine(100, 150, 33 , "Guerreiro"); 
+  GFTextLine(192, 150, 33 , "Trabalhador"); 
+  GFTextLine(155, 190,1153, "#Sysco"); 
+ 
+  var res := GFSendGump(who);
+
+
+if(res[war.keyid]) 
+    sendsysmessage(who, "Voce foi setado como Guerreiro!",9,89);
+var a := ", Player Do Sysco WS (Guerreiro)";
+who.title_suffix := ", Player Do Sysco WS (Guerreiro)";
+SetObjProperty( who, "titullo", a );
+
+var bolsa := who.backpack;
+foreach coisasnabolsa in EnumerateItemsInContainer(bolsa)
+DestroyItem(coisasnabolsa);
+endforeach
+var book := CreateItemInBackpack( who, 0x0efa, 1 );
+var scroll;
+for( scroll := 0x1f2d; scroll <= 0x1f6c; scroll := scroll + 1 )
+CreateItemInContainer( book, scroll, 1 );
+endfor
+///var gold := CreateItemInBackpack(who, 3821, 6000);
+gumpcidade(who);
+SetObjProperty( who, "classe", "guerreiro");
+CreateItemInBackpack(who, 3821, 1000);
+who.paralyzed:=0;
+return;
+    endif
+
+
+
+if(res[work.keyid]) 
+    sendsysmessage(who, "Voce foi setado como Trabalhador!",9,89);
+
+var a := ", Player Do Sysco WS (Trabalhador)";
+who.title_suffix := ", Player Do Sysco WS (Trabalhador)";
+SetObjProperty( who, "titullo", a );
+
+var bolsa := who.backpack;
+foreach coisasnabolsa in EnumerateItemsInContainer(bolsa)
+DestroyItem(coisasnabolsa);
+endforeach
+var book := CreateItemInBackpack( who, 0x0efa, 1 );
+var scroll;
+for( scroll := 0x1f2d; scroll <= 0x1f6c; scroll := scroll + 1 )
+CreateItemInContainer( book, scroll, 1 );
+endfor
+///var gold := CreateItemInBackpack(who, 3821, 6000);
+gumpcidade(who);
+SetObjProperty( who, "classe", "trabalhador");
+CreateItemInBackpack(who, 3821, 1000);
+who.paralyzed:=0;
+return;
+    endif
+
+endprogram
+
+function gumpcidade(who)
+
+var gump := CreateMenu("Selecione sua cidade natal...");
+
+AddMenuItem(gump, 3546, "Britain (Protegida)");
+AddMenuItem(gump, 3546, "Minoc (Protegida)");
+AddMenuItem(gump, 3546, "Cove (Desprotegida)");
+
+
+var thetarget := SelectMenuItem2(who, gump);
+      if(!thetarget)
+        gumpcidade(who);
+        return;
+      endif
+
+    case(thetarget.index)
+      1: MoveCharacterToLocation( who, 1475,1672,1, MOVECHAR_FORCELOCATION );
+	 SetObjProperty(who, "cidade_natal", "brit");
+      2: MoveCharacterToLocation( who, 2539,501,31, MOVECHAR_FORCELOCATION );
+	 SetObjProperty(who, "cidade_natal", "minoc");
+      3: MoveCharacterToLocation( who, 2244,1214,1, MOVECHAR_FORCELOCATION );
+	 SetObjProperty(who, "cidade_natal", "cove");
+    endcase
+endfunction

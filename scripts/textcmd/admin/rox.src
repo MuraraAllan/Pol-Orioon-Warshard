@@ -1,0 +1,33 @@
+use uo;
+use os;
+use util;
+
+include "include/client";
+include "include/attributes";
+include "include/spellAttack";
+include "include/spellRestrictions";
+
+program cast_fireball( caster, effect, sound )
+
+var tsound := CInt(sound);
+var teffect := CInt(effect);
+
+    var parms := {};
+    var cast_on := Target( caster );
+    if (!cast_on)
+        return;
+    endif
+
+    // FIXME make sure you targetted a mobile
+
+
+     PlaySoundEffect( cast_on, tsound  );
+    PlayMovingEffect( caster, cast_on,
+                      teffect,
+                      5,
+                       1 );
+sleep(1);
+PlaySoundEffect( cast_on, SFX_SPELL_EXPLOSION );
+PlayStationaryEffect( cast_on.x, cast_on.y, cast_on.z, FX_SMOKE, 0xa, 0xa );
+Damage( cast_on, 0  ); 
+endprogram

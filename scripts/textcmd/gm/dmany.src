@@ -1,0 +1,16 @@
+use uo;
+
+program textcmd_dmany(who)
+  var trg;
+  while(1)
+    sendsysmessage(who,"Selecione o que voce deseja destruir ao redor.",0x9,90);
+    trg := Target(who);
+    if(!trg)
+      sendsysmessage(who,"Cancelado",0x9,90);
+      break;
+    endif
+    foreach item in ListItemsNearLocation(trg.x, trg.y, trg.z, 1);
+      DestroyItem(item);
+    endforeach
+  endwhile
+endprogram

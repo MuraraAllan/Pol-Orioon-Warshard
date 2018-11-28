@@ -1,0 +1,26 @@
+use uo;
+use os; 
+
+program bcastas(who, text)
+var a := getglobalproperty("conon");
+var staffs := 0;
+
+
+foreach char in EnumerateOnlineCharacters()
+
+if((char.cmdlevel >= 3))
+staffs:= staffs + 1;
+endif
+
+var staffss:= Getglobalproperty("gmon");
+if(staffss == 0)
+sendsysmessage(who,"Os Gm's ja estao offline, portanto este comando se cancelara!");
+return;
+endif
+
+SendSysMessage(who, "Gm's OnLine: " + staffss);
+Sendsysmessage(who, "Voce esta setando todos os Gm's offline , procure usar este comando somente para realizar eventos e etc... para o bom desenvolvimento do servidor!");
+SetGlobalProperty("gmon",0);
+return;
+endforeach
+endprogram

@@ -1,0 +1,21 @@
+use uo;
+
+program textcmd_lockdown(who)
+
+        SendSysMessage(who, "Selecione o que voce deseja trancar/destrancar.",0x9,90);
+        var what := Target(who, TGTOPT_NOCHECK_LOS);
+
+        if (!what)
+                SendSysMessage(who, "Cancelado.",0x9,90);
+                return;
+        endif
+
+        if (what.movable == 0)
+                SendSysMessage(who, "Destrancado.",0x9,90);
+                what.movable := 1;
+        else
+                SendSysMessage(who, "Trancado.",0x9,90);
+                what.movable := 0;
+        endif
+
+endprogram

@@ -1,0 +1,87 @@
+C:\pol2\pkg\items\traps\poisonTrapTriggered.src, Line 9
+program trigger_poison_trap(parms)
+const FX_POISON_GAS := 0x113a;
+0: get arg 'parms'
+var who := parms[1];
+1: decl local #1
+2: local #0
+3: 1L
+4: [] 1
+5: :=
+6: #
+var item := parms[2];
+7: decl local #2
+8: local #0
+9: 2L
+10: [] 1
+11: :=
+12: #
+var trapstrength := parms[3];
+13: decl local #3
+14: local #0
+15: 3L
+16: [] 1
+17: :=
+18: #
+var message := parms[4];
+19: decl local #4
+20: local #0
+21: 4L
+22: [] 1
+23: :=
+24: #
+PlaySoundEffect(who, SFX_232);
+25: local #1
+26: 562L
+27: Func(2,3): PlaySoundEffect
+28: #
+PrintTextAbovePrivate(who, message, who);
+29: local #1
+30: local #4
+31: local #1
+32: 3L
+33: 1000L
+34: Func(2,4): PrintTextAbovePrivate
+35: #
+PlayStationaryEffect( item.x, item.y, item.z, FX_POISON_GAS, 10,10);
+36: local #2
+37: get member 'x'
+38: local #2
+39: get member 'y'
+40: local #2
+41: get member 'z'
+42: 4410L
+43: 10L
+44: 10L
+45: 0L
+46: Func(2,5): PlayStationaryEffect
+47: #
+start_script( ":spells:poisonDamage", {who,"","poison trap",trapstrength} );
+48: ":spells:poisonDamage"
+49: array
+50: local #1
+51: +=
+52: ""
+53: +=
+54: "poison trap"
+55: +=
+56: local #3
+57: +=
+58: Func(3,3): start_script
+59: #
+item.usescript := "";
+60: local #2
+61: ""
+62: set member 'usescript' #
+EraseObjProperty( item, "trap_type" );
+63: local #2
+64: "trap_type"
+65: Func(2,6): EraseObjProperty
+66: #
+EraseObjProperty( item, "trap_strength" );
+67: local #2
+68: "trap_strength"
+69: Func(2,6): EraseObjProperty
+70: #
+71: leave block(5)
+72: progend

@@ -1,0 +1,59 @@
+C:\pol2\pkg\systems\daynight\snowRain.src, Line 4
+program SnowAndRain(sev)
+use os;
+0: get arg 'sev'
+var wstuff := GetGlobalProperty("Weather");
+1: decl local #1
+2: "Weather"
+3: Func(2,0): GetGlobalProperty
+4: :=
+5: #
+var weathercheck := wstuff[7];
+6: decl local #2
+7: local #1
+8: 7L
+9: [] 1
+10: :=
+11: #
+while(wstuff[7] == weathercheck)
+12: local #1
+13: 7L
+14: [] 1
+15: local #2
+16: ==
+17: if false goto 46
+if (wstuff[8] == 2)
+18: local #1
+19: 8L
+20: [] 1
+21: 2L
+22: ==
+23: if false goto 32
+SetRegionWeatherLevel( "Background", 2, sev, 0, -1);
+24: "Background"
+25: 2L
+26: local #0
+27: 0L
+28: -1L
+29: Func(2,1): SetRegionWeatherLevel
+30: #
+31: goto39
+SetRegionWeatherLevel( "Background", 1, sev, 0, -1);
+32: "Background"
+33: 1L
+34: local #0
+35: 0L
+36: -1L
+37: Func(2,1): SetRegionWeatherLevel
+38: #
+wstuff := GetGlobalProperty("Weather");
+39: "Weather"
+40: Func(2,0): GetGlobalProperty
+41: local1 := 
+sleep(30);
+42: 30L
+43: Func(3,0): sleep
+44: #
+45: goto12
+46: leave block(3)
+47: progend

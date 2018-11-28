@@ -1,0 +1,88 @@
+use uo;
+use os;
+use util;
+use math;
+use cfgfile;
+
+include "include/yesNo";
+include "include/canAccess";
+include ":gumps:gumps";
+include "include/webPage";
+include "include/eventID";
+include "include/myUtil";
+include "include/attributes";
+
+
+Program SetNotes(who, text)
+SendSysMessage(who, "Use '.gmtools'", 3,95);
+return;
+
+
+var alvo:=target(who);
+var acc1:=alvo.acctname;
+var acc := FindAccount(acc1);
+var nomeplayer:=alvo.name;
+
+if((!alvo) || (!acc1))
+ nomeplayer:="";
+ alvo := SendTextEntryGump(who, "Login?", 0, 1, 26, "Digite o login da acc...");
+acc1:=alvo;
+acc := FindAccount(acc1);
+endif
+
+if(!alvo)
+SendSysMessage(who, "Cancelado!", 3,70);
+return;
+endif
+
+  GFInitGump();
+  GFPage(0);
+  GFResizePic( 20,   0, 5120, 560, 340);
+  GFResizePic( 30,  30, 2620, 540, 260);
+  GFResizePic( 30, 300, 3500, 540,  30);
+  GFTextLine ( 30,  5,  910, "Acc do Player: " +nomeplayer+ ".");
+  GFTextLine (465,  5,  910, "Salvar");
+  var bt2 := GFButtonID(526, 5, 4011, 4013, 1, 2);
+  var i;
+  var message := acc.getprop("counts");
+  var y := 40;
+  if(message[1] == "NONE")
+    for(i:=3; i<=14; i:=i+1)
+      GFTextEntry(40, y, 500, 20, 910, "");
+      y := y + 20;
+    endfor
+  else
+    for(i:=3; i<=14; i:=i+1)
+      if(message[i-2] != error)
+        GFTextEntry(40, y, 500, 20, 910, message[i-2]);
+      else
+        GFTextEntry(40, y, 500, 20, 910, "");
+      endif
+      y := y + 20;
+    endfor
+  endif
+  GFTextLine( 40, 305, 0, "Login: " +acc.name+ " - Ultimo IP/Char Logado: " +acc.getprop("LastIP"));
+  
+var box:=GFSendGump(who);
+
+
+if(box[bt2.keyid])
+  var subnote, i, message:= {};
+  foreach thing in (box.keys)
+    if(thing == 525)
+      subnote := box[thing];
+      subnote[1, find(subnote, ": ", 1)+1] := "";
+    elseif((thing != 0) and (thing != 2))
+      subnote := box[thing];
+      subnote[1, find(subnote, ": ", 1)+1] := "";
+      if(subnote != "")
+        message.append(subnote + " ");
+      endif
+    endif
+  endforeach
+  acc.setprop("counts", message);
+  SendSysMessage(who, "Alteracoes Salvas!", 3,70);
+else
+SendSysMessage(who, "Alteracoes NAO Salvas!", 3,33);
+endif
+endprogram

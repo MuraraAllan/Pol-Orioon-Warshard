@@ -1,0 +1,75 @@
+use uo;
+use os;
+include "include/attributes";
+include "../pkg/foundations/gumps/gumps";
+
+
+program arena(who, item)
+DestroyItem(item);
+return;
+
+  var chka := CInt(GetObjProperty(who, "delaydg"));
+  var time := chka - Readgameclock() ;
+  
+  if(chka >= ReadGameClock())
+  SendSysMessage(who, "Voce precisa esperar "+ time +" segundos para usar novamente a pedra de dungeons!",9,89);
+  return;
+  endif
+
+GFInitGump( 50, 20 );
+GFNoMove();
+GFResizePic(50, 20, 2600, 200, 260);
+
+  GFTextLine( 121 , 45, 1153 , "Dungeons" );
+  var bt2 := GFButtonID( 75, 81, 0x138a, 0x138b, 1);
+  var bt3 := GFButtonID( 75, 111, 0x138a, 0x138b, 1);
+  var bt4 := GFButtonID( 75, 141,0x138a, 0x138b, 1);
+  var bt5 := GFButtonID( 75, 171,0x138a, 0x138b, 1);
+  var bt6 := GFButtonID( 75, 201,0x138a, 0x138b, 1);
+ 
+  GFTextLine(100, 80, 167, "Dg de Wrong"); 
+  GFTextLine(100, 110,167, "Dg de Wind"); 
+  GFTextLine(100, 140, 167, "Dg de Destard"); 
+///   GFTextLine(200, 140, 33, "(Desenvolvimento)"); 
+  GFTextLine(100, 170, 167, "Fire Temple"); 
+  GFTextLine(100, 200, 167, "Cemiterio"); 
+///   GFTextLine(200, 200, 33, "(Desenvolvimento)"); 
+  GFTextLine( 123 , 245, 33 , "#Sysco" );
+ 
+
+  var res := GFSendGump(who);
+  
+           
+
+if(res[bt2.keyid]) 
+MoveCharacterToLocation(who, 5825,629,0 );
+SetObjProperty(who, "delaydg", ReadGameClock() + 25 );
+broadcast(who.name + ", Entrou na Dungeon de Wrong!",9,89);
+endif 
+               
+ 
+if(res[bt3.keyid]) 
+MoveCharacterToLocation(who,  5211,22,15 );
+SetObjProperty(who, "delaydg", ReadGameClock() + 25 );
+broadcast(who.name + ", Entrou na Dungeon de Wind!",9,89);
+endif
+
+if(res[bt4.keyid]) 
+MoveCharacterToLocation(who,  5244,1005,0 );
+SetObjProperty(who, "delaydg", ReadGameClock() + 25);
+broadcast(who.name + ", Entrou na Dungeon de Destard!",9,89);
+endif
+
+if(res[bt5.keyid]) 
+MoveCharacterToLocation(who,  4590,3618,30 );
+SetObjProperty(who, "delaydg", ReadGameClock() + 25 );
+broadcast(who.name + ", Entrou em Fire Temple!",9,89);
+endif
+
+if(res[bt6.keyid]) 
+MoveCharacterToLocation(who,  2780,878,0 );
+SetObjProperty(who, "delaydg", ReadGameClock() + 25 );
+broadcast(who.name + ", Entrou no Cemiterio Maudito!",9,89);
+endif
+
+endprogram

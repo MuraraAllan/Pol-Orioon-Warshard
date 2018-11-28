@@ -1,0 +1,130 @@
+C:\pol2\pkg\items\commcrystals\crystalControl.src, Line 7
+program receivercontrol(crystal);
+const SYSEVENT_RESERVED_80000000    := 0x80000000;
+0: get arg 'crystal'
+var i, j, placeholder, evwaiting, receiver, Links, LinkList, LinkCount;
+1: decl local #1
+2: #
+3: decl local #2
+4: #
+5: decl local #3
+6: #
+7: decl local #4
+8: #
+9: decl local #5
+10: #
+11: decl local #6
+12: #
+13: decl local #7
+14: #
+15: decl local #8
+16: #
+RegisterForSpeechEvents(crystal, 1);
+17: local #0
+18: 1L
+19: 0L
+20: Func(2,0): RegisterForSpeechEvents
+21: #
+EnableEvents(SYSEVENT_SPEECH,1);
+22: 1L
+23: 1L
+24: Func(2,1): EnableEvents
+25: #
+var ev;
+26: decl local #9
+27: #
+while(1)
+28: 1L
+29: if false goto 104
+ev := os::wait_for_event( 3 );
+30: 3L
+31: Func(3,0): wait_for_event
+32: local9 := 
+if(ev)
+33: local #9
+34: if false goto 103
+var IsOn := GetObjProperty(crystal, "Status");
+35: decl local #0
+36: local #0
+37: "Status"
+38: Func(2,2): GetObjProperty
+39: :=
+40: #
+IsOn := CStr(IsOn);
+41: local #10
+42: Func(0,0): CStr
+43: local10 := 
+if (IsOn == "ON")
+44: local #10
+45: "ON"
+46: ==
+47: if false goto 102
+if (ev.type==SYSEVENT_SPEECH)
+48: local #9
+49: get member 'type'
+50: 1L
+51: ==
+52: if false goto 102
+LinkList := GetObjProperty(crystal, "Links");
+53: local #0
+54: "Links"
+55: Func(2,2): GetObjProperty
+56: local7 := 
+Links := Splitwords(LinkList);
+57: local #7
+58: Func(0,1): SplitWords
+59: local6 := 
+LinkCount := Len(Links);
+60: local #6
+61: Func(0,2): len
+62: local8 := 
+LinkCount := LinkCount + 1;
+63: local #8
+64: 1L
+65: +
+66: local8 := 
+i := 1;
+67: 1L
+68: local1 := 
+while (i < LinkCount)
+69: local #1
+70: local #8
+71: <
+72: if false goto 102
+placeholder := Cint(Links[i]);
+73: local #6
+74: local #1
+75: [] 1
+76: Func(0,3): CInt
+77: local3 := 
+receiver := SystemFindObjectBySerial(placeholder);
+78: local #3
+79: 0L
+80: Func(2,3): SystemFindObjectBySerial
+81: local5 := 
+PrintTextAbove(receiver, "Message from "+ev.source.name+": " + ev.text);
+82: local #5
+83: "Message from "
+84: local #9
+85: get member 'source'
+86: get member 'name'
+87: +
+88: ": "
+89: +
+90: local #9
+91: get member 'text'
+92: +
+93: 3L
+94: 1000L
+95: Func(2,4): PrintTextAbove
+96: #
+i := i + 1;
+97: local #1
+98: 1L
+99: +
+100: local1 := 
+101: goto69
+102: leave block(1)
+103: goto28
+104: leave block(10)
+105: progend

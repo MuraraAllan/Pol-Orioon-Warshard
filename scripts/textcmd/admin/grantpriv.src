@@ -1,0 +1,11 @@
+use uo;
+
+program textcmd_grantpriv(who, priv)
+    SendSysMessage(who, "Em quem voce deseja por de '" + priv + "'?",9,89);
+
+    var subject := Target(who, TGTOPT_NOCHECK_LOS);
+    if (subject)
+        GrantPrivilege(subject, priv);
+        subject.enable(priv);
+    endif
+endprogram

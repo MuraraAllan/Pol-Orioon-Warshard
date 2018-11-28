@@ -1,0 +1,22 @@
+/////////////////////////////
+// Comando .Hide2
+//   by Dukin
+/////////////////////////////
+
+use uo;
+use os;
+use math;
+
+program CMD_Hide2(quem)
+PlaySoundEffect(quem, 0x209);
+PlaySoundEffect(quem, 0x019d);
+PlaySoundEffect(quem, 0x0167);
+PlayMovingEffectXYZ(quem.x+4, quem.y+4, quem.z+2, quem.x, quem.y, quem.z, 0x3709, 5, 0, 0);
+PlayMovingEffectXYZ(quem.x+4, quem.y-4, quem.z+2, quem.x, quem.y, quem.z, 0x3709, 5, 0, 0);
+PlayMovingEffectXYZ(quem.x-4, quem.y+4, quem.z+2, quem.x, quem.y, quem.z, 0x3709, 5, 0, 0);
+PlayMovingEffectXYZ(quem.x-4, quem.y-4, quem.z+2, quem.x, quem.y, quem.z, 0x3709, 5, 0, 0);
+Sleepms(700);
+PlayObjectCenteredEffect(quem, 0x3709, 2, 25);
+Sleepms(700);
+quem.concealed := Abs(quem.concealed - 1);
+endprogram

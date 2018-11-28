@@ -1,0 +1,58 @@
+File 0: 
+File 1: c:\pol\pkg\items\guildstone\textcmd\player\gw.src
+File 2: c:/pol/scripts/uo.em
+File 3: c:/pol/scripts/os.em
+File 4: c:/pol/scripts/basic.em
+File 5: c:/pol/scripts/basicio.em
+Ins 0: File 1, Line 4, Block 1 StatementBegin
+Ins 1: File 1, Line 5, Block 1 StatementBegin
+Ins 2: File 1, Line 5, Block 1 
+Ins 3: File 2, Line 289, Block 1 
+Ins 4: File 1, Line 5, Block 1 
+Ins 5: File 1, Line 5, Block 1 
+Ins 6: File 1, Line 5, Block 1 
+Ins 7: File 1, Line 6, Block 1 StatementBegin
+Ins 8: File 1, Line 6, Block 1 
+Ins 9: File 1, Line 6, Block 1 
+Ins 10: File 1, Line 6, Block 1 
+Ins 11: File 1, Line 6, Block 1 
+Ins 12: File 1, Line 6, Block 1 
+Ins 13: File 1, Line 7, Block 1 StatementBegin
+Ins 14: File 1, Line 7, Block 1 
+Ins 15: File 1, Line 7, Block 1 
+Ins 16: File 1, Line 7, Block 1 
+Ins 17: File 1, Line 7, Block 1 
+Ins 18: File 1, Line 8, Block 1 StatementBegin
+Ins 19: File 1, Line 8, Block 1 
+Ins 20: File 1, Line 8, Block 1 
+Ins 21: File 1, Line 8, Block 1 
+Ins 22: File 1, Line 8, Block 1 
+Ins 23: File 1, Line 8, Block 1 
+Ins 24: File 1, Line 9, Block 1 StatementBegin
+Ins 25: File 1, Line 9, Block 1 
+Ins 26: File 1, Line 9, Block 1 
+Ins 27: File 1, Line 9, Block 1 
+Ins 28: File 1, Line 9, Block 1 
+Ins 29: File 1, Line 10, Block 1 StatementBegin
+Ins 30: File 1, Line 10, Block 1 
+Ins 31: File 1, Line 10, Block 1 
+Ins 32: File 1, Line 10, Block 1 
+Ins 33: File 1, Line 11, Block 1 StatementBegin
+Ins 34: File 1, Line 11, Block 1 
+Ins 35: File 2, Line 272, Block 1 
+Ins 36: File 2, Line 272, Block 1 
+Ins 37: File 1, Line 11, Block 1 
+Ins 38: File 1, Line 11, Block 1 
+Ins 39: File 1, Line 13, Block 1 
+Ins 40: File 1, Line 13, Block 0 
+Block 0:
+  Parent block: 0
+Block 1:
+  Parent block: 0
+  Local variables 0-5: 
+      0: who
+      1: alvogw
+      2: guilda_1
+      3: guilda1
+      4: guilda_2
+      5: guilda2

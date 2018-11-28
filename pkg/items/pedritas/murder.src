@@ -1,0 +1,78 @@
+use uo;
+use os;
+
+include "include/client";
+include "include/eventID";
+include "include/attributes";
+include "include/skillLists";
+include "../pkg/foundations/gumps/gumps";
+
+
+program start ( who )
+if(getobjproperty(who,"delaymurd") >= readgameclock())
+sendsysmessage(who,"voce precisa esperar para usar a pedra novamente");
+return;
+endif
+if((!GetObjProperty(who, "longmurders")) || (cint(GetObjProperty(who, "longmurders") <= 0)))
+sendsysmessage(who,"Voce nao tem pecados a serem perdoados.");
+setObjProperty(who, "longmurders",0);
+return;
+endif
+Sendsysmessage(who,"Qual a quantia de longs que desejas retirar?");
+
+
+var amt := cint(SendTextEntryGump( who, "1 long = 15kgps", TE_STYLE_NORMAL,TE_CANCEL_ENABLE));
+if((!amt))
+sendsysmessage(who, "Cancelado");
+return;
+endif
+
+if(amt > 10)
+sendsysmessage(who,"Voce pode apenas pagar 10 pecados por vez que utiliza a pedra!");
+return;
+endif
+
+
+if(cint(GetObjProperty(who, "longmurders") < amt))
+Sendsysmessage(who,"Voce nao pode pagar mais pegados do que tem!");
+return;
+endif
+if(!GetObjProperty(who, "granabag"))
+setobjproperty(who,"granabag",0);
+endif
+var b :=  EnumerateItemsInContainer( who.backpack );
+foreach aaa in b
+if(aaa.graphic == 3821)
+setobjproperty(who,"granabag",cint(GetObjProperty(who, "granabag")) + aaa.amount);
+destroyitem(aaa);
+endif
+endforeach
+var custo := 15000;
+var grana := cint(GetObjProperty(who, "granabag"));
+if(grana < cint(custo * amt))
+sendsysmessage(who,"Voce tem : " + grana + " Moedas de ouro em sua mochila, mas precisa de : " + custo * amt + " moedas de ouro");
+
+createiteminbackpack(who,"3821",cint(GetObjProperty(who, "granabag")));
+eraseobjproperty(who,"granabag");
+return;
+endif
+setobjproperty(who,"granabag",cint(GetObjProperty(who,"granabag") - custo * amt));
+createiteminbackpack(who,"3821",cint(GetObjProperty(who, "granabag")));
+sleepms(500);
+sendsysmessage(who,"Voce se sente menos culpado de seus pecados");
+
+setobjproperty(who,"longmurders",cint(GetObjProperty(who, "longmurders") - amt));
+
+
+
+ eraseobjproperty(who,"granabag");
+setobjproperty(who,"delaymurd",readgameclock()+36000);
+
+
+if(GetObjProperty(who, "longmurders") < 5)
+   who.title_prefix:="";
+   who.setMurderer(0);
+   who.alignment := "good";
+endif
+
+endprogram

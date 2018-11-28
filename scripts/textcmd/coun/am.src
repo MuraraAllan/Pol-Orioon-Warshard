@@ -1,0 +1,282 @@
+use uo;
+use os;
+use util;
+use basic;
+use cfgfile;
+include "../pkg/foundations/gumps/gumps";
+
+
+program antimacro( whoo, params )
+sendsysmessage(whoo,"Escolha alguem para mandar um anti-macro!",3,98);
+var who := target(whoo);
+if(!who)
+sendsysmessage(whoo,"Cancelado!",3,98);
+return;
+endif
+start_script("delayam", who);
+SetobjProperty(who,"numeros",0);
+SetobjProperty(who,"chances",3);
+   GFInitGump( 10 , 100 );
+  GFNoMove();
+gfnoclose();
+var posicaoa,posicaob,posicaoc,posicaod;
+GFResizePic(10, 5, 3500, 0, 00);
+var dado := randomdiceroll("1d3") + 1;
+if(dado == 1)
+posicaoa := 20;
+posicaob := 400;
+posicaoc := 0;
+posicaod := 375;
+elseif(dado == 2)
+posicaoa := 20;
+posicaob := 250;
+posicaoc := 0;
+posicaod := 225;
+elseif(dado == 3)
+posicaoa := 20;
+posicaob := 100;
+posicaoc := 0;
+posicaod := 75;
+elseif(dado == 4)
+posicaoa := 20;
+posicaob := 400;
+posicaoc := 0;
+posicaod := 375;
+endif
+var bt2 := GFButtonID( posicaoa, posicaob,  0x00EC, 0x00EC, 1);
+GFTextLine(posicaoc, posicaod, 38 , "ANTI-MACRO"); 
+
+
+var res := gfsendgump(who);
+if(res[bt2.keyid])
+
+var numeroa := randomint(8)+1;
+var numerob := randomint(8)+1;
+var numeroc := randomint(8)+1;
+var numerod := randomint(8)+1;
+
+fazergump(numeroa,numerob,numeroc,numerod,who,numeroa,"dadas");
+endif
+
+
+endprogram
+function fazergump(numeroa,numerob,numeroc,numerod,who,add,posicao);
+
+
+
+
+var gump :=  GFInitGump( 10 , 100 );
+  GFNoMove();
+gfnoclose();
+
+
+
+ GFGumpPic(70, 25, 0x09c4);
+ GFTextLine(130, 78, 167, cint(numeroa)); 
+ GFTextLine(140, 78, 167, cint(numerob)); 
+ GFTextLine(150, 78, 167, cint(numeroc)); 
+ GFTextLine(160, 78, 167, cint(numerod)); 
+
+var texto1,texto2,texto3,texto4,texto5,texto6,texto7,texto8,texto9;
+var texto;
+
+case(add)
+1:texto := "1";
+2:texto := "2";
+3:texto := "3";
+4:texto := "4";
+5:texto := "5";
+6:texto := "6";
+7:texto := "7";
+8:texto := "8";
+9:texto := "9";
+endcase
+var lugar1,lugar2,lugar3,lugar4,lugar5,lugar6,lugar7,lugar8;
+if(posicao >=1)
+case(posicao)
+1:lugar1:= 205; lugar2 := 93;
+2:lugar3:= 215; lugar4 := 93;
+3:lugar5:= 225; lugar6 := 93;
+4:lugar7:= 235; lugar8 := 93;
+endcase
+endif
+
+
+var botao1 := GFButtonID( 100, 95, 0x138a, 0x138b, 1);
+var botao2 := GFButtonID( 120, 95, 0x138a, 0x138b, 1);
+var botao3 := GFButtonID( 140, 95, 0x138a, 0x138b, 1);
+var botao4 := GFButtonID( 160, 95, 0x138a, 0x138b, 1);
+var botao5 := GFButtonID( 180, 95, 0x138a, 0x138b, 1);
+var botao6 := GFButtonID( 100, 110, 0x138a, 0x138b, 1);
+var botao7 := GFButtonID( 120, 110, 0x138a, 0x138b, 1);
+var botao8 := GFButtonID( 140, 110, 0x138a, 0x138b, 1);
+var botao9 := GFButtonID( 160, 110, 0x138a, 0x138b, 1);
+
+var apagar := GFButtonID( 180, 110, 0x138a, 0x138b, 1);
+
+if(lugar1)
+var texto1 := add;
+GFTextLine(lugar1, lugar2, 38 , texto1); 
+setobjproperty(who,"numero1",texto1);
+elseif(lugar3)
+var teste := getobjproperty(who,"numero1");
+setobjproperty(who,"numero2",add);
+GFTextLine(205, 93, 38 , teste); 
+GFTextLine(lugar3, lugar4, 38 , add); 
+elseif(lugar5)
+var teste := getobjproperty(who,"numero1");
+var teste1 := getobjproperty(who,"numero2");
+setobjproperty(who,"numero3",add);
+GFTextLine(205, 93, 38 , teste); 
+GFTextLine(215, 93, 38 , teste1); 
+GFTextLine(lugar5, lugar6, 38 , texto);
+elseif(lugar7)
+var teste := getobjproperty(who,"numero1");
+var teste1 := getobjproperty(who,"numero2");
+var teste2 := getobjproperty(who,"numero3");
+setobjproperty(who,"numero4",add);
+GFTextLine(205, 93, 38 , teste); 
+GFTextLine(215, 93, 38 , teste1); 
+GFTextLine(225, 93, 38 , teste2);
+GFTextLine(lugar7, lugar8, 38 , texto);
+endif
+
+var teste := getobjproperty(who,"numero1");
+var teste1 := getobjproperty(who,"numero2");
+var teste2 := getobjproperty(who,"numero3");
+var teste3 := getobjproperty(who,"numero4");
+if((teste == numeroa) && (teste1 == numerob) && (teste2 == numeroc) && (teste3 == numerod))
+setobjproperty(who,"respondeu",1);
+eraseobjproperty(who,"numero1");
+eraseobjproperty(who,"numero2");
+eraseobjproperty(who,"numero3");
+eraseobjproperty(who,"numero4");
+SetobjProperty(who,"numeros", 0);
+return;
+endif
+
+
+if((teste != numeroa) && (teste) && (teste1) && (teste2) && (teste3)|| (teste1 != numerob) && (teste) && (teste1) && (teste2) && (teste3) || (teste2 != numeroc) && (teste) && (teste1) && (teste2) && (teste3)|| (teste3 != numerod) && (teste) && (teste1) && (teste2) && (teste3))
+setobjproperty(who,"chances",getobjproperty(who,"chances") - 1);
+sendsysmessage(who,"Voce tem mais " + getobjproperty(who,"chances") + " chances para responder seu anti macro!");
+setobjproperty(who,"errou",1);
+eraseobjproperty(who,"numero1");
+eraseobjproperty(who,"numero2");
+eraseobjproperty(who,"numero3");
+eraseobjproperty(who,"numero4");
+var botaoadd1:= 0;
+SetobjProperty(who,"numeros", 0);
+var quantidadenumeros := GetobjProperty(who,"numeros");
+if(getobjproperty(who,"chances") <= 0)
+sendsysmessage(who,"Voce perdeu sua ultima chance de responder o anti macro, e dentro de 5 minutos sera kickado!");
+return;
+endif
+fazergump(numeroa,numerob,numeroc,numerod,who,cint(botaoadd1),cint(quantidadenumeros));
+return;
+endif
+
+
+
+
+
+GFTextLine(105, 93, 38 , "1"); 
+GFTextLine(125, 93, 38 , "2"); 
+GFTextLine(145, 93, 38 , "3"); 
+GFTextLine(165, 93, 38 , "4"); 
+GFTextLine(185, 93, 38 , "5"); 
+GFTextLine(105, 108, 38 , "6"); 
+GFTextLine(125, 108, 38 , "7"); 
+GFTextLine(145, 108, 38 , "8"); 
+GFTextLine(165, 108, 38 , "9"); 
+GFTextLine(100, 50, 38 , "Precione os botoes que"); 
+GFTextLine(100, 60, 38 , "correspondem aos numeros.");  
+GFTextLine(200, 110, 38 , "Apagar sequencia"); 
+ 
+
+ var res := gfsendgump(who);
+if(res[apagar.keyid])
+
+var teste := getobjproperty(who,"numero1");
+var teste1 := getobjproperty(who,"numero2");
+var teste2 := getobjproperty(who,"numero3");
+var teste3 := getobjproperty(who,"numero4");
+
+if(teste)
+eraseobjproperty(who,"numero1");
+eraseobjproperty(who,"numero2");
+eraseobjproperty(who,"numero3");
+eraseobjproperty(who,"numero4");
+var botaoadd1:= 0;
+SetobjProperty(who,"numeros", 0);
+var quantidadenumeros := GetobjProperty(who,"numeros");
+fazergump(numeroa,numerob,numeroc,numerod,who,cint(botaoadd1),cint(quantidadenumeros));
+
+else
+sendsysmessage(who,"Voce nao tem combinacao nenhuma para ser apagada",3,98);
+eraseobjproperty(who,"numero1");
+eraseobjproperty(who,"numero2");
+eraseobjproperty(who,"numero3");
+eraseobjproperty(who,"numero4");
+var botaoadd1:= 0;
+SetobjProperty(who,"numeros", 0);
+eraseobjproperty(who,"numero1");
+eraseobjproperty(who,"numero2");
+eraseobjproperty(who,"numero3");
+eraseobjproperty(who,"numero4");
+var quantidadenumeros := GetobjProperty(who,"numeros");
+fazergump(numeroa,numerob,numeroc,numerod,who,cint(botaoadd1),cint(quantidadenumeros));
+endif
+endif
+
+var botaoadd1 := 0,botaoadd2 := 0,botaoadd3 := 0,botaoadd4 := 0,botaoadd5 := 0,botaoadd6 := 0,botaoadd7 := 0,botaoadd8 := 0,botaoadd9 := 0;
+if(res[botao1.keyid])
+botaoadd1:= 1;
+SetobjProperty(who,"numeros", GetobjProperty(who,"numeros")+1);
+var quantidadenumeros := GetobjProperty(who,"numeros");
+fazergump(numeroa,numerob,numeroc,numerod,who,cint(botaoadd1),cint(quantidadenumeros));
+elseif(res[botao2.keyid])
+botaoadd1:= 2;
+SetobjProperty(who,"numeros", GetobjProperty(who,"numeros")+1);
+var quantidadenumeros := GetobjProperty(who,"numeros");
+fazergump(numeroa,numerob,numeroc,numerod,who,cint(botaoadd1),cint(quantidadenumeros));
+elseif(res[botao3.keyid])
+botaoadd1:= 3;
+SetobjProperty(who,"numeros", GetobjProperty(who,"numeros")+1);
+var quantidadenumeros := GetobjProperty(who,"numeros");
+fazergump(numeroa,numerob,numeroc,numerod,who,cint(botaoadd1),cint(quantidadenumeros));
+elseif(res[botao4.keyid])
+botaoadd1:= 4;
+SetobjProperty(who,"numeros", GetobjProperty(who,"numeros")+1);
+var quantidadenumeros := GetobjProperty(who,"numeros");
+fazergump(numeroa,numerob,numeroc,numerod,who,cint(botaoadd1),cint(quantidadenumeros));
+elseif(res[botao5.keyid])
+botaoadd1:= 5;
+SetobjProperty(who,"numeros", GetobjProperty(who,"numeros")+1);
+var quantidadenumeros := GetobjProperty(who,"numeros");
+fazergump(numeroa,numerob,numeroc,numerod,who,cint(botaoadd1),cint(quantidadenumeros));
+elseif(res[botao6.keyid])
+botaoadd1:= 6;
+SetobjProperty(who,"numeros", GetobjProperty(who,"numeros")+1);
+var quantidadenumeros := GetobjProperty(who,"numeros");
+fazergump(numeroa,numerob,numeroc,numerod,who,cint(botaoadd1),cint(quantidadenumeros));
+elseif(res[botao7.keyid])
+botaoadd1:= 7;
+SetobjProperty(who,"numeros", GetobjProperty(who,"numeros")+1);
+var quantidadenumeros := GetobjProperty(who,"numeros");
+fazergump(numeroa,numerob,numeroc,numerod,who,cint(botaoadd1),cint(quantidadenumeros));
+elseif(res[botao8.keyid])
+botaoadd1:= 8;
+SetobjProperty(who,"numeros", GetobjProperty(who,"numeros")+1);
+var quantidadenumeros := GetobjProperty(who,"numeros");
+fazergump(numeroa,numerob,numeroc,numerod,who,cint(botaoadd1),cint(quantidadenumeros));
+elseif(res[botao9.keyid])
+botaoadd1:= 9;
+SetobjProperty(who,"numeros", GetobjProperty(who,"numeros")+1);
+var quantidadenumeros := GetobjProperty(who,"numeros");
+fazergump(numeroa,numerob,numeroc,numerod,who,cint(botaoadd1),cint(quantidadenumeros));
+endif
+
+
+
+endfunction
+

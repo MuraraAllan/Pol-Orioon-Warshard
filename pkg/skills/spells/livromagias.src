@@ -1,0 +1,18 @@
+use uo;
+use util;
+use os;
+include "../pkg/foundations/gumps/gumps";
+
+program cast_lightning(who,livro)
+
+sendsysmessage(who,"AAA");
+  GFInitGump( 250 , 100 );
+  GFNoMove();
+
+GFResizePic(50, 5, 3500, 0, 00);
+
+GFGumpPic(10, 25, 0x01fe);
+GFGumpPic(10, 25, 0x01f5);
+GFGumpPic(366, 25, 0x01f6);
+var res := gfsendgump(who);
+endprogram

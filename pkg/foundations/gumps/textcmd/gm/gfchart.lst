@@ -1,0 +1,1019 @@
+C:/pol2/scripts/../pkg/foundations/gumps/gumps.inc, Line 225
+var GFref := struct;		// X- and Y-offsets for gump operations
+0: decl global #0
+1: struct
+2: :=
+3: #
+GFref.+x := 0;
+4: global #0
+5: "x"
+6: .+
+7: 0L
+8: := #
+GFref.+y := 0;
+9: global #0
+10: "y"
+11: .+
+12: 0L
+13: := #
+var GFlayout := array();// Main layout array for entire gump
+14: decl global #1
+15: array
+16: :=
+17: #
+var GFdata := array();	// Storage array for static-text and
+18: decl global #2
+19: array
+20: :=
+21: #
+var GFdtidx;		// ...text in GFdata (index)
+22: decl global #3
+23: #
+var GFtxtid;		// ...TeXT-entry returns (keyid)
+24: decl global #4
+25: #
+var GFbutid;		// ...'action' BUTtons (keyid)
+26: decl global #5
+27: #
+var GFcbxid;		// ...CheckBoXes (keyid)
+28: decl global #6
+29: #
+var GFradid;		// ...RADio buttons (keyid)
+30: decl global #7
+31: #
+XGFReset();
+32: makelocal
+33: jmp userfunc @713
+34: #
+var aGFTlength := struct;
+35: decl global #8
+36: struct
+37: :=
+38: #
+aGFTlength.+charsf:=   // Space as Filler is not allowed
+39: global #8
+40: "charsf"
+41: .+
+42: "||||||||||||||`',.;:::::::::!!!!!!!!!!!!!!il1[]]]]]]]]]"bcejotî(){}===adfpqrszIÑ~~~~ghnuvyÅ <>----xJ578$?+++++++kCE2369^/*****mwABDFOPéô40%%GLNQSZ@#######HRT&__________KöUYYYYYYYYYYYXXXXXXXXXXXXXXVVVVVVVVVVVVVVMMMMMMMMMMMMMMWWWWWWWWWWWWWW"
+43: := #
+aGFTlength.+width:= array
+44: global #8
+45: "width"
+46: .+
+47: array
+48: 2L
+49: +=
+50: 3L
+51: +=
+52: 4L
+53: +=
+54: 5L
+55: +=
+56: 6L
+57: +=
+58: 7L
+59: +=
+60: 8L
+61: +=
+62: 9L
+63: +=
+64: 10L
+65: +=
+66: 11L
+67: +=
+68: 12L
+69: +=
+70: 13L
+71: +=
+72: 14L
+73: +=
+74: 15L
+75: +=
+76: 16L
+77: +=
+78: 18L
+79: +=
+80: 21L
+81: +=
+82: := #
+C:\pol2\pkg\foundations\gumps\textcmd\gm\gfchart.src, Line 24
+program textcmd_gfchart( who, params )
+const WINY_MAX := 480;
+83: get arg 'who'
+84: get arg 'params'
+var me;
+85: decl local #2
+86: #
+if ( who[1] == "ICP" )
+87: local #0
+88: 1L
+89: [] 1
+90: "ICP"
+91: ==
+92: if false goto 98
+me := who[2];
+93: local #0
+94: 2L
+95: [] 1
+96: local2 := 
+97: goto100
+me := who;
+98: local #0
+99: local2 := 
+if ( me == -1 )
+100: local #2
+101: -1L
+102: ==
+103: if false goto 106
+return 1;
+104: 1L
+105: progend
+who := me;
+106: local #2
+107: local0 := 
+var exit_but;
+108: decl local #3
+109: #
+GFInitGump();
+110: 0L
+111: 0L
+112: makelocal
+113: jmp userfunc @370
+114: #
+GFNoClose();
+115: makelocal
+116: jmp userfunc @389
+117: #
+GFNoMove();
+118: makelocal
+119: jmp userfunc @411
+120: #
+GFResizePic(0, 0, BKGND_GOLDTRIM, WINX_MAX+3, WINY_MAX+4);
+121: 0L
+122: 0L
+123: 2620L
+124: 643L
+125: 484L
+126: makelocal
+127: jmp userfunc @440
+128: #
+GFTextMid(0, 6, WINX_MAX, 67, "Gump Color Chart" );
+129: 0L
+130: 6L
+131: 640L
+132: 67L
+133: "Gump Color Chart"
+134: makelocal
+135: jmp userfunc @579
+136: #
+exit_but :=	GFButtonID(WINX_MAX - 63, 11, 0x849, 0x848, 1); // Cancel  (0x81C, 
+137: 577L
+138: 11L
+139: 2121L
+140: 2120L
+141: 1L
+142: 0L
+143: makelocal
+144: jmp userfunc @286
+145: local3 := 
+var i;
+146: decl local #4
+147: #
+for( i := 1; i <= 40 ; i := i + 1 )
+148: local #4
+149: 1L
+150: :=
+151: #
+152: local #4
+153: 40L
+154: <=
+155: if false goto 217
+GFTextLine(16, i*11+15, i, "aeiouAEIOU12345 - " + CStr(i) );
+156: 16L
+157: local #4
+158: 11L
+159: *
+160: 15L
+161: +
+162: local #4
+163: "aeiouAEIOU12345 - "
+164: local #4
+165: Func(0,1): CStr
+166: +
+167: makelocal
+168: jmp userfunc @518
+169: #
+GFTextLine(206, i*11+15, i+40, "aeiouAEIOU12345 - " + CStr(i+40) );
+170: 206L
+171: local #4
+172: 11L
+173: *
+174: 15L
+175: +
+176: local #4
+177: 40L
+178: +
+179: "aeiouAEIOU12345 - "
+180: local #4
+181: 40L
+182: +
+183: Func(0,1): CStr
+184: +
+185: makelocal
+186: jmp userfunc @518
+187: #
+if ( i < 21 )
+188: local #4
+189: 21L
+190: <
+191: if false goto 210
+GFTextLine(396, i*11+15, i+80, "aeiouAEIOU12345 - " + CStr(i+80) );
+192: 396L
+193: local #4
+194: 11L
+195: *
+196: 15L
+197: +
+198: local #4
+199: 80L
+200: +
+201: "aeiouAEIOU12345 - "
+202: local #4
+203: 80L
+204: +
+205: Func(0,1): CStr
+206: +
+207: makelocal
+208: jmp userfunc @518
+209: #
+210: local #4
+211: local #4
+212: 1L
+213: +
+214: :=
+215: #
+216: goto152
+GFTextMid(396, 26*11, 234, 90, "Black is colour '0' only!" );
+217: 396L
+218: 286L
+219: 234L
+220: 90L
+221: "Black is colour '0' only!"
+222: makelocal
+223: jmp userfunc @579
+224: #
+GFTextMid(396, 28*11, 234, 90, "Pure white is '910'." );
+225: 396L
+226: 308L
+227: 234L
+228: 90L
+229: "Pure white is '910'."
+230: makelocal
+231: jmp userfunc @579
+232: #
+GFTextMid(396, 31*11, 234, 90, "Colours 1-100 repeat from 101." );
+233: 396L
+234: 341L
+235: 234L
+236: 90L
+237: "Colours 1-100 repeat from 101."
+238: makelocal
+239: jmp userfunc @579
+240: #
+GFTextMid(396, 32*11+4, 234, 90, "(Black never repeats!)" );
+241: 396L
+242: 356L
+243: 234L
+244: 90L
+245: "(Black never repeats!)"
+246: makelocal
+247: jmp userfunc @579
+248: #
+GFTextRight(WINX_MAX - 7, WINY_MAX - 36, 32, "v1.1 - Myrathi" );
+249: 633L
+250: 444L
+251: 32L
+252: "v1.1 - Myrathi"
+253: makelocal
+254: jmp userfunc @647
+255: #
+GFTextRight(WINX_MAX - 7, WINY_MAX - 21, 32, "myrathi@templar.dhs.org" );
+256: 633L
+257: 459L
+258: 32L
+259: "myrathi@templar.dhs.org"
+260: makelocal
+261: jmp userfunc @647
+262: #
+var retv := GFSendGump( who );
+263: decl local #5
+264: local #0
+265: makelocal
+266: jmp userfunc @496
+267: :=
+268: #
+if ( !retv and (retv <> 0) )
+269: local #5
+270: !
+271: local #5
+272: 0L
+273: <>
+274: &&
+275: if false goto 284
+SendSysMessage( who, "Please close any other user-gumps and try again." );
+276: local #0
+277: "Please close any other user-gumps and try again."
+278: 3L
+279: 1000L
+280: Func(2,1): SendSysMessage
+281: #
+return;
+282: ""
+283: progend
+284: leave block(6)
+285: progend
+C:/pol2/scripts/../pkg/foundations/gumps/gumps.inc, Line 543
+function GFButtonID( x, y, release, press, close, id := 0 )
+286: pop param 'id'
+287: pop param 'close'
+288: pop param 'press'
+289: pop param 'release'
+290: pop param 'y'
+291: pop param 'x'
+var line := "button " + CStr(GFref.x + CInt(x)) + " " + CStr(GFref.y + CInt(y))
+292: decl local #6
+293: "button "
+294: global #0
+295: get member 'x'
+296: local #5
+297: Func(0,0): CInt
+298: +
+299: Func(0,1): CStr
+300: +
+301: " "
+302: +
+303: global #0
+304: get member 'y'
+305: local #4
+306: Func(0,0): CInt
+307: +
+308: Func(0,1): CStr
+309: +
+310: :=
+311: #
+line := line + " " + CStr(CInt(release)) + " " + CStr(CInt(press)) + " ";
+312: local #6
+313: " "
+314: +
+315: local #3
+316: Func(0,0): CInt
+317: Func(0,1): CStr
+318: +
+319: " "
+320: +
+321: local #2
+322: Func(0,0): CInt
+323: Func(0,1): CStr
+324: +
+325: " "
+326: +
+327: local6 := 
+if ( close == 0 )
+328: local #1
+329: 0L
+330: ==
+331: if false goto 337
+line := line + "0 0 ";
+332: local #6
+333: "0 0 "
+334: +
+335: local6 := 
+336: goto341
+line := line + "1 0 ";
+337: local #6
+338: "1 0 "
+339: +
+340: local6 := 
+id := CInt(id);		// Ensure it's an integer
+341: local #0
+342: Func(0,0): CInt
+343: local0 := 
+if ( id < 1 )		// Catch errors (0) and invalid (negative) values
+344: local #0
+345: 1L
+346: <
+347: if false goto 354
+id := GFbutid;
+348: global #5
+349: local0 := 
+GFbutid := GFbutid + 1;		// Update KeyID (butid) (only if used)
+350: global #5
+351: 1L
+352: +
+353: global5 := 
+line := line + CStr(id);
+354: local #6
+355: local #0
+356: Func(0,1): CStr
+357: +
+358: local6 := 
+GFlayout.append( line );
+359: global #1
+360: local #6
+361: Call Method append (1 params)
+362: #
+return XGFRetVal( GFlayout.size(), -1, id );
+363: global #1
+364: Call Method size (0 params)
+365: -1L
+366: local #0
+367: makelocal
+368: jmp userfunc @729
+369: return
+C:/pol2/scripts/../pkg/foundations/gumps/gumps.inc, Line 279
+function GFInitGump( sx := 0, sy := 0 )
+370: pop param 'sy'
+371: pop param 'sx'
+XGFReset();
+372: makelocal
+373: jmp userfunc @713
+374: #
+GFSetRef( sx, sy );
+375: local #1
+376: local #0
+377: makelocal
+378: jmp userfunc @502
+379: #
+GFPage( 0 );
+380: 0L
+381: makelocal
+382: jmp userfunc @422
+383: #
+GFNoDispose();
+384: makelocal
+385: jmp userfunc @400
+386: #
+387: 0L
+388: return
+C:/pol2/scripts/../pkg/foundations/gumps/gumps.inc, Line 304
+function GFNoClose()
+GFlayout.append( "noclose" );
+389: global #1
+390: "noclose"
+391: Call Method append (1 params)
+392: #
+return XGFRetVal( GFlayout.size() );
+393: global #1
+394: Call Method size (0 params)
+395: -1L
+396: -1L
+397: makelocal
+398: jmp userfunc @729
+399: return
+C:/pol2/scripts/../pkg/foundations/gumps/gumps.inc, Line 314
+function GFNoDispose()
+GFlayout.append( "nodispose" );
+400: global #1
+401: "nodispose"
+402: Call Method append (1 params)
+403: #
+return XGFRetVal( GFlayout.size() );
+404: global #1
+405: Call Method size (0 params)
+406: -1L
+407: -1L
+408: makelocal
+409: jmp userfunc @729
+410: return
+C:/pol2/scripts/../pkg/foundations/gumps/gumps.inc, Line 324
+function GFNoMove()
+GFlayout.append( "nomove" );
+411: global #1
+412: "nomove"
+413: Call Method append (1 params)
+414: #
+return XGFRetVal( GFlayout.size() );
+415: global #1
+416: Call Method size (0 params)
+417: -1L
+418: -1L
+419: makelocal
+420: jmp userfunc @729
+421: return
+C:/pol2/scripts/../pkg/foundations/gumps/gumps.inc, Line 292
+function GFPage( page )
+422: pop param 'page'
+page := CInt(page);
+423: local #0
+424: Func(0,0): CInt
+425: local0 := 
+GFlayout.append( "page " + CStr(page) );
+426: global #1
+427: "page "
+428: local #0
+429: Func(0,1): CStr
+430: +
+431: Call Method append (1 params)
+432: #
+return XGFRetVal( GFlayout.size(), -1, page );
+433: global #1
+434: Call Method size (0 params)
+435: -1L
+436: local #0
+437: makelocal
+438: jmp userfunc @729
+439: return
+C:/pol2/scripts/../pkg/foundations/gumps/gumps.inc, Line 370
+function GFResizePic( x, y, gumpid, w, h )
+440: pop param 'h'
+441: pop param 'w'
+442: pop param 'gumpid'
+443: pop param 'y'
+444: pop param 'x'
+var line := "resizepic " + CStr(GFref.x + CInt(x)) + " " + CStr(GFref.y + CInt(
+445: decl local #5
+446: "resizepic "
+447: global #0
+448: get member 'x'
+449: local #4
+450: Func(0,0): CInt
+451: +
+452: Func(0,1): CStr
+453: +
+454: " "
+455: +
+456: global #0
+457: get member 'y'
+458: local #3
+459: Func(0,0): CInt
+460: +
+461: Func(0,1): CStr
+462: +
+463: :=
+464: #
+line := line + " " + CStr(CInt(gumpid)) + " " + CStr(CInt(w)) + " " + CStr(CInt
+465: local #5
+466: " "
+467: +
+468: local #2
+469: Func(0,0): CInt
+470: Func(0,1): CStr
+471: +
+472: " "
+473: +
+474: local #1
+475: Func(0,0): CInt
+476: Func(0,1): CStr
+477: +
+478: " "
+479: +
+480: local #0
+481: Func(0,0): CInt
+482: Func(0,1): CStr
+483: +
+484: local5 := 
+GFlayout.append( line );
+485: global #1
+486: local #5
+487: Call Method append (1 params)
+488: #
+return XGFRetVal( GFlayout.size() );
+489: global #1
+490: Call Method size (0 params)
+491: -1L
+492: -1L
+493: makelocal
+494: jmp userfunc @729
+495: return
+C:/pol2/scripts/../pkg/foundations/gumps/gumps.inc, Line 808
+function GFSendGump( who )
+496: pop param 'who'
+return SendDialogGump( who, GFlayout, GFdata );
+497: local #0
+498: global #1
+499: global #2
+500: Func(2,0): SendDialogGump
+501: return
+C:/pol2/scripts/../pkg/foundations/gumps/gumps.inc, Line 259
+function GFSetRef( x := 0, y := 0 )
+502: pop param 'y'
+503: pop param 'x'
+var oldref := GFref;
+504: decl local #2
+505: global #0
+506: :=
+507: #
+GFref.x := CInt(x);
+508: global #0
+509: local #1
+510: Func(0,0): CInt
+511: set member 'x' #
+GFref.y := CInt(y);
+512: global #0
+513: local #0
+514: Func(0,0): CInt
+515: set member 'y' #
+return oldref;
+516: local #2
+517: return
+C:/pol2/scripts/../pkg/foundations/gumps/gumps.inc, Line 418
+function GFTextLine(x, y, colour, text)
+518: pop param 'text'
+519: pop param 'colour'
+520: pop param 'y'
+521: pop param 'x'
+text := CStr(text);
+522: local #0
+523: Func(0,1): CStr
+524: local0 := 
+var line := "text " + CStr(GFref.x + CInt(x)) + " " + CStr(GFref.y + CInt(y));
+525: decl local #4
+526: "text "
+527: global #0
+528: get member 'x'
+529: local #3
+530: Func(0,0): CInt
+531: +
+532: Func(0,1): CStr
+533: +
+534: " "
+535: +
+536: global #0
+537: get member 'y'
+538: local #2
+539: Func(0,0): CInt
+540: +
+541: Func(0,1): CStr
+542: +
+543: :=
+544: #
+line := line + " " + CStr(CInt(colour)) + " " + CStr(GFdtidx);
+545: local #4
+546: " "
+547: +
+548: local #1
+549: Func(0,0): CInt
+550: Func(0,1): CStr
+551: +
+552: " "
+553: +
+554: global #3
+555: Func(0,1): CStr
+556: +
+557: local4 := 
+GFlayout.append( line );
+558: global #1
+559: local #4
+560: Call Method append (1 params)
+561: #
+GFdtidx := GFdtidx + 1;		// Update index into GFdata[]
+562: global #3
+563: 1L
+564: +
+565: global3 := 
+GFdata[GFdtidx] := text;	// arrays start at #1... id#0 goes into [1]!!
+566: global #2
+567: global #3
+568: local #0
+569: [] := (1) #
+return XGFRetVal( GFlayout.size(), GFdtidx - 1 );
+570: global #1
+571: Call Method size (0 params)
+572: global #3
+573: 1L
+574: -
+575: -1L
+576: makelocal
+577: jmp userfunc @729
+578: return
+C:/pol2/scripts/../pkg/foundations/gumps/gumps.inc, Line 434
+function GFTextMid(x, y, w, colour, text )
+579: pop param 'text'
+580: pop param 'colour'
+581: pop param 'w'
+582: pop param 'y'
+583: pop param 'x'
+text := CStr(text);
+584: local #0
+585: Func(0,1): CStr
+586: local0 := 
+x := XGFTextMid( text, CInt(x), w );
+587: local #0
+588: local #4
+589: Func(0,0): CInt
+590: local #2
+591: makelocal
+592: jmp userfunc @768
+593: local4 := 
+var line := "text " + CStr(GFref.x + x) + " " + CStr(GFref.y + CInt(y));
+594: decl local #5
+595: "text "
+596: global #0
+597: get member 'x'
+598: local #4
+599: +
+600: Func(0,1): CStr
+601: +
+602: " "
+603: +
+604: global #0
+605: get member 'y'
+606: local #3
+607: Func(0,0): CInt
+608: +
+609: Func(0,1): CStr
+610: +
+611: :=
+612: #
+line := line + " " + CStr(CInt(colour)) + " " + CStr(GFdtidx);
+613: local #5
+614: " "
+615: +
+616: local #1
+617: Func(0,0): CInt
+618: Func(0,1): CStr
+619: +
+620: " "
+621: +
+622: global #3
+623: Func(0,1): CStr
+624: +
+625: local5 := 
+GFlayout.append( line );
+626: global #1
+627: local #5
+628: Call Method append (1 params)
+629: #
+GFdtidx := GFdtidx + 1;		// Update index into GFdata[]
+630: global #3
+631: 1L
+632: +
+633: global3 := 
+GFdata[GFdtidx] := text;	// arrays start at #1... id#0 goes into [1]!!
+634: global #2
+635: global #3
+636: local #0
+637: [] := (1) #
+return XGFRetVal( GFlayout.size(), GFdtidx - 1 );
+638: global #1
+639: Call Method size (0 params)
+640: global #3
+641: 1L
+642: -
+643: -1L
+644: makelocal
+645: jmp userfunc @729
+646: return
+C:/pol2/scripts/../pkg/foundations/gumps/gumps.inc, Line 451
+function GFTextRight( rx, y, colour, text )
+647: pop param 'text'
+648: pop param 'colour'
+649: pop param 'y'
+650: pop param 'rx'
+text := CStr(text);
+651: local #0
+652: Func(0,1): CStr
+653: local0 := 
+rx := XGFTextRight( text, CInt(rx) );
+654: local #0
+655: local #3
+656: Func(0,0): CInt
+657: makelocal
+658: jmp userfunc @782
+659: local3 := 
+var line := "text " + CStr(GFref.x + rx) + " " + CStr(GFref.y + CInt(y));
+660: decl local #4
+661: "text "
+662: global #0
+663: get member 'x'
+664: local #3
+665: +
+666: Func(0,1): CStr
+667: +
+668: " "
+669: +
+670: global #0
+671: get member 'y'
+672: local #2
+673: Func(0,0): CInt
+674: +
+675: Func(0,1): CStr
+676: +
+677: :=
+678: #
+line := line + " " + CStr(CInt(colour)) + " " + CStr(GFdtidx);
+679: local #4
+680: " "
+681: +
+682: local #1
+683: Func(0,0): CInt
+684: Func(0,1): CStr
+685: +
+686: " "
+687: +
+688: global #3
+689: Func(0,1): CStr
+690: +
+691: local4 := 
+GFlayout.append( line );
+692: global #1
+693: local #4
+694: Call Method append (1 params)
+695: #
+GFdtidx := GFdtidx + 1;		// Update index into GFdata[]
+696: global #3
+697: 1L
+698: +
+699: global3 := 
+GFdata[GFdtidx] := text;	// arrays start at #1... id#0 goes into [1]!!
+700: global #2
+701: global #3
+702: local #0
+703: [] := (1) #
+return XGFRetVal( GFlayout.size(), GFdtidx - 1 );
+704: global #1
+705: Call Method size (0 params)
+706: global #3
+707: 1L
+708: -
+709: -1L
+710: makelocal
+711: jmp userfunc @729
+712: return
+C:/pol2/scripts/../pkg/foundations/gumps/gumps.inc, Line 835
+function XGFReset( )
+GFlayout := array();
+713: array
+714: global1 := 
+GFdata := array();
+715: array
+716: global2 := 
+GFdtidx := GFINIT_TEXT;
+717: 0L
+718: global3 := 
+GFtxtid := GFINIT_TEXTENTRY;
+719: 513L
+720: global4 := 
+GFbutid := GFINIT_BUTTON;
+721: 1025L
+722: global5 := 
+GFcbxid := GFINIT_CHECKBOX;
+723: 1537L
+724: global6 := 
+GFradid := GFINIT_RADIO;
+725: 2049L
+726: global7 := 
+727: 0L
+728: return
+C:/pol2/scripts/../pkg/foundations/gumps/gumps.inc, Line 851
+function XGFRetVal( lytidx := -1, dtidx := -1, keyid := -1 )
+729: pop param 'keyid'
+730: pop param 'dtidx'
+731: pop param 'lytidx'
+var rvsl := struct;
+732: decl local #3
+733: struct
+734: :=
+735: #
+if ( lytidx > -1 )
+736: local #2
+737: -1L
+738: >
+739: if false goto 745
+rvsl.+lytidx := lytidx;
+740: local #3
+741: "lytidx"
+742: .+
+743: local #2
+744: := #
+if ( dtidx > -1 )
+745: local #1
+746: -1L
+747: >
+748: if false goto 754
+rvsl.+dtidx := dtidx;
+749: local #3
+750: "dtidx"
+751: .+
+752: local #1
+753: := #
+if ( keyid > -1 )
+754: local #0
+755: -1L
+756: >
+757: if false goto 763
+rvsl.+keyid := keyid;
+758: local #3
+759: "keyid"
+760: .+
+761: local #0
+762: := #
+sleepms(2);	// Will hopefully stop runaway script problem :/
+763: 2L
+764: Func(3,0): sleepms
+765: #
+return rvsl;
+766: local #3
+767: return
+C:/pol2/scripts/../pkg/foundations/gumps/gumps.inc, Line 930
+Function XGFTextMid(gumptext, x, width)
+768: pop param 'width'
+769: pop param 'x'
+770: pop param 'gumptext'
+Return (x+CInt((width-XGFTextWidth(gumptext))/2));
+771: local #1
+772: local #0
+773: local #2
+774: makelocal
+775: jmp userfunc @790
+776: -
+777: 2L
+778: /
+779: Func(0,0): CInt
+780: +
+781: return
+C:/pol2/scripts/../pkg/foundations/gumps/gumps.inc, Line 937
+Function XGFTextRight(gumptext, rightx)
+782: pop param 'rightx'
+783: pop param 'gumptext'
+Return (rightx-XGFTextWidth(gumptext));
+784: local #0
+785: local #1
+786: makelocal
+787: jmp userfunc @790
+788: -
+789: return
+C:/pol2/scripts/../pkg/foundations/gumps/gumps.inc, Line 906
+Function XGFTextWidth(gumptext)
+790: pop param 'gumptext'
+var points:=0;
+791: decl local #1
+792: 0L
+793: :=
+794: #
+var j;
+795: decl local #2
+796: #
+For (j:=len(gumptext); j>0; j:=j-1)
+797: local #2
+798: local #0
+799: Func(0,2): len
+800: :=
+801: #
+802: local #2
+803: 0L
+804: >
+805: if false goto 852
+var i:=Find(aGFTlength.charsf, gumptext[j], 1)-1;
+806: decl local #0
+807: global #8
+808: get member 'charsf'
+809: local #0
+810: local #2
+811: [] 1
+812: 1L
+813: Func(0,3): find
+814: 1L
+815: -
+816: :=
+817: #
+If (i>=0)
+818: local #3
+819: 0L
+820: >=
+821: if false goto 835
+points:=points+aGFTlength.width[CInt(i/14)+1];
+822: local #1
+823: global #8
+824: get member 'width'
+825: local #3
+826: 14L
+827: /
+828: Func(0,0): CInt
+829: 1L
+830: +
+831: [] 1
+832: +
+833: local1 := 
+834: goto844
+print("XGFTextWidth: Unknown Character = '"+gumptext[j]+"'");
+835: "XGFTextWidth: Unknown Character = '"
+836: local #0
+837: local #2
+838: [] 1
+839: +
+840: "'"
+841: +
+842: Func(1,0): print
+843: #
+844: leave block(1)
+845: local #2
+846: local #2
+847: 1L
+848: -
+849: :=
+850: #
+851: goto802
+Return (points);
+852: local #1
+853: return

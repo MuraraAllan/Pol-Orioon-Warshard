@@ -1,0 +1,128 @@
+use os;
+use uo;
+use cfgfile;
+use util;
+use basic;
+include "../pkg/foundations/gumps/gumps";
+
+
+
+
+program mandarpara(who)
+
+ 
+
+
+
+  GFInitGump( 250 , 100 );
+  GFNoMove();
+  GFResizePic(50, 5, 5120, 300, 400);
+  GFTextLine( 130 , 15, 1153 , "Cruz para Ressar" );
+  
+
+///cima esquerda///
+  GFTilePic(75,80,2);
+  GFTilePic(95,80,3);
+  GFTilePic(110,135,1176);
+  var ce:=GFButtonID(110, 180, 0xa50, 0xa51, 5);
+
+///cima direita///
+  GFTilePic(235,80,4);
+  GFTilePic(255,80,5);
+  GFTilePic(225,135,1176);
+  var cd:=GFButtonID(270, 180, 0xa50, 0xa51, 5);
+
+
+///baixo esquerda///
+  GFTilePic(80,280,1176);
+  GFTilePic(75,260,2);
+  GFTilePic(95,260,3);
+  var be:=GFButtonID(110, 330, 0xa50, 0xa51, 5);
+
+
+///baixo direita///
+  GFTilePic(250,290,1176);
+  GFTilePic(235,260,4);
+  GFTilePic(255,260,5);
+  var bd:=GFButtonID(270, 330, 0xa50, 0xa51, 5);
+
+  GFTextLine(65, 380, 53, "Escolha o lado que Ressa.");
+
+var res :=  GFSendGump(who);
+
+if(res[ce.keyid])
+var cruzA:=CreateItemAtLocation( who.x, who.y, who.z, 3, 1 );
+var cruzB:=CreateItemAtLocation( who.x, who.y+1, who.z, 2, 1 ); 
+
+var tileA:=CreateItemAtLocation( who.x+1, who.y, who.z, "ress", 1 );
+var tileB:=CreateItemAtLocation( who.x+1, who.y+1, who.z, "ress", 1 );
+
+cruzA.name:="Cruz";
+cruzB.name:="Cruz";
+
+tileA.name:="Tile de Ress (Invisivel)";
+tileA.invisible:=1; 
+
+tileB.name:="Tile de Ress (Invisivel)";
+tileB.invisible:=1;
+endif
+
+
+
+if(res[cd.keyid])
+var cruzA:=CreateItemAtLocation( who.x, who.y, who.z, 4, 1 );
+var cruzB:=CreateItemAtLocation( who.x+1, who.y, who.z, 5, 1 ); 
+
+var tileA:=CreateItemAtLocation( who.x, who.y+1, who.z, "ress", 1 );
+var tileB:=CreateItemAtLocation( who.x+1, who.y+1, who.z, "ress", 1 );
+
+cruzA.name:="Cruz";
+cruzB.name:="Cruz";
+
+tileA.name:="Tile de Ress (Invisivel)";
+tileA.invisible:=1; 
+
+tileB.name:="Tile de Ress (Invisivel)";
+tileB.invisible:=1; 
+endif
+
+
+
+if(res[be.keyid]) 
+var cruzA:=CreateItemAtLocation( who.x, who.y, who.z, 3, 1 );
+var cruzB:=CreateItemAtLocation( who.x, who.y+1, who.z, 2, 1 ); 
+
+var tileA:=CreateItemAtLocation( who.x-1, who.y, who.z, "ress", 1 );
+var tileB:=CreateItemAtLocation( who.x-1, who.y+1, who.z, "ress", 1 );
+
+cruzA.name:="Cruz";
+cruzB.name:="Cruz";
+
+tileA.name:="Tile de Ress (Invisivel)";
+tileA.invisible:=1; 
+
+tileB.name:="Tile de Ress (Invisivel)";
+tileB.invisible:=1;
+endif
+
+
+
+if(res[bd.keyid])
+var cruzA:=CreateItemAtLocation( who.x, who.y, who.z, 4, 1 );
+var cruzB:=CreateItemAtLocation( who.x+1, who.y, who.z, 5, 1 ); 
+
+var tileA:=CreateItemAtLocation( who.x, who.y-1, who.z, "ress", 1 );
+var tileB:=CreateItemAtLocation( who.x+1, who.y-1, who.z, "ress", 1 );
+
+cruzA.name:="Cruz";
+cruzB.name:="Cruz";
+
+tileA.name:="Tile de Ress (Invisivel)";
+tileA.invisible:=1; 
+
+tileB.name:="Tile de Ress (Invisivel)";
+tileB.invisible:=1;  
+endif
+
+
+endprogram

@@ -1,0 +1,23 @@
+use uo;
+use os;
+
+program teletransport(who,item)
+
+///destroyitem(item);
+if(GetObjProperty(who, "meteletransportei"))
+return;
+endif
+
+if((who.acct) || (GetObjProperty(who, "master")))
+
+var tox := CInt(GetObjProperty( item, "x" ));
+var toy := CInt(GetObjProperty( item, "y" ));
+var toz := CInt(GetObjProperty( item, "z" ));
+
+MoveCharacterToLocation(who, tox,toy,toz );
+SetObjProperty(who, "meteletransportei", "1" );
+sleepms(400);
+EraseObjProperty(who, "meteletransportei");
+
+endif
+endprogram

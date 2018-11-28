@@ -1,0 +1,17 @@
+use http;
+use uo;
+use os;
+use unicode;
+
+var senha := QueryParam("senha");
+var nick := QueryParam("nick");
+var msg := QueryParam("msg");
+
+if(senha != "syscobot123")
+WriteHtml("Acesso NEGADO!");
+return;
+endif
+
+////var textototal:="[IRC] " +nick+ ": " +msg;
+
+Broadcast("[IRC] "+nick+ ": " + msg, 0, 95);

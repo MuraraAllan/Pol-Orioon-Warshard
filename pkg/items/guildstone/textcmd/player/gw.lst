@@ -1,0 +1,51 @@
+c:\pol\pkg\items\guildstone\textcmd\player\gw.src, Line 4
+program vergw(who)
+use os;
+0: get arg 'who'
+Var alvogw := Target(who);
+1: decl local #1
+2: local #0
+3: 1L
+4: Func(2,0): Target
+5: :=
+6: #
+var guilda_1 := GetObjProperty(alvogw,"guild_id");
+7: decl local #2
+8: local #1
+9: "guild_id"
+10: Func(2,1): GetObjProperty
+11: :=
+12: #
+var guilda1 := FindGuild( guilda_1 );
+13: decl local #3
+14: local #2
+15: Func(2,2): FindGuild
+16: :=
+17: #
+var guilda_2 := GetObjProperty(who,"guild_id");
+18: decl local #4
+19: local #0
+20: "guild_id"
+21: Func(2,1): GetObjProperty
+22: :=
+23: #
+var guilda2 := FindGuild( guilda_2 );
+24: decl local #5
+25: local #4
+26: Func(2,2): FindGuild
+27: :=
+28: #
+if(Guilda1.isenemyguild(guilda2))
+29: local #3
+30: local #5
+31: Call Method isenemyguild (1 params)
+32: if false goto 39
+SendSysMessage(who,"Esta pessoa eh da guilda inimiga da sua.");
+33: local #0
+34: "Esta pessoa eh da guilda inimiga da sua."
+35: 9L
+36: 281L
+37: Func(2,3): SendSysMessage
+38: #
+39: leave block(6)
+40: progend

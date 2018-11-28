@@ -1,0 +1,134 @@
+C:\pol2\pkg\systems\boat\plankControl.src, Line 14
+set_debug(1);
+0: 1L
+1: Func(2,1): set_debug
+2: #
+C:\pol2\pkg\systems\boat\plankControl.src, Line 16
+program plankcontrol( plank )
+3: get arg 'plank'
+if (plank.locked && IsExtended(plank))
+4: local #0
+5: get member 'locked'
+6: local #0
+7: makelocal
+8: jmp userfunc @17
+9: &&
+10: if false goto 15
+Retract( plank );
+11: local #0
+12: makelocal
+13: jmp userfunc @31
+14: #
+15: leave block(1)
+16: progend
+C:\pol2\pkg\systems\boat\plankUtil.inc, Line 7
+function IsExtended( plank )
+17: pop param 'plank'
+return plank.graphic in { GID_PLANK_EXTENDED_FACING_EAST, GID_PLANK_EXTENDED_FA
+18: local #0
+19: get member 'graphic'
+20: array
+21: 16084L
+22: +=
+23: 16085L
+24: +=
+25: 16009L
+26: +=
+27: 16004L
+28: +=
+29: in
+30: return
+C:\pol2\pkg\systems\boat\plankUtil.inc, Line 21
+function Retract( plank )
+31: pop param 'plank'
+if (IsExtended(plank))
+32: local #0
+33: makelocal
+34: jmp userfunc @17
+35: if false goto 40
+TogglePlank(plank);
+36: local #0
+37: makelocal
+38: jmp userfunc @42
+39: #
+40: 0L
+41: return
+C:\pol2\pkg\systems\boat\plankUtil.inc, Line 27
+function TogglePlank( plank )
+42: pop param 'plank'
+var partnertype := PlankPartner( plank.graphic );
+43: decl local #1
+44: local #0
+45: get member 'graphic'
+46: makelocal
+47: jmp userfunc @57
+48: :=
+49: #
+if (partnertype)
+50: local #1
+51: if false goto 55
+plank.graphic := partnertype;
+52: local #0
+53: local #1
+54: set member 'graphic' #
+55: 0L
+56: return
+C:\pol2\pkg\systems\boat\plankUtil.inc, Line 34
+function PlankPartner( planktype )
+57: pop param 'planktype'
+case planktype
+58: local #0
+59: casejmp
+	16084: @60
+	16050: @63
+	16085: @66
+	16049: @69
+	16009: @72
+	16010: @75
+	16004: @78
+	16005: @81
+	default: @84
+return GID_PLANK_RETRACTED_FACING_EAST;   // 0x3ed5: return 0x3eb1;
+60: 16050L
+61: return
+62: goto92
+return GID_PLANK_EXTENDED_FACING_EAST;    // 0x3eb1: return 0x3ed5;
+63: 16084L
+64: return
+65: goto92
+return GID_PLANK_RETRACTED_FACING_WEST;   // 0x3ed4: return 0x3eb2;
+66: 16049L
+67: return
+68: goto92
+return GID_PLANK_EXTENDED_FACING_WEST;    // 0x3eb2: return 0x3ed4;
+69: 16085L
+70: return
+71: goto92
+return GID_PLANK_RETRACTED_FACING_NORTH; // 0x3e84: return 0x3e85;
+72: 16010L
+73: return
+74: goto92
+return GID_PLANK_EXTENDED_FACING_NORTH;  // 0x3e85: return 0x3e84;
+75: 16009L
+76: return
+77: goto92
+return GID_PLANK_RETRACTED_FACING_SOUTH; // 0x3e89: return 0x3e8a;
+78: 16005L
+79: return
+80: goto92
+return GID_PLANK_EXTENDED_FACING_SOUTH;  // 0x3e8a: return 0x3e89;
+81: 16004L
+82: return
+83: goto92
+syslog( "Unknown plank type 0x" + Hex( planktype ) );
+84: "Unknown plank type 0x"
+85: local #0
+86: Func(0,0): Hex
+87: +
+88: Func(2,0): syslog
+89: #
+return error;
+90: error
+91: return
+92: 0L
+93: return

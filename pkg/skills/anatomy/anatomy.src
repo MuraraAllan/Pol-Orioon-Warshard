@@ -1,0 +1,108 @@
+use uo;
+use os;
+
+include "include/client";
+include "include/attributes";
+include ":poisonwatcher:poisons";
+include "include/skills";
+program anatomy( who )
+sendsysmessage(who,"Quem voce deseja avaliar?",3,98);
+ Var alvo := Target(who);
+if((!alvo) || (alvo.serial == who.serial))
+sendsysmessage(who,"Cancelado.",3,98);
+return;
+endif
+if(distance(who,alvo) >= 10)
+sendsysmessage(who,"Voce nao pode avaliar pessoas desta distancia!",3,98);
+return;
+endif
+if(!alvo.isA(POLCLASS_MOBILE))
+sendsysmessage(who,"Voce apenas pode avaliar humanos!",3,98);
+return;
+endif
+var anatomy := getattribute(who,ATTRIBUTEID_ANATOMY);
+var anatomyy := getattribute(alvo,ATTRIBUTEID_ANATOMY);
+var dificuldade := randomint(15);
+
+
+Sendsysmessage(who,"Voce comeca a avaliar o alvo!",3,98);
+Sleepms(1500);
+if(anatomy + randomint(10) < anatomyy + dificuldade)
+Sendsysmessage(who,"Voce falha em avaliar o individuo!",3,98);
+return;
+endif
+falas(who,alvo);
+endprogram
+
+function falas(who,alvo)
+var life := findhp(100 * GetHp(alvo)/GetMaxHp(alvo),alvo);
+var forca :=  findstrength(GetStrength(alvo),alvo);
+var dex :=  finddex(GetDexterity(alvo));
+
+Sendsysmessage(who,"O Alvo Esta : " +life+ " , " + forca + " e " + dex +".",3,98);
+upparskill(who,1000,"ANATOMY","ANATOMY");
+endfunction
+
+function findhp(str,alvo)
+  if(str >= 80)
+    return "Em excelentes condicoes";
+  elseif(str >= 50)
+    return "Com uma boa vida";
+  elseif(str >= 30)
+    return "Com poca vida";
+  elseif(str >= 10)
+    return "Muito doente";
+   elseif(str <= 10)
+    return "Em seu leito de morte";
+  endif
+
+endfunction
+
+function findstrength(str,alvo)
+  if(str >= 98)
+    return "tem forca sobre humana!";
+  elseif(str >= 88)
+    return "eh com certeza uma dos individuos mais fortes que ja vi!";
+  elseif(str >= 78)
+    return "tem uma incrivel forca!";
+  elseif(str >= 68)
+    return "tem bastante forca.";
+  elseif(str >= 58)
+    return "tem uma forca comunal.";
+  elseif(str >= 48)
+    return "tem alguns musculos.";
+  elseif(str >= 38)
+    return "ele eh meio fravo.";
+  elseif(str >= 28)
+    return "praticamente nao se aguenta em pe.";
+  elseif(str >= 18)
+    return "eh raquitico.";
+  elseif(str <  18)
+    return "eh puro osso!";
+  endif
+endfunction
+
+function finddex(str)
+  if(str >= 98)
+    return "possui Uma agilidade sem igual";
+  elseif(str >= 88)
+    return "sua agilidade eh quase sobre humana";
+  elseif(str >= 78)
+    return "eh sem duvida uma das pessoas mais ageis que ja vi";
+  elseif(str >= 68)
+    return "tem uma agiliadde quase inacreditavel";
+  elseif(str >= 58)
+    return "eh extremamente agil";
+  elseif(str >= 48)
+    return "eh muito agil";
+  elseif(str >= 38)
+    return "possui uma agilidade comunal";
+  elseif(str >= 28)
+    return "tem uma agilidade moderada";
+  elseif(str >= 18)
+    return "e muito divagar";
+   elseif(str <  18)
+    return "parece uma tartaruga ao se mover";
+  
+  endif
+endfunction

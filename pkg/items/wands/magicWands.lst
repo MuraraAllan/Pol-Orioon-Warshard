@@ -1,0 +1,2461 @@
+C:\pol2\pkg\items\wands\magicWands.src, Line 10
+var EVID_DISCHARGE := 0x123457;
+0: decl global #0
+1: 1193047L
+2: :=
+3: #
+C:\pol2\pkg\items\wands\magicWands.src, Line 12
+program magicwands(who, item)
+4: get arg 'who'
+5: get arg 'item'
+EraseObjProperty(who, "IsMeditating");
+6: local #0
+7: "IsMeditating"
+8: Func(2,19): EraseObjProperty
+9: #
+EraseObjProperty(who, "HealTimer");
+10: local #0
+11: "HealTimer"
+12: Func(2,19): EraseObjProperty
+13: #
+if(!can_access(who, item))
+14: local #0
+15: local #1
+16: 0L
+17: makelocal
+18: jmp userfunc @93
+19: if true goto 22
+return;
+20: ""
+21: progend
+if(!ReserveItem(item))
+22: local #1
+23: Func(2,18): ReserveItem
+24: if true goto 27
+return;
+25: ""
+26: progend
+if(!IsWandEquipped(who, item))
+27: local #0
+28: local #1
+29: makelocal
+30: jmp userfunc @520
+31: if true goto 40
+SendSysMessage(who,"You need to equip that to use it.");
+32: local #0
+33: "You need to equip that to use it."
+34: 3L
+35: 1000L
+36: Func(2,15): SendSysMessage
+37: #
+return;
+38: ""
+39: progend
+var charges := CInt(GetObjProperty(item, "charges"));
+40: decl local #2
+41: local #1
+42: "charges"
+43: Func(2,1): GetObjProperty
+44: Func(0,0): CInt
+45: :=
+46: #
+var spellid := CInt(GetObjProperty(item, "SpellId"));
+47: decl local #3
+48: local #1
+49: "SpellId"
+50: Func(2,1): GetObjProperty
+51: Func(0,0): CInt
+52: :=
+53: #
+if(!spellid)
+54: local #3
+55: if true goto 64
+SendSysMessage(who, "This wand is broken");
+56: local #0
+57: "This wand is broken"
+58: 3L
+59: 1000L
+60: Func(2,15): SendSysMessage
+61: #
+return;
+62: ""
+63: progend
+if(charges)
+64: local #2
+65: if false goto 85
+if(spellid == 65)
+66: local #3
+67: 65L
+68: ==
+69: if false goto 76
+identifyit(who, item);
+70: local #0
+71: local #1
+72: makelocal
+73: jmp userfunc @200
+74: #
+75: goto84
+Detach();
+76: Func(2,20): Detach
+77: #
+StartEffect(who, spellid, item);
+78: local #0
+79: local #3
+80: local #1
+81: makelocal
+82: jmp userfunc @550
+83: #
+84: goto91
+SendSysMessage(who, "That item is out of charges.");
+85: local #0
+86: "That item is out of charges."
+87: 3L
+88: 1000L
+89: Func(2,15): SendSysMessage
+90: #
+91: leave block(4)
+92: progend
+C:/pol2/scripts/include/canAccess.inc, Line 2
+function can_access(who, item, flags := 0)
+93: pop param 'flags'
+94: pop param 'item'
+95: pop param 'who'
+var owner := Cint(GetObjProperty(item, "Owner"));
+96: decl local #3
+97: local #1
+98: "Owner"
+99: Func(2,1): GetObjProperty
+100: Func(0,0): CInt
+101: :=
+102: #
+if((owner) and (owner != who.serial))
+103: local #3
+104: local #3
+105: local #2
+106: get member 'serial'
+107: <>
+108: &&
+109: if false goto 119
+SendSysMessage(who, "You cannot use that.");
+110: local #2
+111: "You cannot use that."
+112: 3L
+113: 1000L
+114: Func(2,15): SendSysMessage
+115: #
+return 0;
+116: 0L
+117: return
+118: goto198
+elseif(GetObjProperty(item, "Vendored"))
+119: local #1
+120: "Vendored"
+121: Func(2,1): GetObjProperty
+122: if false goto 132
+SendSysMessage(who, "You cannot use that.");
+123: local #2
+124: "You cannot use that."
+125: 3L
+126: 1000L
+127: Func(2,15): SendSysMessage
+128: #
+return 0;
+129: 0L
+130: return
+131: goto198
+elseif(!Accessible(who, item))
+132: local #2
+133: local #1
+134: Func(2,16): Accessible
+135: if true goto 145
+SendSysMessage(who, "You cannot use that.");
+136: local #2
+137: "You cannot use that."
+138: 3L
+139: 1000L
+140: Func(2,15): SendSysMessage
+141: #
+return 0;
+142: 0L
+143: return
+144: goto198
+elseif((!flags["distance"]) and ((Distance(who, item) > 2)))
+145: local #0
+146: "distance"
+147: [] 1
+148: !
+149: local #2
+150: local #1
+151: Func(2,17): Distance
+152: 2L
+153: >
+154: &&
+155: if false goto 165
+SendSysMessage(who, "That item is too far away.");
+156: local #2
+157: "That item is too far away."
+158: 3L
+159: 1000L
+160: Func(2,15): SendSysMessage
+161: #
+return 0;
+162: 0L
+163: return
+164: goto198
+elseif((!flags["unmovable"]) and (item.movable == 0))
+165: local #0
+166: "unmovable"
+167: [] 1
+168: !
+169: local #1
+170: get member 'movable'
+171: 0L
+172: ==
+173: &&
+174: if false goto 184
+SendSysMessage(who, "You cannot use that while locked down.");
+175: local #2
+176: "You cannot use that while locked down."
+177: 3L
+178: 1000L
+179: Func(2,15): SendSysMessage
+180: #
+return 0;
+181: 0L
+182: return
+183: goto198
+elseif(!ReserveItem(item))
+184: local #1
+185: Func(2,18): ReserveItem
+186: if true goto 196
+SendSysMessage(who, "That item is already in use.");
+187: local #2
+188: "That item is already in use."
+189: 3L
+190: 1000L
+191: Func(2,15): SendSysMessage
+192: #
+return 0;
+193: 0L
+194: return
+195: goto198
+return 1;
+196: 1L
+197: return
+198: 0L
+199: return
+C:\pol2\pkg\items\wands\magicWands.src, Line 295
+function identifyit(who, item)
+200: pop param 'item'
+201: pop param 'who'
+EraseObjProperty(who, "IsMeditating");
+202: local #1
+203: "IsMeditating"
+204: Func(2,19): EraseObjProperty
+205: #
+var charges := CInt(GetObjProperty(item, "charges"));
+206: decl local #2
+207: local #0
+208: "charges"
+209: Func(2,1): GetObjProperty
+210: Func(0,0): CInt
+211: :=
+212: #
+var the_item, ncharges;
+213: decl local #3
+214: #
+215: decl local #4
+216: #
+SendSysMessage(who, "Select an object to identify.");
+217: local #1
+218: "Select an object to identify."
+219: 3L
+220: 1000L
+221: Func(2,15): SendSysMessage
+222: #
+the_item := Target(who, TGTOPT_CHECK_LOS);
+223: local #1
+224: 1L
+225: Func(2,21): Target
+226: local3 := 
+if(!the_item)
+227: local #3
+228: if true goto 237
+SendSysMessage(who, "Targetting cancelled.");
+229: local #1
+230: "Targetting cancelled."
+231: 3L
+232: 1000L
+233: Func(2,15): SendSysMessage
+234: #
+return;
+235: ""
+236: return
+charges := charges - 1;
+237: local #2
+238: 1L
+239: -
+240: local2 := 
+SetObjProperty(item, "charges", charges);
+241: local #0
+242: "charges"
+243: local #2
+244: Func(2,3): SetObjProperty
+245: #
+if(charges == 0)
+246: local #2
+247: 0L
+248: ==
+249: if false goto 257
+PrintTextAbovePrivate(item, "That is out of charges", who);
+250: local #0
+251: "That is out of charges"
+252: local #1
+253: 3L
+254: 1000L
+255: Func(2,22): PrintTextAbovePrivate
+256: #
+if(the_item.isA(POLCLASS_MOBILE))
+257: local #3
+258: 3L
+259: Call Method isa (1 params)
+260: if false goto 269
+SendSysMessage(who, "That's not an item!");
+261: local #1
+262: "That's not an item!"
+263: 3L
+264: 1000L
+265: Func(2,15): SendSysMessage
+266: #
+return;
+267: ""
+268: return
+var cfgfile := ReadConfigFile(":*:itemdesc");
+269: decl local #5
+270: ":*:itemdesc"
+271: Func(4,0): ReadConfigFile
+272: :=
+273: #
+var elem := FindConfigElem(cfgfile, the_item.objtype);
+274: decl local #6
+275: local #5
+276: local #3
+277: get member 'objtype'
+278: Func(4,1): FindConfigElem
+279: :=
+280: #
+var name := "";
+281: decl local #7
+282: ""
+283: :=
+284: #
+var itsname := the_item.desc;
+285: decl local #8
+286: local #3
+287: get member 'desc'
+288: :=
+289: #
+var true_name := elem.desc;
+290: decl local #9
+291: local #6
+292: get member 'desc'
+293: :=
+294: #
+if(GetObjProperty(the_item, "silvermod"))
+295: local #3
+296: "silvermod"
+297: Func(2,1): GetObjProperty
+298: if false goto 303
+name :=  "silver" + name;
+299: "silver"
+300: local #7
+301: +
+302: local7 := 
+if(GetObjProperty(the_item, "durability"))
+303: local #3
+304: "durability"
+305: Func(2,1): GetObjProperty
+306: if false goto 315
+name := name + " " + GetObjProperty(the_item, "durability");
+307: local #7
+308: " "
+309: +
+310: local #3
+311: "durability"
+312: Func(2,1): GetObjProperty
+313: +
+314: local7 := 
+if(GetObjProperty(the_item, "accuracy"))
+315: local #3
+316: "accuracy"
+317: Func(2,1): GetObjProperty
+318: if false goto 327
+name := name + " " + GetObjProperty(the_item, "accuracy");
+319: local #7
+320: " "
+321: +
+322: local #3
+323: "accuracy"
+324: Func(2,1): GetObjProperty
+325: +
+326: local7 := 
+itsname["a "] := "";
+327: local #8
+328: "a "
+329: ""
+330: [] := (1) #
+itsname["an "] := "";
+331: local #8
+332: "an "
+333: ""
+334: [] := (1) #
+itsname["magic "] := "";
+335: local #8
+336: "magic "
+337: ""
+338: [] := (1) #
+name := name + " " + itsname;
+339: local #7
+340: " "
+341: +
+342: local #8
+343: +
+344: local7 := 
+if(GetObjProperty(the_item, "damagemod"))
+345: local #3
+346: "damagemod"
+347: Func(2,1): GetObjProperty
+348: if false goto 357
+name := name + " " + GetObjProperty(the_item, "damagemod");
+349: local #7
+350: " "
+351: +
+352: local #3
+353: "damagemod"
+354: Func(2,1): GetObjProperty
+355: +
+356: local7 := 
+name.erase(1);
+357: local #7
+358: 1L
+359: Call Method erase (1 params)
+360: #
+if((!GetObjProperty(the_item, "IDed")) and (name != ""))
+361: local #3
+362: "IDed"
+363: Func(2,1): GetObjProperty
+364: !
+365: local #7
+366: ""
+367: <>
+368: &&
+369: if false goto 374
+SetName(the_item, name);
+370: local #3
+371: local #7
+372: Func(2,32): SetName
+373: #
+var msg := "It appears to be";
+374: decl local #10
+375: "It appears to be"
+376: :=
+377: #
+itsname := the_item.desc;
+378: local #3
+379: get member 'desc'
+380: local8 := 
+if(itsname[1] == " ")
+381: local #8
+382: 1L
+383: [] 1
+384: " "
+385: ==
+386: if false goto 424
+if(Cint(itsname[2]) == 0)
+387: local #8
+388: 2L
+389: [] 1
+390: Func(0,0): CInt
+391: 0L
+392: ==
+393: if false goto 423
+case(Cstr(itsname[2]))
+394: local #8
+395: 2L
+396: [] 1
+397: Func(0,4): CStr
+398: casejmp
+	"a": @399
+	"e": @404
+	"i": @409
+	"o": @414
+	"u": @419
+	default: @423
+msg := msg + " an";
+399: local #10
+400: " an"
+401: +
+402: local10 := 
+403: goto423
+msg := msg + " an";
+404: local #10
+405: " an"
+406: +
+407: local10 := 
+408: goto423
+msg := msg + " an";
+409: local #10
+410: " an"
+411: +
+412: local10 := 
+413: goto423
+msg := msg + " an";
+414: local #10
+415: " an"
+416: +
+417: local10 := 
+418: goto423
+msg := msg + " an";
+419: local #10
+420: " an"
+421: +
+422: local10 := 
+423: goto464
+msg := msg + " ";
+424: local #10
+425: " "
+426: +
+427: local10 := 
+if(Cint(itsname[1]) == 0)
+428: local #8
+429: 1L
+430: [] 1
+431: Func(0,0): CInt
+432: 0L
+433: ==
+434: if false goto 464
+case(Cstr(itsname[1]))
+435: local #8
+436: 1L
+437: [] 1
+438: Func(0,4): CStr
+439: casejmp
+	"a": @440
+	"e": @445
+	"i": @450
+	"o": @455
+	"u": @460
+	default: @464
+msg := msg + " an ";
+440: local #10
+441: " an "
+442: +
+443: local10 := 
+444: goto464
+msg := msg + " an ";
+445: local #10
+446: " an "
+447: +
+448: local10 := 
+449: goto464
+msg := msg + " an ";
+450: local #10
+451: " an "
+452: +
+453: local10 := 
+454: goto464
+msg := msg + " an ";
+455: local #10
+456: " an "
+457: +
+458: local10 := 
+459: goto464
+msg := msg + " an ";
+460: local #10
+461: " an "
+462: +
+463: local10 := 
+msg := msg + itsname;
+464: local #10
+465: local #8
+466: +
+467: local10 := 
+SendSysMessage( who, msg);
+468: local #1
+469: local #10
+470: 3L
+471: 1000L
+472: Func(2,15): SendSysMessage
+473: #
+SetObjProperty( the_item, "IDed", 1 );
+474: local #3
+475: "IDed"
+476: 1L
+477: Func(2,3): SetObjProperty
+478: #
+if(GetObjProperty(the_item, "charges") )
+479: local #3
+480: "charges"
+481: Func(2,1): GetObjProperty
+482: if false goto 500
+ncharges := CStr(GetObjProperty(the_item, "charges") );
+483: local #3
+484: "charges"
+485: Func(2,1): GetObjProperty
+486: Func(0,4): CStr
+487: local4 := 
+if(ncharges)
+488: local #4
+489: if false goto 500
+SendSysMessage(who, "It has " + ncharges + " charges.");
+490: local #1
+491: "It has "
+492: local #4
+493: +
+494: " charges."
+495: +
+496: 3L
+497: 1000L
+498: Func(2,15): SendSysMessage
+499: #
+if(GetObjProperty(the_item, "type") == "cursed")
+500: local #3
+501: "type"
+502: Func(2,1): GetObjProperty
+503: "cursed"
+504: ==
+505: if false goto 518
+if(CheckSkill(who, SKILLID_ITEMID, 65, 0) )
+506: local #1
+507: 3L
+508: 65L
+509: 0L
+510: Func(2,31): CheckSkill
+511: if false goto 518
+SendSysMessage(who, "* This item is cursed! *");
+512: local #1
+513: "* This item is cursed! *"
+514: 3L
+515: 1000L
+516: Func(2,15): SendSysMessage
+517: #
+518: 0L
+519: return
+C:\pol2\pkg\items\wands\magicWands.src, Line 283
+function IsWandEquipped(who,wand)
+520: pop param 'wand'
+521: pop param 'who'
+if((!Accessible(who,wand)) || (Distance(who, wand) > 1))
+522: local #1
+523: local #0
+524: Func(2,16): Accessible
+525: !
+526: local #1
+527: local #0
+528: Func(2,17): Distance
+529: 1L
+530: >
+531: ||
+532: if false goto 535
+return 0;
+533: 0L
+534: return
+foreach item in ListEquippedItems(who)
+535: local #1
+536: Func(2,30): ListEquippedItems
+537: initforeach @546
+if(wand.serial == item.serial)
+538: local #0
+539: get member 'serial'
+540: local #2
+541: get member 'serial'
+542: ==
+543: if false goto 546
+return 1;
+544: 1L
+545: return
+546: stepforeach @538
+547: leave block(3)
+return 0;
+548: 0L
+549: return
+C:\pol2\pkg\items\wands\magicWands.src, Line 43
+function StartEffect(who, spellid, item)
+550: pop param 'item'
+551: pop param 'spellid'
+552: pop param 'who'
+SendSysMessage(who, "Select a target.");
+553: local #2
+554: "Select a target."
+555: 3L
+556: 1000L
+557: Func(2,15): SendSysMessage
+558: #
+var trg := Target(who);
+559: decl local #3
+560: local #2
+561: 1L
+562: Func(2,21): Target
+563: :=
+564: #
+if(!trg)
+565: local #3
+566: if true goto 575
+SendSysMessage(who, "Canceled.");
+567: local #2
+568: "Canceled."
+569: 3L
+570: 1000L
+571: Func(2,15): SendSysMessage
+572: #
+return;
+573: ""
+574: return
+var charges := CInt(GetObjProperty(item, "charges"));
+575: decl local #4
+576: local #0
+577: "charges"
+578: Func(2,1): GetObjProperty
+579: Func(0,0): CInt
+580: :=
+581: #
+charges := charges - 1;
+582: local #4
+583: 1L
+584: -
+585: local4 := 
+SetObjProperty(item, "charges", charges);
+586: local #0
+587: "charges"
+588: local #4
+589: Func(2,3): SetObjProperty
+590: #
+if(charges == 0)
+591: local #4
+592: 0L
+593: ==
+594: if false goto 602
+PrintTextAbovePrivate(item, "That is out of charges", who);
+595: local #0
+596: "That is out of charges"
+597: local #2
+598: 3L
+599: 1000L
+600: Func(2,22): PrintTextAbovePrivate
+601: #
+if(!CheckLineOfSight(who, trg))
+602: local #2
+603: local #3
+604: Func(2,23): CheckLineOfSight
+605: if true goto 614
+SendSysMessage(who, "You cant see that");
+606: local #2
+607: "You cant see that"
+608: 3L
+609: 1000L
+610: Func(2,15): SendSysMessage
+611: #
+return;
+612: ""
+613: return
+if(!GetHp(trg))
+614: local #3
+615: makelocal
+616: jmp userfunc @1374
+617: if true goto 626
+SendSysMessage(who, "You can only use that on living things.");
+618: local #2
+619: "You can only use that on living things."
+620: 3L
+621: 1000L
+622: Func(2,15): SendSysMessage
+623: #
+return;
+624: ""
+625: return
+if(trg.dead)
+626: local #3
+627: get member 'dead'
+628: if false goto 637
+SendSysMessage(who, "You cant cast that on ghosts.");
+629: local #2
+630: "You cant cast that on ghosts."
+631: 3L
+632: 1000L
+633: Func(2,15): SendSysMessage
+634: #
+return;
+635: ""
+636: return
+case(spellid)
+637: local #1
+638: casejmp
+	1: @639
+	3: @645
+	4: @651
+	8: @657
+	12: @663
+	18: @669
+	29: @675
+	30: @681
+	31: @687
+	default: @692
+cast_clumsy(who, trg);
+639: local #2
+640: local #3
+641: makelocal
+642: jmp userfunc @694
+643: #
+644: goto692
+cast_feeblemind(who, trg);
+645: local #2
+646: local #3
+647: makelocal
+648: jmp userfunc @769
+649: #
+650: goto692
+cast_heal(who, trg);
+651: local #2
+652: local #3
+653: makelocal
+654: jmp userfunc @1007
+655: #
+656: goto692
+cast_weaken(who, trg);
+657: local #2
+658: local #3
+659: makelocal
+660: jmp userfunc @1194
+661: #
+662: goto692
+cast_harm(who, trg);
+663: local #2
+664: local #3
+665: makelocal
+666: jmp userfunc @945
+667: #
+668: goto692
+cast_fireball(who, trg);
+669: local #2
+670: local #3
+671: makelocal
+672: jmp userfunc @844
+673: #
+674: goto692
+cast_greatheal(who, trg);
+675: local #2
+676: local #3
+677: makelocal
+678: jmp userfunc @908
+679: #
+680: goto692
+cast_lightning(who, trg);
+681: local #2
+682: local #3
+683: makelocal
+684: jmp userfunc @1042
+685: #
+686: goto692
+cast_manadrain(who, trg);
+687: local #2
+688: local #3
+689: makelocal
+690: jmp userfunc @1103
+691: #
+692: 0L
+693: return
+C:\pol2\pkg\items\wands\magicWands.src, Line 81
+function cast_clumsy(caster, cast_on)
+694: pop param 'cast_on'
+695: pop param 'caster'
+SetObjProperty(cast_on, "LastHit", {caster.name, caster.serial, "clumsy"});
+696: local #0
+697: "LastHit"
+698: array
+699: local #1
+700: get member 'name'
+701: +=
+702: local #1
+703: get member 'serial'
+704: +=
+705: "clumsy"
+706: +=
+707: Func(2,3): SetObjProperty
+708: #
+if(Reflected(cast_on))
+709: local #0
+710: makelocal
+711: jmp userfunc @1446
+712: if false goto 715
+cast_on := caster;
+713: local #1
+714: local0 := 
+PlaySoundEffect(cast_on, SFX_SPELL_CURE);
+715: local #0
+716: 481L
+717: Func(2,24): PlaySoundEffect
+718: #
+PlayObjectCenteredEffect(cast_on, FX_CURSE_EFFECT, 7,7);
+719: local #0
+720: 14154L
+721: 7L
+722: 7L
+723: Func(2,25): PlayObjectCenteredEffect
+724: #
+if(!CanMod(cast_on, "dex"))
+725: local #0
+726: "dex"
+727: makelocal
+728: jmp userfunc @1704
+729: if true goto 738
+SendSysMessage(caster,"Already under the influence!");
+730: local #1
+731: "Already under the influence!"
+732: 3L
+733: 1000L
+734: Func(2,15): SendSysMessage
+735: #
+return;
+736: ""
+737: return
+var magery := 20;
+738: decl local #2
+739: 20L
+740: :=
+741: #
+var mod_amount := Resisted(10, cast_on, (GetModAmount(magery)));
+742: decl local #3
+743: 10L
+744: local #0
+745: local #2
+746: makelocal
+747: jmp userfunc @1405
+748: makelocal
+749: jmp userfunc @1552
+750: :=
+751: #
+var duration := GetModDuration(magery);
+752: decl local #4
+753: local #2
+754: makelocal
+755: jmp userfunc @1424
+756: :=
+757: #
+DoTempMod(cast_on, "dex", 0 - mod_amount, duration);
+758: local #0
+759: "dex"
+760: 0L
+761: local #3
+762: -
+763: local #4
+764: makelocal
+765: jmp userfunc @1263
+766: #
+767: 0L
+768: return
+C:\pol2\pkg\items\wands\magicWands.src, Line 98
+function cast_feeblemind(caster, cast_on)
+769: pop param 'cast_on'
+770: pop param 'caster'
+SetObjProperty(cast_on, "LastHit", {caster.name,caster.serial, "feeblemind" });
+771: local #0
+772: "LastHit"
+773: array
+774: local #1
+775: get member 'name'
+776: +=
+777: local #1
+778: get member 'serial'
+779: +=
+780: "feeblemind"
+781: +=
+782: Func(2,3): SetObjProperty
+783: #
+if (Reflected(cast_on))
+784: local #0
+785: makelocal
+786: jmp userfunc @1446
+787: if false goto 790
+cast_on := caster;
+788: local #1
+789: local0 := 
+PlaySoundEffect(cast_on, SFX_SPELL_FEEBLEMIND);
+790: local #0
+791: 485L
+792: Func(2,24): PlaySoundEffect
+793: #
+PlayObjectCenteredEffect( cast_on, FX_CURSE_EFFECT, 7, 7 );
+794: local #0
+795: 14154L
+796: 7L
+797: 7L
+798: Func(2,25): PlayObjectCenteredEffect
+799: #
+if (!CanMod(cast_on, "int"))
+800: local #0
+801: "int"
+802: makelocal
+803: jmp userfunc @1704
+804: if true goto 813
+SendSysMessage(caster,"Already under the influence!");
+805: local #1
+806: "Already under the influence!"
+807: 3L
+808: 1000L
+809: Func(2,15): SendSysMessage
+810: #
+return;
+811: ""
+812: return
+var magery := 20;
+813: decl local #2
+814: 20L
+815: :=
+816: #
+var mod_amount := Resisted(20, cast_on, (GetModAmount(magery)));
+817: decl local #3
+818: 20L
+819: local #0
+820: local #2
+821: makelocal
+822: jmp userfunc @1405
+823: makelocal
+824: jmp userfunc @1552
+825: :=
+826: #
+var duration := GetModDuration(magery);
+827: decl local #4
+828: local #2
+829: makelocal
+830: jmp userfunc @1424
+831: :=
+832: #
+DoTempMod(cast_on, "int", 0 - mod_amount, duration);
+833: local #0
+834: "int"
+835: 0L
+836: local #3
+837: -
+838: local #4
+839: makelocal
+840: jmp userfunc @1263
+841: #
+842: 0L
+843: return
+C:\pol2\pkg\items\wands\magicWands.src, Line 158
+function cast_fireball(caster, cast_on)
+844: pop param 'cast_on'
+845: pop param 'caster'
+var dmg := CalcSpellDamage(3, 30,cast_on);
+846: decl local #2
+847: 3L
+848: 30L
+849: local #0
+850: makelocal
+851: jmp userfunc @1671
+852: :=
+853: #
+SetObjProperty(cast_on, "LastHit", {caster.name,caster.serial, "harm"});
+854: local #0
+855: "LastHit"
+856: array
+857: local #1
+858: get member 'name'
+859: +=
+860: local #1
+861: get member 'serial'
+862: +=
+863: "harm"
+864: +=
+865: Func(2,3): SetObjProperty
+866: #
+if (Reflected(cast_on))
+867: local #0
+868: makelocal
+869: jmp userfunc @1446
+870: if false goto 873
+cast_on := caster;
+871: local #1
+872: local0 := 
+PlayMovingEffect( caster, cast_on, FX_FIREBALL, 5, 1 );
+873: local #1
+874: local #0
+875: 14036L
+876: 5L
+877: 1L
+878: 0L
+879: Func(2,28): PlayMovingEffect
+880: #
+PlaySoundEffect( caster, 0x15f);
+881: local #1
+882: 351L
+883: Func(2,24): PlaySoundEffect
+884: #
+if(GetHp(cast_on) >= 1)
+885: local #0
+886: makelocal
+887: jmp userfunc @1374
+888: 1L
+889: >=
+890: if false goto 906
+if(cast_on.npctemplate)
+891: local #0
+892: get member 'npctemplate'
+893: if false goto 898
+dmg := dmg * 2;
+894: local #2
+895: 2L
+896: *
+897: local2 := 
+ApplyRawDamage(cast_on, Resisted(20, cast_on, dmg));
+898: local #0
+899: 20L
+900: local #0
+901: local #2
+902: makelocal
+903: jmp userfunc @1552
+904: Func(2,27): ApplyRawDamage
+905: #
+906: 0L
+907: return
+C:\pol2\pkg\items\wands\magicWands.src, Line 174
+function cast_greatheal(caster, cast_on)
+908: pop param 'cast_on'
+909: pop param 'caster'
+var healed := RandomDiceRoll("2d6");
+910: decl local #2
+911: "2d6"
+912: Func(6,1): RandomDiceRoll
+913: :=
+914: #
+healed := 30 + (4 + healed);
+915: 30L
+916: 4L
+917: local #2
+918: +
+919: +
+920: local2 := 
+if(cast_on.isA(POLCLASS_NPC))
+921: local #0
+922: 4L
+923: Call Method isa (1 params)
+924: if false goto 929
+healed := healed * 2;
+925: local #2
+926: 2L
+927: *
+928: local2 := 
+HealDamage(cast_on, healed);
+929: local #0
+930: local #2
+931: Func(2,26): HealDamage
+932: #
+PlayObjectCenteredEffect(cast_on, FX_SPARK_EFFECT, 7, 0x10);
+933: local #0
+934: 14170L
+935: 7L
+936: 16L
+937: Func(2,25): PlayObjectCenteredEffect
+938: #
+PlaySoundEffect(cast_on, SFX_SPELL_GREATER_HEAL);
+939: local #0
+940: 515L
+941: Func(2,24): PlaySoundEffect
+942: #
+943: 0L
+944: return
+C:\pol2\pkg\items\wands\magicWands.src, Line 142
+function cast_harm(caster, cast_on)
+945: pop param 'cast_on'
+946: pop param 'caster'
+var dmg := CalcSpellDamage(2, 20,cast_on);
+947: decl local #2
+948: 2L
+949: 20L
+950: local #0
+951: makelocal
+952: jmp userfunc @1671
+953: :=
+954: #
+SetObjProperty(cast_on, "LastHit", {caster.name,caster.serial, "harm"});
+955: local #0
+956: "LastHit"
+957: array
+958: local #1
+959: get member 'name'
+960: +=
+961: local #1
+962: get member 'serial'
+963: +=
+964: "harm"
+965: +=
+966: Func(2,3): SetObjProperty
+967: #
+if (Reflected(cast_on))
+968: local #0
+969: makelocal
+970: jmp userfunc @1446
+971: if false goto 974
+cast_on := caster;
+972: local #1
+973: local0 := 
+PlaySoundEffect(cast_on, SFX_SPELL_HARM);
+974: local #0
+975: 498L
+976: Func(2,24): PlaySoundEffect
+977: #
+PlayObjectCenteredEffect(cast_on, FX_GLOW_SPIKE, 0x0a,0x1e);
+978: local #0
+979: 14275L
+980: 10L
+981: 30L
+982: Func(2,25): PlayObjectCenteredEffect
+983: #
+if(GetHp(cast_on) >= 1)
+984: local #0
+985: makelocal
+986: jmp userfunc @1374
+987: 1L
+988: >=
+989: if false goto 1005
+if(cast_on.npctemplate)
+990: local #0
+991: get member 'npctemplate'
+992: if false goto 997
+dmg := dmg * 2;
+993: local #2
+994: 2L
+995: *
+996: local2 := 
+ApplyRawDamage(cast_on, Resisted(20, cast_on, dmg));
+997: local #0
+998: 20L
+999: local #0
+1000: local #2
+1001: makelocal
+1002: jmp userfunc @1552
+1003: Func(2,27): ApplyRawDamage
+1004: #
+1005: 0L
+1006: return
+C:\pol2\pkg\items\wands\magicWands.src, Line 115
+function cast_heal(caster, cast_on)
+1007: pop param 'cast_on'
+1008: pop param 'caster'
+var healed := RandomDiceRoll("3d2");
+1009: decl local #2
+1010: "3d2"
+1011: Func(6,1): RandomDiceRoll
+1012: :=
+1013: #
+healed := 6 + healed;
+1014: 6L
+1015: local #2
+1016: +
+1017: local2 := 
+if(cast_on.isA(POLCLASS_NPC))
+1018: local #0
+1019: 4L
+1020: Call Method isa (1 params)
+1021: if false goto 1026
+healed := healed * 2;
+1022: local #2
+1023: 2L
+1024: *
+1025: local2 := 
+HealDamage(cast_on, healed);
+1026: local #0
+1027: local #2
+1028: Func(2,26): HealDamage
+1029: #
+PlayObjectCenteredEffect(cast_on, FX_SPARK_EFFECT, 7, 0x10);
+1030: local #0
+1031: 14170L
+1032: 7L
+1033: 16L
+1034: Func(2,25): PlayObjectCenteredEffect
+1035: #
+PlaySoundEffect(cast_on, SFX_SPELL_GREATER_HEAL);
+1036: local #0
+1037: 515L
+1038: Func(2,24): PlaySoundEffect
+1039: #
+1040: 0L
+1041: return
+C:\pol2\pkg\items\wands\magicWands.src, Line 185
+function cast_lightning(caster, cast_on)
+1042: pop param 'cast_on'
+1043: pop param 'caster'
+SetObjProperty(cast_on, "LastHit", {caster.name,caster.serial, "lightning bolt"
+1044: local #0
+1045: "LastHit"
+1046: array
+1047: local #1
+1048: get member 'name'
+1049: +=
+1050: local #1
+1051: get member 'serial'
+1052: +=
+1053: "lightning bolt"
+1054: +=
+1055: Func(2,3): SetObjProperty
+1056: #
+var bdmg := RandomDiceRoll("4d4");
+1057: decl local #2
+1058: "4d4"
+1059: Func(6,1): RandomDiceRoll
+1060: :=
+1061: #
+var dmg := Resisted(40, cast_on, bdmg);
+1062: decl local #3
+1063: 40L
+1064: local #0
+1065: local #2
+1066: makelocal
+1067: jmp userfunc @1552
+1068: :=
+1069: #
+if (dmg < 1)
+1070: local #3
+1071: 1L
+1072: <
+1073: if false goto 1076
+dmg := 1;
+1074: 1L
+1075: local3 := 
+if(Reflected(cast_on))
+1076: local #0
+1077: makelocal
+1078: jmp userfunc @1446
+1079: if false goto 1082
+cast_on := caster;
+1080: local #1
+1081: local0 := 
+PlaySoundEffect(cast_on, SFX_SPELL_LIGHTNING);
+1082: local #0
+1083: 42L
+1084: Func(2,24): PlaySoundEffect
+1085: #
+PlayLightningBoltEffect(cast_on);
+1086: local #0
+1087: Func(2,29): PlayLightningBoltEffect
+1088: #
+if(cast_on.isA(POLCLASS_NPC))
+1089: local #0
+1090: 4L
+1091: Call Method isa (1 params)
+1092: if false goto 1097
+dmg := dmg * 2;
+1093: local #3
+1094: 2L
+1095: *
+1096: local3 := 
+ApplyRawDamage(cast_on, dmg);
+1097: local #0
+1098: local #3
+1099: Func(2,27): ApplyRawDamage
+1100: #
+1101: 0L
+1102: return
+C:\pol2\pkg\items\wands\magicWands.src, Line 203
+function cast_manadrain(caster, cast_on)
+1103: pop param 'cast_on'
+1104: pop param 'caster'
+SetObjProperty(cast_on, "LastHit", {caster.name,caster.serial, "mana drain" });
+1105: local #0
+1106: "LastHit"
+1107: array
+1108: local #1
+1109: get member 'name'
+1110: +=
+1111: local #1
+1112: get member 'serial'
+1113: +=
+1114: "mana drain"
+1115: +=
+1116: Func(2,3): SetObjProperty
+1117: #
+if (Reflected(cast_on))
+1118: local #0
+1119: makelocal
+1120: jmp userfunc @1446
+1121: if false goto 1131
+var tmp := cast_on;
+1122: decl local #0
+1123: local #0
+1124: :=
+1125: #
+cast_on := caster;
+1126: local #1
+1127: local0 := 
+caster := tmp;
+1128: local #2
+1129: local1 := 
+1130: leave block(1)
+var target_resist := GetEffectiveSkill(cast_on, SKILLID_MAGICRESISTANCE);
+1131: decl local #2
+1132: local #0
+1133: 26L
+1134: makelocal
+1135: jmp userfunc @1366
+1136: :=
+1137: #
+var diff := Resisted(40, cast_on, (RandomInt(30)));
+1138: decl local #3
+1139: 40L
+1140: local #0
+1141: 30L
+1142: Func(6,0): RandomInt
+1143: makelocal
+1144: jmp userfunc @1552
+1145: :=
+1146: #
+if(diff > 0)
+1147: local #3
+1148: 0L
+1149: >
+1150: if false goto 1192
+if(diff > GetMaxMana(cast_on))
+1151: local #3
+1152: local #0
+1153: makelocal
+1154: jmp userfunc @1397
+1155: >
+1156: if false goto 1161
+diff := GetMaxMana(cast_on);
+1157: local #0
+1158: makelocal
+1159: jmp userfunc @1397
+1160: local3 := 
+PlaySoundEffect(caster, SFX_SPELL_MANA_DRAIN);
+1161: local #1
+1162: 505L
+1163: Func(2,24): PlaySoundEffect
+1164: #
+PlayObjectCenteredEffect(cast_on, FX_HEAL_EFFECT, 7, 0x10);
+1165: local #0
+1166: 14186L
+1167: 7L
+1168: 16L
+1169: Func(2,25): PlayObjectCenteredEffect
+1170: #
+if((GetMana(cast_on) - diff) < 0)
+1171: local #0
+1172: makelocal
+1173: jmp userfunc @1390
+1174: local #3
+1175: -
+1176: 0L
+1177: <
+1178: if false goto 1183
+diff := GetMana(cast_on);
+1179: local #0
+1180: makelocal
+1181: jmp userfunc @1390
+1182: local3 := 
+SetMana(cast_on, (GetMana(cast_on) - diff));
+1183: local #0
+1184: local #0
+1185: makelocal
+1186: jmp userfunc @1390
+1187: local #3
+1188: -
+1189: makelocal
+1190: jmp userfunc @1639
+1191: #
+1192: 0L
+1193: return
+C:\pol2\pkg\items\wands\magicWands.src, Line 126
+function cast_weaken(caster, cast_on)
+1194: pop param 'cast_on'
+1195: pop param 'caster'
+SetObjProperty(cast_on, "LastHit", {caster.name,caster.serial, "weaken" });
+1196: local #0
+1197: "LastHit"
+1198: array
+1199: local #1
+1200: get member 'name'
+1201: +=
+1202: local #1
+1203: get member 'serial'
+1204: +=
+1205: "weaken"
+1206: +=
+1207: Func(2,3): SetObjProperty
+1208: #
+if(Reflected(cast_on))
+1209: local #0
+1210: makelocal
+1211: jmp userfunc @1446
+1212: if false goto 1215
+cast_on := caster;
+1213: local #1
+1214: local0 := 
+PlaySoundEffect(cast_on, SFX_SPELL_WEAKEN);
+1215: local #0
+1216: 487L
+1217: Func(2,24): PlaySoundEffect
+1218: #
+PlayObjectCenteredEffect( cast_on, FX_CURSE_EFFECT, 7,7);
+1219: local #0
+1220: 14154L
+1221: 7L
+1222: 7L
+1223: Func(2,25): PlayObjectCenteredEffect
+1224: #
+if(!CanMod(cast_on, "str"))
+1225: local #0
+1226: "str"
+1227: makelocal
+1228: jmp userfunc @1704
+1229: if true goto 1232
+return;
+1230: ""
+1231: return
+var magery := 20;
+1232: decl local #2
+1233: 20L
+1234: :=
+1235: #
+var mod_amount := Resisted(20, cast_on, (GetModAmount(magery)));
+1236: decl local #3
+1237: 20L
+1238: local #0
+1239: local #2
+1240: makelocal
+1241: jmp userfunc @1405
+1242: makelocal
+1243: jmp userfunc @1552
+1244: :=
+1245: #
+var duration := GetModDuration(magery);
+1246: decl local #4
+1247: local #2
+1248: makelocal
+1249: jmp userfunc @1424
+1250: :=
+1251: #
+DoTempMod(cast_on, "str", 0 - mod_amount, duration);
+1252: local #0
+1253: "str"
+1254: 0L
+1255: local #3
+1256: -
+1257: local #4
+1258: makelocal
+1259: jmp userfunc @1263
+1260: #
+1261: 0L
+1262: return
+C:/pol2/scripts/include/statMod.inc, Line 34
+function DoTempMod(who, stat, amt, duration)
+1263: pop param 'duration'
+1264: pop param 'amt'
+1265: pop param 'stat'
+1266: pop param 'who'
+var mod;
+1267: decl local #4
+1268: #
+case(stat)
+1269: local #2
+1270: casejmp
+	"str": @1271
+	"dex": @1283
+	"int": @1295
+	"ar": @1307
+	"p": @1316
+	default: @1322
+mod := "#ss";  SetStrengthMod(who, GetStrengthMod(who) + amt);
+1271: "#ss"
+1272: local4 := 
+SetStrengthMod(who, GetStrengthMod(who) + amt);
+1273: local #3
+1274: local #3
+1275: makelocal
+1276: jmp userfunc @1438
+1277: local #1
+1278: +
+1279: makelocal
+1280: jmp userfunc @1651
+1281: #
+1282: goto1322
+mod := "#dd";  SetDexterityMod(who, GetDexterityMod(who) + amt);
+1283: "#dd"
+1284: local4 := 
+SetDexterityMod(who, GetDexterityMod(who) + amt);
+1285: local #3
+1286: local #3
+1287: makelocal
+1288: jmp userfunc @1358
+1289: local #1
+1290: +
+1291: makelocal
+1292: jmp userfunc @1599
+1293: #
+1294: goto1322
+mod := "#ii";  SetIntelligenceMod(who, GetIntelligenceMod(who) + amt);
+1295: "#ii"
+1296: local4 := 
+SetIntelligenceMod(who, GetIntelligenceMod(who) + amt);
+1297: local #3
+1298: local #3
+1299: makelocal
+1300: jmp userfunc @1382
+1301: local #1
+1302: +
+1303: makelocal
+1304: jmp userfunc @1619
+1305: #
+1306: goto1322
+mod := "#ar";  who.ar_mod           := who.ar_mod + amt;
+1307: "#ar"
+1308: local4 := 
+who.ar_mod           := who.ar_mod + amt;
+1309: local #3
+1310: local #3
+1311: get member 'ar_mod'
+1312: local #1
+1313: +
+1314: set member 'ar_mod' #
+1315: goto1322
+mod := "#pp";  who.setParalyzed(1);
+1316: "#pp"
+1317: local4 := 
+who.setParalyzed(1);
+1318: local #3
+1319: 1L
+1320: Call Method setparalyzed (1 params)
+1321: #
+SetObjProperty(who,mod,1);
+1322: local #3
+1323: local #4
+1324: 1L
+1325: Func(2,3): SetObjProperty
+1326: #
+var parms := {};
+1327: decl local #5
+1328: array
+1329: :=
+1330: #
+parms[2] := who;
+1331: local #5
+1332: 2L
+1333: local #3
+1334: [] := (1) #
+parms[1] := stat;
+1335: local #5
+1336: 1L
+1337: local #2
+1338: [] := (1) #
+parms[3] := amt;
+1339: local #5
+1340: 3L
+1341: local #1
+1342: [] := (1) #
+parms[4] := duration;
+1343: local #5
+1344: 4L
+1345: local #0
+1346: [] := (1) #
+parms[5] := who.serial;
+1347: local #5
+1348: 5L
+1349: local #3
+1350: get member 'serial'
+1351: [] := (1) #
+start_script("::/misc/unmod", parms);
+1352: "::/misc/unmod"
+1353: local #5
+1354: Func(3,2): start_script
+1355: #
+1356: 0L
+1357: return
+C:/pol2/scripts/include/attributes.inc, Line 427
+function GetDexterityMod(who)
+1358: pop param 'who'
+return Cint(GetAttributeTemporaryMod(who, ATTRIBUTEID_DEXTERITY)/ 10);
+1359: local #0
+1360: "dexterity"
+1361: Func(2,8): GetAttributeTemporaryMod
+1362: 10L
+1363: /
+1364: Func(0,0): CInt
+1365: return
+C:/pol2/scripts/include/attributes.inc, Line 431
+function GetEffectiveSkill(who, skillid)
+1366: pop param 'skillid'
+1367: pop param 'who'
+return GetAttribute(who, GetAttributeIdBySkillId(skillid));
+1368: local #1
+1369: local #0
+1370: makelocal
+1371: jmp userfunc @1757
+1372: Func(2,7): GetAttribute
+1373: return
+C:/pol2/scripts/include/attributes.inc, Line 448
+function GetHp(who)
+1374: pop param 'who'
+return Cint(GetVital(who, VITALID_LIFE)/ 100);
+1375: local #0
+1376: "Life"
+1377: Func(2,10): GetVital
+1378: 100L
+1379: /
+1380: Func(0,0): CInt
+1381: return
+C:/pol2/scripts/include/attributes.inc, Line 456
+function GetIntelligenceMod(who)
+1382: pop param 'who'
+return Cint(GetAttributeTemporaryMod(who, ATTRIBUTEID_INTELLIGENCE)/ 10);
+1383: local #0
+1384: "intelligence"
+1385: Func(2,8): GetAttributeTemporaryMod
+1386: 10L
+1387: /
+1388: Func(0,0): CInt
+1389: return
+C:/pol2/scripts/include/attributes.inc, Line 460
+function GetMana(who)
+1390: pop param 'who'
+return(GetVital(who, "Mana")/ 100);
+1391: local #0
+1392: "Mana"
+1393: Func(2,10): GetVital
+1394: 100L
+1395: /
+1396: return
+C:/pol2/scripts/include/attributes.inc, Line 468
+function GetMaxMana(who)
+1397: pop param 'who'
+return Cint(GetVitalMaximumValue(who, VITALID_MANA)/ 100);
+1398: local #0
+1399: "Mana"
+1400: Func(2,11): GetVitalMaximumValue
+1401: 100L
+1402: /
+1403: Func(0,0): CInt
+1404: return
+C:/pol2/scripts/include/statMod.inc, Line 5
+function GetModAmount(magery)
+1405: pop param 'magery'
+var mod_amount := CInt(RandomInt(3) +(magery/10));
+1406: decl local #1
+1407: 3L
+1408: Func(6,0): RandomInt
+1409: local #0
+1410: 10L
+1411: /
+1412: +
+1413: Func(0,0): CInt
+1414: :=
+1415: #
+if(mod_amount > 10)
+1416: local #1
+1417: 10L
+1418: >
+1419: if false goto 1422
+mod_amount := 10;
+1420: 10L
+1421: local1 := 
+return mod_amount;
+1422: local #1
+1423: return
+C:/pol2/scripts/include/statMod.inc, Line 13
+function GetModDuration(magery)
+1424: pop param 'magery'
+var duration := CInt(60 +((magery / 30) * 60));
+1425: decl local #1
+1426: 60L
+1427: local #0
+1428: 30L
+1429: /
+1430: 60L
+1431: *
+1432: +
+1433: Func(0,0): CInt
+1434: :=
+1435: #
+return(duration);
+1436: local #1
+1437: return
+C:/pol2/scripts/include/attributes.inc, Line 704
+function GetStrengthMod(who)
+1438: pop param 'who'
+return Cint(GetAttributeTemporaryMod(who, ATTRIBUTEID_STRENGTH)/ 10);
+1439: local #0
+1440: "strength"
+1441: Func(2,8): GetAttributeTemporaryMod
+1442: 10L
+1443: /
+1444: Func(0,0): CInt
+1445: return
+C:\pol2\pkg\items\wands\magicWands.src, Line 225
+function Reflected(cast_on)
+1446: pop param 'cast_on'
+var reflect := Cint(GetObjProperty(cast_on, "mr"));
+1447: decl local #1
+1448: local #0
+1449: "mr"
+1450: Func(2,1): GetObjProperty
+1451: Func(0,0): CInt
+1452: :=
+1453: #
+if(reflect == 1)
+1454: local #1
+1455: 1L
+1456: ==
+1457: if false goto 1484
+sleepms(500);
+1458: 500L
+1459: Func(3,3): sleepms
+1460: #
+PlaySoundEffect(cast_on, SFX_SPELL_MAGIC_REFLECTION);
+1461: local #0
+1462: 488L
+1463: Func(2,24): PlaySoundEffect
+1464: #
+PlayObjectCenteredEffect( cast_on, FX_CURSE_EFFECT, 10,10);
+1465: local #0
+1466: 14154L
+1467: 10L
+1468: 10L
+1469: Func(2,25): PlayObjectCenteredEffect
+1470: #
+SendSysMessage(cast_on, "Your magic reflect spell saved you!");
+1471: local #0
+1472: "Your magic reflect spell saved you!"
+1473: 3L
+1474: 1000L
+1475: Func(2,15): SendSysMessage
+1476: #
+EraseObjProperty(cast_on, "mr");
+1477: local #0
+1478: "mr"
+1479: Func(2,19): EraseObjProperty
+1480: #
+return 1;
+1481: 1L
+1482: return
+1483: goto1550
+elseif(reflect == 2)
+1484: local #1
+1485: 2L
+1486: ==
+1487: if false goto 1550
+var holder, pid;
+1488: decl local #0
+1489: #
+1490: decl local #1
+1491: #
+var eqp := GetObjProperty(cast_on, "EquipTimers");
+1492: decl local #2
+1493: local #0
+1494: "EquipTimers"
+1495: Func(2,1): GetObjProperty
+1496: :=
+1497: #
+foreach thing in ListEquippedItems(cast_on)
+1498: local #0
+1499: Func(2,30): ListEquippedItems
+1500: initforeach @1523
+foreach entry in eqp
+1501: local #4
+1502: initforeach @1521
+if((thing.serial == entry[1]) and (entry[2] == "ref"))
+1503: local #5
+1504: get member 'serial'
+1505: local #8
+1506: 1L
+1507: [] 1
+1508: ==
+1509: local #8
+1510: 2L
+1511: [] 1
+1512: "ref"
+1513: ==
+1514: &&
+1515: if false goto 1521
+holder := GetObjProperty(thing, "pid");
+1516: local #5
+1517: "pid"
+1518: Func(2,1): GetObjProperty
+1519: local2 := 
+break;
+1520: goto1522
+1521: stepforeach @1503
+1522: leave block(3)
+1523: stepforeach @1501
+1524: leave block(3)
+pid := getprocess(holder);
+1525: local #2
+1526: Func(3,1): getprocess
+1527: local3 := 
+if(pid)
+1528: local #3
+1529: if false goto 1545
+var k := struct;
+1530: decl local #0
+1531: struct
+1532: :=
+1533: #
+k.+type := EVID_DISCHARGE;
+1534: local #5
+1535: "type"
+1536: .+
+1537: global #0
+1538: := #
+pid.sendevent(k);
+1539: local #3
+1540: local #5
+1541: Call Method sendevent (1 params)
+1542: #
+1543: leave block(1)
+1544: goto1549
+EraseObjProperty(cast_on, "mr");
+1545: local #0
+1546: "mr"
+1547: Func(2,19): EraseObjProperty
+1548: #
+1549: leave block(3)
+return 0;
+1550: 0L
+1551: return
+C:\pol2\pkg\items\wands\magicWands.src, Line 267
+function Resisted(magery, cast_on, amt)
+1552: pop param 'amt'
+1553: pop param 'cast_on'
+1554: pop param 'magery'
+var halfamt := amt/2;
+1555: decl local #3
+1556: local #0
+1557: 2L
+1558: /
+1559: :=
+1560: #
+if(cast_on.dead)
+1561: local #1
+1562: get member 'dead'
+1563: if false goto 1566
+return 0;
+1564: 0L
+1565: return
+if(CheckSkill(cast_on, SKILLID_MAGICRESISTANCE, magery, (magery * 2)))
+1566: local #1
+1567: 26L
+1568: local #2
+1569: local #2
+1570: 2L
+1571: *
+1572: Func(2,31): CheckSkill
+1573: if false goto 1595
+SendSysMessage(cast_on, "You feel yourself resisting magical energy!");
+1574: local #1
+1575: "You feel yourself resisting magical energy!"
+1576: 3L
+1577: 1000L
+1578: Func(2,15): SendSysMessage
+1579: #
+PlaySoundEffect(cast_on, SFX_SPELL_WEAKEN);
+1580: local #1
+1581: 487L
+1582: Func(2,24): PlaySoundEffect
+1583: #
+PlayObjectCenteredEffect( cast_on, FX_CURSE_EFFECT, 5,5);
+1584: local #1
+1585: 14154L
+1586: 5L
+1587: 5L
+1588: Func(2,25): PlayObjectCenteredEffect
+1589: #
+amt := halfamt;
+1590: local #3
+1591: local0 := 
+return amt;
+1592: local #0
+1593: return
+1594: goto1597
+return amt;
+1595: local #0
+1596: return
+1597: 0L
+1598: return
+C:/pol2/scripts/include/attributes.inc, Line 876
+function SetDexterityMod(who, mod_amt)
+1599: pop param 'mod_amt'
+1600: pop param 'who'
+var ret := SetAttributeTemporaryMod(who, ATTRIBUTEID_DEXTERITY, Cint(mod_amt*10
+1601: decl local #2
+1602: local #1
+1603: "dexterity"
+1604: local #0
+1605: 10L
+1606: *
+1607: Func(0,0): CInt
+1608: Func(2,13): SetAttributeTemporaryMod
+1609: :=
+1610: #
+if(ret)
+1611: local #2
+1612: if false goto 1617
+DoRecalcVitals(who);
+1613: local #1
+1614: makelocal
+1615: jmp userfunc @1735
+1616: #
+return ret;
+1617: local #2
+1618: return
+C:/pol2/scripts/include/attributes.inc, Line 897
+function SetIntelligenceMod(who, mod_amt)
+1619: pop param 'mod_amt'
+1620: pop param 'who'
+var ret := SetAttributeTemporaryMod(who, ATTRIBUTEID_INTELLIGENCE, Cint(mod_amt
+1621: decl local #2
+1622: local #1
+1623: "intelligence"
+1624: local #0
+1625: 10L
+1626: *
+1627: Func(0,0): CInt
+1628: Func(2,13): SetAttributeTemporaryMod
+1629: :=
+1630: #
+if(ret)
+1631: local #2
+1632: if false goto 1637
+DoRecalcVitals(who);
+1633: local #1
+1634: makelocal
+1635: jmp userfunc @1735
+1636: #
+return ret;
+1637: local #2
+1638: return
+C:/pol2/scripts/include/attributes.inc, Line 914
+function SetMana(who, amount)
+1639: pop param 'amount'
+1640: pop param 'who'
+SetVital(who, "Mana", cint(amount*100.0));
+1641: local #1
+1642: "Mana"
+1643: local #0
+1644: 100LF
+1645: *
+1646: Func(0,0): CInt
+1647: Func(2,14): SetVital
+1648: #
+1649: 0L
+1650: return
+C:/pol2/scripts/include/attributes.inc, Line 930
+function SetStrengthMod(who, mod_amt)
+1651: pop param 'mod_amt'
+1652: pop param 'who'
+var ret := SetAttributeTemporaryMod(who, ATTRIBUTEID_STRENGTH, Cint(mod_amt*10)
+1653: decl local #2
+1654: local #1
+1655: "strength"
+1656: local #0
+1657: 10L
+1658: *
+1659: Func(0,0): CInt
+1660: Func(2,13): SetAttributeTemporaryMod
+1661: :=
+1662: #
+if(ret)
+1663: local #2
+1664: if false goto 1669
+DoRecalcVitals(who);
+1665: local #1
+1666: makelocal
+1667: jmp userfunc @1735
+1668: #
+return ret;
+1669: local #2
+1670: return
+C:\pol2\pkg\items\wands\magicWands.src, Line 257
+function CalcSpellDamage(circle, caster, cast_on)
+1671: pop param 'cast_on'
+1672: pop param 'caster'
+1673: pop param 'circle'
+var die_string := circle+"d8";
+1674: decl local #3
+1675: local #2
+1676: "d8"
+1677: +
+1678: :=
+1679: #
+var dmg := RandomDiceRoll(die_string);
+1680: decl local #4
+1681: local #3
+1682: Func(6,1): RandomDiceRoll
+1683: :=
+1684: #
+dmg := dmg + (CInt(caster) / 10);
+1685: local #4
+1686: local #1
+1687: Func(0,0): CInt
+1688: 10L
+1689: /
+1690: +
+1691: local4 := 
+if(dmg > (circle * 8))
+1692: local #4
+1693: local #2
+1694: 8L
+1695: *
+1696: >
+1697: if false goto 1702
+dmg := circle * 8;
+1698: local #2
+1699: 8L
+1700: *
+1701: local4 := 
+return dmg;
+1702: local #4
+1703: return
+C:/pol2/scripts/include/statMod.inc, Line 18
+function CanMod(who, stat)
+1704: pop param 'stat'
+1705: pop param 'who'
+var mod;
+1706: decl local #2
+1707: #
+case(stat)
+1708: local #0
+1709: casejmp
+	"str": @1710
+	"dex": @1713
+	"int": @1716
+	"p": @1719
+	"ar": @1722
+	default: @1724
+mod := "#ss";
+1710: "#ss"
+1711: local2 := 
+1712: goto1724
+mod := "#dd";
+1713: "#dd"
+1714: local2 := 
+1715: goto1724
+mod := "#ii";
+1716: "#ii"
+1717: local2 := 
+1718: goto1724
+mod := "#pp";
+1719: "#pp"
+1720: local2 := 
+1721: goto1724
+mod := "#ar";
+1722: "#ar"
+1723: local2 := 
+if(GetObjProperty(who, mod))
+1724: local #1
+1725: local #2
+1726: Func(2,1): GetObjProperty
+1727: if false goto 1731
+return 0;
+1728: 0L
+1729: return
+1730: goto1733
+return 1;
+1731: 1L
+1732: return
+1733: 0L
+1734: return
+C:/pol2/scripts/include/attributes.inc, Line 84
+Function DoRecalcVitals( mob )
+1735: pop param 'mob'
+set_critical(1);
+1736: 1L
+1737: Func(3,0): set_critical
+1738: #
+if(mob.acctname)
+1739: local #0
+1740: get member 'acctname'
+1741: if false goto 1749
+if(mob.ip)
+1742: local #0
+1743: get member 'ip'
+1744: if false goto 1748
+RecalcVitals(mob);
+1745: local #0
+1746: Func(2,0): RecalcVitals
+1747: #
+1748: goto1752
+RecalcVitals(mob);
+1749: local #0
+1750: Func(2,0): RecalcVitals
+1751: #
+set_critical(0);
+1752: 0L
+1753: Func(3,0): set_critical
+1754: #
+1755: 0L
+1756: return
+C:/pol2/scripts/include/attributes.inc, Line 250
+function GetAttributeIdBySkillId(skillid)
+1757: pop param 'skillid'
+case(skillid)
+1758: local #0
+1759: casejmp
+	0: @1760
+	1: @1763
+	2: @1766
+	3: @1769
+	4: @1772
+	5: @1775
+	6: @1778
+	7: @1781
+	8: @1784
+	9: @1787
+	10: @1790
+	11: @1793
+	12: @1796
+	13: @1799
+	14: @1802
+	15: @1805
+	16: @1808
+	17: @1811
+	18: @1814
+	19: @1817
+	20: @1820
+	21: @1823
+	22: @1826
+	23: @1829
+	24: @1832
+	25: @1835
+	26: @1838
+	27: @1841
+	28: @1844
+	29: @1847
+	30: @1850
+	31: @1853
+	32: @1856
+	33: @1859
+	34: @1862
+	35: @1865
+	36: @1868
+	37: @1871
+	38: @1874
+	39: @1877
+	40: @1880
+	41: @1883
+	42: @1886
+	43: @1889
+	44: @1892
+	45: @1895
+	46: @1898
+	47: @1901
+	48: @1904
+	default: @1906
+return ATTRIBUTEID_ALCHEMY;
+1760: "alchemy"
+1761: return
+1762: goto1906
+return ATTRIBUTEID_ANATOMY;
+1763: "anatomy"
+1764: return
+1765: goto1906
+return ATTRIBUTEID_ANIMALLORE;
+1766: "animallore"
+1767: return
+1768: goto1906
+return ATTRIBUTEID_ITEMID;
+1769: "itemid"
+1770: return
+1771: goto1906
+return ATTRIBUTEID_ARMSLORE;
+1772: "armslore"
+1773: return
+1774: goto1906
+return ATTRIBUTEID_PARRY;
+1775: "parry"
+1776: return
+1777: goto1906
+return ATTRIBUTEID_BEGGING;
+1778: "begging"
+1779: return
+1780: goto1906
+return ATTRIBUTEID_BLACKSMITHY;
+1781: "blacksmithy"
+1782: return
+1783: goto1906
+return ATTRIBUTEID_BOWCRAFT;
+1784: "bowcraft"
+1785: return
+1786: goto1906
+return ATTRIBUTEID_PEACEMAKING;
+1787: "peacemaking"
+1788: return
+1789: goto1906
+return ATTRIBUTEID_CAMPING;
+1790: "camping"
+1791: return
+1792: goto1906
+return ATTRIBUTEID_CARPENTRY;
+1793: "carpentry"
+1794: return
+1795: goto1906
+return ATTRIBUTEID_CARTOGRAPHY;
+1796: "cartography"
+1797: return
+1798: goto1906
+return ATTRIBUTEID_COOKING;
+1799: "cooking"
+1800: return
+1801: goto1906
+return ATTRIBUTEID_DETECTINGHIDDEN;
+1802: "detectinghidden"
+1803: return
+1804: goto1906
+return ATTRIBUTEID_ENTICEMENT;
+1805: "enticement"
+1806: return
+1807: goto1906
+return ATTRIBUTEID_EVALINT;
+1808: "evaluatingintelligence"
+1809: return
+1810: goto1906
+return ATTRIBUTEID_HEALING;
+1811: "healing"
+1812: return
+1813: goto1906
+return ATTRIBUTEID_FISHING;
+1814: "fishing"
+1815: return
+1816: goto1906
+return ATTRIBUTEID_FORENSICS;
+1817: "forensicevaluation"
+1818: return
+1819: goto1906
+return ATTRIBUTEID_HERDING;
+1820: "herding"
+1821: return
+1822: goto1906
+return ATTRIBUTEID_HIDING;
+1823: "hiding"
+1824: return
+1825: goto1906
+return ATTRIBUTEID_PROVOCATION;
+1826: "provocation"
+1827: return
+1828: goto1906
+return ATTRIBUTEID_INSCRIPTION;
+1829: "inscription"
+1830: return
+1831: goto1906
+return ATTRIBUTEID_LOCKPICKING;
+1832: "lockpicking"
+1833: return
+1834: goto1906
+return ATTRIBUTEID_MAGERY;
+1835: "magery"
+1836: return
+1837: goto1906
+return ATTRIBUTEID_MAGICRESISTANCE;
+1838: "magicresistance"
+1839: return
+1840: goto1906
+return ATTRIBUTEID_TACTICS;
+1841: "tactics"
+1842: return
+1843: goto1906
+return ATTRIBUTEID_SNOOPING;
+1844: "snooping"
+1845: return
+1846: goto1906
+return ATTRIBUTEID_MUSICIANSHIP;
+1847: "musicianship"
+1848: return
+1849: goto1906
+return ATTRIBUTEID_POISONING;
+1850: "poisoning"
+1851: return
+1852: goto1906
+return ATTRIBUTEID_ARCHERY;
+1853: "archery"
+1854: return
+1855: goto1906
+return ATTRIBUTEID_SPIRITSPEAK;
+1856: "spiritspeak"
+1857: return
+1858: goto1906
+return ATTRIBUTEID_STEALING;
+1859: "stealing"
+1860: return
+1861: goto1906
+return ATTRIBUTEID_TAILORING;
+1862: "tailoring"
+1863: return
+1864: goto1906
+return ATTRIBUTEID_TAMING;
+1865: "animaltaming"
+1866: return
+1867: goto1906
+return ATTRIBUTEID_TASTEID;
+1868: "tasteidentification"
+1869: return
+1870: goto1906
+return ATTRIBUTEID_TINKERING;
+1871: "tinkering"
+1872: return
+1873: goto1906
+return ATTRIBUTEID_TRACKING;
+1874: "tracking"
+1875: return
+1876: goto1906
+return ATTRIBUTEID_VETERINARY;
+1877: "veterinary"
+1878: return
+1879: goto1906
+return ATTRIBUTEID_SWORDSMANSHIP;
+1880: "swordsmanship"
+1881: return
+1882: goto1906
+return ATTRIBUTEID_MACEFIGHTING;
+1883: "macefighting"
+1884: return
+1885: goto1906
+return ATTRIBUTEID_FENCING;
+1886: "fencing"
+1887: return
+1888: goto1906
+return ATTRIBUTEID_WRESTLING;
+1889: "wrestling"
+1890: return
+1891: goto1906
+return ATTRIBUTEID_LUMBERJACKING;
+1892: "lumberjacking"
+1893: return
+1894: goto1906
+return ATTRIBUTEID_MINING;
+1895: "mining"
+1896: return
+1897: goto1906
+return ATTRIBUTEID_MEDITATION;
+1898: "meditation"
+1899: return
+1900: goto1906
+return ATTRIBUTEID_STEALTH;
+1901: "stealth"
+1902: return
+1903: goto1906
+return ATTRIBUTEID_REMOVETRAP;
+1904: "removetrap"
+1905: return
+var ret        := error;
+1906: decl local #1
+1907: error
+1908: :=
+1909: #
+ret.+errortext := "No equivalent attributeid found for skillid " + skillid;
+1910: local #1
+1911: "errortext"
+1912: .+
+1913: "No equivalent attributeid found for skillid "
+1914: local #0
+1915: +
+1916: := #
+return ret;
+1917: local #1
+1918: return

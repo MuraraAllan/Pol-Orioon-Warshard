@@ -1,0 +1,34 @@
+use uo;
+
+program textcmd_moveitem( who )
+    SendSysMessage( who, "Selecione o item que voce deseja mover.",0x9,90 );
+    var what := TargetCoordinates( who );
+    if (what)
+      if(what.item)
+        SendSysMessage( who, "Selecione para onde voce deseja que ele mova.",0x9,90 );
+        var where := TargetCoordinates( who );
+        if (where)
+          var itm := what.item;
+          if(itm.movable)
+            var result := MoveItemToLocation(itm, where.x, where.y, where.z, MOVEITEM_FORCELOCATION);
+            if(result)
+              PrintTextAbovePrivate(itm, "Feito!", who);
+            else
+              SendSysMessage(who, "Nao foi possivel mover o item",0x9,90);
+            endif
+          else
+            itm.movable := 1;
+            var result := MoveItemToLocation(itm, where.x, where.y, where.z, MOVEITEM_FORCELOCATION);
+            if(result)
+              PrintTextAbovePrivate(itm, "Feito!", who);
+            else
+              SendSysMessage(who, "Nao foi possivel mover o item",0x9,90);
+            endif
+            itm.movable := 0;
+          endif
+        endif
+      else
+        SendSysMessage(who, "Nao e possivel mover isto.",0x9,90 );
+      endif
+    endif
+endprogram

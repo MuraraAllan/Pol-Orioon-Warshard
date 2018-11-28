@@ -1,0 +1,9 @@
+use cfgfile;
+use uo;
+
+include "include/spellRestrictions";
+include "include/attributes";
+
+program cast_meteor( parms )
+Sendsysmessage(caster, "magia desabilitada");
+endprogram

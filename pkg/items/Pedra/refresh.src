@@ -1,0 +1,16 @@
+use uo;
+use os;
+include "include/attributes";
+include ":poisonwatcher:poisons";
+program refreshme( who, item )
+
+DestroyItem(item);
+return;
+
+PlayObjectCenteredEffect( who, FX_BLESS_EFFECT, 10,10);
+SetHp(who, GetMaxHp(who));
+SetMana(who, GetMaxMana(who));
+SetStamina(who, GetMaxStamina(who));
+CurePoison(who, 1, "defaultPoison", 4);
+sendsysmessage(who, "Refreshado!",9,89);
+endprogram

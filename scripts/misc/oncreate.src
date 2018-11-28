@@ -1,0 +1,94 @@
+use uo;
+
+include "include/startEqp";
+include "include/funcoes_uteis";
+
+
+program oncreate(who, skillids)
+var conta := findaccount(who.acctname);
+
+var pegarprop:=conta.getprop("japegoitemcriar");
+
+
+if(VerificarNome(who))
+Sendsysmessage(who, "Nome invalido, este personagem deve ser deletado.",3,33);
+SetObjProperty(who,"verf_nome", "deletar");
+setobjproperty(who,"derrubarchar",1);
+DisconnectClient(who);
+endif
+
+if((who.color < 1002) || (who.color > 1058))
+ Sendsysmessage(who, "Cor invalida, este personagem deve ser deletado.", 3,33);
+ SetObjProperty(who,"verf_nome", "deletar");
+ setobjproperty(who,"derrubarchar",1);
+ who.name:=who.name+ " [DELETAR]";
+ DisconnectClient(who);
+endif
+
+if((getglobalproperty(lower(who.name)) != who.serial))
+eraseobjproperty(who,"verf_nome");
+ setobjproperty(who,"derrubarchar",1);
+sendsysmessage(who,"Este nome ja esta em uso, este personagem deve ser deletado.",3,33);
+SetObjProperty(who,"verf_nome", "deletar");
+DisconnectClient(who);
+endif
+
+
+foreach coisasnabolsa in EnumerateItemsInContainer(who.backpack)
+DestroyItem(coisasnabolsa);
+endforeach
+who.backpack.movable:=0;
+
+destroyitem(GetEquipmentByLayer(who, 5 ));
+destroyitem(GetEquipmentByLayer(who, 4 ));
+destroyitem(GetEquipmentByLayer(who, 3 ));
+destroyitem(GetEquipmentByLayer(who, 23 ));
+
+var item1,item2,item3;
+if(who.graphic == 400)
+item1:=CreateItemInbackpack(who, 0x1517, 1);
+item2:=CreateItemInbackpack(who, 0x152E, 1); ///calça
+item3:=CreateItemInbackpack(who, 0x170F, 1);
+endif
+if(who.graphic == 401)
+item1:=CreateItemInbackpack(who, 0x1517, 1);
+item2:=CreateItemInbackpack(who, 0x170F, 1);
+item3:=CreateItemInbackpack(who, 0x1516, 1); ///saia
+endif
+equipitem(who, item1); 
+equipitem(who, item2); 
+equipitem(who, item3); 
+item1.newbie:=1;
+item2.newbie:=1;
+item3.newbie:=1;
+
+var avental:=CreateItemInbackpack(who, 5435, 1); ///avental
+var robe:=CreateItemInbackpack(who, 0x9945, 1); ///robe
+var capa:=CreateItemInbackpack(who, 0x1515, 1); ///capa
+equipitem(who, robe); 
+equipitem(who, capa); 
+equipitem(who, avental);
+robe.newbie:=1;
+capa.newbie:=1;
+avental.newbie:=1;
+
+
+//casa e dinheiro
+  if(!pegarprop)  
+  var item5:=CreateItemInbackpack(who, 3821, 20000);
+  var item7:=CreateItemInbackpack(who, 0x6922, 1);
+  conta.setprop("japegoitemcriar",1);
+  endif
+
+  if(CInt(who.truecolor) <= 32768)
+    who.truecolor := who.truecolor + 32768;
+    who.color := who.truecolor;
+  endif
+
+  SetObjProperty(who, "OnCreate", ReadGameClock() + 604800);
+  SetObjProperty(who, "serial", who.serial);
+
+
+setglobalproperty(lower(who.name),who.serial);
+
+endprogram

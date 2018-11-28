@@ -1,0 +1,128 @@
+use uo;
+use os;
+
+include "include/save";
+var ev; 
+
+Program AuxScript_IrcConnection(conexao)
+var bcast;
+SetGlobalProperty("#AuxConnection", 116611);
+var proc := GetProcess(GetGlobalProperty("#AuxConnection"));
+var pid := GetPid();
+var auxconnect := GetProcess(pid);
+SetGlobalProperty("#AuxConnection", pid);
+    while(conexao) 
+ 
+	ev := Wait_For_Event(5);
+
+    if(ev) 
+   
+      ev.value := SplitWords(ev.value);
+
+     ///Pol Para IRC commands
+      if(ev.type == "interno")
+	
+	if(ev.command == "bcast1")
+        conexao.transmit("bcastingame (7Bcast)12 " +ev.name+ "7:4 " +ev.texto);
+	endif
+
+	if(ev.command == "bcast2")
+	conexao.transmit("bcastingame (7Bcast)4 " +ev.texto);
+	endif
+
+	if(ev.command == "AtualizandoR")
+	conexao.transmit("ranking atualizando");
+	endif
+
+	if(ev.command == "RAtualizado")
+    	conexao.transmit("ranking atualizado");
+	endif
+
+	if(ev.command == "save")
+	 if(ev.texto == "inicio")
+	  conexao.transmit("save inicio");
+	 elseif(ev.texto == "fim")
+	  conexao.transmit("save fim");
+	 elseif(ev.texto == "erro")
+	  conexao.transmit("save erro");
+	 endif
+	endif
+
+	if(ev.command == "help_irc_pedido")
+	  conexao.transmit("help_irc_pedido 12Dúvida de:4 "+ev.serial+"12 -4 " +ev.texto);
+	endif
+
+      endif
+
+
+     ///Mirc Commands
+      if(ev.type == "recv")
+	
+	///.Bcast
+	if(ev.value[1] == "bcast")
+        var msgbcast:=ev.value;
+        msgbcast:=arraytostring(msgbcast);
+        Broadcast("[IRC]" +ev.value[2]+ ":" +msgbcast, 0, 95);
+	endif
+
+	///.Online
+	if(ev.value[1] == "online")
+	var playersonline:=qtsonline();
+	conexao.transmit("P_Online " +playersonline);
+	endif
+
+	///.Shutdown
+	if(ev.value[1] == "shutdown")
+	desligar();
+	endif
+
+	///.salvar
+	if(ev.value[1] == "salvar")
+	salvar();
+	endif
+
+	///!responder - #Sysco_Helpers
+	if(ev.value[1] == "help_irc_resposta")
+	var player_ajudado:=SystemFindObjectBySerial(Cint(ev.value[2]), SYSFIND_SEARCH_OFFLINE_MOBILES);
+	SendSysMessage(player_ajudado, "Pedido de Ajuda por IRC Respondido!",3,95);
+        var msg_ajuda:=arraytostring(ev.value);
+        SendSysMessage(player_ajudado, msg_ajuda,3,95);
+	endif
+     
+      endif
+
+    endif
+    
+    endwhile
+endprogram
+
+
+function arraytostring(variavel)
+var tamanho:=variavel.size();
+var i:=2;
+var novavar:="";
+while(i < tamanho)
+i:=i+1;
+novavar:=""+novavar+" " +variavel[i];
+endwhile
+return novavar;
+endfunction
+
+function qtsonline()
+var p:=0;
+foreach who in EnumerateOnlineCharacters()
+if(who.cmdlevel == 0)
+p:= p + 1;
+endif
+endforeach
+return p;
+endfunction
+
+function desligar()
+Broadcast("Servidor Sendo ENCERRADO! [.shutdown]", 0, 33);
+Broadcast("Consulte no IRC para maiores informacoes!", 0, 33);
+Broadcast("#Sysco @BrasNet", 0, 33);
+salvar();
+sleepms(500);	
+Shutdown();
+endfunction

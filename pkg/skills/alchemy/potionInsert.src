@@ -1,0 +1,124 @@
+//////////////////////////
+///creditos by din0 :)///
+////////////////////////
+
+
+
+use uo;
+use os;
+use cfgfile;
+
+program on_insert(who, keg, movetype, inserttype, potion, existing_stack, amt_to_add);
+inserttype := inserttype;
+amt_to_add := amt_to_add; // stops ecompile "not used" warnings
+existing_stack := existing_stack;  // stops ecompile "not used" warnings
+
+if (movetype)
+    return;
+endif
+
+  var amt  := GetObjProperty(keg, "pots");
+  var type := GetObjProperty(keg, "PotionType");
+
+  if(!GetObjProperty(potion, "nomekeg"))
+      SendSysMessage(who, "Voce nao pode colocar isto na keg.");
+      MoveItemToContainer(potion, who.backpack);
+      return 0;
+  endif
+
+  if((!amt) || (Cint(amt) <= 0))
+      SetObjProperty(keg, "PotionType", CInt(potion.objtype));
+      SetObjProperty(keg, "pots", 0);
+      amt  := GetObjProperty(keg, "pots");
+      keg.color:=Cint( GetObjProperty(potion, "cor") );
+  endif
+
+type := GetObjProperty(keg, "PotionType");
+
+  if(type != potion.objtype)
+    SendSysMessage(who, "Nao e uma boa ideia misturar outros tipos de pocao nesta keg.");
+    MoveItemToContainer(potion, who.backpack);
+    return 0;
+  endif
+
+  if(Cint(amt) >= 100)
+      SendSysMessage(who, "Este barril ja esta cheio ate o topo.");
+      MoveItemToContainer(potion, who.backpack);
+      return 0;
+  endif
+
+
+SetObjProperty(keg, "pots", Cint(amt+1) );
+amt := GetObjProperty(keg, "pots");
+
+SetObjProperty(keg, "PotionType", potion.objtype);
+
+var str:=PegarNome( keg );
+renomear(keg, potion, str);
+
+
+CreateItemInBackpack(who, 0xf0e, 1);
+//CreateItemInContainer(keg, 0xf0e, 1);
+PlaySoundEffect(who, 0x241);
+SendSysMessage(who, "Voce despeja o liquido no barril.");
+DestroyItem(potion);     
+return 1;
+
+endprogram
+
+function PegarNome( keg )
+  var amt := Cint(GetObjProperty(keg, "pots"));
+
+  var str;
+var texto := "pocoes";
+  if (amt == 0)
+    str := "Vazio";
+  elseif ((amt >= 1) && (amt <= 4))
+if(amt == 1)
+texto := "pocao";
+endif
+    str := "Quase Vazio"+ "[" + amt + texto + "]" ;
+  elseif ((amt >= 5) && (amt <= 19))
+    str := "Menos de 1/4 Cheio"+ "[" + amt + texto + "]";
+  elseif ((amt >= 20) && (amt <= 29))
+    str := "1/4 Cheio"+ "[" + amt + texto + "]";
+  elseif ((amt >= 30) && (amt <= 39))
+    str := "1/3 Cheio"+ "[" + amt + texto + "]";
+  elseif ((amt >= 40) && (amt <= 46))
+    str := "Menos da Metade Cheio"+ "[" + amt + texto + "]";
+  elseif ((amt >= 47) && (amt <= 53))
+    str := "Aproximadamente Metade Cheio"+ "[" + amt + texto + "]";
+  elseif ((amt >= 54) && (amt <= 69))
+    str := "Mais da Metade Cheio"+ "[" + amt + texto + "]";
+  elseif ((amt >= 70) && (amt <= 79))
+    str := "3/4 Cheio"+ "[" + amt + texto + "]";
+  elseif ((amt >= 80) && (amt <= 95))
+    str := "Bastante Cheio"+ "[" + amt + texto + "]";
+  elseif ((amt >= 96) && (amt <= 99))
+    str := "Com liquido quase ao topo"+ "[" + amt + texto + "]";
+  else
+    str := "Completamente Cheio"+ "[" + amt + texto + "]";
+  endif
+  return str;
+endfunction
+
+function xxxxxxxx(potion)
+  if((potion.objtype >= 0xdc01) && (potion.objtype <= 0xdc20))
+    return 1;
+  endif
+  return 0;
+endfunction
+
+function renomear(keg, potion, str)
+var amt:=GetObjProperty(keg, "pots");
+var nomekeg:=GetObjProperty(potion, "nomekeg");
+if(amt <= 0)
+  SetName(keg, "Barril Para Guardar Pocoes");
+  EraseObjProperty(keg, "PotionType");
+elseif(amt > 0)
+  var nomereal :=("Barril de " + nomekeg + ". O Barril esta " +str);
+  SetName(keg, nomereal);
+endif
+
+return;
+endfunction

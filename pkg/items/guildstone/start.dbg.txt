@@ -1,0 +1,13 @@
+File 0: 
+File 1: c:\pol\pkg\items\guildstone\start.src
+File 2: c:/pol/scripts/uo.em
+File 3: c:/pol/scripts/os.em
+File 4: c:/pol/scripts/basic.em
+File 5: c:/pol/scripts/basicio.em
+Ins 0: File 1, Line 4, Block 0 StatementBegin
+Ins 1: File 3, Line 70, Block 0 
+Ins 2: File 1, Line 4, Block 0 
+Ins 3: File 1, Line 4, Block 0 
+Ins 4: File 1, Line 4, Block 0 
+Block 0:
+  Parent block: 0

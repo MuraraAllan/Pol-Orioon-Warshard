@@ -1,0 +1,417 @@
+C:\pol2\pkg\tools\gmtools\textcmd\gm\campspawner.src, Line 7
+var layout := array(
+0: decl global #0
+1: array
+2: "page 0                            "
+3: +=
+4: "gumppic   0   0  206              "
+5: +=
+6: "gumppic  44   0  201              "
+7: +=
+8: "gumppic 444   0  207              "
+9: +=
+10: "gumppic   0  40  202              "
+11: +=
+12: "gumppic  44  40 2604              "
+13: +=
+14: "gumppic 444  40  203              "
+15: +=
+16: "gumppic   0 350  204              "
+17: +=
+18: "gumppic  44 350  233              "
+19: +=
+20: "gumppic 444 350  205              "
+21: +=
+22: "gumppic 251 114 2444              "
+23: +=
+24: "text    155  20  900    0         "
+25: +=
+26: "text     55  50  900    1         "
+27: +=
+28: "text     55  70  900    2         "
+29: +=
+30: "text     55  90  900    3         "
+31: +=
+32: "text     55 115  900    4         "
+33: +=
+34: "text     55 150  900    6         "
+35: +=
+36: "text    120 150  900    7         "
+37: +=
+38: "text    205 150  900    8         "
+39: +=
+40: "text    310 150  900    9         "
+41: +=
+42: "text    385 150  900   10         "
+43: +=
+44: "text     55 180  900   11         "
+45: +=
+46: "textentry 260 115   50   30  0  5  5"
+47: +=
+48: "button  400 350 2450 2451  1  0 99"
+49: +=
+50: "tilepic  75 250 1055              "
+51: +=
+52: "tilepic 375 250 1064              "
+53: +=
+54: "tilepic 225 250 8416              "
+55: +=
+56: "group 2"
+57: +=
+58: "radio   200  50 208  2225  1 11   "
+59: +=
+60: "radio   225  50 208  2226  0 12   "
+61: +=
+62: "radio   250  50 208  2227  0 13   "
+63: +=
+64: "group 3"
+65: +=
+66: "radio   200  70 208  2226  1 22   "
+67: +=
+68: "radio   225  70 208  2227  0 23   "
+69: +=
+70: "radio   250  70 208  2228  0 24   "
+71: +=
+72: "group 4"
+73: +=
+74: "radio   200  90 208  2226  1 31   "
+75: +=
+76: "radio   225  90 208  2227  0 32   "
+77: +=
+78: "radio   250  90 208  2228  0 33   "
+79: +=
+80: "group 5"
+81: +=
+82: "radio    90 150 208   209  1 41   "
+83: +=
+84: "radio   175 150 208   209  0 42   "
+85: +=
+86: "radio   280 150 208   209  0 43   "
+87: +=
+88: "radio   360 150 208   209  0 44   "
+89: +=
+90: "radio   435 150 208   209  0 45   "
+91: +=
+92: "group 6"
+93: +=
+94: "radio   200 180 208  2226  1 51   "
+95: +=
+96: "radio   225 180 208  2227  0 52   "
+97: +=
+98: "radio   250 180 208  2228  0 53   "
+99: +=
+100: "radio   275 180 208  2229  0 54   "
+101: +=
+102: "radio   300 180 208  2230  0 55   "
+103: +=
+104: "radio   325 180 208  2231  0 56   "
+105: +=
+106: "radio   350 180 208  2232  0 57   "
+107: +=
+108: :=
+109: #
+var data := array(
+110: decl global #1
+111: array
+112: "Camp Spawn Interface"
+113: +=
+114: "Chest Level"
+115: +=
+116: "Chest Amount"
+117: +=
+118: "Spawn Radius"
+119: +=
+120: "Rest Period [in minutes]"
+121: +=
+122: "15"
+123: +=
+124: "Orcs"
+125: +=
+126: "Ratmen"
+127: +=
+128: "Lizardmen"
+129: +=
+130: "Bandit"
+131: +=
+132: "Gypsie"
+133: +=
+134: "NPC Count"
+135: +=
+136: :=
+137: #
+C:\pol2\pkg\tools\gmtools\textcmd\gm\campspawner.src, Line 80
+program chestspawner(who)
+138: get arg 'who'
+var res := SendDialogGump(who, layout, data);
+139: decl local #1
+140: local #0
+141: global #0
+142: global #1
+143: Func(2,0): SendDialogGump
+144: :=
+145: #
+if(res[0] == 99)
+146: local #1
+147: 0L
+148: [] 1
+149: 99L
+150: ==
+151: if false goto 366
+var duration := res[5];
+152: decl local #0
+153: local #1
+154: 5L
+155: [] 1
+156: :=
+157: #
+var amount, level, range, type, count;
+158: decl local #1
+159: #
+160: decl local #2
+161: #
+162: decl local #3
+163: #
+164: decl local #4
+165: #
+166: decl local #5
+167: #
+foreach thing in (res.keys)
+168: local #1
+169: get member 'keys'
+170: initforeach @235
+if((thing >= 10) && (thing < 20))
+171: local #8
+172: 10L
+173: >=
+174: local #8
+175: 20L
+176: <
+177: &&
+178: if false goto 184
+level := thing - 10;
+179: local #8
+180: 10L
+181: -
+182: local4 := 
+183: goto235
+elseif((thing >= 20) && (thing < 30))
+184: local #8
+185: 20L
+186: >=
+187: local #8
+188: 30L
+189: <
+190: &&
+191: if false goto 197
+amount := thing - 20;
+192: local #8
+193: 20L
+194: -
+195: local3 := 
+196: goto235
+elseif((thing >= 30) && (thing < 40))
+197: local #8
+198: 30L
+199: >=
+200: local #8
+201: 40L
+202: <
+203: &&
+204: if false goto 210
+range := thing - 30;
+205: local #8
+206: 30L
+207: -
+208: local5 := 
+209: goto235
+elseif((thing >= 40) && (thing < 50))
+210: local #8
+211: 40L
+212: >=
+213: local #8
+214: 50L
+215: <
+216: &&
+217: if false goto 223
+type := thing - 40;
+218: local #8
+219: 40L
+220: -
+221: local6 := 
+222: goto235
+elseif((thing >= 50) && (thing < 60))
+223: local #8
+224: 50L
+225: >=
+226: local #8
+227: 60L
+228: <
+229: &&
+230: if false goto 235
+count := thing - 50;
+231: local #8
+232: 50L
+233: -
+234: local7 := 
+235: stepforeach @171
+236: leave block(3)
+var targ := TargetCoordinates(who);
+237: decl local #6
+238: local #0
+239: Func(2,1): TargetCoordinates
+240: :=
+241: #
+if(!targ)
+242: local #8
+243: if true goto 246
+return;
+244: ""
+245: progend
+var item := CreateItemAtLocation(targ.x, targ.y, targ.z, 0x888c, 1);
+246: decl local #7
+247: local #8
+248: get member 'x'
+249: local #8
+250: get member 'y'
+251: local #8
+252: get member 'z'
+253: 34956L
+254: 1L
+255: Func(2,2): CreateItemAtLocation
+256: :=
+257: #
+if(!item)
+258: local #9
+259: if true goto 268
+SendSysMessage(who, "Error. couldnt create spawner.");
+260: local #0
+261: "Error. couldnt create spawner."
+262: 3L
+263: 1000L
+264: Func(2,3): SendSysMessage
+265: #
+return;
+266: ""
+267: progend
+duration[1, find(duration, ": ", 1)+1]:="";
+268: local #2
+269: 1L
+270: local #2
+271: ": "
+272: 1L
+273: Func(0,0): find
+274: 1L
+275: +
+276: ""
+277: [,] :=
+278: #
+var newduration := (CInt(duration) * 60);
+279: decl local #8
+280: local #2
+281: Func(0,1): CInt
+282: 60L
+283: *
+284: :=
+285: #
+var location := { item.x, item.y, item.z };
+286: decl local #9
+287: array
+288: local #9
+289: get member 'x'
+290: +=
+291: local #9
+292: get member 'y'
+293: +=
+294: local #9
+295: get member 'z'
+296: +=
+297: :=
+298: #
+SetObjProperty(item, "AnchorPoint", location);
+299: local #9
+300: "AnchorPoint"
+301: local #11
+302: Func(2,4): SetObjProperty
+303: #
+SetObjProperty(item, "level", level);
+304: local #9
+305: "level"
+306: local #4
+307: Func(2,4): SetObjProperty
+308: #
+SetObjProperty(item, "range", range);
+309: local #9
+310: "range"
+311: local #5
+312: Func(2,4): SetObjProperty
+313: #
+SetObjProperty(item, "amount", amount);
+314: local #9
+315: "amount"
+316: local #3
+317: Func(2,4): SetObjProperty
+318: #
+SetObjProperty(item, "duration", CInt(newduration));
+319: local #9
+320: "duration"
+321: local #10
+322: Func(0,1): CInt
+323: Func(2,4): SetObjProperty
+324: #
+EraseObjProperty(item,"waiting");
+325: local #9
+326: "waiting"
+327: Func(2,5): EraseObjProperty
+328: #
+case(type)
+329: local #6
+330: casejmp
+	1: @331
+	2: @337
+	3: @343
+	4: @349
+	5: @355
+	default: @360
+SetObjProperty(item, "CritterType", "orcs");
+331: local #9
+332: "CritterType"
+333: "orcs"
+334: Func(2,4): SetObjProperty
+335: #
+336: goto360
+SetObjProperty(item, "CritterType", "ratmen");
+337: local #9
+338: "CritterType"
+339: "ratmen"
+340: Func(2,4): SetObjProperty
+341: #
+342: goto360
+SetObjProperty(item, "CritterType", "lizardmen");
+343: local #9
+344: "CritterType"
+345: "lizardmen"
+346: Func(2,4): SetObjProperty
+347: #
+348: goto360
+SetObjProperty(item, "CritterType", "bandit");
+349: local #9
+350: "CritterType"
+351: "bandit"
+352: Func(2,4): SetObjProperty
+353: #
+354: goto360
+SetObjProperty(item, "CritterType", "gypsie");
+355: local #9
+356: "CritterType"
+357: "gypsie"
+358: Func(2,4): SetObjProperty
+359: #
+SetObjProperty(item, "CritterAmount", count);
+360: local #9
+361: "CritterAmount"
+362: local #7
+363: Func(2,4): SetObjProperty
+364: #
+365: leave block(10)
+366: leave block(2)
+367: progend

@@ -1,0 +1,9 @@
+use uo;
+
+program pocao( who )
+
+ CreateItemInBackpack(who, "0x74dp", 1);
+ CreateItemInBackpack(who, "0x75dp", 1);
+ sendsysmessage(who,"Criado 1 Pergaminho para encolhimento de animais e 1 pergaminho para retirar animais.", 9,89);
+
+endprogram

@@ -1,0 +1,39 @@
+C:\pol2\pkg\systems\spawnregion\textcmd\gm\restartspawnregionmanager.src, Line 4
+program textcmd_RestartSpawnRegionManager(who, params)
+use uo;
+0: get arg 'who'
+1: get arg 'params'
+unload_scripts("spawnregion");
+2: "spawnregion"
+3: Func(2,0): unload_scripts
+4: #
+var pid := GetGlobalProperty("#SpawnRegionManagerPID");
+5: decl local #2
+6: "#SpawnRegionManagerPID"
+7: Func(3,0): GetGlobalProperty
+8: :=
+9: #
+var proc := getprocess(pid);
+10: decl local #3
+11: local #2
+12: Func(2,1): getprocess
+13: :=
+14: #
+proc.kill();
+15: local #3
+16: Call Method kill (0 params)
+17: #
+start_script("spawnRegionManager", params);
+18: "spawnRegionManager"
+19: local #1
+20: Func(2,2): start_script
+21: #
+SendSysMessage(who, "SpawnRegionManager restarted.");
+22: local #0
+23: "SpawnRegionManager restarted."
+24: 3L
+25: 1000L
+26: Func(3,1): SendSysMessage
+27: #
+28: leave block(4)
+29: progend

@@ -1,0 +1,12 @@
+use os;
+use uo;
+
+program textcmd_kick( who )
+    SendSysMessage( who, "Quem voce desejar kickar do servidor? [Todos os Staffs serao alertados]",0x9,90 );
+var victim := Target( who );
+if(victim.cmdlevel >= who.cmdlevel)    
+SendSysMessage(who, "Voce nao pode kickar staffs do seu nivel ou maior!",0x9,90);
+else
+        DisconnectClient( victim );
+    endif
+endprogram

@@ -1,0 +1,31 @@
+use os;
+use uo;
+use util;
+include "drinkPotion";
+include "include/canAccess";
+include "include/attributes";
+
+program drink_invisi(who, potion)
+EraseObjProperty(who, "IsMeditating");
+EraseObjProperty(who, "HealTimer");
+  if((who.x >= 5944) && (who.x <= 5963) && (who.y >= 1170) && (who.y <= 1151))
+Sendsysmessage(who, "Pvp sem pots ok!?",9,89);
+return;
+endif
+if(!can_access(who, potion))
+    return;
+  endif
+  if(potion.movable == 0)
+    SendSysMessage(who, "O Item esta trancado e n pode ser bebido.",9,89);
+    return;
+  endif
+  if(!checkifcandrink(who, "invisibilidade"))
+    return;
+  endif
+who.hidden := 1;
+empty_bottle(who, potion);
+PlaySoundEffect(who, SFX_SPELL_INVISIBILITY);
+   Detach();
+  sleep(10);
+  who.hidden := 0;
+endprogram

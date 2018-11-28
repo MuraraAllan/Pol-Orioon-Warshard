@@ -1,0 +1,30 @@
+use uo;
+use os;
+
+include "include/gumps";
+include "include/attributes"; 
+
+program manda_moonglow(who)
+
+    
+    GFInitGump();
+    GFNomove();
+    GFSetRef( 100, 100 );
+    GFGumpPic( 0, 0, 0x816 );
+    GFTextLine( 38, 33, 55, "Virar Red?" );
+    var okay := GFButtonID( 35, 72, 0x81c, 0x81b, 1 );
+    var cancel := GFButtonID( 85, 72, 0x819, 0x818, 1 );
+    sendsysmessage(who,"Voce deseja ficar red?",0x9,0x25);
+    var keys := GFSendGump( who );
+    if ( okay.keyid in keys.keys )
+      who.setMurderer(1);
+      who.alignment := "evil";
+      sendsysmessage(who,"Red!",0x9,90);
+      return 1;
+    if ( cancel.keyid in keys.keys )
+      sendsysmessage(who,"Cancelado.",0x9,90);
+    else
+      sendsysmessage(who, "Cancelado.",0x9,90);
+    endif
+  endif
+endprogram

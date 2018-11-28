@@ -1,0 +1,71 @@
+use uo;
+use os;
+include "include/attributes";
+include "../pkg/foundations/gumps/gumps";
+
+
+program arma(who)
+status(who); 
+endprogram
+
+
+function status(who)
+
+  GFInitGump( 250 , 100 );
+  GFNoMove();
+  GFResizePic(50, 5, 5120, 300, 250);
+  GFTextLine( 155 , 20, 1153 , "Comando de Dungeon" );
+  var bt2 := GFButtonID( 70, 50, 0xa9a, 0xa9b, 1);
+  var bt3 := GFButtonID( 70, 80, 0xa9a, 0xa9b, 1);
+  var bt4 := GFButtonID( 70, 110, 0xa9a, 0xa9b, 1);
+  var bt5 := GFButtonID( 70, 140, 0xa9a, 0xa9b, 1);
+  var bt6 := GFButtonID( 70, 170, 0xa9a, 0xa9b, 1);
+  var bt7 := GFButtonID( 70, 200, 0xa9a, 0xa9b, 1);
+  var bt8 := GFButtonID( 70, 230, 0xa9a, 0xa9b, 1);
+
+GFTextLine(80, 50, 55, "   Dg de Wrong");
+
+  GFTextLine(80, 80, 55, "   Dg de Destard");
+
+  GFTextLine(80, 110, 55, "   Dg de Hythloth");
+
+  GFTextLine(80, 140, 55, "   Cemita Britain");
+  
+  GFTextLine(80, 170, 55, "   Cemita Cove");
+  
+  GFTextLine(80, 200, 55, "   Cemita Vesper");
+  
+  GFTextLine(80, 230, 55, "   Ice Dungeon");
+ 
+
+  var res := GFSendGump(who);
+
+if(res[bt2.keyid])
+ MoveCharacterToLocation( who, 5825,623,0 );
+endif
+
+if(res[bt3.keyid])
+ MoveCharacterToLocation( who, 5244,1002,0 );
+endif
+
+if(res[bt4.keyid])
+ MoveCharacterToLocation( who, 5908,22,44 );
+endif
+
+if(res[bt5.keyid])
+ MoveCharacterToLocation( who, 1380,1490,10 );
+endif
+
+if(res[bt6.keyid])
+ MoveCharacterToLocation( who, 2440,1117,8 );
+endif
+
+if(res[bt7.keyid])
+ MoveCharacterToLocation( who, 2774,885,0 );
+ endif
+ 
+if(res[bt8.keyid])
+ MoveCharacterToLocation( who, 5876,247,-2);
+ endif
+ 
+endfunction

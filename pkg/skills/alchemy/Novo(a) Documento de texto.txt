@@ -1,0 +1,34 @@
+use os;
+use uo;
+use util;
+use cfgfile;
+include "drinkPotion";
+include "include/statMod";
+include "include/canAccess";
+include "include/attributes";
+
+program drink_blue (who, potion)
+  EraseObjProperty(who, "IsMeditating");
+  EraseObjProperty(who, "HealTimer");
+  if((who.x >= 5944) && (who.x <= 5963) && (who.y >= 1170) && (who.y <= 1151))
+Sendsysmessage(who , "Pvp sem pots ok!?",9,89);
+return;
+endif
+  if(!can_access(who, potion))
+    return;
+  endif
+  if(potion.movable == 0)
+    SendSysMessage(who, "Voce nao pode beber isto");
+    return;
+  endif
+  if(!checkifcandrink(who, "mana"))
+    return;
+  endif
+  var obj := potion.objtype;
+  empty_bottle(who, potion);
+  PlaySoundEffect(who, 0x135);
+  case(obj)
+    0xdc18: DoTempMod(who, "mana", 20,  60); sendsysmessage(who, "lesser");
+    0xdc19: DoTempMod(who, "mana", 35, 180); sendsysmessage(who, "greater");
+  endcase
+endprogram

@@ -1,0 +1,107 @@
+use uo;
+use os;
+use cfgfile;
+
+include "include/canAccess";
+include "include/attributes";
+include "include/client";
+
+program resmelt(who)
+  var itemcfg   := ReadConfigFile(":mining:itemdesc");
+  var smith_cfg := ReadConfigFile(":blacksmithy:blacksmithy");
+  var near_items := ListItemsNearLocation(who.x, who.y, who.z, 3);
+  var forge_near := 0;
+  foreach forge in ListItemsNearLocation(who.x, who.y, who.z, 3)
+  if((forge.objtype == 0xfb1) || ((forge.objtype >= 0x197a) && (forge.objtype <= 0x19a9)))
+      forge_near := 1;
+      break;
+    endif
+  endforeach
+  if(forge_near == 0)
+    SendSysMessage(who, "Voce precisa de uma forja!",9,89);
+    return;
+  endif
+
+var contitems := EnumerateItemsInContainer(forge_near);
+        var skill, amt, elemcol, ingot, color;
+    var valid_ingot := { 0x6309, 0x630a, 0x630b, 0x630c, 0x630d, 0x630e, 0x630f, 0x6310, 0x6311, 0x6313, 0x6315, 0x6317, 0x6319, 0x6321, 0x6323, 0x6325, 0x6327, 0x6329};
+        foreach thing in contitems 
+ if(smith_cfg[thing.objtype])
+        skill := smith_cfg[thing.objtype]."skill";
+        amt := CInt(smith_cfg[thing.objtype]."material");
+        if((!skill) || (!amt))
+          SendSysMessage(who, "Voce nao pode fundir isto.",9,89);
+          return;
+        endif
+        amt := CInt((amt * GetEffectiveSkill(who,SKILLID_BLACKSMITHY) * 75 ) / 10000);
+        if(amt < 1)
+          amt := 1;
+        endif
+        ingot := -1;
+        color := thing.color;
+        foreach entry in valid_ingot
+          elemcol := itemcfg[entry]."Color";
+          if(color == elemcol)
+            ingot := entry;
+            break;
+          endif
+        endforeach
+        if(ingot == -1)
+          PrintTextAbovePrivate(thing, "Voce nao pode fundir coisas trancadas!", who);
+          return;
+        endif
+        PlaySoundEffect(who, 0x2c);
+        sleep(1);
+        PlaySoundEffect(who, 0x22);
+        if(DestroyItem(thing))
+          if(CheckSkill(who, SKILLID_BLACKSMITHY, skill, 10))
+            SendSysMessage(who, "You manage to get a bit of material out of that");
+            CreateItemInBackpack(who, ingot, amt);
+          else
+            SendSysMessage(who, "Voce falhou e destruiu o item!",9,89);
+          endif
+        endif
+        sleep(1);
+      endif
+    endforeach
+   
+    if((!skill) || (!amt))
+      SendSysMessage(who, "You cannot resmelt that.");
+      return;
+    endif
+    amt := CInt((amt * GetEffectiveSkill(who,SKILLID_BLACKSMITHY) * 75 ) / 10000);
+    if(amt < 1)
+      amt := 1;
+    endif
+    
+    if(!itemcfg)
+      return;
+    endif
+    
+   
+
+    foreach entry in valid_ingot
+      elemcol := itemcfg[entry]."Color";
+      if(color == elemcol)
+        ingot := entry;
+        break;
+      endif
+    endforeach
+    if(ingot == -1)
+      Sendsysmessage(who, "You can't melt this metal down!", 9,89);
+      return;
+    endif
+    PlaySoundEffect(who, 0x2c);
+    sleep(1);
+    PlaySoundEffect(who, 0x22);
+    if(DestroyItem(ingot))
+      if(CheckSkill(who, SKILLID_BLACKSMITHY, skill, 10))
+        SendSysMessage(who, "You manage to get a bit of material out of that");
+        CreateItemInBackpack(who, ingot, amt);
+      else
+        SendSysMessage(who, "Voce falhou e destruiu o item!",9,89);
+      endif
+      return;
+    endif
+ 
+endprogram

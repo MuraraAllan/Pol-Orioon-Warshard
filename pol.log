@@ -1,0 +1,1142 @@
+[06/08 17:25:22] Logfile opened.
+POL095-2003-07-05 (VS.NET) compiled on Jul  5 2003 16:38:41 running.
+[06/08 17:26:27] Logfile opened.
+POL095-2003-07-05 (VS.NET) compiled on Jul  5 2003 16:38:41 running.
+[06/08 17:27:20] Logfile opened.
+POL095-2003-07-05 (VS.NET) compiled on Jul  5 2003 16:38:41 running.
+[06/08 17:27:23] [pkg/items/moongates/start.ecl]: Creating moongates.
+Game is active.
+[06/08 17:27:25] [pkg/systems/spawnregion/spawnRegionManager.ecl]: Creating data file: SpawnRegionData
+[pkg/systems/spawnregion/spawnRegionManager.ecl]: Creating data file: SpawnRegionFreq
+[06/08 17:27:40] Client#1 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Account admin logged in from 127.0.0.1
+Client#1: Unexpected message type d9, 268 bytes (IP:127.0.0.1, Account:admin)
+0000: d9 02 4b 17 33 43 00 00  00 06 00 00 00 01 00 00   ..K.3C.. ........
+0010: 1d b0 02 00 00 00 06 00  00 00 17 00 00 08 2d 02   ........ ......-.
+0020: 00 00 0f 60 00 00 05 56  00 00 03 00 00 00 00 10   ...`...V ........
+0030: 00 09 00 00 4d 00 6f 00  62 00 69 00 6c 00 65 00   ....M.o. b.i.l.e.
+0040: 20 00 49 00 6e 00 74 00  65 00 6c 00 28 00 52 00    .I.n.t. e.l.(.R.
+0050: 29 00 20 00 34 00 20 00  53 00 65 00 72 00 69 00   ). .4. . S.e.r.i.
+0060: 65 00 73 00 20 00 45 00  78 00 70 00 72 00 65 00   e.s. .E. x.p.r.e.
+0070: 73 00 73 00 20 00 43 00  68 00 69 00 70 00 73 00   s.s. .C. h.i.p.s.
+0080: 65 00 74 00 20 00 46 00  61 00 6d 00 69 00 6c 00   e.t. .F. a.m.i.l.
+0090: 79 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00   y....... ........
+00a0: 00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00   ........ ........
+00b0: 00 00 00 00 00 00 80 86  00 00 2a 42 00 00 00 88   ........ ..*B....
+00c0: 0a 02 06 10 70 00 74 00  62 00 00 00 00 00 00 00   ....p.t. b.......
+00d0: 00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00   ........ ........
+00e0: 00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00   ........ ........
+00f0: 00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00   ........ ........
+0100: 00 00 00 00 00 00 00 00  00 00 00 00               ........ ........
+Client#1 (127.0.0.1): disconnected (account admin)
+Client#2 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Account admin logged in from 127.0.0.1
+[06/08 17:27:41] Account admin selecting character Admin
+[06/08 17:27:56] Client#2 (127.0.0.1): disconnected (account admin)
+[06/08 17:28:04] Client#3 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Account admin logged in from 127.0.0.1
+[06/08 17:28:05] Client#3 (127.0.0.1): disconnected (account admin)
+Client#4 connected from 127.0.0.1 (2 connections) on interface 127.0.0.1
+Account admin logged in from 127.0.0.1
+[06/08 17:28:06] Account admin selecting character Admin
+[06/08 17:28:23] sysload=5 (15) cputime=2449216
+[06/08 17:29:23] sysload=0 (0) cputime=0
+[06/08 17:30:23] sysload=0 (0) cputime=15600
+[06/08 17:31:23] sysload=1 (34) cputime=2730018
+[06/08 17:32:23] sysload=0 (0) cputime=0
+[06/08 17:33:23] sysload=0 (0) cputime=0
+[06/08 17:34:23] sysload=0 (0) cputime=2964019
+[06/08 17:35:23] sysload=0 (0) cputime=15600
+[06/08 17:36:12] Client#4 (127.0.0.1): disconnected (account admin)
+[06/08 17:36:22] Client#5 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Account admin logged in from 127.0.0.1
+[06/08 17:36:23] sysload=0 (0) cputime=15600
+Client#5 (127.0.0.1): disconnected (account admin)
+Client#6 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Account admin logged in from 127.0.0.1
+[06/08 17:36:24] Account admin selecting character Admin
+[06/08 17:37:23] sysload=3 (23) cputime=3338421
+[06/08 17:38:23] sysload=0 (0) cputime=0
+[06/08 17:39:23] sysload=0 (0) cputime=0
+[06/08 17:40:23] sysload=1 (15) cputime=3042020
+[06/08 17:41:23] sysload=0 (0) cputime=31200
+[06/08 17:42:23] sysload=0 (0) cputime=0
+[06/08 17:43:23] sysload=1 (4) cputime=3244821
+[06/08 17:44:23] sysload=0 (0) cputime=31200
+[06/08 17:45:23] sysload=0 (0) cputime=0
+[06/08 17:46:23] sysload=0 (0) cputime=2901619
+[06/08 17:47:23] sysload=0 (0) cputime=171601
+[06/08 17:48:23] sysload=0 (0) cputime=0
+[06/08 17:49:23] sysload=3 (11) cputime=2886018
+[06/08 17:50:23] sysload=0 (0) cputime=514804
+[06/08 17:51:23] sysload=0 (0) cputime=0
+[06/08 17:52:23] sysload=3 (8) cputime=2730017
+[06/08 17:53:23] sysload=1 (0) cputime=811205
+[06/08 17:54:23] sysload=0 (0) cputime=0
+[06/08 17:55:23] sysload=0 (0) cputime=1513210
+[06/08 17:56:23] sysload=0 (0) cputime=2074813
+[06/08 17:57:23] sysload=0 (0) cputime=0
+[06/08 17:58:23] sysload=0 (0) cputime=561604
+[06/08 17:59:23] sysload=3 (16) cputime=2683217
+[06/08 18:00:23] sysload=0 (0) cputime=0
+[06/08 18:01:23] sysload=0 (0) cputime=31200
+[06/08 18:02:23] sysload=3 (4) cputime=3213621
+[06/08 18:03:23] sysload=0 (0) cputime=78000
+[06/08 18:04:23] sysload=0 (0) cputime=0
+[06/08 18:04:35] Client#6 (127.0.0.1): disconnected (account admin)
+[06/08 18:04:44] Client#7 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Account admin logged in from 127.0.0.1
+Client#7 (127.0.0.1): disconnected (account admin)
+Client#8 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Account admin logged in from 127.0.0.1
+[06/08 18:04:45] Account admin selecting character Admin
+[06/08 18:05:23] sysload=1 (8) cputime=3010820
+[06/08 18:06:23] sysload=0 (0) cputime=187201
+[06/08 18:07:23] sysload=0 (0) cputime=0
+[06/08 18:08:23] sysload=0 (0) cputime=3322821
+[06/08 18:09:23] sysload=0 (0) cputime=187201
+[06/08 18:10:23] sysload=0 (0) cputime=31201
+[06/08 18:11:23] sysload=0 (0) cputime=2761217
+[06/08 18:12:23] sysload=0 (0) cputime=592804
+[06/08 18:13:23] sysload=0 (0) cputime=0
+[06/08 18:14:23] sysload=0 (0) cputime=2776818
+[06/08 18:15:23] sysload=0 (0) cputime=624004
+[06/08 18:16:23] sysload=0 (0) cputime=31200
+[06/08 18:17:23] sysload=1 (11) cputime=2792418
+[06/08 18:18:23] sysload=1 (3) cputime=717605
+[06/08 18:19:23] sysload=0 (0) cputime=0
+[06/08 18:20:23] sysload=0 (0) cputime=2776817
+[06/08 18:21:23] sysload=0 (0) cputime=639604
+[06/08 18:22:23] sysload=0 (0) cputime=140401
+[06/08 18:23:23] sysload=0 (0) cputime=2012413
+[06/08 18:24:23] sysload=0 (0) cputime=1263608
+[06/08 18:25:23] sysload=0 (0) cputime=93601
+[06/08 18:26:23] sysload=1 (3) cputime=1528810
+[06/08 18:27:23] sysload=1 (1) cputime=1747211
+[06/08 18:27:26] [pkg/systems/saver/save.ecl]: Salvando o Mundo...
+[pkg/systems/saver/save.ecl]: Mundo Salvo!
+[06/08 18:28:23] sysload=0 (0) cputime=296402
+[06/08 18:29:23] sysload=0 (0) cputime=967206
+[06/08 18:30:23] sysload=0 (0) cputime=2246414
+[06/08 18:31:23] sysload=0 (0) cputime=140401
+[06/08 18:32:23] sysload=0 (0) cputime=577204
+[06/08 18:33:23] sysload=0 (0) cputime=2823618
+[06/08 18:34:23] sysload=0 (0) cputime=202801
+[06/08 18:35:23] sysload=0 (0) cputime=187202
+[06/08 18:36:23] sysload=1 (0) cputime=2667617
+[06/08 18:37:23] sysload=0 (0) cputime=639604
+[06/08 18:38:23] sysload=0 (0) cputime=140401
+[06/08 18:39:23] sysload=0 (0) cputime=2886018
+[06/08 18:40:23] sysload=0 (0) cputime=405603
+[06/08 18:41:23] sysload=0 (0) cputime=171601
+[06/08 18:42:23] sysload=0 (0) cputime=2901619
+[06/08 18:43:23] sysload=0 (0) cputime=421202
+[06/08 18:44:07] Client#8 (127.0.0.1): disconnected (account admin)
+[06/08 18:44:23] sysload=0 (0) cputime=124801
+[06/08 18:45:23] sysload=1 (0) cputime=1731611
+[06/08 18:46:23] sysload=0 (0) cputime=187201
+[06/08 18:47:23] sysload=0 (0) cputime=31201
+[06/08 18:48:23] sysload=0 (0) cputime=1809611
+[06/08 18:49:23] sysload=0 (0) cputime=218402
+[06/08 18:50:23] sysload=0 (0) cputime=46800
+[06/08 18:51:23] sysload=0 (0) cputime=2527216
+[06/08 18:52:23] sysload=0 (0) cputime=608404
+[06/08 18:53:23] sysload=0 (0) cputime=156001
+[06/08 18:54:23] sysload=0 (0) cputime=1809612
+[06/08 18:55:23] sysload=0 (0) cputime=1279208
+[06/08 18:56:23] sysload=0 (0) cputime=124801
+[06/08 18:57:23] sysload=0 (0) cputime=1684810
+[06/08 18:58:23] sysload=0 (0) cputime=1466410
+[06/08 18:59:23] sysload=0 (0) cputime=124801
+[06/08 19:00:23] sysload=0 (0) cputime=1513209
+[06/08 19:01:23] sysload=0 (0) cputime=1388409
+[06/08 19:02:23] sysload=0 (0) cputime=327602
+[06/08 19:03:23] sysload=0 (0) cputime=1216808
+[06/08 19:04:23] sysload=0 (0) cputime=1918812
+[06/08 19:05:23] sysload=0 (0) cputime=390003
+[06/08 19:06:23] sysload=0 (0) cputime=967206
+[06/08 19:07:23] sysload=0 (0) cputime=1934412
+[06/08 19:08:23] sysload=0 (0) cputime=421203
+[06/08 19:09:23] sysload=0 (0) cputime=561604
+[06/08 19:10:23] sysload=0 (0) cputime=2090413
+[06/08 19:11:23] sysload=0 (0) cputime=655204
+[06/08 19:12:23] sysload=0 (0) cputime=234002
+[06/08 19:13:23] sysload=0 (0) cputime=2542816
+[06/08 19:14:23] sysload=0 (0) cputime=499203
+[06/08 19:15:23] sysload=0 (0) cputime=171601
+[06/08 19:16:23] sysload=0 (0) cputime=2464816
+[06/08 19:17:23] sysload=0 (0) cputime=468003
+[06/08 19:18:23] sysload=0 (0) cputime=46801
+[06/08 19:19:23] sysload=1 (0) cputime=2776817
+[06/08 19:20:23] sysload=0 (0) cputime=483603
+[06/08 19:21:23] sysload=0 (0) cputime=62401
+[06/08 19:22:23] sysload=0 (0) cputime=2277614
+[06/08 19:23:23] sysload=0 (0) cputime=717605
+[06/08 19:24:23] sysload=0 (0) cputime=327602
+[06/08 19:25:23] sysload=0 (0) cputime=1918812
+[06/08 19:26:23] sysload=0 (0) cputime=920406
+[06/08 19:27:23] sysload=0 (0) cputime=390003
+[06/08 19:27:29] [pkg/systems/saver/save.ecl]: Salvando o Mundo...
+[pkg/systems/saver/save.ecl]: Mundo Salvo!
+[06/08 19:28:23] sysload=0 (0) cputime=1840812
+[06/08 19:29:23] sysload=0 (0) cputime=1201207
+[06/08 19:30:23] sysload=0 (0) cputime=468003
+[06/08 19:31:23] sysload=0 (0) cputime=1528810
+[06/08 19:32:23] sysload=0 (0) cputime=1357209
+[06/08 19:33:23] sysload=0 (0) cputime=514803
+[06/08 19:34:23] sysload=0 (0) cputime=951606
+[06/08 19:35:23] sysload=0 (0) cputime=1996813
+[06/08 19:36:23] sysload=0 (0) cputime=514803
+[06/08 19:37:23] sysload=0 (0) cputime=873606
+[06/08 19:38:23] sysload=0 (0) cputime=1950012
+[06/08 19:39:23] sysload=0 (0) cputime=499204
+[06/08 19:40:23] sysload=1 (0) cputime=561603
+[06/08 19:41:23] sysload=0 (0) cputime=2355615
+[06/08 19:42:23] sysload=0 (0) cputime=655205
+[06/08 19:43:23] sysload=0 (0) cputime=421202
+[06/08 19:44:23] sysload=0 (0) cputime=2308815
+[06/08 19:45:23] sysload=0 (0) cputime=218401
+[06/08 19:46:23] sysload=0 (0) cputime=624004
+[06/08 19:47:23] sysload=0 (0) cputime=2480416
+[06/08 19:48:23] sysload=0 (0) cputime=171601
+[06/08 19:49:23] sysload=0 (0) cputime=592804
+[06/08 19:50:23] sysload=0 (0) cputime=2152814
+[06/08 19:51:23] sysload=0 (0) cputime=436803
+[06/08 19:52:23] sysload=0 (0) cputime=421203
+[06/08 19:53:23] sysload=0 (0) cputime=2028013
+[06/08 19:54:23] sysload=0 (0) cputime=811205
+[06/08 19:55:23] sysload=0 (0) cputime=468003
+[06/08 19:56:23] sysload=0 (0) cputime=1794011
+[06/08 19:57:23] sysload=0 (0) cputime=1310409
+[06/08 19:58:23] sysload=0 (0) cputime=499203
+[06/08 19:59:23] sysload=0 (0) cputime=1825212
+[06/08 20:00:23] sysload=0 (0) cputime=1575610
+[06/08 20:01:23] sysload=0 (0) cputime=592803
+[06/08 20:02:23] sysload=0 (0) cputime=1185608
+[06/08 20:03:23] sysload=0 (0) cputime=1762811
+[06/08 20:04:23] sysload=0 (0) cputime=514804
+[06/08 20:05:23] sysload=0 (0) cputime=1014006
+[06/08 20:06:23] sysload=0 (0) cputime=1887612
+[06/08 20:07:23] sysload=0 (0) cputime=202802
+[06/08 20:08:23] sysload=0 (0) cputime=1482009
+[06/08 20:09:23] sysload=0 (0) cputime=1981213
+[06/08 20:10:23] sysload=0 (0) cputime=187201
+[06/08 20:11:23] sysload=0 (0) cputime=1310408
+[06/08 20:12:23] sysload=0 (0) cputime=1840812
+[06/08 20:13:23] sysload=0 (0) cputime=296402
+[06/08 20:14:23] sysload=0 (0) cputime=936006
+[06/08 20:15:23] sysload=0 (0) cputime=2308815
+[12/24 05:36:52] Logfile opened.
+POL095-2003-07-05 (VS.NET) compiled on Jul  5 2003 16:38:41 running.
+[12/24 05:37:00] [pkg/items/moongates/start.ecl]: Creating moongates.
+[12/24 05:37:01] Game is active.
+[12/24 05:37:16] Client#1 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Account admin logged in from 127.0.0.1
+Client#1: Unexpected message type d9, 268 bytes (IP:127.0.0.1, Account:admin)
+0000: d9 02 4b 17 33 43 00 00  00 06 00 00 00 01 00 00   ..K.3C.. ........
+0010: 1d b0 02 00 00 00 06 00  00 00 17 00 00 08 2d 02   ........ ......-.
+0020: 00 00 0f 60 00 00 05 00  00 00 02 d0 00 00 00 20   ...`.... ....... 
+0030: 00 09 00 00 4d 00 6f 00  62 00 69 00 6c 00 65 00   ....M.o. b.i.l.e.
+0040: 20 00 49 00 6e 00 74 00  65 00 6c 00 28 00 52 00    .I.n.t. e.l.(.R.
+0050: 29 00 20 00 34 00 20 00  53 00 65 00 72 00 69 00   ). .4. . S.e.r.i.
+0060: 65 00 73 00 20 00 45 00  78 00 70 00 72 00 65 00   e.s. .E. x.p.r.e.
+0070: 73 00 73 00 20 00 43 00  68 00 69 00 70 00 73 00   s.s. .C. h.i.p.s.
+0080: 65 00 74 00 20 00 46 00  61 00 6d 00 69 00 6c 00   e.t. .F. a.m.i.l.
+0090: 79 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00   y....... ........
+00a0: 00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00   ........ ........
+00b0: 00 00 00 00 00 00 80 86  00 00 2a 42 00 00 00 88   ........ ..*B....
+00c0: 0a 02 06 10 70 00 74 00  62 00 00 00 00 00 00 00   ....p.t. b.......
+00d0: 00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00   ........ ........
+00e0: 00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00   ........ ........
+00f0: 00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00   ........ ........
+0100: 00 00 00 00 00 00 00 00  00 00 00 00               ........ ........
+[12/24 05:37:17] Client#1 (127.0.0.1): disconnected (account admin)
+Client#2 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Account admin logged in from 127.0.0.1
+[12/24 05:37:18] Account admin selecting character Admin
+[12/24 05:37:48] Client#2 (127.0.0.1): disconnected (account admin)
+[12/24 05:37:54] Client#3 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Account admin logged in from 127.0.0.1
+[12/24 05:37:55] Client#3 (127.0.0.1): disconnected (account admin)
+Client#4 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Account admin logged in from 127.0.0.1
+[12/24 05:37:56] Account admin selecting character Admin
+[12/24 05:38:01] sysload=5 (263) cputime=3042019
+[12/24 05:38:03] Client#4 (127.0.0.1): disconnected (account admin)
+[12/24 05:38:13] Client#5 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Client#5 (127.0.0.1): disconnected (account unknown)
+[12/24 05:38:20] Client#6 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Account admin logged in from 127.0.0.1
+[12/24 05:38:21] Client#6 (127.0.0.1): disconnected (account admin)
+[12/24 05:38:22] Client#7 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Account admin logged in from 127.0.0.1
+[12/24 05:38:36] Account admin created character 0x1711490
+[12/24 05:38:53] Client#7 (127.0.0.1): disconnected (account admin)
+[01/25 23:03:30] Logfile opened.
+POL095-2003-07-05 (VS.NET) compiled on Jul  5 2003 16:38:41 running.
+[01/25 23:03:40] [pkg/items/moongates/start.ecl]: Creating moongates.
+Game is active.
+[01/25 23:04:23] Client#1 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Account admin logged in from 127.0.0.1
+Client#1: Unexpected message type d9, 268 bytes (IP:127.0.0.1, Account:admin)
+0000: d9 02 4b 17 33 43 00 00  00 06 00 00 00 01 00 00   ..K.3C.. ........
+0010: 1d b0 02 00 00 00 06 00  00 00 17 00 00 08 2d 02   ........ ......-.
+0020: 00 00 0f 60 00 00 05 00  00 00 02 d0 00 00 00 20   ...`.... ....... 
+0030: 00 09 00 00 4d 00 6f 00  62 00 69 00 6c 00 65 00   ....M.o. b.i.l.e.
+0040: 20 00 49 00 6e 00 74 00  65 00 6c 00 28 00 52 00    .I.n.t. e.l.(.R.
+0050: 29 00 20 00 34 00 20 00  53 00 65 00 72 00 69 00   ). .4. . S.e.r.i.
+0060: 65 00 73 00 20 00 45 00  78 00 70 00 72 00 65 00   e.s. .E. x.p.r.e.
+0070: 73 00 73 00 20 00 43 00  68 00 69 00 70 00 73 00   s.s. .C. h.i.p.s.
+0080: 65 00 74 00 20 00 46 00  61 00 6d 00 69 00 6c 00   e.t. .F. a.m.i.l.
+0090: 79 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00   y....... ........
+00a0: 00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00   ........ ........
+00b0: 00 00 00 00 00 00 80 86  00 00 2a 42 00 00 00 88   ........ ..*B....
+00c0: 0a 02 06 10 70 00 74 00  62 00 00 00 00 00 00 00   ....p.t. b.......
+00d0: 00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00   ........ ........
+00e0: 00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00   ........ ........
+00f0: 00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00   ........ ........
+0100: 00 00 00 00 00 00 00 00  00 00 00 00               ........ ........
+[01/25 23:04:24] Client#1 (127.0.0.1): disconnected (account admin)
+Client#2 connected from 127.0.0.1 (2 connections) on interface 127.0.0.1
+Account admin logged in from 127.0.0.1
+[01/25 23:04:26] Account admin selecting character Admin
+[01/25 23:04:34] Client#2 (127.0.0.1): disconnected (account admin)
+[01/25 23:04:40] sysload=11 (670) cputime=4290028
+[01/25 23:05:40] sysload=0 (0) cputime=0
+[01/25 23:06:04] Client#3 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Account admin logged in from 127.0.0.1
+Client#3 (127.0.0.1): disconnected (account admin)
+Client#4 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Account admin logged in from 127.0.0.1
+[01/25 23:06:18] Account admin created character 0x1711490
+[01/25 23:06:25] Client#4 (127.0.0.1): disconnected (account admin)
+[01/25 23:06:40] sysload=0 (0) cputime=31200
+[01/25 23:07:40] sysload=0 (0) cputime=3447622
+[01/25 23:08:40] sysload=0 (0) cputime=0
+[01/25 23:09:40] sysload=0 (0) cputime=0
+[01/25 23:10:40] sysload=1 (1) cputime=3322822
+[01/25 23:11:40] sysload=0 (0) cputime=0
+[01/25 23:12:40] sysload=0 (0) cputime=0
+[01/25 23:13:40] sysload=5 (27) cputime=3478822
+[10/29 19:52:40] Logfile opened.
+POL095-2003-07-05 (VS.NET) compiled on Jul  5 2003 16:38:41 running.
+[10/29 19:52:42] Logfile opened.
+POL095-2003-07-05 (VS.NET) compiled on Jul  5 2003 16:38:41 running.
+[11/16 22:44:42] Logfile opened.
+POL095-2003-07-05 (VS.NET) compiled on Jul  5 2003 16:38:41 running.
+[11/16 22:45:12] Logfile opened.
+POL095-2003-07-05 (VS.NET) compiled on Jul  5 2003 16:38:41 running.
+[11/16 22:45:13] Logfile opened.
+POL095-2003-07-05 (VS.NET) compiled on Jul  5 2003 16:38:41 running.
+[11/16 22:47:09] Logfile opened.
+POL095-2003-07-05 (VS.NET) compiled on Jul  5 2003 16:38:41 running.
+[11/16 22:47:17] [pkg/items/moongates/start.ecl]: Creating moongates.
+Game is active.
+[11/16 22:47:34] Client#1 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Incorrect password for account admin from 127.0.0.1
+Client#1 (127.0.0.1): disconnected (account unknown)
+[11/16 22:47:38] Client#2 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Account admin logged in from 127.0.0.1
+Client#2: Unexpected message type d9, 268 bytes (IP:127.0.0.1, Account:admin)
+0000: d9 02 4d 66 bd fd 00 00  00 06 00 00 00 01 00 00   ..Mf.... ........
+0010: 1d b0 02 00 00 00 06 00  00 00 17 00 00 08 2d 02   ........ ......-.
+0020: 00 00 0f 60 00 00 05 00  00 00 02 d0 00 00 00 20   ...`.... ....... 
+0030: 00 09 00 00 4d 00 6f 00  62 00 69 00 6c 00 65 00   ....M.o. b.i.l.e.
+0040: 20 00 49 00 6e 00 74 00  65 00 6c 00 28 00 52 00    .I.n.t. e.l.(.R.
+0050: 29 00 20 00 34 00 20 00  53 00 65 00 72 00 69 00   ). .4. . S.e.r.i.
+0060: 65 00 73 00 20 00 45 00  78 00 70 00 72 00 65 00   e.s. .E. x.p.r.e.
+0070: 73 00 73 00 20 00 43 00  68 00 69 00 70 00 73 00   s.s. .C. h.i.p.s.
+0080: 65 00 74 00 20 00 46 00  61 00 6d 00 69 00 6c 00   e.t. .F. a.m.i.l.
+0090: 79 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00   y....... ........
+00a0: 00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00   ........ ........
+00b0: 00 00 00 00 00 00 80 86  00 00 2a 42 00 00 00 04   ........ ..*B....
+00c0: 00 02 02 16 70 00 74 00  62 00 00 00 00 00 00 00   ....p.t. b.......
+00d0: 00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00   ........ ........
+00e0: 00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00   ........ ........
+00f0: 00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00   ........ ........
+0100: 00 00 00 00 00 00 00 00  00 00 00 00               ........ ........
+[11/16 22:47:39] Client#2 (127.0.0.1): disconnected (account admin)
+Client#3 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Account admin logged in from 127.0.0.1
+[11/16 22:47:40] Account admin selecting character Admin
+[11/16 22:47:58] Client#3 (127.0.0.1): disconnected (account admin)
+[11/16 22:48:07] Client#4 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Account admin logged in from 127.0.0.1
+[11/16 22:48:09] Client#4 (127.0.0.1): disconnected (account admin)
+Client#5 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Account admin logged in from 127.0.0.1
+[11/16 22:48:17] sysload=5 (272) cputime=2808018
+[11/16 22:48:22] Account admin created character 0x1711490
+[11/16 22:50:14] Logfile opened.
+POL095-2003-07-05 (VS.NET) compiled on Jul  5 2003 16:38:41 running.
+[11/16 22:50:19] [pkg/items/moongates/start.ecl]: Creating moongates.
+Game is active.
+[11/16 22:50:31] Client#1 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Account admin logged in from 127.0.0.1
+Client#1 (127.0.0.1): disconnected (account admin)
+Client#2 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Account admin logged in from 127.0.0.1
+[11/16 22:50:33] Account admin selecting character Admin
+[11/16 22:51:04] Client#2 (127.0.0.1): disconnected (account admin)
+[02/08 19:45:45] Logfile opened.
+POL095-2003-07-05 (VS.NET) compiled on Jul  5 2003 16:38:41 running.
+[02/08 19:45:54] [pkg/items/moongates/start.ecl]: Creating moongates.
+Game is active.
+[02/08 19:46:29] Client#1 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Account admin logged in from 127.0.0.1
+Client#1: Unexpected message type d9, 268 bytes (IP:127.0.0.1, Account:admin)
+0000: d9 02 4d 66 bd fd 00 00  00 06 00 00 00 01 00 00   ..Mf.... ........
+0010: 1d b0 02 00 00 00 06 00  00 00 17 00 00 08 2d 02   ........ ......-.
+0020: 00 00 0f 60 00 00 05 00  00 00 02 d0 00 00 00 20   ...`.... ....... 
+0030: 00 09 00 00 4d 00 6f 00  62 00 69 00 6c 00 65 00   ....M.o. b.i.l.e.
+0040: 20 00 49 00 6e 00 74 00  65 00 6c 00 28 00 52 00    .I.n.t. e.l.(.R.
+0050: 29 00 20 00 34 00 20 00  53 00 65 00 72 00 69 00   ). .4. . S.e.r.i.
+0060: 65 00 73 00 20 00 45 00  78 00 70 00 72 00 65 00   e.s. .E. x.p.r.e.
+0070: 73 00 73 00 20 00 43 00  68 00 69 00 70 00 73 00   s.s. .C. h.i.p.s.
+0080: 65 00 74 00 20 00 46 00  61 00 6d 00 69 00 6c 00   e.t. .F. a.m.i.l.
+0090: 79 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00   y....... ........
+00a0: 00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00   ........ ........
+00b0: 00 00 00 00 00 00 80 86  00 00 2a 42 00 00 00 04   ........ ..*B....
+00c0: 00 02 02 16 70 00 74 00  62 00 00 00 00 00 00 00   ....p.t. b.......
+00d0: 00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00   ........ ........
+00e0: 00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00   ........ ........
+00f0: 00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00   ........ ........
+0100: 00 00 00 00 00 00 00 00  00 00 00 00               ........ ........
+[02/08 19:46:30] Client#1 (127.0.0.1): disconnected (account admin)
+Client#2 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Account admin logged in from 127.0.0.1
+[02/08 19:46:31] Account admin selecting character Admin
+[02/08 19:46:39] Client#2 (127.0.0.1): disconnected (account admin)
+[02/08 19:46:54] sysload=3 (214) cputime=2995219
+[02/08 19:47:07] Logfile opened.
+POL095-2003-07-05 (VS.NET) compiled on Jul  5 2003 16:38:41 running.
+[02/08 19:47:47] Client#3 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Account admin logged in from 127.0.0.1
+[02/08 19:47:48] Client#3 (127.0.0.1): disconnected (account admin)
+Client#4 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Account admin logged in from 127.0.0.1
+[02/08 19:47:54] sysload=0 (0) cputime=0
+[02/08 19:47:58] Account admin created character 0x1711490
+[02/08 19:48:06] Client#4 (127.0.0.1): disconnected (account admin)
+[02/08 19:48:54] sysload=0 (0) cputime=0
+[02/08 19:49:54] sysload=0 (0) cputime=2090413
+[02/08 19:50:54] sysload=0 (0) cputime=0
+[02/08 19:51:54] sysload=0 (0) cputime=0
+[02/08 19:52:54] sysload=0 (0) cputime=2792418
+[02/08 19:53:13] Logfile opened.
+POL095-2003-07-05 (VS.NET) compiled on Jul  5 2003 16:38:41 running.
+[02/08 19:53:18] [pkg/items/moongates/start.ecl]: Creating moongates.
+Game is active.
+[02/08 19:53:32] Client#1 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Account admin logged in from 127.0.0.1
+Client#1 (127.0.0.1): disconnected (account admin)
+Client#2 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Account admin logged in from 127.0.0.1
+[02/08 19:53:33] Account admin selecting character Admin
+[02/08 19:54:18] sysload=3 (219) cputime=3026419
+[02/08 19:54:33] Client#2 (127.0.0.1): disconnected (account admin)
+[02/08 19:55:18] sysload=0 (0) cputime=0
+[02/08 19:56:18] sysload=0 (0) cputime=0
+[02/08 19:57:01] Logfile opened.
+POL095-2003-07-05 (VS.NET) compiled on Jul  5 2003 16:38:41 running.
+[02/08 19:57:05] Unable to read script 'scripts/start.ecl'
+[pkg/items/moongates/start.ecl]: Creating moongates.
+Game is active.
+[02/08 19:57:17] Client#1 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Account admin logged in from 127.0.0.1
+Client#1 (127.0.0.1): disconnected (account admin)
+Client#2 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Account admin logged in from 127.0.0.1
+[02/08 19:57:19] Account admin selecting character Admin
+[02/08 19:57:25] Client#2 (127.0.0.1): disconnected (account admin)
+[02/08 19:58:05] sysload=3 (95) cputime=2948419
+[02/08 19:59:07] Logfile opened.
+POL095-2003-07-05 (VS.NET) compiled on Jul  5 2003 16:38:41 running.
+[02/08 19:59:11] [pkg/items/moongates/start.ecl]: Creating moongates.
+Game is active.
+[02/08 19:59:33] Client#1 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Account admin logged in from 127.0.0.1
+Client#1 (127.0.0.1): disconnected (account admin)
+Client#2 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Account admin logged in from 127.0.0.1
+[02/08 19:59:34] Account admin selecting character Admin
+[02/08 19:59:48] Client#2 (127.0.0.1): disconnected (account admin)
+[02/08 20:00:11] sysload=3 (4) cputime=3088820
+[02/08 20:01:11] sysload=0 (0) cputime=15600
+[02/08 20:02:11] sysload=0 (0) cputime=0
+[02/08 20:03:11] sysload=0 (0) cputime=2964019
+[02/08 20:04:11] sysload=0 (0) cputime=0
+[02/08 20:05:11] sysload=0 (0) cputime=0
+[02/08 20:06:11] sysload=1 (8) cputime=3042019
+[02/08 20:07:11] sysload=0 (0) cputime=15600
+[02/08 20:08:11] sysload=0 (0) cputime=0
+[02/08 20:13:48] Logfile opened.
+POL095-2003-07-05 (VS.NET) compiled on Jul  5 2003 16:38:41 running.
+[02/08 20:13:53] [pkg/items/moongates/start.ecl]: Creating moongates.
+Game is active.
+[02/08 20:13:56] Client#1 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Client#1: Unexpected message type 42, 62 bytes (IP:127.0.0.1, Account:None)
+0000: 42 7f 94 ea d5 cf af a8  ab 2a ea 8a ba a2 ae 28   B....... .*.....(
+0010: 6b 4a 5a 52 56 d4 15 f5  85 3d 61 4f d8 13 f6 04   kJZRV... .=aO....
+0020: fd 01 7f 40 5f 50 d7 94  b5 a5 ad a9 2b ea 0a 7a   ...@_P.. ....+..z
+0030: c2 1e f0 87 bc a1 af a8  ab 2a ea 8a ba 5d         ........ .*...]..
+[02/08 20:14:00] Client#1 (127.0.0.1): disconnected (account unknown)
+[02/08 20:14:01] Client#2 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Client#2: Unexpected message type 42, 62 bytes (IP:127.0.0.1, Account:None)
+0000: 42 7f 94 ea d5 cf af a8  ab 2a ea 8a ba a2 ae 28   B....... .*.....(
+0010: 6b 4a 5a 52 56 d4 15 f5  85 3d 61 4f d8 13 f6 77   kJZRV... .=aO...w
+0020: 8e 60 7f 40 5f 50 d7 94  b5 a5 ad a9 2b ea 0a 7a   .`.@_P.. ....+..z
+0030: c2 1e f0 87 bc a1 af a8  ab 2a ea 8a ba 5d         ........ .*...]..
+[02/08 20:14:04] Client#2 (127.0.0.1): disconnected (account unknown)
+[02/08 20:14:05] Client#3 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Client#3: Unexpected message type 42, 62 bytes (IP:127.0.0.1, Account:None)
+0000: 42 7f 94 ea d5 cf af a8  ab 2a ea 8a ba a2 ae 28   B....... .*.....(
+0010: 6b 4a 5a 52 56 d4 15 f5  85 3d 61 4f d8 13 f6 60   kJZRV... .=aO...`
+0020: 9e 72 1b 33 5f 50 d7 94  b5 a5 ad a9 2b ea 0a 7a   .r.3_P.. ....+..z
+0030: c2 1e f0 87 bc a1 af a8  ab 2a ea 8a ba 5d         ........ .*...]..
+[02/08 20:14:07] Client#3 (127.0.0.1): disconnected (account unknown)
+[02/08 20:14:16] Client#4 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Client#4: Unexpected message type 42, 62 bytes (IP:127.0.0.1, Account:None)
+0000: 42 7f 94 ea d5 cf af a8  ab 2a ea 8a ba a2 ae 28   B....... .*.....(
+0010: 6b 4a 5a 52 56 d4 15 f5  85 3d 61 4f d8 13 f6 72   kJZRV... .=aO...r
+0020: 8b 65 0c 36 3e 50 d7 94  b5 a5 ad a9 2b ea 0a 7a   .e.6>P.. ....+..z
+0030: c2 1e f0 87 bc a1 af a8  ab 2a ea 8a ba 5d         ........ .*...]..
+[02/08 20:14:19] Client#4 (127.0.0.1): disconnected (account unknown)
+Client#5 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Client#5: Unexpected message type 42, 62 bytes (IP:127.0.0.1, Account:None)
+0000: 42 7f 94 ea d5 cf af a8  ab 2a ea 8a ba a2 ae 28   B....... .*.....(
+0010: 6b 4a 5a 52 56 d4 15 f5  85 3d 61 4f d8 13 f6 04   kJZRV... .=aO....
+0020: 8b 65 0c 36 3e 50 d7 94  b5 a5 ad a9 2b ea 0a 7a   .e.6>P.. ....+..z
+0030: c2 1e f0 87 bc a1 af a8  ab 2a ea 8a ba 5d         ........ .*...]..
+[02/08 20:14:21] Client#5 (127.0.0.1): disconnected (account unknown)
+[02/08 20:14:29] Client#6 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Account admin logged in from 127.0.0.1
+Client#6 (127.0.0.1): disconnected (account admin)
+Client#7 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Account admin logged in from 127.0.0.1
+[02/08 20:14:49] Account admin created character 0x1711490
+[02/08 20:14:53] sysload=3 (286) cputime=3182421
+Client#7 (127.0.0.1): disconnected (account admin)
+[02/08 20:15:02] Logfile opened.
+POL095-2003-07-05 (VS.NET) compiled on Jul  5 2003 16:38:41 running.
+[02/08 20:15:23] Logfile opened.
+POL095-2003-07-05 (VS.NET) compiled on Jul  5 2003 16:38:41 running.
+[02/08 20:15:28] [pkg/items/moongates/start.ecl]: Creating moongates.
+Game is active.
+[02/08 20:15:35] Client#1 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Account admin logged in from 127.0.0.1
+[02/08 20:15:37] Client#1 (127.0.0.1): disconnected (account admin)
+[02/08 20:15:38] Client#2 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Incorrect password for account admin from 127.0.0.1
+Client#2 (127.0.0.1): disconnected (account unknown)
+[02/08 20:15:41] Client#3 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Incorrect password for account admin from 127.0.0.1
+Client#3 (127.0.0.1): disconnected (account unknown)
+[02/08 20:15:44] Client#4 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Account admin logged in from 127.0.0.1
+Client#4 (127.0.0.1): disconnected (account admin)
+Client#5 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Account admin logged in from 127.0.0.1
+[02/08 20:15:47] Account admin selecting character Admin
+[02/08 20:15:53] Client#5 (127.0.0.1): disconnected (account admin)
+[02/08 20:17:22] Logfile opened.
+POL095-2003-07-05 (VS.NET) compiled on Jul  5 2003 16:38:41 running.
+[02/08 20:17:27] [pkg/items/moongates/start.ecl]: Creating moongates.
+Game is active.
+[02/08 20:17:33] Client#1 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Client#1: Unexpected message type 42, 62 bytes (IP:127.0.0.1, Account:None)
+0000: 42 7f 94 ea 55 8f 8f 38  63 ce 18 73 c6 1c f1 07   B...U..8 c..s....
+0010: 7c 41 df 90 b7 24 ed 09  7b c2 9e b0 a7 2c 69 cb   |A...$.. {....,i.
+0020: 1a f2 86 3c 61 4f 58 53  56 54 55 55 d5 15 f5 85   ...<aOXS VTUU....
+0030: 3d e1 0f 78 c3 1e 70 c7  9c 31 e7 8c 39 1c         =..x..p. .1..9...
+[02/08 20:17:35] Client#1 (127.0.0.1): disconnected (account unknown)
+[02/08 20:17:36] Client#2 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Client#2: Unexpected message type 42, 62 bytes (IP:127.0.0.1, Account:None)
+0000: 42 7f 94 ea 55 8f 8f 38  63 ce 18 73 c6 1c f1 07   B...U..8 c..s....
+0010: 7c 41 df 90 b7 24 ed 09  7b c2 9e b0 a7 2c 69 cb   |A...$.. {....,i.
+0020: 1a f2 86 3c 61 4f 58 53  56 54 55 55 d5 15 f5 85   ...<aOXS VTUU....
+0030: 3d e1 0f 78 c3 1e 70 c7  9c 31 e7 8c 39 1c         =..x..p. .1..9...
+[02/08 20:17:40] Client#2 (127.0.0.1): disconnected (account unknown)
+[02/08 20:17:43] Client#3 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Client#3: Unexpected message type 42, 62 bytes (IP:127.0.0.1, Account:None)
+0000: 42 7f 94 ea 55 8f 8f 38  63 ce 18 73 c6 1c f1 07   B...U..8 c..s....
+0010: 7c 41 df 90 b7 24 ed 09  7b c2 9e b0 a7 2c 69 aa   |A...$.. {....,i.
+0020: 7e 9f ef 52 61 4f 58 53  56 54 55 55 d5 15 f5 85   ~..RaOXS VTUU....
+0030: 3d e1 0f 78 c3 1e 70 c7  9c 31 e7 8c 39 1c         =..x..p. .1..9...
+[02/08 20:17:45] Client#3 (127.0.0.1): disconnected (account unknown)
+[02/08 20:18:06] Client#4 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Client#4: Unexpected message type 42, 62 bytes (IP:127.0.0.1, Account:None)
+0000: 42 7f 94 ea 55 8f 8f 38  63 ce 18 73 c6 1c f1 07   B...U..8 c..s....
+0010: 7c 41 df 90 b7 24 ed 09  7b c2 9e b0 a7 2c 69 cb   |A...$.. {....,i.
+0020: 1a f2 86 3c 61 4f 58 53  56 54 55 55 d5 15 f5 85   ...<aOXS VTUU....
+0030: 3d e1 0f 78 c3 1e 70 c7  9c 31 e7 8c 39 1c         =..x..p. .1..9...
+[02/08 20:18:07] Client#4 (127.0.0.1): disconnected (account unknown)
+[02/08 20:18:09] Client#5 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Client#5: Unexpected message type 42, 62 bytes (IP:127.0.0.1, Account:None)
+0000: 42 7f 94 ea 55 8f 8f 38  63 ce 18 73 c6 1c f1 07   B...U..8 c..s....
+0010: 7c 41 df 90 b7 24 ed 09  7b c2 9e b0 a7 2c 69 aa   |A...$.. {....,i.
+0020: 7e 9f ef 52 61 4f 58 53  56 54 55 55 d5 15 f5 85   ~..RaOXS VTUU....
+0030: 3d e1 0f 78 c3 1e 70 c7  9c 31 e7 8c 39 1c         =..x..p. .1..9...
+[02/08 20:18:12] Client#5 (127.0.0.1): disconnected (account unknown)
+[02/08 20:18:27] sysload=1 (99) cputime=3182420
+[02/08 20:18:29] Client#6 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Client#6: Unexpected message type 42, 62 bytes (IP:127.0.0.1, Account:None)
+0000: 42 7f 94 ea d5 cf af a8  ab aa 2a ea 8a 3a e2 0e   B....... ..*..:..
+0010: f8 03 fe 80 bf 20 ef 08  7b c2 9e b0 a7 ac 29 eb   ..... .. {.....).
+0020: 8a ba a2 ae a8 2b ea 8a  ba a2 ae a8 2b ea 0a 7a   .....+.. ....+..z
+0030: c2 1e f0 87 bc a1 af a8  ab aa 2a ea 8a c5         ........ ..*.....
+[02/08 20:18:33] Client#6 (127.0.0.1): disconnected (account unknown)
+[02/08 20:18:34] Client#7 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Client#7: Unexpected message type 42, 62 bytes (IP:127.0.0.1, Account:None)
+0000: 42 7f 94 ea d5 cf af a8  ab aa 2a ea 8a 3a e2 0e   B....... ..*..:..
+0010: f8 03 fe 80 bf 20 ef 08  7b c2 9e b0 a7 ac 29 eb   ..... .. {.....).
+0020: 8a ba a2 ae a8 2b ea 8a  ba a2 ae a8 2b ea 0a 7a   .....+.. ....+..z
+0030: c2 1e f0 87 bc a1 af a8  ab aa 2a ea 8a c5         ........ ..*.....
+[02/08 20:18:44] Client#7 (127.0.0.1): disconnected (account unknown)
+[02/08 20:19:27] sysload=0 (0) cputime=0
+[02/08 20:20:27] sysload=0 (0) cputime=0
+[02/08 20:21:27] sysload=3 (24) cputime=2761218
+[02/08 20:21:42] Client#8 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Incorrect password for account admin from 127.0.0.1
+Client#8 (127.0.0.1): disconnected (account unknown)
+[02/08 20:21:46] Client#9 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Incorrect password for account admin from 127.0.0.1
+Client#9 (127.0.0.1): disconnected (account unknown)
+[02/08 20:21:48] Client#10 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+[02/08 20:21:50] Client#10 (127.0.0.1): disconnected (account unknown)
+[02/08 20:21:52] Client#11 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Account admin logged in from 127.0.0.1
+[02/08 20:21:54] Account admin logged in from 127.0.0.1
+Account admin selecting character Admin
+Client#11: Unexpected message type 04, 428 bytes (IP:127.0.0.1, Account:admin)
+0000: 04 01 12 00 1b 6b 64 63  20 66 69 6e 64 61 63 63   .....kdc  findacc
+0010: 74 20 33 35 39 36 32 37  37 33 33 34 00 34 ed ed   t 359627 7334.4..
+0020: ed ed 03 00 00 00 00 34  ed ed ed ed 00 00 00 00   .......4 ........
+0030: 00 34 ed ed ed ed 00 00  00 00 01 34 ed ed ed ed   .4...... ...4....
+0040: 00 00 00 00 02 34 ed ed  ed ed 00 00 00 00 03 34   .....4.. .......4
+0050: ed ed ed ed 00 00 00 00  04 34 ed ed ed ed 00 00   ........ .4......
+0060: 00 00 05 34 ed ed ed ed  00 00 00 00 06 34 ed ed   ...4.... .....4..
+0070: ed ed 00 00 00 00 07 34  ed ed ed ed 00 00 00 00   .......4 ........
+0080: 08 34 ed ed ed ed 00 00  00 00 09 34 ed ed ed ed   .4...... ...4....
+0090: 00 00 00 00 0a 34 ed ed  ed ed 00 00 00 00 0b 34   .....4.. .......4
+00a0: ed ed ed ed 00 00 00 00  0c 34 ed ed ed ed 00 00   ........ .4......
+00b0: 00 00 0d 34 ed ed ed ed  00 00 00 00 0e 34 ed ed   ...4.... .....4..
+00c0: ed ed 00 00 00 00 0f 34  ed ed ed ed 00 00 00 00   .......4 ........
+00d0: 10 34 ed ed ed ed 00 00  00 00 11 34 ed ed ed ed   .4...... ...4....
+00e0: 00 00 00 00 12 34 ed ed  ed ed 00 00 00 00 13 34   .....4.. .......4
+00f0: ed ed ed ed 00 00 00 00  14 34 ed ed ed ed 00 00   ........ .4......
+0100: 00 00 15 34 ed ed ed ed  00 00 00 00 16 34 ed ed   ...4.... .....4..
+0110: ed ed 00 00 00 00 17 34  ed ed ed ed 00 00 00 00   .......4 ........
+0120: 18 34 ed ed ed ed 00 00  00 00 19 34 ed ed ed ed   .4...... ...4....
+0130: 00 00 00 00 1a 34 ed ed  ed ed 00 00 00 00 1b 34   .....4.. .......4
+0140: ed ed ed ed 00 00 00 00  1c 34 ed ed ed ed 00 00   ........ .4......
+0150: 00 00 1d 34 ed ed ed ed  00 00 00 00 1e 34 ed ed   ...4.... .....4..
+0160: ed ed 00 00 00 00 1f bb  00 1a 0e db 00 1a 0e db   ........ ........
+0170: 34 ed ed ed ed 05 00 1a  0e db bd 00 1d 32 2e 30   4....... .....2.0
+0180: 2e 38 6e 20 55 4f 54 44  2f 55 4f 52 20 47 6f 64   .8n UOTD /UOR God
+0190: 43 6c 69 65 6e 74 00 bf  00 0d 00 05 00 00 03 20   Client.. ....... 
+01a0: 00 00 00 42 bf 00 08 00  0b 50 54 42               ...B.... .PTB....
+Client#11: Unexpected message type 04, 2 bytes (IP:127.0.0.1, Account:admin)
+0000: 04 01                                              ........ ........
+Client#11: Unexpected message type 04, 2 bytes (IP:127.0.0.1, Account:admin)
+0000: 04 01                                              ........ ........
+Client#11: Unexpected message type 04, 2 bytes (IP:127.0.0.1, Account:admin)
+0000: 04 01                                              ........ ........
+Client#11: Unexpected message type 04, 2 bytes (IP:127.0.0.1, Account:admin)
+0000: 04 01                                              ........ ........
+Client#11: Unexpected message type 04, 2 bytes (IP:127.0.0.1, Account:admin)
+0000: 04 01                                              ........ ........
+[02/08 20:22:18] Client #11 (account admin) speaking with out-of-range color 0x7620
+[02/08 20:22:21] Client #11 (account admin) speaking with out-of-range color 0x7620
+Client#11: Unexpected message type 04, 2 bytes (IP:127.0.0.1, Account:admin)
+0000: 04 01                                              ........ ........
+[02/08 20:22:22] Client #11 (account admin) speaking with out-of-range color 0x7620
+[02/08 20:22:23] Client #11 (account admin) speaking with out-of-range color 0x7620
+[02/08 20:22:24] Client #11 (account admin) speaking with out-of-range color 0x7620
+Client#11: Unexpected message type 04, 2 bytes (IP:127.0.0.1, Account:admin)
+0000: 04 01                                              ........ ........
+[02/08 20:22:27] sysload=0 (0) cputime=140401
+Client#11: Unexpected message type 04, 2 bytes (IP:127.0.0.1, Account:admin)
+0000: 04 01                                              ........ ........
+[02/08 20:22:32] Client #11 (account admin) speaking with out-of-range color 0x7620
+Client#11: Unexpected message type 04, 2 bytes (IP:127.0.0.1, Account:admin)
+0000: 04 01                                              ........ ........
+Client#11: Unexpected message type 04, 2 bytes (IP:127.0.0.1, Account:admin)
+0000: 04 01                                              ........ ........
+[02/08 20:22:45] Client #11 (account admin) speaking with out-of-range color 0x7620
+[02/08 20:22:46] Client #11 (account admin) speaking with out-of-range color 0x7620
+Client#11: Unexpected message type 04, 2 bytes (IP:127.0.0.1, Account:admin)
+0000: 04 01                                              ........ ........
+[02/08 20:22:47] Client #11 (account admin) speaking with out-of-range color 0x7620
+Client#11: Unexpected message type 04, 2 bytes (IP:127.0.0.1, Account:admin)
+0000: 04 01                                              ........ ........
+Client#11: Unexpected message type 04, 2 bytes (IP:127.0.0.1, Account:admin)
+0000: 04 01                                              ........ ........
+Client#11: Unexpected message type 04, 2 bytes (IP:127.0.0.1, Account:admin)
+0000: 04 01                                              ........ ........
+[02/08 20:23:04] Client #11 (account admin) speaking with out-of-range color 0x7620
+Client#11: Unexpected message type 04, 2 bytes (IP:127.0.0.1, Account:admin)
+0000: 04 01                                              ........ ........
+[02/08 20:23:08] Client #11 (account admin) speaking with out-of-range color 0x7620
+[02/08 20:23:10] Client #11 (account admin) speaking with out-of-range color 0x7620
+[02/08 20:23:11] Client #11 (account admin) speaking with out-of-range color 0x7620
+Client#11: Unexpected message type 04, 2 bytes (IP:127.0.0.1, Account:admin)
+0000: 04 01                                              ........ ........
+[02/08 20:23:13] Client #11 (account admin) speaking with out-of-range color 0x7620
+[02/08 20:23:14] Client #11 (account admin) speaking with out-of-range color 0x7620
+Client#11: Unexpected message type 04, 2 bytes (IP:127.0.0.1, Account:admin)
+0000: 04 01                                              ........ ........
+Client#11: Unexpected message type 04, 2 bytes (IP:127.0.0.1, Account:admin)
+0000: 04 01                                              ........ ........
+Client#11: Unexpected message type 04, 2 bytes (IP:127.0.0.1, Account:admin)
+0000: 04 01                                              ........ ........
+[02/08 20:23:27] sysload=0 (0) cputime=93600
+Client#11: Unexpected message type 04, 2 bytes (IP:127.0.0.1, Account:admin)
+0000: 04 01                                              ........ ........
+Client#11: Unexpected message type 04, 2 bytes (IP:127.0.0.1, Account:admin)
+0000: 04 01                                              ........ ........
+[02/08 20:23:38] Client#11 (127.0.0.1): disconnected (account admin)
+[02/08 20:24:08] Client#12 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Incorrect password for account admin from 127.0.0.1
+Client#12 (127.0.0.1): disconnected (account unknown)
+[02/08 20:24:11] Client#13 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Account admin logged in from 127.0.0.1
+[02/08 20:24:15] Client#13 (127.0.0.1): disconnected (account admin)
+[02/08 20:24:19] Client#14 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Client#14: Unexpected message type 42, 62 bytes (IP:127.0.0.1, Account:None)
+0000: 42 7f 94 ea d5 cf af a8  ab 2a ea 8a ba a2 ae 28   B....... .*.....(
+0010: eb 8a 3a 62 4e d8 13 f6  84 3d 61 4f d8 13 f6 65   ..:bN... .=aO...e
+0020: 99 6c 16 2e 5f d0 97 b4  a5 ad a9 ab 2a ea 0a 7a   .l.._... ....*..z
+0030: c2 1e f0 87 bc a1 af a8  ab 2a ea 8a ba 5d         ........ .*...]..
+[02/08 20:24:22] Client#14 (127.0.0.1): disconnected (account unknown)
+[02/08 20:24:27] sysload=0 (0) cputime=2932819
+[02/08 20:24:29] Client#15 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Account admin logged in from 127.0.0.1
+[02/08 20:24:33] Client#15 (127.0.0.1): disconnected (account admin)
+[02/08 20:24:39] Client#16 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Incorrect password for account admin from 127.0.0.1
+Client#16 (127.0.0.1): disconnected (account unknown)
+[02/08 20:24:41] Client#17 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Account admin logged in from 127.0.0.1
+[02/08 20:24:45] Client#17 (127.0.0.1): disconnected (account admin)
+[02/08 20:24:52] Client#18 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Client#18: Unexpected message type 42, 62 bytes (IP:127.0.0.1, Account:None)
+0000: 42 7f 94 ea d5 cf af a8  ab 2a ea 8a ba a2 ae 28   B....... .*.....(
+0010: eb 8a 3a 62 4e d8 13 f6  84 3d 61 4f d8 13 f6 04   ..:bN... .=aO....
+0020: fd 01 7f 40 5f d0 97 b4  a5 ad a9 ab 2a ea 0a 7a   ...@_... ....*..z
+0030: c2 1e f0 87 bc a1 af a8  ab 2a ea 8a ba 5d         ........ .*...]..
+[02/08 20:24:55] Client#18 (127.0.0.1): disconnected (account unknown)
+[02/08 20:25:27] sysload=0 (0) cputime=31200
+[02/08 20:25:30] Client#19 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Client#19: Unexpected message type 42, 62 bytes (IP:127.0.0.1, Account:None)
+0000: 42 7f 94 ea 55 8f 0f 78  c3 1e f0 87 3c 61 4f 58   B...U..x ....<aOX
+0010: d3 96 34 65 4d d9 13 f6  84 3d 61 4f d8 13 76 44   ..4eM... .=aO..vD
+0020: dd 11 77 c4 9d b1 a7 ac  a9 ab aa aa 2a ea 0a 7a   ..w..... ....*..z
+0030: c2 1e f0 87 3c e1 0f 78  c3 1e f0 87 3c 9e         ....<..x ....<...
+[02/08 20:25:31] Client#19 (127.0.0.1): disconnected (account unknown)
+[02/08 20:25:32] Client#20 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Client#20: Unexpected message type 42, 62 bytes (IP:127.0.0.1, Account:None)
+0000: 42 7f 94 ea 55 8f 0f 78  c3 1e f0 87 3c 61 4f 58   B...U..x ....<aOX
+0010: d3 96 34 65 4d d9 13 f6  84 3d 61 4f d8 13 76 25   ..4eM... .=aO..v%
+0020: b9 7c 1e aa 9d b1 a7 ac  a9 ab aa aa 2a ea 0a 7a   .|...... ....*..z
+0030: c2 1e f0 87 3c e1 0f 78  c3 1e f0 87 3c 9e         ....<..x ....<...
+[02/08 20:25:35] Client#20 (127.0.0.1): disconnected (account unknown)
+[02/08 20:26:20] Client#21 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Incorrect password for account admin from 127.0.0.1
+Client#21 (127.0.0.1): disconnected (account unknown)
+[02/08 20:26:22] Client#22 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Account admin logged in from 127.0.0.1
+Client#22 (127.0.0.1): disconnected (account admin)
+Client#23 connected from 127.0.0.1 (2 connections) on interface 127.0.0.1
+Account admin logged in from 127.0.0.1
+[02/08 20:26:24] Account admin selecting character Admin
+[02/08 20:26:27] sysload=0 (0) cputime=0
+[02/08 20:27:10] Client #23 (account admin) speaking with out-of-range color 0x7620
+[02/08 20:27:27] sysload=1 (2) cputime=2527216
+[02/08 20:28:18] Client #23 (account admin) speaking with out-of-range color 0x7620
+[02/08 20:28:19] Client #23 (account admin) speaking with out-of-range color 0x7620
+[02/08 20:28:22] Client #23 (account admin) speaking with out-of-range color 0x7620
+[02/08 20:28:24] Client #23 (account admin) speaking with out-of-range color 0x7620
+[02/08 20:28:26] Client #23 (account admin) speaking with out-of-range color 0x7620
+[02/08 20:28:27] sysload=0 (0) cputime=46801
+Client #23 (account admin) speaking with out-of-range color 0x7620
+Client #23 (account admin) speaking with out-of-range color 0x7620
+[02/08 20:28:29] Client#23 (127.0.0.1): disconnected (account admin)
+[02/08 20:28:49] Client#24 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Incorrect password for account admin from 127.0.0.1
+Client#24 (127.0.0.1): disconnected (account unknown)
+[02/08 20:28:51] Client#25 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Account admin logged in from 127.0.0.1
+Client#25 (127.0.0.1): disconnected (account admin)
+Client#26 connected from 127.0.0.1 (2 connections) on interface 127.0.0.1
+Account admin logged in from 127.0.0.1
+[02/08 20:28:52] Account admin selecting character Admin
+[02/08 20:28:56] Client #26 (account admin) speaking with out-of-range color 0x7620
+[02/08 20:29:00] Client #26 (account admin) speaking with out-of-range color 0x7620
+[02/08 20:29:01] Client #26 (account admin) speaking with out-of-range color 0x7620
+Client #26 (account admin) speaking with out-of-range color 0x7620
+[02/08 20:29:04] Client #26 (account admin) speaking with out-of-range color 0x7620
+[02/08 20:29:27] sysload=0 (0) cputime=46800
+[02/08 20:30:10] Client #26 (account admin) speaking with out-of-range color 0x7620
+[02/08 20:30:12] Client#26 (127.0.0.1): disconnected (account admin)
+[02/08 20:30:27] sysload=6 (43) cputime=2558416
+[09/26 22:30:08] Logfile opened.
+POL095-2003-07-05 (VS.NET) compiled on Jul  5 2003 16:38:41 running.
+[09/26 22:30:16] [pkg/items/moongates/start.ecl]: Creating moongates.
+Game is active.
+[09/26 22:30:32] Client#1 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Client#1 (127.0.0.1): disconnected (account unknown)
+[09/26 22:30:37] Client#2 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Account admin logged in from 127.0.0.1
+[09/26 22:30:38] Client#2 (127.0.0.1): disconnected (account admin)
+Client#3 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Account admin logged in from 127.0.0.1
+[09/26 22:30:39] Account admin selecting character Admin
+[09/26 22:30:55] Client#3 (127.0.0.1): disconnected (account admin)
+[09/26 22:31:16] sysload=3 (205) cputime=2589617
+[09/26 22:31:40] Client#4 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Incorrect password for account admin from 127.0.0.1
+Client#4 (127.0.0.1): disconnected (account unknown)
+[09/26 22:31:44] Client#5 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Account admin logged in from 127.0.0.1
+Client#5 (127.0.0.1): disconnected (account admin)
+Client#6 connected from 127.0.0.1 (2 connections) on interface 127.0.0.1
+Account admin logged in from 127.0.0.1
+[09/26 22:31:46] Account admin selecting character Admin
+[09/26 22:31:51] Client#6 (127.0.0.1): disconnected (account admin)
+[09/26 22:32:16] sysload=0 (0) cputime=15600
+[09/26 22:33:16] sysload=0 (0) cputime=15600
+[09/26 22:34:16] sysload=1 (25) cputime=2932819
+[09/26 22:35:16] sysload=0 (0) cputime=0
+[09/26 22:35:47] Client#7 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Account admin logged in from 127.0.0.1
+Client#7 (127.0.0.1): disconnected (account admin)
+Client#8 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Account admin logged in from 127.0.0.1
+[09/26 22:35:48] Account admin selecting character Admin
+[09/26 22:35:52] Client#8 (127.0.0.1): disconnected (account admin)
+[09/26 22:36:16] sysload=0 (0) cputime=15600
+[09/26 22:37:16] sysload=0 (0) cputime=2324415
+[09/27 23:28:55] Logfile opened.
+POL095-2003-07-05 (VS.NET) compiled on Jul  5 2003 16:38:41 running.
+[09/27 23:29:01] [pkg/items/moongates/start.ecl]: Creating moongates.
+Game is active.
+[09/27 23:29:39] Client#1 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Account admin logged in from 127.0.0.1
+[09/27 23:29:40] Client#1 (127.0.0.1): disconnected (account admin)
+Client#2 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Account admin logged in from 127.0.0.1
+[09/27 23:29:41] Account admin selecting character Admin
+[09/27 23:29:47] Client#2 (127.0.0.1): disconnected (account admin)
+[09/28 09:34:55] Logfile opened.
+POL095-2003-07-05 (VS.NET) compiled on Jul  5 2003 16:38:41 running.
+[09/28 09:35:01] [pkg/items/moongates/start.ecl]: Creating moongates.
+Game is active.
+[09/28 09:35:15] Logfile opened.
+POL095-2003-07-05 (VS.NET) compiled on Jul  5 2003 16:38:41 running.
+[09/28 09:35:20] [pkg/items/moongates/start.ecl]: Creating moongates.
+Game is active.
+[09/28 09:36:12] Client#1 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Account admin logged in from 127.0.0.1
+[09/28 09:36:13] Client#1 (127.0.0.1): disconnected (account admin)
+Client#2 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Account admin logged in from 127.0.0.1
+[09/28 09:36:14] Account admin selecting character Admin
+[09/28 09:36:20] sysload=3 (213) cputime=3042020
+[09/28 09:36:52] Client#2 (127.0.0.1): disconnected (account admin)
+[09/28 09:37:09] Client#3 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Account admin logged in from 127.0.0.1
+[09/28 09:37:10] Client#3 (127.0.0.1): disconnected (account admin)
+Client#4 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Account admin logged in from 127.0.0.1
+[09/28 09:37:19] Account admin created character 0x1711490
+[09/28 09:37:20] sysload=0 (0) cputime=31200
+[09/28 09:37:27] Client#4 (127.0.0.1): disconnected (account admin)
+[09/28 09:37:36] Client#5 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Account admin logged in from 127.0.0.1
+Client#5 (127.0.0.1): disconnected (account admin)
+Client#6 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Account admin logged in from 127.0.0.1
+[09/28 09:37:37] Account admin selecting character Admin
+[09/28 09:37:42] Client#6 (127.0.0.1): disconnected (account admin)
+[09/28 09:38:20] sysload=0 (0) cputime=15600
+[09/28 09:39:20] sysload=1 (0) cputime=3073220
+[09/28 09:40:20] sysload=0 (0) cputime=0
+[09/28 09:41:20] sysload=0 (0) cputime=0
+[09/28 09:42:20] sysload=0 (0) cputime=2854818
+[09/28 09:43:20] sysload=1 (2) cputime=0
+[09/28 09:43:50] Client#7 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Account admin logged in from 127.0.0.1
+Client#7 (127.0.0.1): disconnected (account admin)
+Client#8 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Account admin logged in from 127.0.0.1
+[09/28 09:43:52] Account admin selecting character Admin
+[09/28 09:43:55] Client#8 (127.0.0.1): disconnected (account admin)
+[09/28 09:44:20] sysload=1 (0) cputime=46800
+[09/28 09:45:20] sysload=3 (3) cputime=2308815
+[09/28 09:46:20] sysload=0 (0) cputime=0
+[09/28 09:47:20] sysload=0 (0) cputime=0
+[09/28 09:48:28] Logfile opened.
+POL095-2003-07-05 (VS.NET) compiled on Jul  5 2003 16:38:41 running.
+[09/28 09:48:33] [pkg/items/moongates/start.ecl]: Creating moongates.
+Game is active.
+[09/28 09:48:59] Client#1 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Account admin logged in from 127.0.0.1
+Client#1 (127.0.0.1): disconnected (account admin)
+Client#2 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Account admin logged in from 127.0.0.1
+[09/28 09:49:00] Account admin selecting character Admin
+[09/28 09:51:32] Logfile opened.
+POL095-2003-07-05 (VS.NET) compiled on Jul  5 2003 16:38:41 running.
+[09/28 09:51:55] Logfile opened.
+POL095-2003-07-05 (VS.NET) compiled on Jul  5 2003 16:38:41 running.
+[09/28 09:52:37] Logfile opened.
+POL095-2003-07-05 (VS.NET) compiled on Jul  5 2003 16:38:41 running.
+[09/28 09:52:39] [pkg/items/moongates/start.ecl]: Creating moongates.
+Game is active.
+[09/28 09:52:43] Client#1 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Account admin logged in from 127.0.0.1
+Client#1 (127.0.0.1): disconnected (account admin)
+Client#2 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Account admin logged in from 127.0.0.1
+[09/28 09:53:02] Account admin created character 0x3
+[09/28 09:53:11] Client#2 (127.0.0.1): disconnected (account admin)
+[09/28 09:53:36] Logfile opened.
+POL095-2003-07-05 (VS.NET) compiled on Jul  5 2003 16:38:41 running.
+[09/28 09:53:41] [pkg/items/moongates/start.ecl]: Creating moongates.
+Game is active.
+[09/28 09:53:57] Client#1 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Account admin logged in from 127.0.0.1
+Client#1 (127.0.0.1): disconnected (account admin)
+Client#2 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Account admin logged in from 127.0.0.1
+[09/28 09:53:58] Account admin selecting character Admin
+[09/28 09:54:01] Client#2 (127.0.0.1): disconnected (account admin)
+[09/28 09:54:41] sysload=1 (2) cputime=3088820
+[09/28 09:55:41] sysload=0 (0) cputime=0
+[09/28 09:56:41] sysload=0 (0) cputime=15600
+[09/28 09:57:41] sysload=1 (11) cputime=2698818
+[09/28 09:58:41] sysload=0 (0) cputime=15600
+[09/28 09:59:41] sysload=0 (0) cputime=0
+[09/28 10:00:41] sysload=0 (0) cputime=2745617
+[09/28 10:01:41] sysload=0 (0) cputime=0
+[09/28 10:01:44] Client#3 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Account admin logged in from 127.0.0.1
+[09/28 10:01:45] Client#3 (127.0.0.1): disconnected (account admin)
+Client#4 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Account admin logged in from 127.0.0.1
+[09/28 10:01:46] Account admin selecting character Admin
+[09/28 10:02:41] sysload=0 (0) cputime=46801
+[09/28 10:03:41] sysload=1 (28) cputime=3276021
+[09/28 10:04:41] sysload=0 (0) cputime=0
+[09/28 10:05:41] sysload=0 (0) cputime=0
+[09/28 10:46:25] Client#4 (127.0.0.1): disconnected (account admin)
+[09/28 10:46:27] sysload=0 (0) cputime=2230814
+sysload=0 (0) cputime=0
+sysload=0 (0) cputime=0
+sysload=0 (0) cputime=0
+sysload=0 (0) cputime=0
+sysload=0 (0) cputime=0
+sysload=0 (0) cputime=0
+[09/28 10:46:28] sysload=0 (0) cputime=0
+sysload=0 (0) cputime=0
+sysload=0 (0) cputime=0
+sysload=0 (0) cputime=0
+sysload=0 (0) cputime=0
+sysload=0 (0) cputime=15600
+sysload=0 (0) cputime=0
+sysload=0 (0) cputime=0
+sysload=0 (0) cputime=0
+sysload=0 (0) cputime=0
+sysload=0 (0) cputime=0
+sysload=0 (0) cputime=0
+sysload=0 (0) cputime=0
+sysload=0 (0) cputime=15600
+sysload=0 (0) cputime=0
+sysload=0 (0) cputime=0
+sysload=0 (0) cputime=0
+sysload=0 (0) cputime=0
+sysload=0 (0) cputime=0
+sysload=0 (0) cputime=0
+sysload=0 (0) cputime=0
+sysload=0 (0) cputime=0
+sysload=0 (0) cputime=0
+sysload=0 (0) cputime=15600
+sysload=0 (0) cputime=0
+sysload=0 (0) cputime=0
+sysload=0 (0) cputime=0
+sysload=0 (0) cputime=0
+sysload=0 (0) cputime=0
+sysload=0 (0) cputime=15600
+sysload=0 (0) cputime=0
+sysload=0 (0) cputime=0
+sysload=0 (0) cputime=0
+[09/28 10:46:41] sysload=0 (0) cputime=390003
+[09/28 10:47:41] sysload=0 (0) cputime=15600
+[09/28 10:48:41] sysload=0 (0) cputime=0
+[09/28 10:49:15] Client#5 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Account admin logged in from 127.0.0.1
+Client#5: Unexpected message type d9, 268 bytes (IP:127.0.0.1, Account:admin)
+0000: d9 02 4d 66 bd fd 00 00  00 06 00 00 00 01 00 00   ..Mf.... ........
+0010: 1d b0 02 00 00 00 06 00  00 00 17 00 00 08 2d 02   ........ ......-.
+0020: 00 00 0f 60 00 00 05 00  00 00 02 d0 00 00 00 20   ...`.... ....... 
+0030: 00 09 00 00 4d 00 6f 00  62 00 69 00 6c 00 65 00   ....M.o. b.i.l.e.
+0040: 20 00 49 00 6e 00 74 00  65 00 6c 00 28 00 52 00    .I.n.t. e.l.(.R.
+0050: 29 00 20 00 34 00 20 00  53 00 65 00 72 00 69 00   ). .4. . S.e.r.i.
+0060: 65 00 73 00 20 00 45 00  78 00 70 00 72 00 65 00   e.s. .E. x.p.r.e.
+0070: 73 00 73 00 20 00 43 00  68 00 69 00 70 00 73 00   s.s. .C. h.i.p.s.
+0080: 65 00 74 00 20 00 46 00  61 00 6d 00 69 00 6c 00   e.t. .F. a.m.i.l.
+0090: 79 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00   y....... ........
+00a0: 00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00   ........ ........
+00b0: 00 00 00 00 00 00 80 86  00 00 2a 42 00 00 00 04   ........ ..*B....
+00c0: 00 02 02 16 70 00 74 00  62 00 00 00 00 00 00 00   ....p.t. b.......
+00d0: 00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00   ........ ........
+00e0: 00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00   ........ ........
+00f0: 00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00   ........ ........
+0100: 00 00 00 00 00 00 00 00  00 00 00 00               ........ ........
+[09/28 10:49:16] Client#5 (127.0.0.1): disconnected (account admin)
+Client#6 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Account admin logged in from 127.0.0.1
+[09/28 10:49:17] Account admin selecting character Admin
+[09/28 10:49:41] sysload=0 (0) cputime=2964019
+[09/28 10:50:41] sysload=0 (0) cputime=46800
+[09/28 10:51:41] sysload=0 (0) cputime=0
+[09/28 10:52:41] sysload=1 (14) cputime=1887612
+[09/28 10:53:41] sysload=0 (0) cputime=1357209
+[09/28 10:53:44] [pkg/systems/saver/save.ecl]: Salvando o Mundo...
+[pkg/systems/saver/save.ecl]: Mundo Salvo!
+[09/28 10:54:41] sysload=0 (0) cputime=187201
+[09/28 10:55:41] sysload=0 (0) cputime=655204
+[09/28 10:56:41] sysload=0 (0) cputime=2652017
+[09/28 10:57:41] sysload=0 (0) cputime=0
+[09/28 10:58:41] sysload=0 (0) cputime=0
+[09/28 10:59:41] sysload=0 (0) cputime=3135620
+[09/28 11:00:41] sysload=0 (0) cputime=0
+[09/28 11:01:41] sysload=0 (0) cputime=0
+[09/28 11:02:41] sysload=0 (0) cputime=3073220
+[09/28 11:03:41] sysload=0 (0) cputime=0
+[09/28 11:04:41] sysload=0 (0) cputime=0
+[09/28 11:05:41] sysload=0 (0) cputime=3182421
+[09/28 11:06:41] sysload=0 (0) cputime=0
+[09/28 11:07:41] sysload=0 (0) cputime=0
+[09/28 11:08:41] sysload=0 (0) cputime=2776817
+[09/28 11:09:41] sysload=0 (0) cputime=156001
+[09/28 11:10:41] sysload=0 (0) cputime=0
+[09/28 11:11:41] sysload=3 (2) cputime=2917219
+[09/28 11:12:41] sysload=0 (0) cputime=140401
+[09/28 11:13:41] sysload=0 (0) cputime=31200
+[09/28 11:14:41] sysload=0 (0) cputime=2636417
+[09/28 11:15:41] sysload=0 (0) cputime=405603
+[09/28 11:16:41] sysload=0 (0) cputime=15600
+[09/28 11:17:41] sysload=0 (0) cputime=2776818
+[09/28 11:18:41] sysload=0 (0) cputime=702004
+[09/28 11:19:41] sysload=0 (0) cputime=0
+[09/28 11:20:41] sysload=0 (0) cputime=2464816
+[09/28 11:21:41] sysload=0 (0) cputime=920406
+[09/28 11:22:41] sysload=0 (0) cputime=46800
+[09/28 11:23:41] sysload=0 (0) cputime=1731611
+[09/28 11:24:41] sysload=1 (9) cputime=1809612
+[09/28 11:25:41] sysload=0 (0) cputime=31200
+[09/28 11:26:41] sysload=0 (0) cputime=608404
+[09/28 11:27:41] sysload=0 (0) cputime=2558416
+[09/28 11:28:41] sysload=0 (0) cputime=124801
+[09/28 11:29:41] sysload=0 (0) cputime=93601
+[09/28 11:30:41] sysload=0 (0) cputime=3026419
+[09/28 11:31:41] sysload=0 (0) cputime=124801
+[09/28 11:32:41] sysload=1 (0) cputime=109201
+[09/28 11:33:41] sysload=0 (0) cputime=3151220
+[09/28 11:34:41] sysload=0 (0) cputime=171601
+[09/28 11:35:41] sysload=0 (0) cputime=62400
+[09/28 11:36:41] sysload=0 (0) cputime=2995219
+[09/28 11:37:41] sysload=0 (0) cputime=390003
+[09/28 11:38:41] sysload=0 (0) cputime=0
+[09/28 11:39:41] sysload=1 (0) cputime=3010819
+[09/28 11:40:41] sysload=0 (0) cputime=546004
+[09/28 11:41:41] sysload=0 (0) cputime=15600
+[09/28 11:42:41] sysload=0 (0) cputime=2698817
+[09/28 11:43:41] sysload=0 (0) cputime=764405
+[09/28 11:44:41] sysload=0 (0) cputime=0
+[09/28 11:45:41] sysload=1 (9) cputime=2808018
+[09/28 11:46:41] sysload=0 (0) cputime=577204
+[09/28 11:47:41] sysload=0 (0) cputime=296402
+[09/28 11:47:54] Client#6 (127.0.0.1): disconnected (account admin)
+[09/28 18:32:58] Logfile opened.
+POL095-2003-07-05 (VS.NET) compiled on Jul  5 2003 16:38:41 running.
+[09/28 18:33:01] [pkg/items/moongates/start.ecl]: Creating moongates.
+[09/28 18:33:02] Game is active.
+[09/28 18:34:02] sysload=0 (0) cputime=2964019
+[09/28 18:35:02] sysload=0 (0) cputime=0
+[09/28 18:36:02] sysload=0 (0) cputime=0
+[09/28 18:36:05] Client#1 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Account admin logged in from 127.0.0.1
+[09/28 18:36:06] Client#1 (127.0.0.1): disconnected (account admin)
+Client#2 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Account admin logged in from 127.0.0.1
+[09/28 18:36:07] Account admin selecting character Admin
+[09/28 18:37:02] sysload=1 (4) cputime=2730018
+[09/28 18:38:02] sysload=0 (0) cputime=0
+[09/28 18:39:02] sysload=0 (0) cputime=0
+[09/28 18:40:02] sysload=5 (79) cputime=3213620
+[09/28 18:41:02] sysload=0 (0) cputime=0
+[09/28 18:42:02] sysload=0 (0) cputime=31201
+[09/28 18:43:02] sysload=1 (5) cputime=3198020
+[09/28 18:44:02] sysload=0 (0) cputime=15600
+[09/28 18:45:02] sysload=0 (0) cputime=0
+[09/28 18:46:02] sysload=3 (27) cputime=3151220
+[09/28 18:47:02] sysload=0 (0) cputime=15600
+[09/28 18:48:02] sysload=0 (0) cputime=0
+[09/28 18:49:02] sysload=0 (0) cputime=3057620
+[09/28 18:50:02] sysload=0 (0) cputime=15600
+[09/28 18:51:02] sysload=0 (0) cputime=0
+[09/28 18:52:02] sysload=0 (0) cputime=3088820
+[09/28 18:52:33] Client#2 (127.0.0.1): disconnected (account admin)
+[09/28 18:53:02] sysload=1 (0) cputime=187201
+[09/28 18:54:02] sysload=0 (0) cputime=0
+[12/01 22:44:22] Logfile opened.
+POL095-2003-07-05 (VS.NET) compiled on Jul  5 2003 16:38:41 running.
+[12/01 22:44:30] [pkg/items/moongates/start.ecl]: Creating moongates.
+Game is active.
+[12/01 22:44:49] Logfile opened.
+POL095-2003-07-05 (VS.NET) compiled on Jul  5 2003 16:38:41 running.
+[12/01 22:44:56] [pkg/items/moongates/start.ecl]: Creating moongates.
+Game is active.
+[12/01 22:45:09] Client#1 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Incorrect password for account admin from 127.0.0.1
+Client#1 (127.0.0.1): disconnected (account unknown)
+[12/01 22:45:12] Client#2 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Account admin logged in from 127.0.0.1
+[12/01 22:45:13] Client#2 (127.0.0.1): disconnected (account admin)
+Client#3 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Account admin logged in from 127.0.0.1
+[12/01 22:45:15] Account admin selecting character Admin
+[12/01 22:45:23] Client#3 (127.0.0.1): disconnected (account admin)
+[09/25 23:00:54] Logfile opened.
+POL095-2003-07-05 (VS.NET) compiled on Jul  5 2003 16:38:41 running.
+[09/25 23:01:02] [pkg/items/moongates/start.ecl]: Creating moongates.
+Game is active.
+[09/25 23:02:02] sysload=5 (250) cputime=3276021
+[09/25 23:02:06] Client#1 connected from 127.0.0.1 (1 connections) on interface 127.0.0.1
+Account admin logged in from 127.0.0.1
+Client#1: Unexpected message type d9, 268 bytes (IP:127.0.0.1, Account:admin)
+0000: d9 02 4d 66 bd fd 00 00  00 06 00 00 00 01 00 00   ..Mf.... ........
+0010: 1d b0 02 00 00 00 06 00  00 00 17 00 00 08 2d 02   ........ ......-.
+0020: 00 00 0f 60 00 00 05 56  00 00 03 00 00 00 00 20   ...`...V ....... 
+0030: 00 09 00 00 4d 00 6f 00  62 00 69 00 6c 00 65 00   ....M.o. b.i.l.e.
+0040: 20 00 49 00 6e 00 74 00  65 00 6c 00 28 00 52 00    .I.n.t. e.l.(.R.
+0050: 29 00 20 00 34 00 20 00  53 00 65 00 72 00 69 00   ). .4. . S.e.r.i.
+0060: 65 00 73 00 20 00 45 00  78 00 70 00 72 00 65 00   e.s. .E. x.p.r.e.
+0070: 73 00 73 00 20 00 43 00  68 00 69 00 70 00 73 00   s.s. .C. h.i.p.s.
+0080: 65 00 74 00 20 00 46 00  61 00 6d 00 69 00 6c 00   e.t. .F. a.m.i.l.
+0090: 79 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00   y....... ........
+00a0: 00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00   ........ ........
+00b0: 00 00 00 00 00 00 80 86  00 00 2a 42 00 00 00 06   ........ ..*B....
+00c0: 00 02 02 16 70 00 74 00  62 00 00 00 00 00 00 00   ....p.t. b.......
+00d0: 00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00   ........ ........
+00e0: 00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00   ........ ........
+00f0: 00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00   ........ ........
+0100: 00 00 00 00 00 00 00 00  00 00 00 00               ........ ........
+[09/25 23:02:07] Client#1 (127.0.0.1): disconnected (account admin)
+Client#2 connected from 127.0.0.1 (2 connections) on interface 127.0.0.1
+Account admin logged in from 127.0.0.1
+[09/25 23:02:08] Account admin selecting character Admin
+[09/25 23:02:19] Client#2 (127.0.0.1): disconnected (account admin)

@@ -1,0 +1,5 @@
+use uo;
+include "include/client";
+program textcmd_e( who, text )
+EraseGlobalProperty("newss");
+endprogram

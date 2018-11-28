@@ -1,0 +1,66 @@
+use uo;
+use os;
+use util;
+use cfgfile;
+
+include "include/client";
+include "include/attributes";
+include "include/listex";
+include "include/skillPoints";
+include ":poisonwatcher:poisons";
+var thepoints;
+var item_cfg;
+
+const FX_POISON_GAS := 0x113a;
+const TRAP := "hiddentrap";
+
+const CRITICAL_FAILURE := 1;
+
+program detect_hidden ( who )
+
+ var range := 3;
+  if (range < 1)
+	range := 1;
+  endif
+  var hiders := ListMobilesNearLocationEx( who.x, who.y, who.z, range, LIST_HIDDEN );
+  var numfound := 0;
+   PlaySoundEffect(who, SFX_1FE);
+  if(len(hiders) > 0)
+	foreach mobile in hiders
+	  if( Found( who,  mobile) )
+		numfound := 1;
+		mobile.hidden := 0;
+	    Sendsysmessage( mobile, "Voce foi revelado pelo seu inimigo!" ,3,98);
+		 Sendsysmessage( who, "OBA! Encontrei meu inimigo!" ,3,98);
+		PlaySoundEffect(mobile, SFX_1FE);
+	  endif
+	endforeach
+  endif
+  if (!numfound)
+    Sendsysmessage( who, "Voce nao encontra nimguem!", 3,98 );
+  endif
+endprogram
+
+function Found( finder, hider )
+  var hidalvo :=  GetEffectiveSkill(hider, SKILLID_HIDING);
+  var detectuser :=  GetEffectiveSkill(finder, SKILLID_DETECTINGHIDDEN);
+ 
+  if ( detectuser + 20 < hidalvo )
+	return 0;
+  else
+	return 1;
+  endif
+endfunction
+
+
+
+
+
+
+
+
+
+
+
+
+

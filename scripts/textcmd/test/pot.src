@@ -1,0 +1,134 @@
+use os;
+use uo;
+///use cfgfile;
+use util;
+///use basic;
+
+include "include/canAccess";
+include "include/attributes";
+include ":alchemy:drinkPotion";
+///include "../pkg/foundations/gumps/gumps";
+
+
+program pot(who, text)
+var character:=who;
+if((who.x >= 4285) && (who.y >= 947) && (who.x <= 4335) && (who.y <= 962))
+return;
+endif
+
+if((GetObjProperty(character, "IsMeditating")) || (GetObjProperty(character, "HealTimer")))
+SendSysMessage(character, "I am already doing something else.",3,1001);
+return;
+endif
+
+  var equippedright := GetEquipmentByLayer(character, 0x01);
+  var equippedleft := GetEquipmentByLayer(character, 0x02);
+
+if (equippedright and equippedleft)
+    SendSysMessage(character, "Voce precisa estar com as maos livre para tomar a pocao",9,89);
+    return;
+  endif
+
+      if(GetObjProperty(character, "aaaa") > ReadGameClock())
+        SendSysMessage(character, "Voce precisa esperar para poder tomar a pocao novamente");
+       return;
+      endif
+
+var pocao:=text;
+	if (who.dead)
+		return;
+	endif
+
+if(pocao == "heal")
+potheal(who);
+elseif(pocao == "mana")
+potmana(who);
+else
+SendSysMessage (who, "Tipo de pocao invalida.",3,95);
+endif
+
+
+endprogram
+
+function potheal(who)
+var achei;
+ foreach potion in enumerateitemsincontainer(who.backpack)
+
+if(potion.graphic == 3852)
+var heal := RandomDiceRoll("1d10+5");
+var heala := RandomDiceRoll("1d40+5");
+var healb := RandomDiceRoll("1d55+10");
+
+if(potion.objtype == 0xdc01)
+achei:=1;
+HealDamage(who, heal);
+PrintTextAbove(who, " " + heal + " ", FONT_SMALL_LIGHT, 1153);  
+empty_bottle(who, potion);
+SetObjProperty(who, "aaaa", ReadGameClock() + 10);
+break;
+endif
+
+if(potion.objtype == 0xdc02)
+achei:=1;
+HealDamage(who, heala - 10);
+PrintTextAbove(who, " " + heala + " ", FONT_SMALL_LIGHT, 1153);
+empty_bottle(who, potion);
+SetObjProperty(who, "aaaa", ReadGameClock() + 10);
+break;
+endif
+
+if(potion.objtype == 0xdc03)
+achei:=1;
+HealDamage(who, healb);
+PrintTextAbove(who, " " + healb + " ", FONT_SMALL_LIGHT, 1153); 
+empty_bottle(who, potion);
+SetObjProperty(who, "aaaa", ReadGameClock() + 10);
+break;
+endif
+
+endif
+
+
+ endforeach
+if(achei != 1)
+SendSysMessage (who, "Pocao nao Encontrada.",3,95);
+endif
+endfunction
+
+
+function potmana(who)
+var achei;
+ foreach potion in enumerateitemsincontainer(who.backpack)
+
+if(potion.graphic == 3625)
+var manaa := RandomDiceRoll("1d15+10");
+var manab := RandomDiceRoll("1d30+13");
+var a := GetMana(who);
+
+
+if(potion.objtype == 0xdc18)
+achei:=1;
+SetMana(who, a + manaa);
+PrintTextAbove(who, " " + manaa + " ", FONT_SMALL_LIGHT, 2); 
+SetObjProperty(who, "aaaa", ReadGameClock() + 10);
+empty_bottle(who, potion);
+break;
+endif
+
+if(potion.objtype == 0xdc19)
+achei:=1;
+SetMana(who, a + manab);
+PrintTextAbove(who, " " + manab + " ", FONT_SMALL_LIGHT, 2); 
+SetObjProperty(who, "aaaa", ReadGameClock() + 10);
+empty_bottle(who, potion);
+break;
+endif
+
+endif
+
+
+ endforeach
+if(achei != 1)
+SendSysMessage (who, "Pocao nao Encontrada.",3,95);
+endif
+endfunction

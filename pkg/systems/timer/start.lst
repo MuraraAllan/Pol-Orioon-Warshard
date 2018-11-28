@@ -1,0 +1,11 @@
+C:\pol2\pkg\systems\timer\start.src, Line 3
+print("Starting murder timers");
+0: "Starting murder timers"
+1: Func(1,0): print
+2: #
+start_script("timers");
+3: "timers"
+4: 0L
+5: Func(2,0): start_script
+6: #
+7: progend

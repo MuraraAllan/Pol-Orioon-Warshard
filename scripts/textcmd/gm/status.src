@@ -1,0 +1,30 @@
+use uo;
+use os;
+
+include "include/client";
+include "include/attributes";
+
+
+program kp(who)
+var alvo := Target(who);
+if(!alvo)
+SendSysMessage(who, "Cancelado!",3,95);
+return 0;
+endif
+var kp := GetObjProperty(alvo, "kp");
+var mortes := GetObjProperty(alvo, "mortes");
+var resultado := kp - mortes;
+if(!kp)
+kp := 0;
+endif
+if(!mortes)
+mortes := 0;
+endif
+if(!resultado)
+resultado := 0;
+endif
+SendSysMessage(who, "KillPoints: " + kp + " ",9,89);
+SendSysMessage(who, "Mortes: " + mortes+ " ",9,89);
+SendSysMessage(who, "Resultados: " + resultado + " ",9,89);
+
+endprogram

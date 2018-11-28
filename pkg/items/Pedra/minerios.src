@@ -1,0 +1,147 @@
+use uo;
+use os;
+
+include "../pkg/foundations/gumps/gumps";
+
+
+program ar_color(who, item)
+
+
+GumpPrincipal(who); 
+endprogram
+
+
+Function GumpPrincipal(who)
+
+ var chk := CInt(GetObjProperty(who, "c"));
+    if(!chk)
+      chk := CInt(ReadGameClock() - 600);
+    endif
+    if(chk >= ReadGameClock())
+      SendSysMessage(who, "Voce so pode pegar 100 Minerios por cada 10 minutos ( para evitar ecesso de items pelo hall e pelo shard)",9,89);
+      return;
+    endif
+    
+ 
+  GFInitGump( 250 , 100 );
+  GFNoMove();
+  GFResizePic(50, 5, 5120, 200, 280);
+  GFTextLine( 100 , 20, 1153 , "Escolha de minerios" );
+
+  var bt2 := GFButtonID( 55, 55, 0x04b9, 0x04b9, 1);
+  var bt3 := GFButtonID( 55, 85, 0x04b9, 0x04b9, 1);
+  var bt4 := GFButtonID( 55, 115, 0x04b9, 0x04b9, 1);
+  var bt5 := GFButtonID( 55, 145,0x04b9, 0x04b9, 1);
+  var bt6 := GFButtonID( 55, 175, 0x04b9, 0x04b9, 1);
+  var bt8 := GFButtonID( 55, 205,0x04b9, 0x04b9, 1);
+
+  var bt9 := GFButtonID( 165, 55, 0x04b9, 0x04b9, 1);
+  var bt10 := GFButtonID( 165, 85, 0x04b9, 0x04b9, 1);
+
+  GFTextLine(85, 50, 1154 , "Verite");
+  GFTextLine(85, 80, 1154 , "Esmeralda");
+  GFTextLine(85, 110, 1154 , "Silicio");
+  GFTextLine(85, 140, 1154 , "Criptonita");
+  GFTextLine(85, 170, 1154 , "Manganes");
+  GFTextLine(85, 200, 1154 , "Uranio");
+
+  GFTextLine(185, 50, 1154 , "Gabrielita");
+  GFTextLine(185, 80, 1154 , "Bauxita");
+  
+  GFTextLine(100, 220,1153, "#ORIOON"); 
+  var res := GFSendGump( who );
+
+
+if(res[bt2.keyid])
+
+CreateItemInBackpack(who, 0x13e3, 1);
+SendSysMessage(who, "Voce pegou 100 lings de Verite!",9,89);
+var bandage := CreateItemInBackpack(who,0x6310, 100);
+    var i;
+    for (i := 0x1f2d; i <= 0x1f6c; i := i + 1)
+        CreateItemInContainer(bandage,  i, 1);
+SetObjProperty(who, "c", ReadGameClock() + 600 );
+   endfor
+endif 
+
+if(res[bt3.keyid])
+
+CreateItemInBackpack(who, 0x13e3, 1);
+SendSysMessage(who, "Voce pegou 100 lings de Esmeralda!",9,89);
+var bandage := CreateItemInBackpack(who,0x6313, 100);
+    var i;
+    for (i := 0x1f2d; i <= 0x1f6c; i := i + 1)
+        CreateItemInContainer(bandage,  i, 1);
+SetObjProperty(who, "c", ReadGameClock() + 600 );
+   endfor
+endif 
+
+
+if(res[bt4.keyid])
+
+CreateItemInBackpack(who, 0x13e3, 1);
+SendSysMessage(who, "Voce pegou 100 lings de Silicio!",9,89);
+var bandage := CreateItemInBackpack(who,0x6315, 100);
+    var i;
+    for (i := 0x1f2d; i <= 0x1f6c; i := i + 1)
+        CreateItemInContainer(bandage,  i, 1);
+SetObjProperty(who, "c", ReadGameClock() + 600 );
+   endfor
+
+endif 
+
+if(res[bt5.keyid])
+
+CreateItemInBackpack(who, 0x13e3, 1);
+SendSysMessage(who, "Voce pegou 100 lings de Criptonita!",9,89);
+var bandage := CreateItemInBackpack(who,0x6400, 100);
+    var i;
+    for (i := 0x1f2d; i <= 0x1f6c; i := i + 1)
+        CreateItemInContainer(bandage,  i, 1);
+SetObjProperty(who, "c", ReadGameClock() + 600 );
+   endfor
+
+endif 
+
+if(res[bt6.keyid])
+
+CreateItemInBackpack(who, 0x13e3 , 1);
+SendSysMessage(who, "Voce pegou 100 lings de Manganes!",9,89);
+var bandage := CreateItemInBackpack(who,0x6401, 100);
+    var i;
+    for (i := 0x1f2d; i <= 0x1f6c; i := i + 1)
+        CreateItemInContainer(bandage,  i, 1);
+SetObjProperty(who, "c", ReadGameClock() + 600 );
+   endfor
+
+endif
+
+
+
+if(res[bt8.keyid])
+
+CreateItemInBackpack(who, 0x13e3, 1);
+SendSysMessage(who, "Voce pegou 100 lings de Uranio!",9,89);
+var bandage := CreateItemInBackpack(who,0x6402, 100);
+    var i;
+    for (i := 0x1f2d; i <= 0x1f6c; i := i + 1)
+        CreateItemInContainer(bandage,  i, 1);
+SetObjProperty(who, "c", ReadGameClock() + 600 );
+   endfor
+
+endif
+
+
+if(res[bt9.keyid])
+CreateItemInBackpack(who, 0x13e3, 1);
+SendSysMessage(who, "Voce pegou 100 lings de Gabrielita!",9,89);
+var bandage := CreateItemInBackpack(who,0x6403, 100);
+    var i;
+    for (i := 0x1f2d; i <= 0x1f6c; i := i + 1)
+        CreateItemInContainer(bandage,  i, 1);
+SetObjProperty(who, "c", ReadGameClock() + 600 );
+   endfor
+endif
+
+
+endfunction

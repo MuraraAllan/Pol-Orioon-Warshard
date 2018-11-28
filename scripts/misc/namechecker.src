@@ -1,0 +1,25 @@
+use uo;
+use cfgfile;
+
+program checkname(who)
+  var hisname := lower(who.name);
+  var cfg := ReadConfigFile("badnames");
+  var elem := FindConfigElem(cfg, hisname);
+  if(!elem)
+    return;
+  endif
+  var nomesinvalidos := { "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "$", "*", "&", "#", "@", "!", "?", "+", "-", "^", " "};
+  who.name := "invalid name";
+  if(!who.Character_Validation(nomesinvalidos))
+    else
+     SendSysMessage(who, "Voce usou letras invalidas",9,89);
+    var newname := SendTextEntryGump( who, "Voce precisa selecionar um novo nome", TE_CANCEL_DISABLE, TE_STYLE_NORMAL, 20, "Please select a new name");
+    var elem := FindConfigElem(cfg, lower(newname));
+    if(!elem)
+      SendSysMessage(who, "Seu nome foi modificado para, " + newname + "!");
+      who.name := newname;
+      return;
+    endif
+endif
+  
+endprogram

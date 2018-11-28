@@ -1,0 +1,18 @@
+use uo;
+
+program textcmd_destroy( who )
+  SendSysMessage( who, "O que voce deseja destruir?" );
+  var tgt := Target( who );
+  if(!tgt)
+sendsysmessage(who,"Cancelado");
+endif
+if(getobjproperty(tgt,"indestrutivel"))
+sendsysmessage(who,"Voce nao pode destruir isto!");
+return;
+endif
+  if(tgt)
+    DestroyItem( tgt);
+  else
+    SendSysMessage(who, "Voce nao pode destruir isto.");
+  endif
+endprogram

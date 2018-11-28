@@ -1,0 +1,67 @@
+//transforma algodaum em lam, lam em linhas de cozer, linhas de cozer em rolos de tecido!
+//verssaum 1.0
+//Plug
+//ICQ: 35165523
+//xxx@sercomtel.com.br
+
+use uo;
+use os;
+
+program algodadois(who, coiza)
+if (coiza.container == who.backpack)
+if (coiza.objtype == 0x1a9c)
+if (!rodatecer(who))
+SendSysMessage(who, "Voce precisa fica perto de uma roda de tecer!",9,90);
+else
+SubtractAmount(coiza, 1);
+CreateItemInBackpack(who, 0xe1d, 3);
+SendSysMessage(who, "Voce fez algumas bolas de la!" ,9,90);
+sleep(3);
+endif
+elseif (coiza.objtype == 0xe1d)
+if (!makinafiar(who))
+SendSysMessage(who, "Voce precisa fica perto de uma maquina de fiar!" ,9,90);
+else
+SubtractAmount(coiza, 1);
+CreateItemInBackpack(who, 0xfa0, 2);
+SendSysMessage(who, "Voce fez algumas linhas de cozer!" ,9,90);
+sleep(3);
+endif
+elseif (coiza.objtype == 0xfa0)
+if (!makinafiar(who))
+SendSysMessage(who, "Voce precisa ficar perto de uma maquina de fiar!" ,9,90);
+else
+if (coiza.amount <= 4)
+SendSysMessage(who, "Voce nao tem linhas suficientes para continuar..." ,9,90);
+elseif (coiza.amount >=5)
+SubtractAmount(coiza, 5);
+CreateItemInBackpack(who, 0xf97, 1);
+SendSysMessage(who, "voce fez um rolo de tecido!" ,9,90);
+sleep(3);
+endif
+endif
+endif
+else
+SendSysMessage(who, "Isto precisa estar em sua mochila!" ,9,90);
+endif
+endprogram
+
+function makinafiar(who)
+foreach merda in ListItemsNearLocation(who.x, who.y, who.z, 1)
+if (merda.objtype >= 0x105f and merda.objtype <= 0x1066)
+return 1;
+else
+return 0;
+endif
+endforeach
+endfunction
+
+function rodatecer(who)
+foreach coco in ListItemsNearLocation(who.x, who.y, who.z, 1)
+if ((coco.objtype >= 0x1015 and coco.objtype <= 1017) or (coco.objtype >= 0x1019 and coco.objtype <= 0x101e) or (coco.objtype >= 0x10a4 and coco.objtype <= 0x10a6))
+return 1;
+else
+return 0;
+endif
+endforeach
+endfunction

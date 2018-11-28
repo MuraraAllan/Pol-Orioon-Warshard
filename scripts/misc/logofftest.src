@@ -1,0 +1,54 @@
+use uo;
+
+include "include/eventID";
+include "include/innCheck";
+include "include/casas";
+
+program logofftest(who)
+
+var tempo_logout:=300;
+var casa:=who.multi;
+
+
+if(who.cmdlevel > 0)
+staffnotify(who);
+tempo_logout:=0;
+
+elseif((Socio(who,casa)) && (casa))
+tempo_logout:=0;
+
+elseif(getobjproperty(who,"derrubarchar"))
+tempo_logout:=0; 
+
+elseif((EAmigo(who,casa)) && (casa))
+tempo_logout:=5;
+
+elseif(Inncheck(who))
+tempo_logout:=15;
+
+else 
+tempo_logout:=180;
+
+endif
+
+EraseObjProperty(who, "#Online");
+
+return tempo_logout;
+
+endprogram
+
+function staffnotify(who)
+  var pid := 0;
+  while(!pid)
+    sleepms(50);
+    pid := GetGlobalProperty("#stafflist");
+  endwhile
+  pid := getprocess(pid);
+  if(!pid)
+    return;
+  endif
+  var k := struct;
+  k.+player := who;
+  k.+type  := EVID_PLAYER_DELAY;
+  pid.sendevent(k);
+endfunction

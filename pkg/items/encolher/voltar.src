@@ -1,0 +1,100 @@
+use uo;
+use basic;
+include "include/eventID";
+include "include/attributes";
+include "include/sysEvent";
+include "include/NPCBackpacks";
+include "include/NPCCast";
+include "include/randName";
+include "include/dist";
+include "include/snooping";
+
+Program retirar(me, item)
+SubtractAmount(Item , 1);
+var conf := ReadConfigFile("::itemdesc");
+var shrink1 := FindConfigElem(conf," 0x75dp");
+destroyitem(shrink1);
+var  mana;
+ PrintTextAbove(me, "Kal Vas Xen Retirar");
+     PerformAction(me,ANIM_CAST_DIR);
+ sleep(1);
+var animal := target(me);
+if(!IsInContainer(me.backpack, animal))
+    SendSysMessage(me, "O Item Precisa estar na sua mochila. " ,9,89);
+    return;
+  endif
+if(!animal)
+PlaySoundEffect(me,0x005d);
+ PlayObjectCenteredEffect(me, 0x3735,0x0a, 0x1e);
+return;
+endif
+if(animal.movable == 0)
+PlaySoundEffect(me,0x005d);
+ PlayObjectCenteredEffect(me, 0x3735,0x0a, 0x1e);
+return;
+endif
+function inbackpack(me, animal)
+ if(animal.IsInContainer := 0)
+    SendSysMessage(me, "O Item Precisa estar na sua mochila.,9,89");
+    return;
+  endif
+endfunction
+var tipomini;
+case (animal.graphic)
+        0x2121: TipoMini := "horse";
+	0x2124: TipoMini := "horse2";
+	0x211f: TipoMini := "horse3";
+	0x2120: TipoMini := "horse4";
+	0x20f6:	TipoMini := "lhama";
+	0x2135:	TipoMini := "deserto";
+	0x2137:	TipoMini := "floresta";
+	0x2136:	TipoMini := "artico";
+ 	8479:	TipoMini := "selvagem";
+        0x260f: TipoMini := "besoro";
+        0x25ce:	TipoMini := "unicorniolbr";
+	0x25a0:	TipoMini := "kirin";
+ 	0x2617:	TipoMini := "cavaloesqueleto";
+        0x2615: TipoMini := "ridgeback";
+        0x2619: TipoMini := "swamp1";
+        0x259a: TipoMini := "horsefantasma";
+	8487:   TipoMini := "lhamafantasma";
+        8406:   TipoMini := "drake1";
+        
+///        default: PlaySoundEffect(me,0x005d);
+/// PlayObjectCenteredEffect(me, 0x3735,0x0a, 0x1e);
+  return;
+endcase
+
+   if(!TipoMini)
+   SendSysMessage(me, "Isso nao me parece ser um tick!", 9,89);
+   PlaySoundEffect(me,0x005d);
+   PlayObjectCenteredEffect(me, 0x3735,0x0a, 0x1e);
+   else
+
+var cor := animal.color;
+var animcriado := CreateNpcFromTemplate( tipomini ,me.x , me.y, me.z);
+var nome := getobjproperty(animal, "antgnome");
+animcriado.name := nome;
+animcriado.color := cor;
+SetObjProperty( animcriado, "happiness", 100);
+    SetObjProperty( animcriado, "master", me.serial );
+    SetObjProperty( animcriado, "script", animcriado.script );
+PlaySoundEffect(me, SFX_SPELL_RESSURECTION);
+
+
+    animcriado.setmaster( me );
+    animcriado.script := "tamed";
+    RestartScript(animcriado);
+destroyitem(animal);
+endif
+
+function IsInContainer(container, item)
+  foreach thing in EnumerateItemsInContainer(container)
+    if(thing.serial == item.serial)
+      return 1;
+    endif
+  endforeach
+  return 0;
+endfunction
+endprogram
+

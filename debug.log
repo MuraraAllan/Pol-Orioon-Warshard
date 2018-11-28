@@ -1,0 +1,21 @@
+Script Error in 'pkg/systems/saver/save.ecl' PC=108: 
+	Call to function getprocess:
+	Parameter 0: Expected datatype Integer, got datatype Error
+Script Error in 'pkg/systems/saver/save.ecl' PC=77: 
+	Call to function getprocess:
+	Parameter 0: Expected datatype Integer, got datatype Error
+Script Error in 'pkg/systems/saver/save.ecl' PC=108: 
+	Call to function getprocess:
+	Parameter 0: Expected datatype Integer, got datatype Error
+Script Error in 'pkg/systems/saver/save.ecl' PC=77: 
+	Call to function getprocess:
+	Parameter 0: Expected datatype Integer, got datatype Error
+Script Error in 'scripts/textcmd/seer/create.ecl' PC=76: 
+	Call to function CreateItemAtLocation:
+	Parameter 3: Expected Long, String, or Struct, got datatype Error
+Script Error in 'pkg/systems/saver/save.ecl' PC=108: 
+	Call to function getprocess:
+	Parameter 0: Expected datatype Integer, got datatype Error
+Script Error in 'pkg/systems/saver/save.ecl' PC=77: 
+	Call to function getprocess:
+	Parameter 0: Expected datatype Integer, got datatype Error

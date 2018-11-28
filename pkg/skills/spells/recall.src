@@ -1,0 +1,142 @@
+use uo;
+use os;
+use cfgfile;
+
+include "include/client";
+include "include/attributes";
+include ":poisonwatcher:poisons";
+include "include/skillPoints";
+include "include/objtype";
+include "include/spellRestrictions";
+include "include/isValidLoc";
+program recall(parms, me)
+
+var prevtime;
+prevtime := ReadGameClock() + 8;
+  var circle := 4;
+  var failure := 0;
+ var delivery := "direct";
+  var noto := "harmful";
+  var result := maincast(parms, delivery, circle, noto, 32);
+  var charhp := GetHp(caster);
+  var range := 13;
+  var bystanders := ListHostiles(caster, range, LH_FLAG_LOS);
+ var a := getobjproperty(caster, "LastAtaque");
+
+  var  mana := GetMana(caster);
+ 
+  var caster := result[1];
+  var cast_on := result[2];
+if(Readgameclock() >=  prevtime)
+    SendSysMessage(caster, "Voce demorou demais e perdeu o focuss",3,98);
+PlayStationaryEffect( caster.x, caster.y, caster.z, FX_SMOKE, 0xa, 0xa );     
+ playSoundEffect(caster,0x005d);
+SetMana(caster, mana + 11);
+    return;
+  endif
+  if(a > Readgameclock())
+Setmana(caster, mana + 11);
+sendsysmessage(caster, "voce nao pode recallar enquanto eh atacado!",3,98);
+return;
+endif
+  if(result == 0)
+    return;
+  endif
+
+  if((caster.warmode));
+  sendsysmessage(caster, "voce nao pode recallar enquanto esta em warmode",3,98);
+  return;
+ endif
+
+if(!cast_on)
+sendsysmessage(caster, "Cancelado",9,89);
+return;
+endif
+  if((cast_on.objtype != UOBJ_RUNE) && (cast_on.objtype != 0x6100))
+    SendSysMessage(caster, "Voce so pode recallar em runas marcadas",3,98);
+	return;
+  endif
+  if(!ReserveItem(cast_on))
+    return;
+  endif
+  if(GetObjProperty(cast_on, "Vendored"))
+    SendSysMessage(caster, "Voce nao pode recallar em runas no npc");
+    return;
+  endif
+  var tox := CInt(GetObjProperty( cast_on, "x" ));
+  var toy := CInt(GetObjProperty( cast_on, "y" ));
+  var toz := CInt(GetObjProperty( cast_on, "z" ));
+  if(!tox)
+    SendSysMessage(caster, "A Runa precisa estar marcada.");
+    return;
+  endif
+  if(!isValidLoc(tox,toy))
+    SendSysMessage(caster, "Voce Nao pode recallar para green acres.",3,98);
+    DestroyItem(cast_on);
+    return;
+  endif
+   PlaySoundEffect(caster, 0x210);
+  Detach();
+  var chk := 0;
+  if((caster.x >= 5120) && (caster.x <= 5375) && (caster.y >= 0) && (caster.y <= 255))
+    SendSysMessage(caster, "Nao e possivel Recallar para green acress e sua runa foi lhe tirada!",3,98);
+    if(cast_on.objtype == UOBJ_RUNE)
+      DestroyItem(cast_on);
+    elseif(cast_on.objtype == 0x6100)
+      removeentry(cast_on);
+    endif
+    chk := 1;
+  endif
+  var multicheck := CreateItemAtLocation(5833, 1125, 0, 0xeed, 1);
+  multicheck.hidden := 1;
+  if(!MoveItemToLocation(multicheck, tox, toy, toz, MOVEITEM_NORMAL))
+    SendSysMessage(caster, "Algo esta blokiando o seu destino ^^",3,98);
+    if(cast_on.objtype == UOBJ_RUNE)
+      DestroyItem(cast_on);
+    elseif(cast_on.objtype == 0x6100)
+      removeentry(cast_on);
+    endif
+    chk := 1;
+  endif
+  if(multicheck.multi)
+    SendSysMessage(caster,"Algo esta blokiando o seu destino ^^",3,98);
+    if(cast_on.objtype == UOBJ_RUNE)
+      DestroyItem(cast_on);
+    elseif(cast_on.objtype == 0x6100)
+      removeentry(cast_on);
+    endif
+    chk := 1;
+  endif
+  DestroyItem(multicheck);
+  if(chk == 1)
+    return;
+  endif
+  if (failure == 0);
+	MoveCharacterToLocation( caster, tox, toy, toz );
+  elseif (failure == 2)
+    SendSysMessage(caster, "Algo esta blokiando a localicao",3,98);
+    if(cast_on.objtype == UOBJ_RUNE)
+      DestroyItem(cast_on);
+    endif
+  endif
+  PlaySoundEffect(caster, 0x1fd);
+endprogram
+
+function removeentry(cast_on)
+  var tox := CInt(GetObjProperty( cast_on, "x" ));
+  var toy := CInt(GetObjProperty( cast_on, "y" ));
+  var toz := CInt(GetObjProperty( cast_on, "z" ));
+  var defs := GetObjProperty(cast_on, "runedefs");
+  var holder := {};
+  foreach thing in defs
+    if((Cint(thing[2]) != tox) or (Cint(thing[3]) != toy) or (Cint(thing[4]) != toz))
+      holder.append(thing);
+    endif
+  endforeach
+  SetObjProperty(cast_on, "runedefs", holder);
+  EraseObjProperty(cast_on, "x");
+  EraseObjProperty(cast_on, "y");
+  EraseObjProperty(cast_on, "z");
+  return;
+endfunction
+

@@ -1,0 +1,138 @@
+//cúuuuuuu
+
+use uo;
+
+program colhe(who, planta)
+var uq := GetObjProperty(planta, "planta");
+var kuantos := GetObjProperty(planta, "kuantos");
+var dono := GetObjProperty(planta, "dono");
+
+if (uq == "mr")
+if (planta.graphic == 6367)
+if (kuantos <= 0)
+SendSysMessage(who, "Nao tem mais nada pra colher nessa planta!",9,90);
+DestroyItem(planta);
+elseif (kuantos >= 1)
+if (Cint(dono) != Cint(who.serial))
+who.SetCriminal(1);
+endif
+CreateItemInBackpack(who, "raizmr");
+SetObjProperty(planta, "kuantos", (Cint(kuantos) - Cint(1)));
+if(Cint(GetObjProperty(planta, "kuantos")) <= 0)
+DestroyItem(planta);
+SendSysMessage(who, "Esta planta nao rendera mais frutos.",9,90);
+endif
+
+SendSysMessage(who, "Voce colheu uma raiz de mandrake root!",9,90);
+endif
+else
+SendSysMessage(who, "Sua plantacao nao esta pronta para colher!",9,90);
+endif
+
+elseif (uq == "gs")
+if (planta.graphic == 6377)
+if (kuantos <= 0)
+SendSysMessage(who, "Nao tem mais nada pra colher nessa planta!",9,90);
+elseif (kuantos >= 1)
+if (Cint(dono) != Cint(who.serial))
+who.SetCriminal(1);
+endif
+CreateItemInBackpack(who, "raizgs");
+SetObjProperty(planta, "kuantos", (Cint(kuantos) - Cint(1)));
+SendSysMessage(who, "Voce colheu uma raiz de ginseng!",9,90);
+if(Cint(GetObjProperty(planta, "kuantos")) <= 0)
+DestroyItem(planta);
+SendSysMessage(who, "Esta planta nao rendera mais frutos.",9,90);
+endif
+
+endif
+else
+SendSysMessage(who, "Nao esta pronto pra colhe ainda!",9,90);
+endif
+
+elseif (uq == "ga")
+if (planta.graphic == 6369)
+if (kuantos <= 0)
+SendSysMessage(who, "Nao tem mais nada pra colher nessa planta!",9,90);
+elseif (kuantos >= 1)
+if (Cint(dono) != Cint(who.serial))
+who.SetCriminal(1);
+endif
+CreateItemInBackpack(who, "raizga");
+SetObjProperty(planta, "kuantos", (Cint(kuantos) - Cint(1)));
+SendSysMessage(who, "Voce colheu uma raiz de garlic!",9,90);
+if(Cint(GetObjProperty(planta, "kuantos")) <= 0)
+DestroyItem(planta);
+SendSysMessage(who, "Esta planta nao rendera mais frutos.",9,90);
+endif
+
+endif
+else
+SendSysMessage(who, "Nao esta pronto pra colher ainda!",9,90);
+endif
+
+elseif (uq == "ns")
+if (planta.graphic == 6373)
+if (kuantos <= 0)
+SendSysMessage(who, "Nao tem mais nada pra colher nessa planta!",9,90);
+elseif (kuantos >= 1)
+if (Cint(dono) != Cint(who.serial))
+who.SetCriminal(1);
+endif
+CreateItemInBackpack(who, 0x0F88);
+SetObjProperty(planta, "kuantos", (Cint(kuantos) - Cint(1)));
+SendSysMessage(who, "Voce colheu um nightshade!",9,90);
+if(Cint(GetObjProperty(planta, "kuantos")) <= 0)
+DestroyItem(planta);
+SendSysMessage(who, "Esta planta nao rendera mais frutos.",9,90);
+endif
+
+endif
+else
+SendSysMessage(who, "Nao esta pronto pra colhe ainda!",9,90);
+endif
+
+elseif (uq == "milho")
+if (planta.graphic == 3197)
+if (kuantos <= 0)
+SendSysMessage(who, "Nao tem mais nada pra colher nessa planta!",9,90);
+elseif (kuantos >= 1)
+if (Cint(dono) != Cint(who.serial))
+who.SetCriminal(1);
+endif
+CreateItemInBackpack(who, 3202);
+SetObjProperty(planta, "kuantos", (Cint(kuantos) - Cint(1)));
+SendSysMessage(who, "Voce colheu um milho!",9,90);
+if(Cint(GetObjProperty(planta, "kuantos")) <= 0)
+DestroyItem(planta);
+SendSysMessage(who, "Esta planta nao rendera mais frutos.",9,90);
+endif
+
+endif
+else
+SendSysMessage(who, "Nao esta pronto pra colhe ainda!",9,90);
+endif
+
+elseif (uq == "al")
+if (planta.graphic == 6811)
+if (kuantos <= 0)
+SendSysMessage(who, "Nao tem mais nada pra colher nessa planta!",9,90);
+elseif (kuantos >= 1)
+if (Cint(dono) != Cint(who.serial))
+who.SetCriminal(1);
+endif
+CreateItemInBackpack(who, "algodaum");
+SetObjProperty(planta, "kuantos", (Cint(kuantos) - Cint(1)));
+SendSysMessage(who, "Voce colheu um algodao!",9,90);
+if(Cint(GetObjProperty(planta, "kuantos")) <= 0)
+DestroyItem(planta);
+SendSysMessage(who, "Esta planta nao rendera mais frutos.",9,90);
+endif
+
+endif
+else
+SendSysMessage(who, "Nao esta pronto para colher ainda!",9,90);
+endif
+
+endif
+endprogram

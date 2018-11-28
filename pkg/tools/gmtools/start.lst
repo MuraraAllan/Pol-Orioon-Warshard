@@ -1,0 +1,11 @@
+C:\pol2\pkg\tools\gmtools\start.src, Line 11
+print("Starting jail keeper");
+0: "Starting jail keeper"
+1: Func(1,0): print
+2: #
+start_script( ":gmtools:jailkeeper" );
+3: ":gmtools:jailkeeper"
+4: 0L
+5: Func(3,0): start_script
+6: #
+7: progend

@@ -1,0 +1,304 @@
+use uo;
+use os;
+use cfgfile;
+use util;
+
+include "include/attributes";
+include "include/StatMod";
+
+include ":poisonwatcher:poisons";
+
+var npccfgfile := ReadConfigFile("::npcdesc");
+
+program MainHitScript(attacker, defender, weapon, sangue)
+
+
+if((getobjproperty(weapon,"d") >= 1) && (ListPoisonsByType(defender, "defaultPoison").size() <= 0))
+var level := CInt(getobjproperty(weapon,"poison_level"));
+  var duration := CInt(GetObjProperty(weapon, "d"));
+if(duration >= 1)
+    var a := RandomDiceRoll("1d8") + RandomDiceRoll("1d8") + RandomDiceRoll("1d8") - RandomDiceRoll("1d8") - RandomDiceRoll("1d8"); 
+if(a >= 10)
+      foreach mobile in ListMobilesInLineOfSight(defender, 8)
+        if(mobile != defender)
+
+        endif
+      endforeach
+     Printtextaboveprivate(defender, "Voce foi envenenado!",9,70);
+Playsoundeffect(defender, 0x1F0);
+setobjproperty(defender,"LEVEL:",level);
+setobjproperty(weapon,"d",duration-1);
+      AddPoison(defender, "defaultpoison", 1500, attacker, level);
+endif
+endif
+endif
+
+ var dano:=10;
+
+//if(attacker.cmdlevel > 4)
+//SendSysMessage(attacker, "A: " +dano); 
+//SendSysMessage(attacker, "B: " +Cint(dano)); 
+//endif
+
+///Influenciar a Vida da Arma
+
+///Vida da arma FOR MAIOR que 90%
+if( weapon.hp > ((weapon.maxhp / 100) * 90) )
+dano := dano;
+
+///Vida da arma FOR MAIOR que 80%
+elseif( weapon.hp > ((weapon.maxhp / 100) * 80) )
+dano := dano - 1;
+
+///Vida da arma FOR MAIOR que 70%
+elseif( weapon.hp > ((weapon.maxhp / 100) * 70) )
+dano := dano - 2;
+
+///Vida da arma FOR MAIOR que 60%
+elseif( weapon.hp > ((weapon.maxhp / 100) * 60) )
+dano := dano - 2;
+
+///Vida da arma FOR MAIOR que 50%
+elseif( weapon.hp > ((weapon.maxhp / 100) * 50) )
+dano := dano - 3;
+
+///Vida da arma FOR MAIOR que 40%
+elseif( weapon.hp > ((weapon.maxhp / 100) * 40) )
+dano := dano - 5;
+
+///Vida da arma FOR MAIOR que 30%
+elseif( weapon.hp > ((weapon.maxhp / 100) * 30) )
+dano := dano - 6;
+
+///Vida da arma FOR MENOR que 30%
+elseif( weapon.hp <= ((weapon.maxhp / 100) * 30) )
+dano := dano - (6 + RandomInt(3));
+endif
+ 
+///Influenciar o DMG MOD da arma (Usado Para diferentes minérios)
+///dano:=(dano+((weapon.dmg_mod / 100) *50)) + ((RandomInt(weapon.dmg_mod) / 100) * 50);
+///dano:=dano+weapon.dmg_mod;
+var danomod:=weapon.dmg_mod;
+dano:= dano + (RandomInt(danomod) + 2);
+///dano:=dano + (RandomInt(danomod) / 2) + RandomInt(danomod);
+
+
+///Influenciar STR
+
+dano := dano + GetStrength(attacker) / 20;
+
+///Influenciar Armadura
+if(defender.ar < 30)
+dano := (dano - (defender.ar / 3));
+else
+var carculo := RandomInt(2)+2;
+
+dano := (dano - (defender.ar / (carculo) ) );
+endif
+
+///if((defender.x >= 3553) && (defender.y >= 2451) && (defender.x <= 3733) && (defender.y <= 2707))
+///dano := 0;
+///return;
+///endif 
+
+if(defender == attacker)
+return;
+endif
+
+if(dano <= 0)
+dano:=randomint(5)+1;
+endif
+if((defender.ar <= 13) && (dano >= 58))
+dano:=(RandomInt(35) + 15);
+endif
+
+if(dano >= 100)
+dano:=(RandomInt(20) + 37);
+endif
+
+if(weapon.hp > weapon.maxhp)
+SendSysMessage(attacker, "Sua arma se partiu ao meio.");
+DestroyItem(weapon);
+dano:= 0;
+endif
+
+if(defender.isA(POLCLASS_NPC))
+var damagedsound := CInt(npccfgfile[defender.npctemplate].damagedsound);
+ if(damagedsound)
+ PlaySoundEffect(defender, damagedsound);
+ endif
+ PerformAction(defender, 0xa);
+endif
+
+///Danificar a Arma do Attacker
+if(RandomInt(15) == 1)
+SendSysMessage(attacker, "Sua arma foi avariada no ataque.");
+weapon.hp:=weapon.hp - (10 + RandomInt(10));
+endif 
+
+if(weapon.hp <= ((weapon.maxhp / 100) * 5) )
+SendSysMessage(attacker, "Sua arma se partiu ao meio.");
+DestroyItem(weapon);
+endif
+
+/////////////////////////////
+///// Sangue Function  //////
+/////////////////////////////
+if(randomdiceroll("1d10") >= 7)
+ var sangue:=CreateItemAtLocation(defender.x, defender.y, defender.z, 0x122d, 1);
+ sangue.name:=("Sangue de " +defender.name);
+endif
+
+
+  SetObjProperty(defender, "LastHit", {attacker.name, attacker.serial, weapon }); 	
+  SetObjProperty(defender, "Lastataque", Readgameclock() + 5);
+  
+
+var escudosvalidos:= { 7035, 7108, 7107, 7028, 7030 } ;
+if(GetEquipmentByLayer(defender, 2).graphic in escudosvalidos)
+var xanse:=Cint(GetEffectiveSkill(defender, SKILLID_PARRY) / 10);
+var xansecerta:=Randomint(xanse) + randomint(3);
+if(xansecerta >= 8)
+SendSysMessage(defender, "Voce defendeu o ataque!",3,95);
+SendSysMessage(attacker, "Seu ataque foi bloqueado!",3,95);
+dano := 0;
+endif
+endif
+
+
+
+
+
+
+/////////////////////////////////////////////////
+////////////wrestling desvio function///////////
+///////////////////////////////////////////////
+var wrest := 0;
+var verdex:=Cint(GetAttributeBaseValue(defender, ATTRIBUTEID_DEXTERITY)) / 3;
+var calculo := GetEffectiveSkill(defender, SKILLID_WRESTLING) / 20;
+var calculoc := GetEffectiveSkill(defender, SKILLID_ANATOMY) / 25;
+var calculod := GetEffectiveSkill(defender, SKILLID_TACTICS) / 25;
+
+var calculoa := calculo + randomint (verdex) + randomdiceroll ("1d3") - randomdiceroll("1d3"); 
+
+
+
+
+
+if((defender.weapon.objtype == 61472) && (calculoa >= randomint(50) + 45))
+sendsysmessage(attacker,"LALAL:"+weapon.objtype);
+playsoundeffect(defender,"0x234");
+wrest := 1;
+dano := randomint(calculo) + randomint(calculoc) + randomint(calculod) - attacker.ar / 5;
+if(dano < 0)
+dano := 0;
+endif
+endif
+///////////////////////////////////////////////
+///////////////////////////////////////////////
+///////////////////////////////////////////////
+
+///DealDamage(defender, attacker, basedamage);
+      
+
+///ApplyDamage( defender, dano );
+///Damage( defender, basedamage );
+if(wrest == 1)
+PerformAction(defender, 0x9);
+detach();
+sleepms(850);
+PrintTextAbove(ATTACKER, " " + dano + " ", FONT_SMALL_LIGHT,38);
+Sendsysmessage(defender,"Voce desviou o ataque de seu inimigo");
+sendsysmessage(Attacker,"Seu ataque foi desviado");
+ApplyRawDamage(attacker, dano);
+endif
+if(wrest == 0)
+ApplyRawDamage(defender, dano);
+PrintTextAbove(defender, " " + dano + " ", FONT_SMALL_LIGHT,38);
+endif
+
+
+/////////////////////////////
+//// Power blow Function ////
+/////////////////////////////
+if(wrest == 0)
+///var verwrest:=Cint(GetEffectiveSkill(defender, SKILLID_WRESTLING));
+var verfenc:=Cint(GetEffectiveSkill(attacker, SKILLID_FENCING));
+var versw:=Cint(GetEffectiveSkill(attacker, SKILLID_SWORDSMANSHIP));
+var vermace:=Cint(GetEffectiveSkill(attacker, SKILLID_MACEFIGHTING));
+var verarcher:=Cint(GetEffectiveSkill(attacker, SKILLID_ARCHERY));
+var verdex:=Cint(GetAttributeBaseValue(attacker, ATTRIBUTEID_DEXTERITY));
+var verdexdf:=Cint(GetAttributeBaseValue(defender, ATTRIBUTEID_DEXTERITY));
+var verarma:=GetEquipmentByLayer(attacker, 2);
+var chance := randomdiceroll("1d10");
+///var chanceB := randomdiceroll("1d12");
+
+////fencing////
+if((verfenc >= 100) && (verdex >= 900) && (chance >= 10))
+
+if((verarma.graphic == 0x0F63) || (verarma.graphic == 0x1402))
+Printtextabove(defender, "Voce Levou Um Power Blow De " + attacker.name + " E Ficou Frozen" ,FONT_SMALL_LIGHT, 38 );
+DoTempMod(defender, "p", 1, 4);
+endif
+
+endif
+
+
+////sword////
+if((versw >= 100) && (verdex >= 900) && (chance >= 9))
+
+if((verarma.graphic == 0x143E) || (verarma.graphic == 0x0F4B) || (verarma.graphic == 0x0F4E) || (verarma.graphic == 0x0F45))
+Printtextabove(defender, "Voce Levou Um Power Blow De " + attacker.name + " E Perdeu Mana" ,FONT_SMALL_LIGHT, 38 );
+var retirarmana:=((GetMana(defender) * 30) / 100);
+SetMana(defender, (GetMana(defender) - retirarmana));
+SendSysMessage(defender, "[PB]: Retirado " +retirarmana+ " pontos de sua Mana.",1,33);
+endif
+
+endif
+
+
+////mace////
+if((vermace >= 100) && (verdex >= 900) && (chance >= 9))
+var verarma1:=GetEquipmentByLayer(attacker, 1);
+
+if((verarma.graphic == 0x13F9) || (verarma.graphic == 0x0DF0) || (verarma.graphic == 0x0E8A) || (verarma1.graphic== 0x1406) || (verarma1.graphic == 0x1438))
+Printtextabove(defender, "Voce Levou Um Power Blow De " + attacker.name + " E Perdeu Bastante Life" ,FONT_SMALL_LIGHT, 38 );
+var retirarlife:=((GetHp(Defender) * 20) / 100);
+SetHP(defender, (GetHP(defender) - retirarlife));
+SendSysMessage(defender, "[PB]: Retirado " +retirarlife+ " pontos de seu Life.",1,33);
+SendSysMessage(attacker, "[PB]: Retirado " +retirarlife+ " pontos do life de " +defender.name,1,33);
+endif
+
+endif
+
+
+////archery////
+if((verarcher >= 100) && (verdex >= 900) && (chance >= 9))
+var verarmaA:=GetEquipmentByLayer(attacker, 1);
+
+if((verarmaA.graphic == 0x13B2) || (verarmaA.graphic == 0x0F4F) || (verarmaA.graphic == 0x13FD))
+Printtextabove(defender, "Voce Levou Um Power Blow De " + attacker.name + " E Perdeu Stamina" ,FONT_SMALL_LIGHT, 38 );
+var retirarstam:=((GetStamina(defender) * 50) / 100);
+SendSysMessage(defender, "[PB]: Retirado " +retirarstam+ " pontos de sua Stamina.",1,33);
+SetStamina(defender, (GetStamina(defender) - retirarstam));
+endif
+
+endif
+
+////wrest////
+///if((verwrest >= 100) && (verdexdf >= 650) && (chanceB >= 9))
+///var verarmaA:=GetEquipmentByLayer(defender, 1);
+///var verarmaB:=GetEquipmentByLayer(defender, 2);
+///if((verarmaB.graphic == error) || (verarmaB.graphic == 0x1B76) || (verarmaB.graphic == 0x1B78) || (verarmaB.graphic == 0x1B72) || (verarmaB.graphic == 0x1B74) || (verarmaB.graphic == 0x1B7B) || (verarmaB.graphic == 0x1B73))
+///if((verarmaA.graphic == error) || (verarmaA.graphic == 0x0EFA))
+///Printtextabove(attacker, "Voce Levou Um Power Blow De " + defender.name + " E Perdeu Mana" ,FONT_SMALL_LIGHT, 38 );
+///var retirarmana:=((GetMana(attacker) * 20) / 100);
+///SetMana(attacker, (GetMana(attacker) - retirarmana));
+///SendSysMessage(attacker, "[PB]: Retirado " +retirarmana+ " pontos de sua Mana.",1,33);
+///SendSysMessage(defender, "[PB]: Sugado " +retirarmana+ " pontos de Mana para voce.",1,193);
+///SetMana(defender, (GetMana(defender) + retirarmana));
+///endif
+///endif
+///endif
+endif
+endprogram

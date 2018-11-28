@@ -1,0 +1,362 @@
+use uo;
+use os;
+use npc;
+use util;
+use cfgfile;
+
+include "include/spellRestrictions";
+include "include/dist";
+include "include/client";
+include "include/resPenalty";
+include "include/canAccess";
+include "include/attributes";
+include ":poisonwatcher:poisons";
+
+var clock := ReadGameClock();
+var healing;
+var Anatomy;
+
+program use_bandages(who, item)
+healing := GetAttribute(who, "healing");
+Anatomy := GetAttribute(who, "anatomy");
+if(!can_access(who, item))
+Sendsysmessage(who, "O Item Esta trancado ou nao pode ser usado" ,9,89);
+	return;
+endif
+SendSysMessage(who, "Quem voce quer curar?",9,89);
+var patient := Target(who, TGTOPT_HELPFUL + TGTOPT_CHECK_LOS);
+if(!patient)
+	SendSysMessage(who, "Cancelado.",9,89);
+	return;
+endif
+var poisons := ListPoisonsByType(patient, "defaultPoisons");
+if(dist(who, patient) >= 2)
+	SendSysMessage(who, "Paciente muito longe.",9,89);
+	return;
+elseif(!CheckLineOfSight(who,patient))
+	SendSysMessage(who,"Voce nao pode ver o paciente.",9,89);
+	return;
+elseif((GetHp(patient) >= GetMaxHp(patient)) and (ListPoisonsByType(patient, "defaultPoison").size() == 0))
+	SendSysMessage(who,"Ele nao tem feridas para serem curadas",9,89);
+	return;
+endif
+if((patient.graphic == 0x190) or (patient.graphic == 0x191) )
+	If(patient == who)
+		if(ListPoisonsByType(patient, "defaultPoison").size() > 0)
+			SendSysMessage(who,"Voce comeca a curar seus ferimentos.",9,89);
+			if(SubtractAmount(Item , 1))
+				cure(who, patient, 0,item);
+				return;
+			endif
+		else
+			SendSysMessage(who,"Voce comeca a curar seus ferimentos.",9,89);
+			if(SubtractAmount(Item , 1))
+				heal(who, patient, 0);
+				return;
+			endif
+		endif
+	elseif(ListPoisonsByType(patient, "defaultPoison").size() > 0)
+		if(patient.dead)
+			if(SubtractAmount(Item , 1))
+				resurrect_pc(who, patient, 0);
+			endif
+		elseif(dist(who, patient) > 1)
+			SendSysMessage(who, "Paciente muito longe.",9,89);
+		elseif(!CheckLineOfSight(who, patient))
+			SendSysMessage(who, "Voce nao pode ver o paciente.",9,89);
+		elseif(SubtractAmount(item, 1))
+			SendSysMessage(who,"Voce comeca a curar os ferimentos de " + patient.name + ".",9,89);
+			SendSysMessage(patient,who.name + " comeca a curar seus ferimentos.",9,89);
+			cure(who, patient, 0,item);
+		else
+			SendSysMessage(who, "Voce nao pode usar essas bandagens.",9,89);
+		endif
+		return;
+	else
+		if(patient.dead)
+			if(SubtractAmount(Item , 1))
+				resurrect_pc(who, patient, 0);
+			endif
+		elseif(dist(who, patient) > 1)
+			SendSysMessage(who, "Paciente muito longe",9,89);
+		elseif(!CheckLineOfSight(who, patient))
+			SendSysMessage(who,"Voce nao pode ver o paciente",9,89);
+		elseif(SubtractAmount(item, 1))
+			SendSysMessage(who, "Voce comeca a curar os ferimentos de " + patient.name,9,89);
+			SendSysMessage(patient, who.name + " comeca a curar seus ferimentos",9,89);
+			heal(who, patient, 0);
+		else
+			SendSysMessage(who, "Voce nao pode usar essas bandagens.",9,89);
+		endif
+	endif
+	return;
+elseif(patient.dead)
+	if(!CheckLineOfSight(who,patient))
+		SendSysMessage(who,"Voce nao pode ver o paciente.",9,89);
+	elseif(dist(who, patient) > 1)
+		SendSysMessage(who, "Paciente muito longe.",9,89);
+	elseif(SubtractAmount(item, 1))
+		resurrect_pc(who, patient, 0);
+	else
+		SendSysMessage(who, "Voce nao pode usar essas bandagens.",9,89);
+	endif
+	return;
+else
+	SendSysMessage(who , "Voce nao pode curar isso.",9,89);
+endif
+endprogram
+
+function heal(who, patient, counter)
+var healamt := Cint(healing / 5) + Cint(anatomy / 5);  // amount to be considered for healing
+var basehealamt := healamt;
+var cycles;
+var count := 0;
+var quantidadecura := 0;
+if(patient == who)
+
+if(healing == 100)
+cycles := 10;
+elseif((healing >= 90) && (healing <100))
+cycles := 12;
+elseif((healing >= 80) && (healing < 90))
+cycles := 14;
+elseif((healing >= 70) && (healing < 80))
+cycles := 15;
+elseif((healing >= 0) && (healing < 70))
+cycles := 18;
+endif
+else
+	if(GetDexterity(who) <= 33)
+		cycles := 5;
+	elseif(GetDexterity(who) <= 60)
+		cycles := 4;
+	else
+		cycles := 2;
+	endif
+endif
+while(counter <= cycles)
+	var chp := GetHP(who);
+
+	if(patient.dead)
+		SendSysMessage(who, "Voce parou de curar.",9,89);
+		break;
+              endif
+		
+
+	sleep(1);
+
+if(gethp(who) < chp)
+	SendSysMessage(who, "Seus dedos escorregam",3,98);
+		cycles := cycles + 1 * 0.5;
+quantidadecura := quantidadecura +1;
+if((healing == 100) && (cycles >= 13))
+cycles := 13;
+quantidadecura := quantidadecura +1;
+elseif((healing >= 99) && (cycles >= 14))
+cycles := 14;
+quantidadecura := quantidadecura +1;
+elseif(quantidadecura >= 16)
+quantidadecura := 16;
+endif
+             endif
+	//if (counter%4 == 0)
+	//endif
+	if(dist(who, patient) > 1)
+		SendSysMessage(who, "Voce parou de curar.",9,89);
+		break;
+		elseif((who.frozen == 1) || (who.paralyzed == 1))
+		SendSysMessage(who, "Voce parou de curar.",9,89);
+		break;
+
+	elseif(counter >= cint(cycles))
+
+		var diff := 55;
+var chkamt := RandomDiceRoll("2d8") + Cint(healing / 2) + Cint(anatomy / 9); ;
+if((chkamt - quantidadecura * 2 + gethp(patient)) > (getMaxHp(patient)))
+healamt := GetMaxHp(patient) - Gethp(patient);
+
+				SendSysMessage(who, "Voce curou "+ cint(healamt) +" pontos de vida.",9,89);
+					 PrintTextAbove(patient,""  + cint(healamt)   , FONT_SMALL_LIGHT, 1153); 
+var dado := randomdiceroll("1d5");
+if(dado >= 3)
+createiteminbackpack(who,"0x0e20",1);
+endif
+
+healdamage(patient, cint(healamt));
+elseif((healamt != -1))
+				
+			if(healamt > chkamt)
+				healamt := chkamt;
+
+				SendSysMessage(who, "Voce curou "+ cint(healamt - cint(quantidadecura * 2)) +" pontos de vida.",9,89);
+					 PrintTextAbove(patient, ""+ cint(healamt - cint(quantidadecura * 2))  , FONT_SMALL_LIGHT, 1153); 
+			else
+                                healamt := chkamt;
+
+				SendSysMessage(who, "Voce curou "+ cint(healamt - quantidadecura) +" pontos de vida.",9,89);
+				PrintTextAbove(patient, " " + cint(healamt - quantidadecura) + " ", FONT_SMALL_LIGHT, 1153);
+			endif
+			healdamage(patient, cint(healamt - quantidadecura));
+			
+			break;
+		else
+			var chkamta := RandomDiceRoll("2d5") + Cint(healing / 5) + Cint(anatomy / 10); ;
+                        healamt := chkamta;
+			SendSysMessage(who, "Voce curou "+ cint(healamt) +" pontos de vida.",9,89);
+                        PrintTextAbove(patient, " " + cint(healamt) + " ", FONT_SMALL_LIGHT, 1153); 
+ healdamage(patient, cint(healamt - cint(quantidadecura * 2)));
+			break;
+		endif
+	endif
+	
+	counter := counter + 1;
+endwhile
+EraseObjProperty(who, "IsMeditating");
+endfunction
+
+function cure(who, patient, counter,item)
+
+var healamt := Cint(healing / 5) + Cint(anatomy / 5);  // amount to be considered for healing
+var basehealamt := healamt;
+var cycles;
+var count := 0;
+var quantidadecura := 0;
+if(patient == who)
+
+if(healing == 100)
+cycles := 10;
+elseif((healing >= 90) && (healing <100))
+cycles := 12;
+elseif((healing >= 80) && (healing < 90))
+cycles := 14;
+elseif((healing >= 70) && (healing < 80))
+cycles := 15;
+elseif((healing >= 0) && (healing < 70))
+cycles := 18;
+endif
+else
+if(healing == 100)
+cycles := 4;
+elseif((healing >= 90) && (healing <100))
+cycles := 5;
+elseif((healing >= 80) && (healing < 90))
+cycles := 6;
+elseif((healing >= 70) && (healing < 80))
+cycles := 8;
+elseif((healing >= 0) && (healing < 70))
+cycles := 9;
+endif
+endif
+while(counter <= cycles)
+	var chp := GetHP(who);
+
+	if(patient.dead)
+		SendSysMessage(who, "Voce parou de curar.",9,89);
+		break;
+              endif
+		
+
+	sleep(1);
+if (ListPoisonsByType(patient, "defaultPoison").size() <= 0)
+sendsysmessage(patient, "Seu paciente nao esta mais envenenado.",9,89);
+return;
+endif
+if(gethp(who) < chp)
+	SendSysMessage(who, "Seus dedos escorregam",3,98);
+		cycles := cycles + 1 * 0.5;
+quantidadecura := quantidadecura +1;
+if((healing == 100) && (cycles >= 13))
+cycles := 13;
+quantidadecura := quantidadecura +1;
+elseif((healing >= 99) && (cycles >= 14))
+cycles := 14;
+quantidadecura := quantidadecura +1;
+elseif(quantidadecura >= 16)
+quantidadecura := 16;
+endif
+             endif
+	
+  	if(dist(who, patient) > 1)
+		SendSysMessage(who, "Voce parou de curar.",9,89);
+		break;
+		elseif((who.frozen == 1) || (who.paralyzed == 1))
+		SendSysMessage(who, "Voce parou de curar.",9,89);
+		break;
+
+
+
+
+
+endif
+counter := counter + 1;
+ endwhile
+if (ListPoisonsByType(patient, "defaultPoison").size() <= 0)
+sendsysmessage(patient, "Seu paciente nao esta mais envenenado.",9,89);
+return;
+endif
+var dado := randomdiceroll("1d5");
+if(dado >= 3)
+createiteminbackpack(who,"0x0e20",1);
+endif
+var magery := GetEffectiveSkill(who, SKILLID_HEALING) ;
+var insc := GetEffectiveSkill(who, SKILLID_HEALING) ;
+		if(counter >= cycles)
+ 			var a:= GetModDuration(magery)/ 5  - randomdiceroll("1d7");
+  var aa  := randomdiceroll("1d50") - randomdiceroll("1d35") + 28 ;
+
+
+
+
+  if (a > aa)	
+
+	CurePoisonh(patient, 1500, "defaultPoison", 1200);
+  Sendsysmessage(who, "Voce curou o veneno.",9,89);			
+	sleepms(150);
+item.movable := 1;
+				return 1;
+			else
+				SendSysMessage ( who , "Voce nao conseguiu curar o veneno.",9,89 );
+return;
+			endif 
+					
+	
+		endif
+	
+	
+	
+endfunction
+
+
+function resurrect_pc(who, patient, counter)
+	var healamt := 90;
+	SendSysMessage(who,"Voce comeca a aplicar as bandagens.",0x9,65);
+	SendSysMessage(patient, who.name + " comeca a aplicar as bandagens em voce.",9,89);
+	while(counter <= 10)
+    		
+		var chp := GetHP(who);
+		sleep(1);
+		if(dist(who, patient) > 1)
+			SendSysMessage(who,"Paciente muito longe.",9,89);
+			break;
+		elseif(!patient.dead)
+			SendSysMessage(who, "Seu paciente nao esta mais morto.",9,89);
+			break;
+		endif
+		if(counter >= 10)
+			if(CheckSkill(who, SKILLID_HEALING, healamt, 0))
+				
+				Resurrect(patient);
+				SendSysMessage(who, "Voce ressucitou o paciente.",9,89);
+			else
+				SendSysMessage(who, "Voce nao conseguiu ressucitar o paciente.",9,89);
+			endif
+			break;
+		endif
+		counter := counter + 1;
+	endwhile
+EraseObjProperty(who, "IsMeditating");
+endfunction
+
+function do_res(who, mobile)
+Resurrect(mobile);
+endfunction

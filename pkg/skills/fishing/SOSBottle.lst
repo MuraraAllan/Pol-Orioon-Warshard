@@ -1,0 +1,349 @@
+C:/pol2/scripts/include/startEqp.inc, Line 6
+var unique_items_created := {};
+0: decl global #0
+1: array
+2: :=
+3: #
+var starteqp_cfg;
+4: decl global #1
+5: #
+var template;
+6: decl global #2
+7: #
+var magicspawnchance := 0;
+8: decl global #3
+9: 0L
+10: :=
+11: #
+var magicadjustment  := 0;
+12: decl global #4
+13: 0L
+14: :=
+15: #
+var making_starting_equipment := 0;
+16: decl global #5
+17: 0L
+18: :=
+19: #
+var thecritter;
+20: decl global #6
+21: #
+C:\pol2\pkg\skills\fishing\SOSBottle.src, Line 13
+program use_bottle( who, bottle )
+include "include/canAccess";
+22: get arg 'who'
+23: get arg 'bottle'
+if(!can_access(who, bottle))
+24: local #0
+25: local #1
+26: 0L
+27: makelocal
+28: jmp userfunc @180
+29: if true goto 32
+return;
+30: ""
+31: progend
+EraseObjProperty(who, "IsMeditating");
+32: local #0
+33: "IsMeditating"
+34: Func(2,24): EraseObjProperty
+35: #
+EraseObjProperty(who, "HealTimer");
+36: local #0
+37: "HealTimer"
+38: Func(2,24): EraseObjProperty
+39: #
+if(bottle.movable == 0)
+40: local #1
+41: get member 'movable'
+42: 0L
+43: ==
+44: if false goto 53
+SendSysMessage(who, "You cannot use that.");
+45: local #0
+46: "You cannot use that."
+47: 3L
+48: 1000L
+49: Func(2,21): SendSysMessage
+50: #
+return;
+51: ""
+52: progend
+if(!ReserveItem(bottle))
+53: local #1
+54: Func(2,23): ReserveItem
+55: if true goto 58
+return;
+56: ""
+57: progend
+var cfg := ReadConfigFile("sosarea");
+58: decl local #2
+59: "sosarea"
+60: Func(3,0): ReadConfigFile
+61: :=
+62: #
+if (!cfg)
+63: local #2
+64: if true goto 71
+SendSysMessage(who, "Could not read sosarea.cfg");
+65: local #0
+66: "Could not read sosarea.cfg"
+67: 3L
+68: 1000L
+69: Func(2,21): SendSysMessage
+70: #
+var maxi := GetConfigMaxIntKey(cfg);
+71: decl local #3
+72: local #2
+73: Func(3,4): GetConfigMaxIntKey
+74: :=
+75: #
+var elem := cfg[RandomInt(maxi)+1];
+76: decl local #4
+77: local #2
+78: local #3
+79: Func(5,0): RandomInt
+80: 1L
+81: +
+82: [] 1
+83: :=
+84: #
+var X := CInt(elem.x)+RandomInt(CInt(elem.range)*2) - CInt(elem.range);
+85: decl local #5
+86: local #4
+87: get member 'x'
+88: Func(0,0): CInt
+89: local #4
+90: get member 'range'
+91: Func(0,0): CInt
+92: 2L
+93: *
+94: Func(5,0): RandomInt
+95: +
+96: local #4
+97: get member 'range'
+98: Func(0,0): CInt
+99: -
+100: :=
+101: #
+var Y := CInt(elem.y)+RandomInt(CInt(elem.range)*2) - CInt(elem.range);
+102: decl local #6
+103: local #4
+104: get member 'y'
+105: Func(0,0): CInt
+106: local #4
+107: get member 'range'
+108: Func(0,0): CInt
+109: 2L
+110: *
+111: Func(5,0): RandomInt
+112: +
+113: local #4
+114: get member 'range'
+115: Func(0,0): CInt
+116: -
+117: :=
+118: #
+UnloadConfigFile("sosarea");
+119: "sosarea"
+120: Func(3,5): UnloadConfigFile
+121: #
+SetObjProperty(bottle, "tileX", X);
+122: local #1
+123: "tileX"
+124: local #5
+125: Func(2,3): SetObjProperty
+126: #
+SetObjProperty(bottle, "tileY", Y);
+127: local #1
+128: "tileY"
+129: local #6
+130: Func(2,3): SetObjProperty
+131: #
+var message := CreateItemInContainer(who.backpack, 0xa363);
+132: decl local #7
+133: local #0
+134: get member 'backpack'
+135: 41827L
+136: 1L
+137: Func(2,16): CreateItemInContainer
+138: :=
+139: #
+if(!message)
+140: local #7
+141: if true goto 153
+DestroyItem(bottle);
+142: local #1
+143: Func(2,18): DestroyItem
+144: #
+SendSysMessage(who, "You cannot make out the writing on the message!");
+145: local #0
+146: "You cannot make out the writing on the message!"
+147: 3L
+148: 1000L
+149: Func(2,21): SendSysMessage
+150: #
+return;
+151: ""
+152: progend
+SetObjProperty(message, "tileX", X);
+153: local #7
+154: "tileX"
+155: local #5
+156: Func(2,3): SetObjProperty
+157: #
+SetObjProperty(message, "tileY", Y);
+158: local #7
+159: "tileY"
+160: local #6
+161: Func(2,3): SetObjProperty
+162: #
+SetObjProperty(message, "msgnum", RandomInt(4));
+163: local #7
+164: "msgnum"
+165: 4L
+166: Func(5,0): RandomInt
+167: Func(2,3): SetObjProperty
+168: #
+SendSysMessage(who, "Voce extraiu uma menssagem do frasco!");
+169: local #0
+170: "Voce extraiu uma menssagem do frasco!"
+171: 3L
+172: 1000L
+173: Func(2,21): SendSysMessage
+174: #
+DestroyItem(bottle);
+175: local #1
+176: Func(2,18): DestroyItem
+177: #
+178: leave block(8)
+179: progend
+C:/pol2/scripts/include/canAccess.inc, Line 2
+function can_access(who, item, flags := 0)
+180: pop param 'flags'
+181: pop param 'item'
+182: pop param 'who'
+var owner := Cint(GetObjProperty(item, "Owner"));
+183: decl local #3
+184: local #1
+185: "Owner"
+186: Func(2,1): GetObjProperty
+187: Func(0,0): CInt
+188: :=
+189: #
+if((owner) and (owner != who.serial))
+190: local #3
+191: local #3
+192: local #2
+193: get member 'serial'
+194: <>
+195: &&
+196: if false goto 206
+SendSysMessage(who, "You cannot use that.");
+197: local #2
+198: "You cannot use that."
+199: 3L
+200: 1000L
+201: Func(2,21): SendSysMessage
+202: #
+return 0;
+203: 0L
+204: return
+205: goto285
+elseif(GetObjProperty(item, "Vendored"))
+206: local #1
+207: "Vendored"
+208: Func(2,1): GetObjProperty
+209: if false goto 219
+SendSysMessage(who, "You cannot use that.");
+210: local #2
+211: "You cannot use that."
+212: 3L
+213: 1000L
+214: Func(2,21): SendSysMessage
+215: #
+return 0;
+216: 0L
+217: return
+218: goto285
+elseif(!Accessible(who, item))
+219: local #2
+220: local #1
+221: Func(2,22): Accessible
+222: if true goto 232
+SendSysMessage(who, "You cannot use that.");
+223: local #2
+224: "You cannot use that."
+225: 3L
+226: 1000L
+227: Func(2,21): SendSysMessage
+228: #
+return 0;
+229: 0L
+230: return
+231: goto285
+elseif((!flags["distance"]) and ((Distance(who, item) > 2)))
+232: local #0
+233: "distance"
+234: [] 1
+235: !
+236: local #2
+237: local #1
+238: Func(2,20): Distance
+239: 2L
+240: >
+241: &&
+242: if false goto 252
+SendSysMessage(who, "That item is too far away.");
+243: local #2
+244: "That item is too far away."
+245: 3L
+246: 1000L
+247: Func(2,21): SendSysMessage
+248: #
+return 0;
+249: 0L
+250: return
+251: goto285
+elseif((!flags["unmovable"]) and (item.movable == 0))
+252: local #0
+253: "unmovable"
+254: [] 1
+255: !
+256: local #1
+257: get member 'movable'
+258: 0L
+259: ==
+260: &&
+261: if false goto 271
+SendSysMessage(who, "You cannot use that while locked down.");
+262: local #2
+263: "You cannot use that while locked down."
+264: 3L
+265: 1000L
+266: Func(2,21): SendSysMessage
+267: #
+return 0;
+268: 0L
+269: return
+270: goto285
+elseif(!ReserveItem(item))
+271: local #1
+272: Func(2,23): ReserveItem
+273: if true goto 283
+SendSysMessage(who, "That item is already in use.");
+274: local #2
+275: "That item is already in use."
+276: 3L
+277: 1000L
+278: Func(2,21): SendSysMessage
+279: #
+return 0;
+280: 0L
+281: return
+282: goto285
+return 1;
+283: 1L
+284: return
+285: 0L
+286: return

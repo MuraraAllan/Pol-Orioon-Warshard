@@ -1,0 +1,20 @@
+use uo;
+use os;
+
+include "include/canAccess";
+
+program use_dyes(who, dyes)
+  SendSysMessage(who, "Selecione o tubo de tinta.",9,89);
+  var dyetub := Target(who, TGTOPT_CHECK_LOS);
+  if((dyetub.objtype != 0xb00f) && (dyetub.objtype != 0x0fab))
+    SendSysMessage(who, "Isto nao e um tubo de tinta!",9,89);
+    return;
+  endif
+  var color := SelectColor(who, dyetub);
+  if(( color > 1001 ) || ( color == 1 ))
+
+    SendSysMessage( who, "Sem bugs!" ,9,89);
+  else
+    dyetub.color := color;
+  endif
+endprogram

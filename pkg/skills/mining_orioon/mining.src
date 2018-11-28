@@ -1,0 +1,343 @@
+use uo;
+use os;
+use util;
+
+include "include/client";
+include "include/attributes";
+include "include/dist";
+include "include/objtype";
+include "include/startEqp";
+include "util/key";
+include "include/utility";
+include "include/canAccess";
+
+var startx;
+var starty;
+const EVID_CHECK_SPOT := 0x123456;
+const OC_PID := "#orecore";
+
+program miningsysco(who, tool)
+
+
+  EraseObjProperty(who, "IsMeditating");
+  EraseObjProperty(who, "HealTimer");
+ 
+  if(!can_access(who, tool))
+    return;
+  endif
+  if(tool.movable == 0)
+    SendSysMessage(who, "Voce nao pode usar isto.",9,89);
+    return;
+  endif
+   if(!ReserveItem(tool))
+    return;
+  endif
+  var itms := EnumerateItemsInContainer(who.backpack);
+  var items := {};
+  var treasuremap := 0;
+  var map := 0;
+ 
+
+ var hand1 := (GetEquipmentByLayer(who, 1));
+  var hand2 := (GetEquipmentByLayer(who, 2));
+
+if((hand1.graphic > 1) && (hand1.graphic != tool.graphic)  || (hand2.graphic > 1) && (hand2.graphic != tool.graphic)  )
+sendsysmessage(who, "Voce guardou o item que estava segurando para poder trabalhar.",0x3,98);
+MoveItemToContainer( hand1, who.backpack, 136, 101 );
+MoveItemToContainer( hand2, who.backpack, 137, 102 );
+endif
+sleepms(150);
+equipitem(who,tool);
+
+    SendSysMessage(who, "Selecione o lugar para minerar...",0x3,98);
+    var use_on := TargetCoordinates(who);
+
+    if(!use_on)
+      SendSysMessage(who, "Cancelado.",0x3,98);
+      return;
+    endif
+
+    if(!CheckLosAt(who, use_on.x, use_on.y, use_on.z))
+      SendSysMessage(who, "Voce nao pode minerar neste local.",0x3,98);
+      return;
+    endif
+  
+    if((coordist(who.x, who.y, use_on.x, use_on.y)) > 2 )
+      SendSysMessage(who,"O lugar esta muito longe.",0x3,98);
+      return;
+    endif
+    var info := GetMapInfo(use_on.x, use_on.y);
+    var type;
+    if(is_minable(info.landtile, use_on.objtype))
+     SendSysMessage(who, "Voce comeca a minerar...",0x3,98);
+      var checker := 0;
+      startx := who.x;
+      starty := who.y;
+      repeat
+        
+        if(!tool)
+          return;
+        endif
+
+        PerformAction(who, 0x0b);
+        PlaySoundEffect(who, 0x126);
+        sleep(2);
+        PerformAction(who, 0x0b);
+        PlaySoundEffect(who, 0x126);
+        sleep(2);
+        PerformAction(who, 0x0b);
+        PlaySoundEffect(who, 0x126);
+        sleepms(2000);
+        checker := GetOre(who, use_on, info, tool);
+      until(checker == 1);
+	else
+	  SendSysMessage(who, "Voce nao pode minerar nesse lugar",0x3,98);
+	  return;
+	endif
+  
+endprogram
+
+function GetRange( who );
+  var skill := GetEffectiveSkill( who, SKILLID_MINING );
+  if( skill >= 100 )
+    return 5;
+  elseif( skill >= 80 )
+    return 4;
+  elseif( skill >= 60 )
+    return 3;
+  elseif( skill >= 40 )
+    return 2;;
+  elseif( skill >= 20 )
+    return 1;
+  else
+    return 0;
+  endif
+endfunction
+
+function CreateTreasureChest( map, x, y, z )
+  z := GetWorldHeight( x, y );
+  var chest := CreateItemAtLocation(x, y, z-8, 0x0e40, 1);
+  chest.movable := 0;
+  var lvl := GetObjProperty( map, "level" );
+  SetObjProperty(chest, "level", lvl);
+  var lootgroup;
+  case(lvl)
+    1: lootgroup := 5;
+    2: lootgroup := 6;
+    3: lootgroup := 7;
+    4: lootgroup := 8;
+    5: lootgroup := 9;
+    default: lootgroup := 5;
+  endcase
+  makeloot(chest, lootgroup);
+  return chest;
+endfunction
+
+function CreateGuardian( chest, template )
+  var dx := RandomInt( 8 ) - 4;
+  var dy := RandomInt( 8 ) - 4;
+  var nasty := CreateNpcFromTemplate( template, chest.x+dx, chest.y+dy, chest.z, 0 );
+  if( nasty == "<error>" )
+    CreateGuardian( chest, template );
+  endif
+endfunction
+
+function is_minable(theobj, othertype)
+  if( ((theobj >= 0xe2) && (theobj <= 0xe7)) || ((theobj >= 0xf3) && (theobj <= 0xf7)) || ((theobj >=
+    0x104) && (theobj <= 0x107)) || ((theobj >= 0x110) && (theobj <= 0x113)) || ((theobj >= 0x122) && (theobj <=
+    0x125)) || ((theobj >= 0x1d3) && (theobj <= 0x1da)) || ((theobj >= 0x21f) && (theobj <= 0x230)) ||
+    ((theobj >= 0x232) && (theobj <= 0x23b)) || ((theobj >= 0x6cd) && (theobj <=0x6d1)) || ((theobj >= 0x6da) &&
+    (theobj <= 0x6dd)) || ((theobj >= 0x6eb) && (theobj <= 0x6fe)) || ((theobj >= 0x70d) && (theobj <= 0x714)) ||
+    ((theobj >= 0x71d) && (theobj <= 0x720)) || ((theobj >= 0x72b) && (theobj <= 0x732)) || ((theobj >= 0x73b) &&
+    (theobj <= 0x73e)) || ((theobj >= 0x749) && (theobj <= 0x750)) || ((theobj >= 0x759) && (theobj <= 0x75c)) )
+    return 1;
+  elseif( (othertype >= 0x053b) && (othertype <= 0x0553) && (othertype != 0x0550 ) )
+    return 1;
+  elseif( (theobj == 0xdf) || (theobj == 0x75) || (theobj == 0xde) )
+    return 1;
+  else
+    return 0;
+  endif
+endfunction
+
+function GetOre(who, location, info, tool)
+  if(coordist(who.x, who.y, location.x, location.y) > 2)
+    SendSysMessage(who, "Voce para de minerar",0x3,98);
+    return 1;
+  endif
+  if((who.x != startx) || (who.y != starty))
+    SendSysMessage(who, "Voce para de minerar",0x3,98);
+    return 1;
+  endif
+  var pid := 0;
+  while(!pid)
+	sleepms(50);
+	pid := GetGlobalProperty(OC_PID);
+  endwhile
+  pid := getprocess(pid);
+  if(!pid)
+	return 1;
+  endif
+  var k := struct;
+  k.+x := location.x;
+  k.+y := location.y;
+  k.+type := EVID_CHECK_SPOT;
+  k.+source := getprocess(getpid());
+  pid.sendevent(k);
+  ///var oretype := wait_for_event(10);
+  var diff := 0;
+  var objtype := 0;
+  var skill := GetEffectiveSkill(who, SKILLID_MINING);
+  var points := skill + 1;
+  var name;
+var oretype := "ferro" ;
+var a := ListItemsAtLocation( location.x, location.y, location.z );
+var respawn;
+if(a)
+foreach aa in a
+if(aa.invisible == 1)
+ oretype := getobjproperty(aa,"tipominerio");
+ var quantiareal := getobjproperty(aa,"quantiaminerio");
+
+ if(!getobjproperty(aa,"lastminerada"))
+ Setobjproperty(aa,"lastminerada", ReadGameClock());
+ endif
+ 
+ if(ReadGameClock() >= getobjproperty(aa,"lastminerada"))
+ oretype:=oretype;
+ Setobjproperty(aa,"qts", Cint(quantiareal));
+ endif
+
+respawn:=aa;
+endif
+endforeach
+ elseif((!a) || (!oretype) || (oretype == "none"))
+ oretype := "ferro";
+endif
+
+case(oretype)
+    "ferro": diff :=  -1;   objtype := 0x6300;   name := "Ferro";
+    "cobre": diff :=  75;   objtype := 0x6303;   name := "Cobre";
+    "onyx": diff :=  70;   objtype := 0x6302;   name := "Onix";
+    "verite": diff :=  75;   objtype := 0x6307;   name := "Verite";
+    "silicio": diff :=  78;   objtype := 0x6330;   name := "Silicio";
+    "bauxita": diff :=  80;   objtype := 0x6331;   name := "Bauxita";
+    "manganes": diff :=  80;   objtype := 0x6328;   name := "Manganes";
+    "criptonita": diff :=  80;   objtype := 0x6327;   name := "Criptonita";
+    "esmeralda": diff :=  80;   objtype := 0x6312;   name := "Esmeralda";
+    "quartzo": diff :=  80;   objtype := 0x6314;   name := "Quartzo Rosado";
+    "cobalto": diff :=  80;   objtype := 0x6329;   name := "Cobalto";
+endcase
+
+
+  var diffi := GetHarvestDifficulty ( "ore" , location.x , location.y , info.landtile );
+
+   if(diffi - 5 == error)
+    SendSysMessage(who,"Nao ha mais minerios neste local.",0x3,98);
+    return 1;
+  endif
+  if(diff != -1)
+    var rint := RandomInt(5);
+    if((CInt(skill) >= CInt(diff)) && (rint >= 3))
+      diffi := diff;
+    else
+      oretype := 1;
+      objtype := 0x6300;
+      name := "Ferro";
+    endif
+  endif
+
+
+if(name != "Ferro")
+ if(Cint(Getobjproperty(respawn,"qts")) <= 0)
+      oretype := 1;
+      objtype := 0x6300;
+      name := "Ferro";
+ endif
+
+   if(Cint(Getobjproperty(respawn,"qts")) >= 1)
+    ////SendSysMessage(who,"Menos 1",3,33);
+    Setobjproperty(respawn,"qts", Cint(Getobjproperty(respawn,"qts")-1) );
+    var temporespawn:=Cint(Getobjproperty(respawn,"temporespawn")*60);
+    Setobjproperty(respawn,"lastminerada", Cint(ReadGameClock()+temporespawn));
+   endif
+endif
+
+
+  if(CheckSkill(who, SKILLID_MINING, diffi, 5))
+  	var num := HarvestResource( "ore", location.x, location.y, 1, 1);
+    if(num == error)
+      SendSysMessage(who,"Nao ha mais minerios neste local.",0x3,98);
+      return 1;
+    endif
+	var theore := CreateItemInBackpack(who, objtype, 1);
+
+    if(!theore)
+PlaySoundEffect(who,0x43);
+      SendSysMessage(who, "Voce extraiu um minerio de " + name + " e colocou em sua mochila",0x3,98);
+     
+      foreach thing in ListItemsNearLocation(who.x, who.y, who.z, 0)
+        if(thing.objtype == objtype)
+          theore := thing;
+          break;
+          endif
+      endforeach
+      if(theore)
+        var amt := theore.amount + 1;
+        DestroyItem(theore);
+        theore := CreateItemAtLocation(who.x, who.y, who.z, objtype, amt);
+      else
+        theore := CreateItemAtLocation(who.x, who.y, who.z, objtype, 1);
+
+      endif
+    else
+      SendSysMessage(who, "Voce extraiu um minerio de " + name + " e colocou em sua mochila.",0x3,98);
+  
+
+    endif
+    AwardRawSkillPoints(who, SKILLID_MINING, points);
+    var swings := GetObjProperty(tool,"swings");
+    if(!swings)
+      SetObjProperty(tool,"swings", 0);
+      swings := 0;
+    endif
+    if(swings > 50)
+      DestroyItem(tool);
+      SendSysMessage(who,"Sua ferramenta se parte ao meio",0x3,98);
+      return 1;
+    endif
+    if(RandomInt(50) > 25)   
+case(randomdiceroll("1d4"))
+	0:SendSysMessage(who, "O Canto direito de sua ferramenta foi avariado!",0x3,98);
+	1:SendSysMessage(who, "O Canto esquerdo de sua ferramenta foi avariado!",0x3,98);
+	2:SendSysMessage(who, "De tanto trabalho escravo ate minha ferramenta se avariou!",0x3,98);
+	3:SendSysMessage(who, "Sua ferramenta esta ficando esburacada.",0x3,98);
+	4:SendSysMessage(who, "O Cabo de minha ferramenta comecou a rachar!",0x3,98);
+endcase	
+      swings := swings + 1;
+    endif
+    SetObjProperty(tool,"swings", swings);
+  else
+case(randomdiceroll("1d2"))
+	0:SendSysMessage(who, "Voce nao conseguiu encontrar nenhum minerio...",0x3,98);
+	1:SendSysMessage(who, "Bato na rocha , Bato na rocha, Bato na rocha e nada de minerio!",0x3,98);
+	2:SendSysMessage(who, "Seu corpo esta ficando forte... mas mesmo assim nada de minerio!",0x3,98);
+	
+endcase	
+	
+
+  endif
+
+endfunction
+
+
+function AddOreSpot(locvalue, neworetype, thefile)
+    var props:= array;
+    var prop:= array;
+    prop .+ pname;
+    prop .+ pvalue;
+    prop.pname := "OreType";
+    prop.pvalue := neworetype;
+    props[1] := prop;
+    AppendConfigFileElem(thefile, "OreSpawns", locvalue, props);
+endfunction

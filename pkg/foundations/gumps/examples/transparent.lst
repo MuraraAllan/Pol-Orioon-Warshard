@@ -1,0 +1,74 @@
+C:\pol2\pkg\foundations\gumps\examples\transparent.src, Line 4
+var data := { };
+0: decl global #0
+1: array
+2: :=
+3: #
+var layout := {
+4: decl global #1
+5: array
+6: "resizepic 0 0 5054 530 417"
+7: +=
+8: "page 0"
+9: +=
+10: "gumppictiled 10 105 10 22 2624"
+11: +=
+12: "gumppictiled 10 292 150 45 2624"
+13: +=
+14: "gumppictiled 165 292 355 45 2624"
+15: +=
+16: "gumppictiled 10 342 510 65 2624"
+17: +=
+18: "gumppictiled 10 37 200 250 2624"
+19: +=
+20: "gumppictiled 215 37 305 250 2624"
+21: +=
+22: "xmfhtmlgumpcolor 10 12 510 20 1044009 0 0 16777215"
+23: +=
+24: "xmfhtmlgumpcolor 10 302 150 25 1044012 0 0 16777215"
+25: +=
+26: "xmfhtmlgumpcolor 50 385 150 18 1011441 0 0 16777215"
+27: +=
+28: "xmfhtmlgumpcolor 305 385 150 18 1044013 0 0 16777215"
+29: +=
+30: "xmfhtmlgumpcolor 10 37 200 22 1044010 0 0 16777215"
+31: +=
+32: "xmfhtmlgumpcolor 50 60 150 18 1044014 0 0 16777215"
+33: +=
+34: "xmfhtmlgumpcolor 215 37 305 22 1044011 0 0 16777215"
+35: +=
+36: "xmfhtmlgumpcolor 50 83 150 18 1044369 0 0 16777215"
+37: +=
+38: "xmfhtmlgumpcolor 50 103 150 18 1044370 0 0 16777215"
+39: +=
+40: "xmfhtmlgumpcolor 50 123 150 18 1044371 0 0 16777215"
+41: +=
+42: "xmfhtmlgumpcolor 50 143 150 18 1044372 0 0 16777215"
+43: +=
+44: "xmfhtmlgumpcolor 50 163 150 18 1044373 0 0 16777215"
+45: +=
+46: "xmfhtmlgumpcolor 50 183 150 18 1044374 0 0 16777215"
+47: +=
+48: "xmfhtmlgumpcolor 50 203 150 18 1044375 0 0 16777215"
+49: +=
+50: "xmfhtmlgumpcolor 50 223 150 18 1044376 0 0 16777215"
+51: +=
+52: "xmfhtmlgumpcolor 50 103 150 18 1044370 0 0 16777215"
+53: +=
+54: "checkertrans 10 10 510 397"
+55: +=
+56: :=
+57: #
+C:\pol2\pkg\foundations\gumps\examples\transparent.src, Line 36
+program testtrans(who)
+58: get arg 'who'
+var box := SendDialogGump( who, layout, data );
+59: decl local #1
+60: local #0
+61: global #1
+62: global #0
+63: Func(2,0): SendDialogGump
+64: :=
+65: #
+66: leave block(2)
+67: progend

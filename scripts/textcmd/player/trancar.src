@@ -1,0 +1,59 @@
+use uo; 
+use os; 
+ 
+include "include/dist";
+include "include/casas";
+include "include/attributes";
+
+program trancar(who) 
+
+var casa := who.multi; 
+ 
+if(!casa)
+SendSysMessage(who,"Voce nao esta em uma casa.");
+return;
+endif
+
+if(!Socio(who,casa))
+SendSysMessage(who, "Voce Precisa ser dono ou socio da casa para poder usar esse comando!"); 
+return;
+endif
+
+var possiveltrancar := GetObjProperty(casa, "numlockdowns"); 
+
+
+if(possiveltrancar == 0) 
+SendSysMessage(who, "Numero maximo itens trancados atingido."); 
+return; 
+endif
+
+SendSysMessage(who, "Selecione o item para trancar.");
+var itemptrancar := Target(who); 
+
+if((!itemptrancar) || (GetMana(itemptrancar)))
+SendSysMessage(who, "Cancelado"); 
+return; 
+endif
+
+         
+if(itemptrancar.multi.serial != casa.serial)
+SendSysMessage(who,"Voce nao pode trancar itens fora de sua casa.");
+return;
+endif         
+
+if(itemptrancar.movable == 0) 
+sendsysmessage(who, "Este item ja esta trancado!"); 
+return; 
+endif
+
+if(itemptrancar.amount > 1)
+sendsysmessage(who, "Voce nao pode trancar itens empilhados."); 
+return; 
+endif
+
+itemptrancar.movable := 0; 
+SetObjProperty(itemptrancar, "lockeddown", 1); 
+SetObjProperty(itemptrancar, "houseserial", casa.serial); 
+SetObjProperty(casa, "numlockdowns", (GetObjProperty(casa, "numlockdowns") - 1)); 
+PrintTextAbovePrivate(itemptrancar, "*Trancado*", who); 
+endprogram

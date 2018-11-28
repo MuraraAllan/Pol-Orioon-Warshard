@@ -1,0 +1,31 @@
+/////////////////////////////////////////////////////
+//
+//  ".mtele" - multiple teleport
+//
+//     like .tele, but after teleporting, gives you
+//     another teleport cursor, until cancelled.
+//     can be used for fast transportation
+//
+/////////////////////////////////////////////////////
+use uo;
+
+
+program textcmd_tele( who, text )
+    SendSysMessage( who, "Iniciando a Narracao!",3,66 );
+
+
+    while (1)
+var text:="";
+text:=SendTextEntryGump( who, "Narracao: ", 50);
+
+if(!text)
+sendsysmessage(who,"Narracao Terminada!",3,66);
+break;
+return;
+endif
+
+        if (text)
+Broadcast("[NARRACAO]: " +text, 0, 55);
+        endif
+    endwhile
+endprogram

@@ -1,0 +1,301 @@
+use uo; 
+use os; 
+use util; 
+use basic; 
+use cfgfile; 
+use math;
+use npc;
+use uo;
+use datafile;
+
+
+include "include/NPCBackpacks"; 
+include "include/attributes"; 
+include "include/statMod"; 
+include "include/noto"; 
+include "include/reportMurder"; 
+include ":poisonwatcher:poisons"; 
+include "include/spellRestrictions";
+
+program chrdeath(corpse, ghost)
+EraseObjProperty(ghost, "IsMeditating"); 
+CurePoison(ghost, 1, "defaultPoison", 7); 
+
+corpse.name:=("Corpo de " +ghost.name);
+if(ghost.criminal)
+corpse.name:=(corpse.name+ " (Criminoso)");
+SetObjProperty(corpse, "criminoso", 1); 
+else
+corpse.name:=(corpse.name+ " (Inocente)");
+SetObjProperty(corpse, "criminoso", 0); 
+endif
+
+///Ultimo Atacante////
+var killer := GetObjProperty(ghost, "LastHit"); 
+killer := killer[2];
+killer := SystemFindObjectBySerial(killer[2]);
+
+if(killer != error) 
+AdjustNoto((SystemFindObjectBySerial(killer[2], SYSFIND_SEARCH_OFFLINE_MOBILES)), ghost); 
+endif 
+
+////KP do Atacante///
+var KPatacante := GetObjProperty(killer[2], "kp"); 
+if(!KPatacante) 
+KPatacante := 0;
+endif 
+
+var KPmorto := GetObjProperty(ghost, "kp"); 
+if(!KPmorto) 
+KPmorto := 0; 
+endif 
+
+///var BK := GetObjProperty(killer[2], "BK"); 
+///if(!BK)
+///BK := 0; 
+///endif
+///var wp := GetObjProperty(killer[2], "wp");
+///if(!wp)
+///wp := 0; 
+///endif
+///var lp := GetObjProperty(ghost, "lp");
+///if(!lp)
+///lp := 0; 
+///endif
+
+
+var delay:=CInt(GetObjProperty(ghost, "delaymorrer"));
+
+if(!delay)
+SetObjProperty(ghost, "delaymorrer", ReadGameClock());
+endif
+
+///////////////////////////////
+//////// Sistema de WP/////////
+///////////////////////////////
+var gghostid:=GetObjProperty(ghost,"guild_id");
+var gghost:=FindGuild( gghostid );
+var wpmorto:=GetObjProperty(ghost, "warpoints");
+var wpgsmorto:=gghost.getprop("warpoints");
+
+var gkillerid:=GetObjProperty(killer,"guild_id");
+var gkiller:=FindGuild( gkillerid );
+var wpatacante:=GetObjProperty(killer, "warpoints");
+var wpgsatacante:=gkiller.getprop("warpoints");
+
+if(!wpgsmorto)
+gghost.setprop("warpoints", 0);
+endif
+
+if(!wpgsatacante)
+gkiller.setprop("warpoints", 0);
+endif
+
+if(!wpmorto)
+SetObjProperty(ghost, "warpoints", 0);
+endif
+
+if(!wpatacante)
+SetObjProperty(killer, "warpoints", 0);
+endif
+
+if((gghost.isenemyguild(gkiller)) && (delay <= ReadGameClock()))
+SendSysMessage(killer,"Voce ganhou um warpoint.",0x9,86);
+SetObjProperty(killer, "warpoints", Cint(wpatacante+1));
+gkiller.setprop("warpoints", Cint(wpgsatacante+1));
+
+SendSysMessage(ghost,"Voce perdeu um warpoint.",0x9,86);
+ if(wpgsmorto > 0)
+ gghost.setprop("warpoints", Cint(wpgsmorto-1));
+ endif
+
+ if(wpmorto > 0)
+  SetObjProperty(ghost, "warpoints", Cint(wpmorto-1));
+ endif
+endif
+///var guilda_1 := GetObjProperty(ghost,"guild_id");
+///var guilda1 := FindGuild( guilda_1 );
+///var guilda_2 := GetObjProperty(killer,"guild_id");
+///var guilda2 := FindGuild( guilda_2 );
+///if(Guilda1.isenemyguild(guilda2))
+///SendSysMessage(killer,"Voce ganhou um warpoint.",0x9,90);
+///var wps := wp + 1;
+////SetObjProperty(killer, "wp",wps);
+///SendSysMessage(ghost,"Voce ganhou um losspoint.",0x9,86);
+///var lps := lp + 1;
+///SetObjProperty(ghost, "lp",lps);
+///else
+
+if(ghost==killer)
+BroadCast(""+ghost.name+" se suicidou.",9,46);
+ if(KPmorto > 0)
+ SendSysMessage(ghost,"Voce perdeu um killpoint.",0x9,86);
+ SetObjProperty(ghost, "kp", Cint(KPmorto-1)); 
+ endif
+
+endif
+
+if((killer) && (delay <= ReadGameClock()) && (killer.acct) && (ghost != killer))
+
+ SetObjProperty(killer, "kp", Cint(KPatacante+1));
+ SendSysMessage(killer,"Voce ganhou um killpoint",0x9,86);
+
+ if(KPmorto > 0)
+ SendSysMessage(ghost,"Voce perdeu um killpoint.",0x9,86);
+ SetObjProperty(ghost, "kp", Cint(KPmorto-1)); 
+ endif
+
+SetObjProperty(ghost, "delaymorrer", ReadGameClock() + 180 );
+endif
+
+var LONGatacante := GetObjProperty(killer, "longmurders"); 
+var LONGmorto := GetObjProperty(ghost, "longmurders"); 
+
+if(LONGatacante < 5)
+   killer.title_prefix:="";
+   killer.setMurderer(0);
+   killer.alignment := "good";
+endif
+
+if(LONGmorto < 5)
+   ghost.title_prefix:="";
+   ghost.setMurderer(0);
+   ghost.alignment := "good";
+endif
+
+///var BKp := BK + 1; 
+///SetObjProperty(killer, "BK", BKp);
+///endif
+
+if((killer.acct) && (killer != ghost))
+BroadCast(""+Killer.name+" matou "+ghost.name+".",9,46);
+endif
+
+if((!killer) || (!killer.acct))
+BroadCast(""+ghost.name+" morreu.",9,46);
+endif
+
+SetObjProperty(corpse,"serial", ghost.serial);
+dismount(ghost, corpse);
+var msgmorte:= (randomInt(8) + 1);
+case(msgmorte)
+1:PrintTextAbove(corpse,""+ghost.name+" virou comida para Wyrms",3,1000);
+2:PrintTextAbove(corpse,"Todos olham para "+ghost.name+" e comecam a rir",3,1000);
+3:PrintTextAbove(corpse,""+ghost.name+" foi para um mundo melhor",3,1000);
+4:PrintTextAbove(corpse,""+ghost.name+" bateu as botas",3,1000);
+5:PrintTextAbove(corpse,""+ghost.name+" se fudeu",3,1000);
+6:PrintTextAbove(corpse,""+ghost.name+" se fudeu buniiiittto",3,1000);
+7:PrintTextAbove(corpse,"Egua desse noob ,saia daqui "+ghost.name+"",3,1000);
+8:PrintTextAbove(corpse,""+ghost.name+" agora faz parte da historia",3,1000);
+9:PrintTextAbove(corpse,"Menos um noob nesse mundo, ne "+ghost.name+"?",3,1000);
+endcase
+///CheckForAutoRes(ghost, corpse);
+
+if((corpse.x >= 4285) && (corpse.y >= 947) && (corpse.x <= 4335) && (corpse.y <= 962))
+
+else
+if((len(ghost.reportables)>0))
+FillInArrays(ghost);
+endif
+endif
+
+endprogram
+
+function CheckForAutoRes(who, corpse) 
+  if(CInt(GetObjProperty(corpse, "AutoRes")) == 1) 
+   Resurrect(who); 
+   SetHp(who, GetMaxHP(who)); 
+   SetMana(who, GetMaxMana(who)); 
+   SetStamina(who, GetMaxStamina(who)); 
+   var itemlist := {}; 
+   var mypack := who.backpack; 
+    if(!mypack) 
+      return; 
+    endif 
+   foreach thing in EnumerateItemsInContainer(corpse) 
+     if(thing.container == corpse) 
+       if(!EquipItem(who, thing)) 
+        MoveItemToContainer(thing, mypack); 
+       endif 
+     endif 
+   endforeach 
+  endif 
+endfunction 
+
+function dismount(me,corpse) 
+  var mount := GetEquipmentByLayer( corpse, 25 );
+  foreach item in EnumerateItemsInContainer(corpse) 
+   if (item.objtype == 0xf021) 
+     mount := item; 
+     break; 
+   endif 
+  endforeach 
+  if (!mount) 
+   return; 
+  endif 
+  var animal := SystemFindObjectBySerial(CInt(GetObjProperty(mount,"serial"))); 
+  animal.facing := corpse.facing; 
+  EraseObjProperty(animal, "mounted"); 
+  EraseObjProperty(animal, "mounted_on");
+  DestroyItem(mount);
+  restartscript(animal);
+ 
+MoveCharacterToLocation( animal, corpse.x, corpse.y, corpse.z, MOVECHAR_FORCELOCATION);
+ 
+if((corpse.x >= 4285) && (corpse.y >= 947) && (corpse.x <= 4335) && (corpse.y <= 962))
+MoveCharacterToLocation( animal, 1, 20, 1, MOVECHAR_FORCELOCATION);
+endif
+
+  
+////oa
+///  if((animal.graphic == 218) && (animal.color == 0)) 
+///            SendSysMessage(me,"Sua montaria foi morta!",3,33);    
+///            SetObjProperty(animal, "guardkill", 1);
+///            Damage( animal, GetHp(animal) );
+///  endif
+///
+////horse normal
+///  if((animal.graphic == 226) && (animal.color == 0)) 
+///            SendSysMessage(me,"Sua montaria foi morta!",3,33);    
+///            SetObjProperty(animal, "guardkill", 1);
+///            Damage( animal, GetHp(animal) );
+///  endif
+
+////lhama normal
+///  if((animal.graphic == 220) && (animal.color == 0)) 
+///            SendSysMessage(me,"Sua montaria foi morta!",3,33);    
+///            SetObjProperty(animal, "guardkill", 1);
+///            Damage( animal, GetHp(animal) );
+///  endif
+
+////sb
+///  if((animal.graphic == 228) && (animal.color == 1154)) 
+///            SendSysMessage(me,"Sua montaria foi morta!",3,33);    
+///            SetObjProperty(animal, "guardkill", 1);
+///            Damage( animal, GetHp(animal) );
+///  endif
+
+////selvagem
+///  if((animal.graphic == 226) && (animal.color == 637)) 
+///            SendSysMessage(me,"Sua montaria foi morta!",3,33);    
+///            SetObjProperty(animal, "guardkill", 1);
+///            Damage( animal, GetHp(animal) );
+///  endif
+
+////floresta
+///  if((animal.graphic == 219) && (animal.color == 2130)) 
+///            SendSysMessage(me,"Sua montaria foi morta!",3,33);    
+///            SetObjProperty(animal, "guardkill", 1);
+///            Damage( animal, GetHp(animal) );
+///  endif
+
+////deserto
+///  if((animal.graphic == 210) && (animal.color == 0)) 
+///            SendSysMessage(me,"Sua montaria foi morta!",3,33);    
+///            SetObjProperty(animal, "guardkill", 1);
+///            Damage( animal, GetHp(animal) );
+///  endif
+
+
+
+endfunction

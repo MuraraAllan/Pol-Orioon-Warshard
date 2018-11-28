@@ -1,0 +1,96 @@
+use uo;
+use uo;
+use util;
+use http;
+include "include/accounts";
+
+program account_add()
+	WriteHTML ("<html><head><title>Painel Administrador do Sysco War Shard</title></head>");
+	WriteHTML ("<body bgcolor=\"#dcdeed\">");
+
+	var acctname := QueryParam ("acctname");
+	if (!acctname)
+		WriteHTML ("<form method=GET action=admin.ecl>");
+		WriteHTML ("Entre com seu login e senha para acessar o painel.");
+		WriteHTML ("<br>Login: <input name=acctname>");
+		WriteHTML ("<br>Senha: <input name=acctpass>");
+		WriteHTML ("<br><input id=submit1 name=submit1 type=submit value=Ok>");
+		WriteHTML ("</body></html>");
+		return;
+	endif
+
+	var acct := FindAccount (acctname);
+	var acctpass := QueryParam ("acctpass");
+	if (!acct)
+		WriteHTML ("Este login não existe.");
+		return;
+	endif	
+
+	if (!acctpass)
+		WriteHTML ("Você deve digitar a sua senha.");
+	endif
+
+	if (acct.checkpassword(acctpass) == 0)
+	WriteHTML ("<br>Senha incorreta.</br>");
+	return;
+	endif
+
+	WriteHTML ("Olá você está logado usando o login: " +acct.name+ "");
+
+statusacc(acct);
+var i;
+var privilegio:=1;
+for (i:=1; i<=5; i:= i + 1)
+if(acct.GetCharacter(i).cmdlevel > privilegio)
+privilegio:=acct.GetCharacter(i).cmdlevel;
+endif
+endfor
+WriteHTML ("<br>Privilégio:");
+if(privilegio == 1)
+WriteHTML ("Player</br>");
+player();
+elseif(privilegio == 2)
+WriteHTML ("Seer</br>");
+elseif(privilegio == 3)
+WriteHTML ("GM</br>");
+elseif(privilegio == 4)
+WriteHTML ("Admin</br>");
+elseif(privilegio == 5)
+WriteHTML ("Desenvolvedor</br>");
+else
+WriteHTML ("Player</br>");
+return;
+endif
+writehtml("</body></html>");
+endprogram
+
+
+/////////Status ACC/////////
+function statusacc(acct)
+WriteHTML ("<br>Status:");
+if(acct.banned == 1)
+WriteHTML ("Banida</br>");
+WriteHTML ("<br>Privilégio: Nenhum</br>");
+return;
+endif
+
+if(acct.enabled == 0)
+WriteHTML ("Jail</br>");
+ var releaseday := acct.getprop("releaseday");
+ var timeremaining :=(((releaseday - ReadGameClock())/86400) + 1);
+WriteHTML ("<br>Tempo para desbloqueamento: " +timeremaining+ "</br>");
+     
+WriteHTML ("<br>Privilégio: Nenhum</br>");
+return;
+endif
+
+if(acct.enabled == 1)
+WriteHTML ("Ativa</br>");
+endif
+endfunction
+
+
+////////player////////
+function player()
+WriteHTML ("Abc");
+endfunction

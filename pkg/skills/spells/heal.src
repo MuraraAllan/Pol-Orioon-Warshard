@@ -1,0 +1,40 @@
+use uo;
+use os;
+use util;
+
+include "include/spellRestrictions";
+include "include/attributes";
+
+program cast_heal(parms)
+  var circle := 1;
+  var delivery := "direct";
+  var noto := "helpful";
+  var result := maincast(parms, delivery, circle, noto, 1);
+  if(result == 0)
+    return;
+  endif
+  var caster := result[1];
+  var cast_on := result[2];
+  var heal := RandomDiceRoll("1d5+5"); 
+  var healede := RandomDiceRoll("1d4+6");
+  var healedee := RandomDiceRoll("1d6+5");
+  var healedeee := RandomDiceRoll("1d5+5");
+  var healedeeee := RandomDiceRoll("1d4+5");
+  var healedeeeee := RandomDiceRoll("1d3+5");
+  var healedeeeeee := RandomDiceRoll("1d2+5");
+  var healedeeeeeee := RandomDiceRoll("1d4+3");
+if((getobjproperty(caster,"guild_id")) && (!getobjproperty(cast_on,"guild_id"))|| (getobjproperty(caster,"guild_id") != getobjproperty(cast_on,"guild_id"))|| (!getobjproperty(caster,"guild_id")) && (getobjproperty(cast_on,"guild_id")))
+ caster.SetCriminal(1);
+endif
+if(GetEffectiveSkill(caster, SKILLID_INSCRIPTION) > 80)
+heal := CInt(GetEffectiveSkill(caster, SKILLID_MAGERY)/50) + healede;  
+endif
+if(GetEffectiveSkill(caster, SKILLID_INSCRIPTION) == 100)
+heal := CInt(GetEffectiveSkill(caster, SKILLID_MAGERY)/50) + healedee;
+endif
+
+  HealDamage(cast_on, heal);
+  PlayObjectCenteredEffect(cast_on, FX_SPARK_EFFECT, 7, 0x10);
+  PlaySoundEffect(cast_on, SFX_SPELL_HEAL);
+PrintTextAbove(cast_on, " " + heal + " ", FONT_SMALL_LIGHT, 1153);
+endprogram

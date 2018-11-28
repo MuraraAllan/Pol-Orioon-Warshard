@@ -1,0 +1,41 @@
+use uo;
+use os;
+
+include "include/spellRestrictions";
+
+
+program cast_reflect(parms)
+var circle := 5;
+var delivery := "notarget";
+  var noto := "helpful";
+  var result := maincast(parms, delivery, circle, noto, 36);
+  if(result == 0)
+    return;
+  endif
+var caster := result[1];
+var cast_on := result[2];
+  var chk := CInt(GetObjProperty(caster, "delayreflect"));
+    if(!chk)
+      chk := CInt(ReadGameClock() - 15);
+    endif
+var d := chk - Readgameclock();
+    if(chk >= ReadGameClock())
+      SendSysMessage(caster, "Voce precisa esperar + "+ d +" segundos para dar reflect novamente",9,89);
+      return;
+    endif
+ var magery := GetEffectiveSkill(caster, SKILLID_MAGERY);
+  var insc   := GetEffectiveSkill(caster, SKILLID_INSCRIPTION);
+
+var mr := GetModDuration(magery) / 5  + GetModDuration(insc) / 5 + RandomDiceRoll("1d20");
+if(GetObjProperty(caster, "mr") > 0)
+SendSysMessage(caster, "Voce Ja Esta protegido por uma aura antimagia",9,90);
+return 0;
+else
+PlaySoundEffect(caster, 0x1ea);
+PlayObjectCenteredEffect( caster, FX_SPARK_EFFECT, 10,10);
+SetObjProperty(caster, "mr", mr);
+SetObjProperty(caster, "delayreflect", ReadGameClock() + 60);
+Sendsysmessage(caster, " Mr Power: " + mr + " ", 9,20);  
+
+endif
+endprogram

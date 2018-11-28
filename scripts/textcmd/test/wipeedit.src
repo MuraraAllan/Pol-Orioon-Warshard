@@ -1,0 +1,21 @@
+use uo;
+use os;
+
+program wiparcasas(who)
+var xx := 1;
+var yy := 1;
+
+while(xx < 6000)
+
+var aa := ListItemsNearLocation( xx, yy, 1, 0 );
+
+if(aa.graphic == 7133)
+sendsysmessage(who,"LALAL:" +aa);
+endif
+xx := xx + 1;
+yy := yy + 1;
+
+endwhile 
+
+
+endprogram

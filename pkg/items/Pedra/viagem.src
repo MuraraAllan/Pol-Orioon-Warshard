@@ -1,0 +1,76 @@
+use uo;
+use os;
+include "include/attributes";
+include "../pkg/foundations/gumps/gumps";
+
+
+program arena(who, item)
+
+DestroyItem(item);
+return;
+
+  var chka := CInt(GetObjProperty(who, "delayarenaa"));
+  var time := chka - Readgameclock() ;
+  
+  if(chka >= ReadGameClock())
+  SendSysMessage(who, "Voce precisa esperar "+ time +" segundos para usar novamente a pedra da arena!",9,89);
+  return;
+  endif
+
+GFInitGump( 50, 20 );
+GFNoMove();
+GFResizePic(50, 20, 2600, 200, 260);
+
+  GFTextLine( 123 , 45, 1153 , "Arenas" );
+  var bt2 := GFButtonID( 75, 81, 0x138a, 0x138b, 1);
+  var bt3 := GFButtonID( 75, 111, 0x138a, 0x138b, 1);
+  var bt4 := GFButtonID( 75, 141,0x138a, 0x138b, 1);
+  var bt5 := GFButtonID( 75, 171,0x138a, 0x138b, 1);
+  var bt6 := GFButtonID( 75, 201,0x138a, 0x138b, 1);
+ 
+  GFTextLine(100, 80, 167, "Arena De Brit"); 
+  GFTextLine(100, 110,167, "Arena De Yew"); 
+  GFTextLine(100, 140, 167, "Arena de Arydras"); 
+  GFTextLine(100, 170, 167, "Arena de Skara"); 
+  GFTextLine(100, 200, 167, "Arena de Cove"); 
+  GFTextLine( 123 , 245, 33 , "#Sysco" );
+ 
+
+  var res := GFSendGump(who);
+  
+           
+
+if(res[bt2.keyid]) 
+MoveCharacterToLocation(who, 1319,1815,0 );
+SetObjProperty(who, "delayarenaa", ReadGameClock() + 25 );
+broadcast(who.name + ", Entrou na Arena de Britain!",9,89);
+endif 
+               
+ 
+if(res[bt3.keyid]) 
+MoveCharacterToLocation(who,  635,836,40 );
+SetObjProperty(who, "delayarenaa", ReadGameClock() + 25 );
+broadcast(who.name + ", Entrou na Arena de Yew!",9,89);
+endif
+
+if(res[bt4.keyid]) 
+////sendsysmessage(who,"Desativada para realizar Eventos!",3,33);
+////return;
+MoveCharacterToLocation(who,  2716,48,75 );
+SetObjProperty(who, "delayarenaa", ReadGameClock() + 25);
+broadcast(who.name + ", Entrou na Arena de Arydras!",9,89);
+endif
+
+if(res[bt5.keyid]) 
+MoveCharacterToLocation(who,  618,2127,5 );
+SetObjProperty(who, "delayarenaa", ReadGameClock() + 25 );
+broadcast(who.name + ", Entrou na Arena de Skara brae!",9,89);
+endif
+
+if(res[bt6.keyid]) 
+MoveCharacterToLocation(who,  2257,1206,0 );
+SetObjProperty(who, "delayarenaa", ReadGameClock() + 25 );
+broadcast(who.name + ", Entrou na Arena de Cove!",9,89);
+endif
+
+endprogram

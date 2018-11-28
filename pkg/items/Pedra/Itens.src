@@ -1,0 +1,129 @@
+use uo;
+use os;
+include "include/attributes";
+include "../pkg/foundations/gumps/gumps";
+
+
+program ar_color(who, item)
+
+
+status(who); 
+endprogram
+
+
+function status(who)
+var dono := GetObjProperty(who, "who.acct"); 
+ 
+ 
+ 
+ GFInitGump( 250 , 100 );
+  GFNoMove();
+  GFResizePic(50, 5, 5120, 220, 290);
+  GFTextLine( 110 , 20, 1153 , "Stone de Couros" );
+  var bt2 := GFButtonID( 55, 55, 0x04b9, 0x04b9, 1);
+  var bt3 := GFButtonID( 55, 85, 0x04b9, 0x04b9, 1);
+  var bt4 := GFButtonID( 55, 115,0x04b9, 0x04b9, 1);
+  var bt5 := GFButtonID( 55, 145,0x04b9, 0x04b9, 1);
+  var bt6 := GFButtonID( 55, 175,0x04b9, 0x04b9, 1);
+  var bt7 := GFButtonID( 55, 205,0x04b9, 0x04b9, 1);
+  var bt8 := GFButtonID( 55, 235,0x04b9, 0x04b9, 1);
+
+  
+  GFTextLine(80, 50, 1154, "Couro Horned"); 
+  GFTextLine(80, 80, 1154, "Couro Barbed"); 
+  GFTextLine(80, 110, 1154, "Couro NEgro"); 
+  GFTextLine(80, 140, 1154, "Couro de FOGO"); 
+  GFTextLine(80, 170, 1154, "Couro de DEMONIO");
+GFTextLine(80, 205, 1154, "TESOURA");
+GFTextLine(80, 235, 1154, "KIT COSTURA");
+ 
+  
+ 
+
+  GFTextLine(130, 265,33, "#ORIOON"); 
+ 
+
+  var res := GFSendGump(who);
+
+if(res[bt2.keyid]) 
+var chka := CInt(GetObjProperty(who, "HORNED"));
+    if(!chka)
+      chka := CInt(ReadGameClock() - 600);
+    endif
+    if(chka >= ReadGameClock())
+      SendSysMessage(who, "Voce precisa esperar 3 minutos para pegar mais Couro HORNED ( para evitar ecesso de items pelo hall e pelo shard)",9,89);
+      return;
+    endif
+CreateItemInBackpack(who, 0x0844, 100);
+ SetObjProperty(who, "HORNED", ReadGameClock() + 180 );
+endif
+
+if(res[bt3.keyid]) 
+var chkb := CInt(GetObjProperty(who, "BARBED"));
+    if(!chkb)
+      chkb := CInt(ReadGameClock() - 600);
+    endif
+    if(chkb >= ReadGameClock())
+      SendSysMessage(who, "Voce precisa esperar 3 minutos para pegar mais BARBEDS ( para evitar ecesso de items pelo hall e pelo shard)",9,89);
+      return;
+    endif
+CreateItemInBackpack(who, 0x0851, 100);
+     SetObjProperty(who, "BARBED", ReadGameClock() + 180 );
+endif
+
+if(res[bt4.keyid]) 
+var chkc := CInt(GetObjProperty(who, "NEGRO"));
+    if(!chkc)
+      chkc := CInt(ReadGameClock() - 600);
+    endif
+    if(chkc >= ReadGameClock())
+      SendSysMessage(who, "Voce precisa esperar 3 minutos para pegar mais COUROS NEGROS ( para evitar ecesso de items pelo hall e pelo shard)",9,89);
+      return;
+    endif
+CreateItemInBackpack(who, 0x0455, 100);   
+    sendsysmessage(who, "Item criado com sucesso!",9,89);
+  SetObjProperty(who, "NEGRO", ReadGameClock() + 180 );
+endif
+
+if(res[bt5.keyid]) 
+var chkd := CInt(GetObjProperty(who, "FOGO"));
+    if(!chkd)
+      chkd := CInt(ReadGameClock() - 600);
+    endif
+    if(chkd >= ReadGameClock())
+      SendSysMessage(who, "Voce precisa esperar 3 minutos para pegar mais COUROS DE FOGO ( para evitar ecesso de items pelo hall e pelo shard)",9,89);
+      return;
+    endif
+var bandana:=CreateItemInBackpack(who, 0xa127, 100);  
+bandana.newbie:=1;
+    sendsysmessage(who, "Item criado com sucesso!",9,89);
+   SetObjProperty(who, "FOGO", ReadGameClock() + 180 );
+endif
+
+if(res[bt6.keyid]) 
+var chke := CInt(GetObjProperty(who, "DEMONIO"));
+    if(!chke)
+      chke := CInt(ReadGameClock() - 600);
+    endif
+    if(chke >= ReadGameClock())
+      SendSysMessage(who, "Voce precisa esperar 3 minutos para pegar mais COUROS DE DEMONIO ( para evitar ecesso de items pelo hall e pelo shard)",9,89);
+      return;
+    endif
+CreateItemInBackpack(who, 0xa128, 100);  
+    sendsysmessage(who, "Item criado com sucesso!",9,89);
+  SetObjProperty(who, "DEMONIO", ReadGameClock() + 180 );
+endif
+
+if(res[bt7.keyid]) 
+CreateItemInBackpack(who, 0x0f9e, 1);  
+    sendsysmessage(who, "Item criado com sucesso!",9,89);
+endif
+
+if(res[bt8.keyid]) 
+CreateItemInBackpack(who, 0x0F9D, 1);  
+    sendsysmessage(who, "Item criado com sucesso!",9,89);
+endif
+
+
+
+endfunction

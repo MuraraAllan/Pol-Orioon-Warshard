@@ -1,0 +1,103 @@
+C:\pol2\pkg\systems\combat\silverHit.src, Line 6
+program macehit(param)
+use cfgfile;
+0: get arg 'param'
+var attacker := param[1];
+1: decl local #1
+2: local #0
+3: 1L
+4: [] 1
+5: :=
+6: #
+var defender := param[2];
+7: decl local #2
+8: local #0
+9: 2L
+10: [] 1
+11: :=
+12: #
+var weapon := param[3];
+13: decl local #3
+14: local #0
+15: 3L
+16: [] 1
+17: :=
+18: #
+var armor := param[4];
+19: decl local #4
+20: local #0
+21: 4L
+22: [] 1
+23: :=
+24: #
+var basedamage := param[5];
+25: decl local #5
+26: local #0
+27: 5L
+28: [] 1
+29: :=
+30: #
+var rawdamage := param[6];
+31: decl local #6
+32: local #0
+33: 6L
+34: [] 1
+35: :=
+36: #
+if((attacker.dead) || (defender.dead))
+37: local #1
+38: get member 'dead'
+39: local #2
+40: get member 'dead'
+41: ||
+42: if false goto 45
+return;
+43: ""
+44: progend
+if(!defender.isA(POLCLASS_NPC))
+45: local #2
+46: 4L
+47: Call Method isa (1 params)
+48: if true goto 56
+SetObjProperty(defender, "TempDamage", rawdamage);
+49: local #2
+50: "TempDamage"
+51: local #6
+52: Func(2,0): SetObjProperty
+53: #
+return;
+54: ""
+55: progend
+var cfg := ReadConfigFile("::npcdesc");
+56: decl local #7
+57: "::npcdesc"
+58: Func(5,0): ReadConfigFile
+59: :=
+60: #
+var undead := cfg[defender.npctemplate].elemental;
+61: decl local #8
+62: local #7
+63: local #2
+64: get member 'npctemplate'
+65: [] 1
+66: get member 'elemental'
+67: :=
+68: #
+if(undead == "undead")
+69: local #8
+70: "undead"
+71: ==
+72: if false goto 77
+rawdamage := rawdamage * 2;
+73: local #6
+74: 2L
+75: *
+76: local6 := 
+SetObjProperty(defender, "TempDamage", rawdamage);
+77: local #2
+78: "TempDamage"
+79: local #6
+80: Func(2,0): SetObjProperty
+81: #
+82: leave block(9)
+83: progend

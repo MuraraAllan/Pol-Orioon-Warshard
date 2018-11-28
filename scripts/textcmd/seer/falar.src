@@ -1,0 +1,6 @@
+use os;
+use uo;
+
+program textcmd_falar( who, text )
+     PrintTextAbove(who, text, 0, 38 );
+endprogram

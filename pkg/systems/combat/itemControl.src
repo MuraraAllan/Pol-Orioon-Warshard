@@ -1,0 +1,12 @@
+use uo;
+use os;
+use cfgfile;
+
+program itemcontrol(item)
+  ///var cfgfile  := ReadConfigFile(":combat:itemdesc");
+  ///var dmg      := cfgfile[item.objtype].damage;
+  var dmg:=1;
+  if(dmg)
+    item.hitscript := "mainHitScript";
+  endif
+endprogram

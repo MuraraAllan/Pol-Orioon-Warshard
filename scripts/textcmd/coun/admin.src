@@ -1,0 +1,29 @@
+use uo;
+
+include "include/client";
+
+program gm(who)
+GrantPrivilege(who, "invul");
+who.enable("invul");
+
+GrantPrivilege(who, "seeinv");
+who.enable("seeinv");
+
+GrantPrivilege(who, "seeinvi");
+who.enable("seeinvi");
+
+GrantPrivilege(who, "seeinvitem");
+who.enable("seeinvitem");
+
+GrantPrivilege(who, "seeinvitems");
+who.enable("seeinvitems");
+
+GrantPrivilege(who, "seeinvisitem");
+who.enable("seeinvisitem");
+
+GrantPrivilege(who, "seeinvisitems");
+who.enable("seeinvisitems");
+
+GrantPrivilege(who, "hearghosts");
+who.enable("hearghosts");
+endprogram

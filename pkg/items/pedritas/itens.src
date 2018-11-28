@@ -1,0 +1,181 @@
+use uo;
+use os;
+include "include/attributes";
+include "../pkg/foundations/gumps/gumps";
+
+
+program item(who)
+
+GFInitGump( 50, 20 );
+GFNoMove();
+GFResizePic(50, 20, 2600, 200, 280);
+
+  GFTextLine( 127 , 45, 1153 , "Items" );
+  var bt2 := GFButtonID( 105, 81,  0x138a, 0x138b, 1);
+  var bt3 := GFButtonID( 105, 106, 0x138a, 0x138b, 1);
+  var bt4 := GFButtonID( 105, 131, 0x138a, 0x138b, 1);
+  var bt5 := GFButtonID( 105, 156, 0x138a, 0x138b, 1);
+
+  var bt6 := GFButtonID( 105, 181, 0x138a, 0x138b, 1);
+  var bt7 := GFButtonID( 105, 206, 0x138a, 0x138b, 1);
+  var bt8 := GFButtonID( 105, 231, 0x138a, 0x138b, 1);
+
+
+ 
+  GFTextLine(130, 80,  167, "Pocoes"); 
+  GFTextLine(130, 105, 167, "Bandagens"); 
+  GFTextLine(130, 130, 167, "Comida"); 
+  GFTextLine(130, 155, 167, "Flechas"); 
+
+  GFTextLine(130, 180, 167, "Couros"); 
+  GFTextLine(130, 205, 167, "Madeiras"); 
+  GFTextLine(130, 230, 167, "Lingotes"); 
+
+  GFTextLine( 123 , 265, 33 , "#Sysco" );
+ 
+
+  var res := GFSendGump(who);
+  
+var delay;           
+var i;
+var aa := who.acctname;
+var conta := findaccount(aa);
+if(res[bt2.keyid]) 
+delay:=conta.getprop("delaypegarpot");
+
+ if(delay > ReadGameClock())
+ SendSysMessage(who, "Voce pode pegar apenas 6 pocoes a cada 8 minutos.",3,46);
+return;
+ endif
+
+var pocao;
+var x:=44;
+for (i:=1; i<=6; i:= i + 1)
+pocao:=CreateItemInBackpack(who, 0xDC03, 1 );
+MoveItemToContainer(pocao, who.backpack, x, 65 );
+x:=Cint(x + 8);
+endfor
+
+x:=44;
+for (i:=1; i<=6; i:= i + 1)
+pocao:=CreateItemInBackpack(who, 0xdc18, 1 );
+MoveItemToContainer(pocao, who.backpack, x, 87 );
+x:=Cint(x + 8);
+endfor
+
+x:=49;
+for (i:=1; i<=3; i:= i + 1)
+pocao:=CreateItemInBackpack(who, 0xdc0d, 1 );
+MoveItemToContainer(pocao, who.backpack, x, 68 );
+x:=Cint(x + 8);
+endfor
+
+x:=48;
+for (i:=1; i<=3; i:= i + 1)
+pocao:=CreateItemInBackpack(who, 0xdc0f, 1 );
+MoveItemToContainer(pocao, who.backpack, x, 70 );
+x:=Cint(x + 8);
+endfor
+
+x:=47;
+for (i:=1; i<=2; i:= i + 1)
+pocao:=CreateItemInBackpack(who, 0xdc12, 1 );
+MoveItemToContainer(pocao, who.backpack, x, 83 );
+x:=Cint(x + 8);
+endfor
+
+SendSysMessage(who, "Pocoes criadas.",3,95);
+conta.setprop("delaypegarpot", ReadGameClock() + 480 );
+endif 
+               
+ 
+if(res[bt3.keyid]) 
+
+delay:=GetObjProperty(who, "delaypegarbands");
+
+ if(delay > ReadGameClock())
+ SendSysMessage(who, "Voce pode pegar apenas 80 bandagens a cada 15 minutos.",3,46);
+ return;
+ endif
+
+var bands:=CreateItemInBackpack(who, "bandages", 80 );
+MoveItemToContainer(bands, who.backpack, 137, 65 );
+
+SendSysMessage(who, "Bandagens criadas.",3,95);
+SetObjProperty(who, "delaypegarbands", ReadGameClock() + 900 );
+endif
+
+
+if(res[bt4.keyid]) 
+delay:=GetObjProperty(who, "delaypegarcomida");
+
+ if(delay > ReadGameClock())
+ SendSysMessage(who, "Voce pode pegar comida a cada 15 minutos.",3,46);
+ return;
+ endif
+
+var comida:=CreateItemInBackpack(who, "corn", 50 );
+MoveItemToContainer(comida, who.backpack, 105, 76 );
+
+SendSysMessage(who, "Comida criada.",3,95);
+SetObjProperty(who, "delaypegarcomida", ReadGameClock() + 900 );
+endif
+
+
+if(res[bt5.keyid]) 
+delay:=GetObjProperty(who, "delaypegarflecha");
+
+ if(delay > ReadGameClock())
+ SendSysMessage(who, "Voce pode pegar apenas 80 flechas a cada 15 minutos.",3,46);
+ return;
+ endif
+
+var flecha:=CreateItemInBackpack(who, "arrow", 80 );
+MoveItemToContainer(flecha, who.backpack, 129, 91 );
+
+SendSysMessage(who, "Flechas criadas.",3,95);
+SetObjProperty(who, "delaypegarflecha", ReadGameClock() + 900 );
+endif
+
+
+if(res[bt6.keyid]) 
+delay:=GetObjProperty(who, "delaypegarcouro");
+
+ if(delay > ReadGameClock())
+ SendSysMessage(who, "Voce pode pegar apenas 80 couros a cada 15 minutos.",3,46);
+ return;
+ endif
+
+CreateItemInBackpack(who, "spinned", 80);
+    sendsysmessage(who, "Couros Criados com Sucesso!",9,89);
+SetObjProperty(who, "delaypegarcouro", ReadGameClock() + 900 );
+endif
+
+
+if(res[bt7.keyid]) 
+delay:=GetObjProperty(who, "delaypegarmadeira");
+
+ if(delay > ReadGameClock())
+ SendSysMessage(who, "Voce pode pegar apenas 50 madeiras a cada 15 minutos.",3,46);
+ return;
+ endif
+
+CreateItemInBackpack(who, 0xac52, 50);
+    sendsysmessage(who, "Madeiras Criadas com Sucesso!",9,89);
+SetObjProperty(who, "delaypegarmadeira", ReadGameClock() + 900 );
+endif
+
+if(res[bt8.keyid]) 
+delay:=GetObjProperty(who, "delaypegarling");
+
+ if(delay > ReadGameClock())
+ SendSysMessage(who, "Voce pode pegar apenas 80 lingotes a cada 15 minutos.",3,46);
+ return;
+ endif
+
+CreateItemInBackpack(who, 0x6310, 80);
+    sendsysmessage(who, "Lingotes Criados com Sucesso!",9,89);
+SetObjProperty(who, "delaypegarling", ReadGameClock() + 900 );
+endif
+
+endprogram

@@ -1,0 +1,17 @@
+/////////////////////////////////////////////////////////////////////////////////
+//
+//  .disable [priv]        - disable a privilege
+//
+//  example:
+//      ".disable invul"   - disable invulnerability, if you have it enabled
+//
+//  see also enable.src
+//
+/////////////////////////////////////////////////////////////////////////////////
+
+use uo;
+
+program disable( who, priv )
+    who.disable( priv );
+    SendSysMessage( who, "Setando '" + priv + "' nao habilitado.",0x9,90 );
+endprogram

@@ -1,0 +1,80 @@
+use uo;
+use uo;
+use util;
+use http;
+include "include/accounts";
+
+program account_add()
+	WriteHTML ("<html><head><title>Painel Administrador do Sysco War Shard</title></head>");
+	WriteHTML ("<body text=#FF0000 bgcolor=#000000>");
+
+
+	var acctname := QueryParam ("acctname");
+	if (!acctname)
+		WriteHTML ("<form method=GET action=desligar.ecl>");
+		WriteHTML ("<font size=4>Entre com seu login e senha para acessar o painel criador.");
+		WriteHTML ("<br><font size=4>Login: <input name=acctname>");
+		WriteHTML ("<br><font size=4>Senha: <input name=acctpass type=password>");
+		WriteHTML ("<br><input id=submit1 name=submit1 type=submit value=Ok>");
+		WriteHTML ("</body></html>");
+		return;
+	endif
+	var acct := FindAccount (acctname);
+	var acctpass := QueryParam ("acctpass");
+
+	WriteHTML ("<body bgcolor=#000000><font size=4>");
+	
+	if (!acct)
+	WriteHTML ("Seu login está incorreto.");
+	WriteHTML ("</body></html>");	
+	return;
+	endif	
+
+	if (!acctpass)
+	WriteHTML ("Você deve digitar a sua senha.");
+	WriteHTML ("</body></html>");
+	return;	
+	endif
+
+	if (acct.checkpassword(acctpass) == 0)
+	WriteHTML ("Senha incorreta.");
+	WriteHTML ("</body></html>");	
+	return;
+	endif
+
+	if((acct.enabled == 0) || (acct.banned == 1))
+	WriteHTML ("Sua conta esta Jailada ou Banida.");
+	WriteHTML ("<br>Acesso Negado!</br>");
+	WriteHTML ("</body></html>");
+	return;	
+	endif
+	
+
+var i;
+var privilegio:=1;
+for (i:=1; i<=5; i:= i + 1)
+if(acct.GetCharacter(i).cmdlevel > privilegio)
+privilegio:=acct.GetCharacter(i).cmdlevel;
+endif
+endfor
+
+	if(privilegio <= 3)
+	WriteHTML ("Sua conta nao tem priv suficiente para acessar este painel.");
+	WriteHTML ("<br>Acesso Negado!</br>");
+	WriteHTML ("</body></html>");
+	return;	
+	endif
+
+WriteHTML ("Você está logado usando o login: " +acct.name+ "");
+WriteHTML ("<br>Servidor sendo desligado...</br>");
+Broadcast("Servidor Sendo DESLIGADO.", 0, 33);
+Broadcast("Consulte no IRC para maiores informacoes!", 0, 33);
+Broadcast("#Sysco @BrasNet / @DotBR.org", 0, 33);
+Broadcast( "Salvando o Mundo..." ,0,33 );
+sleep(1);
+SaveWorldState();
+sleep(1);
+Broadcast( "Mundo Salvo, ENCERRANDO!" ,0,50 );
+sleep(8);	
+Shutdown();
+endprogram

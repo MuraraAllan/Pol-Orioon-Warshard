@@ -1,0 +1,90 @@
+use os;
+use uo;
+use cfgfile;
+
+include "include/canAccess";
+
+var cfg  := ReadConfigFile( ":*:itemdesc" );
+
+program dyeable(who, dyetub)
+
+  if(dyetub.container != who.backpack)
+  SendSysMessage(who, "O item precisa estar em sua mochila.",9,89);
+  return;
+  endif
+
+if(!ReserveItem(dyetub))
+	return;
+  endif
+
+if(dyetub.color != 1154)
+SendSysMessage(who, "Cor do Tubo Arrumada!",9,89);
+dyetub.color:=1175;
+endif
+
+if(!Getobjproperty(dyetub, "cargas"))
+Setobjproperty(dyetub, "cargas", "10");
+endif
+
+if(Getobjproperty(dyetub, "cargas") == "0")
+SendSysMessage(who, "Acabaram as cargas...",9,89);
+DestroyItem(dyetub);
+return;
+endif
+
+  SendSysMessage(who, "Selecione o item para pintar!",9,89);
+  var item := Target(who);
+ 
+  if(item.container != who.backpack)
+  SendSysMessage(who, "O item precisa estar em sua mochila.",9,89);
+  return;
+  endif
+
+  if(item.graphic == 5990)
+  SendSysMessage(who, "Voce nao pode pintar isto!",9,89);
+  return;
+  endif
+
+  if(!item)
+    SendSysMessage(who, "Cancelado",9,89);
+    return;
+  endif
+if(item.graphic == 4011)
+SendSysMessage(who, "Voce nao pode pintar isto!",9,89);
+return 0;
+endif
+if(!ReserveItem(item))
+    SendSysMessage(who, "Voce nao pode usar isto!",9,89);
+    return;
+  elseif(!Accessible(who, item))
+    SendSysMessage(who, "Voce nao consegue alcansar!",9,89);
+    return;
+  endif
+  var element  := FindConfigElem(cfg,  item.objtype);
+  var dyeable  := GetConfigInt(element, "dyeable");
+  if(dyeable == 1)
+    if((item.objtype == 0xfab) and (dyetub.color == 1))
+      SendSysMessage(who, "Voce nao pode duplicar isto!",9,89);
+      return;
+    else
+      item.color := dyetub.color;
+SendSysMessage( who, "Item pintado com sucesso!",9,89);
+      PlaySoundEffect(who, 0x23f);
+var carga:=Cint(Getobjproperty(dyetub, "cargas"));
+var setar:=Cint(carga + (-1));
+Setobjproperty(dyetub, "cargas", setar);
+if(setar >0)
+SendSysMessage( who, "Ainda restam " +setar+ " cargas.",9,89);
+endif
+if(setar == 0)
+SendSysMessage( who, "Acabaram as cargas.",9,89);
+DestroyItem(dyetub);
+dyetub.color:=0;
+return;
+endif
+    endif
+  else
+    SendSysMessage( who, "Este item nao pode ser colorido",9,89);
+    return;
+  endif
+endprogram

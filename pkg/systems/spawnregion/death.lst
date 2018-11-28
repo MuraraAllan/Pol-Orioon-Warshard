@@ -1,0 +1,377 @@
+C:/pol2/scripts/include/datafile.inc, Line 57
+var DF_DEBUG_MODE	:= 1;
+0: decl global #0
+1: 1L
+2: :=
+3: #
+C:\pol2\pkg\systems\spawnregion\spawnRegion.inc, Line 16
+var npccfg          := ReadConfigFile(":*:npcdesc");
+4: decl global #1
+5: ":*:npcdesc"
+6: Func(4,0): ReadConfigFile
+7: :=
+8: #
+var regcfg          := dictionary;  // Regions config.
+9: decl global #2
+10: dictionary
+11: :=
+12: #
+var grpcfg          := dictionary;  // Groups config.
+13: decl global #3
+14: dictionary
+15: :=
+16: #
+var regidx          := 0;           // Region index for SpawnAllRegions.
+17: decl global #4
+18: 0L
+19: :=
+20: #
+var regionscfg, groupscfg, counter;
+21: decl global #5
+22: #
+23: decl global #6
+24: #
+25: decl global #7
+26: #
+UnloadConfigFile(":spawnregion:spawnregions");
+27: ":spawnregion:spawnregions"
+28: Func(4,3): UnloadConfigFile
+29: #
+UnloadConfigFile(":spawnregion:spawngroups");
+30: ":spawnregion:spawngroups"
+31: Func(4,3): UnloadConfigFile
+32: #
+C:\pol2\pkg\systems\spawnregion\death.src, Line 6
+var SpawnRegionData := DFOpenDataFile(":spawnregion:SpawnRegionData", 1);
+33: decl global #8
+34: ":spawnregion:SpawnRegionData"
+35: 1L
+36: 0L
+37: makelocal
+38: jmp userfunc @48
+39: :=
+40: #
+C:\pol2\pkg\systems\spawnregion\death.src, Line 8
+program npc_death(critter)
+41: get arg 'critter'
+SpawnRegionDeath(critter);
+42: local #0
+43: makelocal
+44: jmp userfunc @107
+45: #
+46: leave block(1)
+47: progend
+C:/pol2/scripts/include/datafile.inc, Line 59
+function DFOpenDataFile(filename, create:=DF_NO_CREATE, flags:=DF_KEYTYPE_STRIN
+48: pop param 'flags'
+49: pop param 'create'
+50: pop param 'filename'
+var temp := OpenDataFile(filename);
+51: decl local #3
+52: local #2
+53: Func(6,0): OpenDataFile
+54: :=
+55: #
+if ( (!temp) && (create) )
+56: local #3
+57: !
+58: local #1
+59: &&
+60: if false goto 74
+DF_OutPut("Creating data file: " + filename);
+61: "Creating data file: "
+62: local #2
+63: +
+64: makelocal
+65: jmp userfunc @133
+66: #
+CreateDataFile(filename, flags);
+67: local #2
+68: local #0
+69: Func(6,1): CreateDataFile
+70: #
+temp := OpenDataFile(filename);
+71: local #2
+72: Func(6,0): OpenDataFile
+73: local3 := 
+if ( temp )
+74: local #3
+75: if false goto 79
+return temp;
+76: local #3
+77: return
+78: goto105
+elseif ( create ) 
+79: local #1
+80: if false goto 105
+var errmsg := error;
+81: decl local #0
+82: error
+83: :=
+84: #
+errmsg.+errortext := "Could not open " + filename + ":" + temp.errortext;
+85: local #4
+86: "errortext"
+87: .+
+88: "Could not open "
+89: local #2
+90: +
+91: ":"
+92: +
+93: local #3
+94: get member 'errortext'
+95: +
+96: := #
+DF_OutPut(errmsg.errortext);
+97: local #4
+98: get member 'errortext'
+99: makelocal
+100: jmp userfunc @133
+101: #
+return errmsg;
+102: local #4
+103: return
+104: leave block(1)
+105: 0L
+106: return
+C:\pol2\pkg\systems\spawnregion\spawnRegion.inc, Line 197
+function SpawnRegionDeath(byref corpse)
+107: pop param byref 'corpse'
+var regdata := GetObjProperty(corpse, "SpawnRegion");
+108: decl local #1
+109: local #0
+110: "SpawnRegion"
+111: Func(2,3): GetObjProperty
+112: :=
+113: #
+if(!regdata)
+114: local #1
+115: if true goto 118
+return;
+116: ""
+117: return
+RemoveSerialFromGroup(regdata[1], regdata[2], CInt(GetObjProperty(corpse, "AiSe
+118: local #1
+119: 1L
+120: [] 1
+121: local #1
+122: 2L
+123: [] 1
+124: local #0
+125: "AiSerial"
+126: Func(2,3): GetObjProperty
+127: Func(0,3): CInt
+128: makelocal
+129: jmp userfunc @141
+130: #
+131: 0L
+132: return
+C:/pol2/scripts/include/datafile.inc, Line 140
+function DF_OutPut(text)
+133: pop param 'text'
+if ( DF_DEBUG_MODE )
+134: global #0
+135: if false goto 139
+SysLog(text);
+136: local #0
+137: Func(3,0): syslog
+138: #
+139: 0L
+140: return
+C:\pol2\pkg\systems\spawnregion\spawnRegion.inc, Line 205
+function RemoveSerialFromGroup(region, group, serial)
+141: pop param 'serial'
+142: pop param 'group'
+143: pop param 'region'
+set_critical(1);
+144: 1L
+145: Func(3,1): set_critical
+146: #
+var spawns := GetGroupSpawns(region, group);
+147: decl local #3
+148: local #2
+149: local #1
+150: makelocal
+151: jmp userfunc @270
+152: :=
+153: #
+var holder := array;
+154: decl local #4
+155: array
+156: :=
+157: #
+foreach thing in spawns
+158: local #3
+159: initforeach @168
+if(thing != serial)
+160: local #5
+161: local #0
+162: <>
+163: if false goto 168
+holder.append(thing);
+164: local #4
+165: local #5
+166: Call Method append (1 params)
+167: #
+168: stepforeach @160
+169: leave block(3)
+SetGroupSpawns(region, group, holder);
+170: local #2
+171: local #1
+172: local #4
+173: makelocal
+174: jmp userfunc @181
+175: #
+set_critical(0);
+176: 0L
+177: Func(3,1): set_critical
+178: #
+179: 0L
+180: return
+C:\pol2\pkg\systems\spawnregion\spawnRegion.inc, Line 291
+function SetGroupSpawns(region, group, byref spawns)
+181: pop param byref 'spawns'
+182: pop param 'group'
+183: pop param 'region'
+set_critical(1);
+184: 1L
+185: Func(3,1): set_critical
+186: #
+var rgroups := DFFindElement(SpawnRegionData, region, 1);
+187: decl local #3
+188: global #8
+189: local #2
+190: 1L
+191: makelocal
+192: jmp userfunc @205
+193: :=
+194: #
+rgroups.SetProp(group, spawns);
+195: local #3
+196: local #1
+197: local #0
+198: Call Method setprop (2 params)
+199: #
+set_critical(0);
+200: 0L
+201: Func(3,1): set_critical
+202: #
+203: 0L
+204: return
+C:/pol2/scripts/include/datafile.inc, Line 89
+function DFFindElement(byref file_ref, elem_name, create:=DF_NO_CREATE)
+205: pop param 'create'
+206: pop param 'elem_name'
+207: pop param byref 'file_ref'
+var temp := file_ref.FindElement( cstr(elem_name) );
+208: decl local #3
+209: local #2
+210: local #1
+211: Func(0,2): CStr
+212: Call Method findelement (1 params)
+213: :=
+214: #
+if (!temp && create)
+215: local #3
+216: !
+217: local #0
+218: &&
+219: if false goto 237
+DF_OutPut("Creating elem: " +  cstr(elem_name) );
+220: "Creating elem: "
+221: local #1
+222: Func(0,2): CStr
+223: +
+224: makelocal
+225: jmp userfunc @133
+226: #
+file_ref.CreateElement( cstr(elem_name) );
+227: local #2
+228: local #1
+229: Func(0,2): CStr
+230: Call Method createelement (1 params)
+231: #
+temp := file_ref.FindElement( cstr(elem_name) );
+232: local #2
+233: local #1
+234: Func(0,2): CStr
+235: Call Method findelement (1 params)
+236: local3 := 
+if ( temp )
+237: local #3
+238: if false goto 242
+return temp;
+239: local #3
+240: return
+241: goto268
+elseif (create)
+242: local #0
+243: if false goto 268
+var errmsg := error;
+244: decl local #0
+245: error
+246: :=
+247: #
+errmsg.+errortext := "Could not open data elem " + elem_name + ":" + temp.error
+248: local #4
+249: "errortext"
+250: .+
+251: "Could not open data elem "
+252: local #1
+253: +
+254: ":"
+255: +
+256: local #3
+257: get member 'errortext'
+258: +
+259: := #
+DF_OutPut(errmsg.errortext);
+260: local #4
+261: get member 'errortext'
+262: makelocal
+263: jmp userfunc @133
+264: #
+return errmsg;
+265: local #4
+266: return
+267: leave block(1)
+268: 0L
+269: return
+C:\pol2\pkg\systems\spawnregion\spawnRegion.inc, Line 263
+function GetGroupSpawns(region, group)
+270: pop param 'group'
+271: pop param 'region'
+var rgroups := DFFindElement(SpawnRegionData, region, 1);
+272: decl local #2
+273: global #8
+274: local #1
+275: 1L
+276: makelocal
+277: jmp userfunc @205
+278: :=
+279: #
+var sp := rgroups.GetProp(group);
+280: decl local #3
+281: local #2
+282: local #0
+283: Call Method getprop (1 params)
+284: :=
+285: #
+if (sp)
+286: local #3
+287: if false goto 291
+return sp;
+288: local #3
+289: return
+290: goto298
+rgroups.SetProp(group, array);
+291: local #2
+292: local #0
+293: array
+294: Call Method setprop (2 params)
+295: #
+return array;
+296: array
+297: return
+298: 0L
+299: return

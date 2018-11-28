@@ -1,0 +1,39 @@
+C:\pol2\pkg\items\sysbook\textcmd\seer\bookLock.src, Line 4
+program textcmd_booklock(who)
+use os;
+0: get arg 'who'
+SendSysMessage(who, "Target the book you wish to make read-only");
+1: local #0
+2: "Target the book you wish to make read-only"
+3: 3L
+4: 1000L
+5: Func(2,0): SendSysMessage
+6: #
+var trg := Target(who, TGTOPT_NOCHECK_LOS);
+7: decl local #1
+8: local #0
+9: 0L
+10: Func(2,1): Target
+11: :=
+12: #
+if(!trg)
+13: local #1
+14: if true goto 23
+SendSysMessage(who, "Canceled");
+15: local #0
+16: "Canceled"
+17: 3L
+18: 1000L
+19: Func(2,0): SendSysMessage
+20: #
+return;
+21: ""
+22: progend
+SetObjProperty(trg, "NoWrite", 1);
+23: local #1
+24: "NoWrite"
+25: 1L
+26: Func(2,2): SetObjProperty
+27: #
+28: leave block(2)
+29: progend

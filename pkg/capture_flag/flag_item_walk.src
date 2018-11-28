@@ -1,0 +1,15 @@
+use uo;
+use os;
+
+program flag_walk(who, flag)
+if(who.dead)
+return;
+endif
+
+SendSysMessage(who, "Agora voce esta com o Flag.",3,95);
+var pessoa:=SetObjProperty(flag, "serial_pessoa", who.serial);
+SetObjProperty(who, "#Flag", 1);
+///    flag.usescript :=   ":capture_flag:flag_seguir";
+///    RestartScript(flag);
+start_script("flag_seguir", flag);
+endprogram

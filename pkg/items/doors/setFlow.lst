@@ -1,0 +1,1611 @@
+C:\pol2\pkg\items\doors\setFlow.src, Line 5
+program set_flow(house)
+use cfgfile;
+0: get arg 'house'
+var doordesc := ReadConfigFile("itemdesc");
+1: decl local #1
+2: "itemdesc"
+3: Func(4,0): ReadConfigFile
+4: :=
+5: #
+var housetype := house.objtype;
+6: decl local #2
+7: local #0
+8: get member 'objtype'
+9: :=
+10: #
+case(housetype)
+11: local #2
+12: casejmp
+	24672: @13
+	24673: @53
+	24674: @93
+	24675: @133
+	24676: @173
+	24691: @213
+	24677: @253
+	24680: @406
+	24678: @557
+	24681: @708
+	24688: @897
+	24689: @978
+	24690: @1199
+	default: @1389
+foreach doors in ListItemsAtLocation((house.x),(house.y+3),(house.z+7))
+13: local #0
+14: get member 'x'
+15: local #0
+16: get member 'y'
+17: 3L
+18: +
+19: local #0
+20: get member 'z'
+21: 7L
+22: +
+23: Func(2,0): ListItemsAtLocation
+24: initforeach @50
+if(doordesc[doors.objtype].doortype)
+25: local #1
+26: local #3
+27: get member 'objtype'
+28: [] 1
+29: get member 'doortype'
+30: if false goto 50
+if (!GetObjProperty(doors, "Flow"))
+31: local #3
+32: "Flow"
+33: Func(2,1): GetObjProperty
+34: if true goto 40
+SetObjProperty(doors, "Flow", "N");
+35: local #3
+36: "Flow"
+37: "N"
+38: Func(2,2): SetObjProperty
+39: #
+SetObjProperty(doors, "Front", 1);
+40: local #3
+41: "Front"
+42: 1L
+43: Func(2,2): SetObjProperty
+44: #
+SetObjProperty(doors, "UseFlow", 1);
+45: local #3
+46: "UseFlow"
+47: 1L
+48: Func(2,2): SetObjProperty
+49: #
+50: stepforeach @25
+51: leave block(3)
+52: goto1389
+foreach doors in ListItemsAtLocation((house.x),(house.y+3),(house.z+7))
+53: local #0
+54: get member 'x'
+55: local #0
+56: get member 'y'
+57: 3L
+58: +
+59: local #0
+60: get member 'z'
+61: 7L
+62: +
+63: Func(2,0): ListItemsAtLocation
+64: initforeach @90
+if(doordesc[doors.objtype].doortype)
+65: local #1
+66: local #3
+67: get member 'objtype'
+68: [] 1
+69: get member 'doortype'
+70: if false goto 90
+if (!GetObjProperty(doors, "Flow"))
+71: local #3
+72: "Flow"
+73: Func(2,1): GetObjProperty
+74: if true goto 80
+SetObjProperty(doors, "Flow", "N");
+75: local #3
+76: "Flow"
+77: "N"
+78: Func(2,2): SetObjProperty
+79: #
+SetObjProperty(doors, "Front", 1);
+80: local #3
+81: "Front"
+82: 1L
+83: Func(2,2): SetObjProperty
+84: #
+SetObjProperty(doors, "UseFlow", 1);
+85: local #3
+86: "UseFlow"
+87: 1L
+88: Func(2,2): SetObjProperty
+89: #
+90: stepforeach @65
+91: leave block(3)
+92: goto1389
+foreach doors in ListItemsAtLocation((house.x),(house.y+3),(house.z+7))
+93: local #0
+94: get member 'x'
+95: local #0
+96: get member 'y'
+97: 3L
+98: +
+99: local #0
+100: get member 'z'
+101: 7L
+102: +
+103: Func(2,0): ListItemsAtLocation
+104: initforeach @130
+if(doordesc[doors.objtype].doortype)
+105: local #1
+106: local #3
+107: get member 'objtype'
+108: [] 1
+109: get member 'doortype'
+110: if false goto 130
+if (!GetObjProperty(doors, "Flow"))
+111: local #3
+112: "Flow"
+113: Func(2,1): GetObjProperty
+114: if true goto 120
+SetObjProperty(doors, "Flow", "N");
+115: local #3
+116: "Flow"
+117: "N"
+118: Func(2,2): SetObjProperty
+119: #
+SetObjProperty(doors, "Front", 1);
+120: local #3
+121: "Front"
+122: 1L
+123: Func(2,2): SetObjProperty
+124: #
+SetObjProperty(doors, "UseFlow", 1);
+125: local #3
+126: "UseFlow"
+127: 1L
+128: Func(2,2): SetObjProperty
+129: #
+130: stepforeach @105
+131: leave block(3)
+132: goto1389
+foreach doors in ListItemsAtLocation((house.x),(house.y+3),(house.z+7))
+133: local #0
+134: get member 'x'
+135: local #0
+136: get member 'y'
+137: 3L
+138: +
+139: local #0
+140: get member 'z'
+141: 7L
+142: +
+143: Func(2,0): ListItemsAtLocation
+144: initforeach @170
+if(doordesc[doors.objtype].doortype)
+145: local #1
+146: local #3
+147: get member 'objtype'
+148: [] 1
+149: get member 'doortype'
+150: if false goto 170
+if (!GetObjProperty(doors, "Flow"))
+151: local #3
+152: "Flow"
+153: Func(2,1): GetObjProperty
+154: if true goto 160
+SetObjProperty(doors, "Flow", "N");
+155: local #3
+156: "Flow"
+157: "N"
+158: Func(2,2): SetObjProperty
+159: #
+SetObjProperty(doors, "Front", 1);
+160: local #3
+161: "Front"
+162: 1L
+163: Func(2,2): SetObjProperty
+164: #
+SetObjProperty(doors, "UseFlow", 1);
+165: local #3
+166: "UseFlow"
+167: 1L
+168: Func(2,2): SetObjProperty
+169: #
+170: stepforeach @145
+171: leave block(3)
+172: goto1389
+foreach doors in ListItemsAtLocation((house.x),(house.y+3),(house.z+7))
+173: local #0
+174: get member 'x'
+175: local #0
+176: get member 'y'
+177: 3L
+178: +
+179: local #0
+180: get member 'z'
+181: 7L
+182: +
+183: Func(2,0): ListItemsAtLocation
+184: initforeach @210
+if(doordesc[doors.objtype].doortype)
+185: local #1
+186: local #3
+187: get member 'objtype'
+188: [] 1
+189: get member 'doortype'
+190: if false goto 210
+if (!GetObjProperty(doors, "Flow"))
+191: local #3
+192: "Flow"
+193: Func(2,1): GetObjProperty
+194: if true goto 200
+SetObjProperty(doors, "Flow", "N");
+195: local #3
+196: "Flow"
+197: "N"
+198: Func(2,2): SetObjProperty
+199: #
+SetObjProperty(doors, "Front", 1);
+200: local #3
+201: "Front"
+202: 1L
+203: Func(2,2): SetObjProperty
+204: #
+SetObjProperty(doors, "UseFlow", 1);
+205: local #3
+206: "UseFlow"
+207: 1L
+208: Func(2,2): SetObjProperty
+209: #
+210: stepforeach @185
+211: leave block(3)
+212: goto1389
+foreach doors in ListItemsAtLocation((house.x),(house.y+3),(house.z+7))
+213: local #0
+214: get member 'x'
+215: local #0
+216: get member 'y'
+217: 3L
+218: +
+219: local #0
+220: get member 'z'
+221: 7L
+222: +
+223: Func(2,0): ListItemsAtLocation
+224: initforeach @250
+if(doordesc[doors.objtype].doortype)
+225: local #1
+226: local #3
+227: get member 'objtype'
+228: [] 1
+229: get member 'doortype'
+230: if false goto 250
+if (!GetObjProperty(doors, "Flow"))
+231: local #3
+232: "Flow"
+233: Func(2,1): GetObjProperty
+234: if true goto 240
+SetObjProperty(doors, "Flow", "N");
+235: local #3
+236: "Flow"
+237: "N"
+238: Func(2,2): SetObjProperty
+239: #
+SetObjProperty(doors, "Front", 1);
+240: local #3
+241: "Front"
+242: 1L
+243: Func(2,2): SetObjProperty
+244: #
+SetObjProperty(doors, "UseFlow", 1);
+245: local #3
+246: "UseFlow"
+247: 1L
+248: Func(2,2): SetObjProperty
+249: #
+250: stepforeach @225
+251: leave block(3)
+252: goto1389
+foreach doors in ListItemsAtLocation((house.x-3),(house.y-1),(house.z+7))
+253: local #0
+254: get member 'x'
+255: 3L
+256: -
+257: local #0
+258: get member 'y'
+259: 1L
+260: -
+261: local #0
+262: get member 'z'
+263: 7L
+264: +
+265: Func(2,0): ListItemsAtLocation
+266: initforeach @287
+if(doordesc[doors.objtype].doortype)
+267: local #1
+268: local #3
+269: get member 'objtype'
+270: [] 1
+271: get member 'doortype'
+272: if false goto 287
+if(!GetObjProperty(doors, "Flow"))
+273: local #3
+274: "Flow"
+275: Func(2,1): GetObjProperty
+276: if true goto 287
+SetObjProperty(doors, "Flow", "N");
+277: local #3
+278: "Flow"
+279: "N"
+280: Func(2,2): SetObjProperty
+281: #
+SetObjProperty(doors, "UseFlow", 1);
+282: local #3
+283: "UseFlow"
+284: 1L
+285: Func(2,2): SetObjProperty
+286: #
+287: stepforeach @267
+288: leave block(3)
+foreach doors in ListItemsAtLocation((house.x+3),(house.y-1),(house.z+7))
+289: local #0
+290: get member 'x'
+291: 3L
+292: +
+293: local #0
+294: get member 'y'
+295: 1L
+296: -
+297: local #0
+298: get member 'z'
+299: 7L
+300: +
+301: Func(2,0): ListItemsAtLocation
+302: initforeach @323
+if (doordesc[doors.objtype].doortype)
+303: local #1
+304: local #3
+305: get member 'objtype'
+306: [] 1
+307: get member 'doortype'
+308: if false goto 323
+if (!GetObjProperty(doors, "Flow"))
+309: local #3
+310: "Flow"
+311: Func(2,1): GetObjProperty
+312: if true goto 323
+SetObjProperty(doors, "Flow", "N");
+313: local #3
+314: "Flow"
+315: "N"
+316: Func(2,2): SetObjProperty
+317: #
+SetObjProperty(doors, "UseFlow", 1);
+318: local #3
+319: "UseFlow"
+320: 1L
+321: Func(2,2): SetObjProperty
+322: #
+323: stepforeach @303
+324: leave block(3)
+foreach doors in ListItemsAtLocation((house.x-1),(house.y+6),(house.z+7))
+325: local #0
+326: get member 'x'
+327: 1L
+328: -
+329: local #0
+330: get member 'y'
+331: 6L
+332: +
+333: local #0
+334: get member 'z'
+335: 7L
+336: +
+337: Func(2,0): ListItemsAtLocation
+338: initforeach @364
+if(doordesc[doors.objtype].doortype)
+339: local #1
+340: local #3
+341: get member 'objtype'
+342: [] 1
+343: get member 'doortype'
+344: if false goto 364
+if(!GetObjProperty(doors, "Flow"))
+345: local #3
+346: "Flow"
+347: Func(2,1): GetObjProperty
+348: if true goto 354
+SetObjProperty(doors, "Flow", "N");
+349: local #3
+350: "Flow"
+351: "N"
+352: Func(2,2): SetObjProperty
+353: #
+SetObjProperty(doors, "Front", 1);
+354: local #3
+355: "Front"
+356: 1L
+357: Func(2,2): SetObjProperty
+358: #
+SetObjProperty(doors, "UseFlow", 1);
+359: local #3
+360: "UseFlow"
+361: 1L
+362: Func(2,2): SetObjProperty
+363: #
+364: stepforeach @339
+365: leave block(3)
+foreach doors in ListItemsAtLocation((house.x),(house.y+6),(house.z+7))
+366: local #0
+367: get member 'x'
+368: local #0
+369: get member 'y'
+370: 6L
+371: +
+372: local #0
+373: get member 'z'
+374: 7L
+375: +
+376: Func(2,0): ListItemsAtLocation
+377: initforeach @403
+if(doordesc[doors.objtype].doortype)
+378: local #1
+379: local #3
+380: get member 'objtype'
+381: [] 1
+382: get member 'doortype'
+383: if false goto 403
+if(!GetObjProperty(doors, "Flow"))
+384: local #3
+385: "Flow"
+386: Func(2,1): GetObjProperty
+387: if true goto 393
+SetObjProperty(doors, "Flow", "N");
+388: local #3
+389: "Flow"
+390: "N"
+391: Func(2,2): SetObjProperty
+392: #
+SetObjProperty(doors, "Front", 1);
+393: local #3
+394: "Front"
+395: 1L
+396: Func(2,2): SetObjProperty
+397: #
+SetObjProperty(doors, "UseFlow", 1);
+398: local #3
+399: "UseFlow"
+400: 1L
+401: Func(2,2): SetObjProperty
+402: #
+403: stepforeach @378
+404: leave block(3)
+405: goto1389
+foreach doors in ListItemsAtLocation((house.x-3),house.y,house.z+7)
+406: local #0
+407: get member 'x'
+408: 3L
+409: -
+410: local #0
+411: get member 'y'
+412: local #0
+413: get member 'z'
+414: 7L
+415: +
+416: Func(2,0): ListItemsAtLocation
+417: initforeach @438
+if (doordesc[doors.objtype].doortype)
+418: local #1
+419: local #3
+420: get member 'objtype'
+421: [] 1
+422: get member 'doortype'
+423: if false goto 438
+if (!GetObjProperty(doors, "Flow"))
+424: local #3
+425: "Flow"
+426: Func(2,1): GetObjProperty
+427: if true goto 433
+SetObjProperty(doors, "Flow", "N");
+428: local #3
+429: "Flow"
+430: "N"
+431: Func(2,2): SetObjProperty
+432: #
+SetObjProperty(doors, "UseFlow", 1);
+433: local #3
+434: "UseFlow"
+435: 1L
+436: Func(2,2): SetObjProperty
+437: #
+438: stepforeach @418
+439: leave block(3)
+foreach doors in ListItemsAtLocation((house.x-3),(house.y+6),(house.z+7))
+440: local #0
+441: get member 'x'
+442: 3L
+443: -
+444: local #0
+445: get member 'y'
+446: 6L
+447: +
+448: local #0
+449: get member 'z'
+450: 7L
+451: +
+452: Func(2,0): ListItemsAtLocation
+453: initforeach @479
+if (doordesc[doors.objtype].doortype)
+454: local #1
+455: local #3
+456: get member 'objtype'
+457: [] 1
+458: get member 'doortype'
+459: if false goto 479
+if (!GetObjProperty(doors, "Flow"))
+460: local #3
+461: "Flow"
+462: Func(2,1): GetObjProperty
+463: if true goto 469
+SetObjProperty(doors, "Flow", "N");
+464: local #3
+465: "Flow"
+466: "N"
+467: Func(2,2): SetObjProperty
+468: #
+SetObjProperty(doors, "Front", 1);
+469: local #3
+470: "Front"
+471: 1L
+472: Func(2,2): SetObjProperty
+473: #
+SetObjProperty(doors, "UseFlow", 1);
+474: local #3
+475: "UseFlow"
+476: 1L
+477: Func(2,2): SetObjProperty
+478: #
+479: stepforeach @454
+480: leave block(3)
+foreach doors in ListItemsAtLocation((house.x-2),(house.y+6),(house.z+7))
+481: local #0
+482: get member 'x'
+483: 2L
+484: -
+485: local #0
+486: get member 'y'
+487: 6L
+488: +
+489: local #0
+490: get member 'z'
+491: 7L
+492: +
+493: Func(2,0): ListItemsAtLocation
+494: initforeach @520
+if (doordesc[doors.objtype].doortype)
+495: local #1
+496: local #3
+497: get member 'objtype'
+498: [] 1
+499: get member 'doortype'
+500: if false goto 520
+if (!GetObjProperty(doors, "Flow"))
+501: local #3
+502: "Flow"
+503: Func(2,1): GetObjProperty
+504: if true goto 510
+SetObjProperty(doors, "Flow", "N");
+505: local #3
+506: "Flow"
+507: "N"
+508: Func(2,2): SetObjProperty
+509: #
+SetObjProperty(doors, "Front", 1);
+510: local #3
+511: "Front"
+512: 1L
+513: Func(2,2): SetObjProperty
+514: #
+SetObjProperty(doors, "UseFlow", 1);
+515: local #3
+516: "UseFlow"
+517: 1L
+518: Func(2,2): SetObjProperty
+519: #
+520: stepforeach @495
+521: leave block(3)
+foreach doors in ListItemsAtLocation((house.x-3),(house.y),(house.z+27))
+522: local #0
+523: get member 'x'
+524: 3L
+525: -
+526: local #0
+527: get member 'y'
+528: local #0
+529: get member 'z'
+530: 27L
+531: +
+532: Func(2,0): ListItemsAtLocation
+533: initforeach @554
+if (doordesc[doors.objtype].doortype)
+534: local #1
+535: local #3
+536: get member 'objtype'
+537: [] 1
+538: get member 'doortype'
+539: if false goto 554
+if (!GetObjProperty(doors, "Flow"))
+540: local #3
+541: "Flow"
+542: Func(2,1): GetObjProperty
+543: if true goto 549
+SetObjProperty(doors, "Flow", "N");
+544: local #3
+545: "Flow"
+546: "N"
+547: Func(2,2): SetObjProperty
+548: #
+SetObjProperty(doors, "UseFlow", 1);
+549: local #3
+550: "UseFlow"
+551: 1L
+552: Func(2,2): SetObjProperty
+553: #
+554: stepforeach @534
+555: leave block(3)
+556: goto1389
+foreach doors in ListItemsAtLocation((house.x-3),house.y,house.z+7)
+557: local #0
+558: get member 'x'
+559: 3L
+560: -
+561: local #0
+562: get member 'y'
+563: local #0
+564: get member 'z'
+565: 7L
+566: +
+567: Func(2,0): ListItemsAtLocation
+568: initforeach @589
+if (doordesc[doors.objtype].doortype)
+569: local #1
+570: local #3
+571: get member 'objtype'
+572: [] 1
+573: get member 'doortype'
+574: if false goto 589
+if (!GetObjProperty(doors, "Flow"))
+575: local #3
+576: "Flow"
+577: Func(2,1): GetObjProperty
+578: if true goto 584
+SetObjProperty(doors, "Flow", "N");
+579: local #3
+580: "Flow"
+581: "N"
+582: Func(2,2): SetObjProperty
+583: #
+SetObjProperty(doors, "UseFlow", 1);
+584: local #3
+585: "UseFlow"
+586: 1L
+587: Func(2,2): SetObjProperty
+588: #
+589: stepforeach @569
+590: leave block(3)
+foreach doors in ListItemsAtLocation((house.x-3),(house.y+6),(house.z+7))
+591: local #0
+592: get member 'x'
+593: 3L
+594: -
+595: local #0
+596: get member 'y'
+597: 6L
+598: +
+599: local #0
+600: get member 'z'
+601: 7L
+602: +
+603: Func(2,0): ListItemsAtLocation
+604: initforeach @630
+if (doordesc[doors.objtype].doortype)
+605: local #1
+606: local #3
+607: get member 'objtype'
+608: [] 1
+609: get member 'doortype'
+610: if false goto 630
+if (!GetObjProperty(doors, "Flow"))
+611: local #3
+612: "Flow"
+613: Func(2,1): GetObjProperty
+614: if true goto 620
+SetObjProperty(doors, "Flow", "N");
+615: local #3
+616: "Flow"
+617: "N"
+618: Func(2,2): SetObjProperty
+619: #
+SetObjProperty(doors, "Front", 1);
+620: local #3
+621: "Front"
+622: 1L
+623: Func(2,2): SetObjProperty
+624: #
+SetObjProperty(doors, "UseFlow", 1);
+625: local #3
+626: "UseFlow"
+627: 1L
+628: Func(2,2): SetObjProperty
+629: #
+630: stepforeach @605
+631: leave block(3)
+foreach doors in ListItemsAtLocation((house.x-2),(house.y+6),(house.z+7))
+632: local #0
+633: get member 'x'
+634: 2L
+635: -
+636: local #0
+637: get member 'y'
+638: 6L
+639: +
+640: local #0
+641: get member 'z'
+642: 7L
+643: +
+644: Func(2,0): ListItemsAtLocation
+645: initforeach @671
+if (doordesc[doors.objtype].doortype)
+646: local #1
+647: local #3
+648: get member 'objtype'
+649: [] 1
+650: get member 'doortype'
+651: if false goto 671
+if (!GetObjProperty(doors, "Flow"))
+652: local #3
+653: "Flow"
+654: Func(2,1): GetObjProperty
+655: if true goto 661
+SetObjProperty(doors, "Flow", "N");
+656: local #3
+657: "Flow"
+658: "N"
+659: Func(2,2): SetObjProperty
+660: #
+SetObjProperty(doors, "Front", 1);
+661: local #3
+662: "Front"
+663: 1L
+664: Func(2,2): SetObjProperty
+665: #
+SetObjProperty(doors, "UseFlow", 1);
+666: local #3
+667: "UseFlow"
+668: 1L
+669: Func(2,2): SetObjProperty
+670: #
+671: stepforeach @646
+672: leave block(3)
+foreach doors in ListItemsAtLocation((house.x-3),(house.y),(house.z+27))
+673: local #0
+674: get member 'x'
+675: 3L
+676: -
+677: local #0
+678: get member 'y'
+679: local #0
+680: get member 'z'
+681: 27L
+682: +
+683: Func(2,0): ListItemsAtLocation
+684: initforeach @705
+if (doordesc[doors.objtype].doortype)
+685: local #1
+686: local #3
+687: get member 'objtype'
+688: [] 1
+689: get member 'doortype'
+690: if false goto 705
+if (!GetObjProperty(doors, "Flow"))
+691: local #3
+692: "Flow"
+693: Func(2,1): GetObjProperty
+694: if true goto 700
+SetObjProperty(doors, "Flow", "N");
+695: local #3
+696: "Flow"
+697: "N"
+698: Func(2,2): SetObjProperty
+699: #
+SetObjProperty(doors, "UseFlow", 1);
+700: local #3
+701: "UseFlow"
+702: 1L
+703: Func(2,2): SetObjProperty
+704: #
+705: stepforeach @685
+706: leave block(3)
+707: goto1389
+foreach doors in ListItemsAtLocation((house.x+3),(house.y-2),(house.z+6))
+708: local #0
+709: get member 'x'
+710: 3L
+711: +
+712: local #0
+713: get member 'y'
+714: 2L
+715: -
+716: local #0
+717: get member 'z'
+718: 6L
+719: +
+720: Func(2,0): ListItemsAtLocation
+721: initforeach @742
+if (doordesc[doors.objtype].doortype)
+722: local #1
+723: local #3
+724: get member 'objtype'
+725: [] 1
+726: get member 'doortype'
+727: if false goto 742
+if (!GetObjProperty(doors, "Flow"))
+728: local #3
+729: "Flow"
+730: Func(2,1): GetObjProperty
+731: if true goto 737
+SetObjProperty(doors, "Flow", "N");
+732: local #3
+733: "Flow"
+734: "N"
+735: Func(2,2): SetObjProperty
+736: #
+SetObjProperty(doors, "UseFlow", 1);
+737: local #3
+738: "UseFlow"
+739: 1L
+740: Func(2,2): SetObjProperty
+741: #
+742: stepforeach @722
+743: leave block(3)
+foreach doors in ListItemsAtLocation((house.x),(house.y+6),(house.z+6))
+744: local #0
+745: get member 'x'
+746: local #0
+747: get member 'y'
+748: 6L
+749: +
+750: local #0
+751: get member 'z'
+752: 6L
+753: +
+754: Func(2,0): ListItemsAtLocation
+755: initforeach @781
+if (doordesc[doors.objtype].doortype)
+756: local #1
+757: local #3
+758: get member 'objtype'
+759: [] 1
+760: get member 'doortype'
+761: if false goto 781
+if (!GetObjProperty(doors, "Flow"))
+762: local #3
+763: "Flow"
+764: Func(2,1): GetObjProperty
+765: if true goto 771
+SetObjProperty(doors, "Flow", "N");
+766: local #3
+767: "Flow"
+768: "N"
+769: Func(2,2): SetObjProperty
+770: #
+SetObjProperty(doors, "Front", 1);
+771: local #3
+772: "Front"
+773: 1L
+774: Func(2,2): SetObjProperty
+775: #
+SetObjProperty(doors, "UseFlow", 1);
+776: local #3
+777: "UseFlow"
+778: 1L
+779: Func(2,2): SetObjProperty
+780: #
+781: stepforeach @756
+782: leave block(3)
+foreach doors in ListItemsAtLocation((house.x+1),(house.y+6),(house.z+6))
+783: local #0
+784: get member 'x'
+785: 1L
+786: +
+787: local #0
+788: get member 'y'
+789: 6L
+790: +
+791: local #0
+792: get member 'z'
+793: 6L
+794: +
+795: Func(2,0): ListItemsAtLocation
+796: initforeach @822
+if (doordesc[doors.objtype].doortype)
+797: local #1
+798: local #3
+799: get member 'objtype'
+800: [] 1
+801: get member 'doortype'
+802: if false goto 822
+if (!GetObjProperty(doors, "Flow"))
+803: local #3
+804: "Flow"
+805: Func(2,1): GetObjProperty
+806: if true goto 812
+SetObjProperty(doors, "Flow", "N");
+807: local #3
+808: "Flow"
+809: "N"
+810: Func(2,2): SetObjProperty
+811: #
+SetObjProperty(doors, "Front", 1);
+812: local #3
+813: "Front"
+814: 1L
+815: Func(2,2): SetObjProperty
+816: #
+SetObjProperty(doors, "UseFlow", 1);
+817: local #3
+818: "UseFlow"
+819: 1L
+820: Func(2,2): SetObjProperty
+821: #
+822: stepforeach @797
+823: leave block(3)
+foreach doors in ListItemsAtLocation((house.x+1),(house.y+4),(house.z+26))
+824: local #0
+825: get member 'x'
+826: 1L
+827: +
+828: local #0
+829: get member 'y'
+830: 4L
+831: +
+832: local #0
+833: get member 'z'
+834: 26L
+835: +
+836: Func(2,0): ListItemsAtLocation
+837: initforeach @858
+if (doordesc[doors.objtype].doortype)
+838: local #1
+839: local #3
+840: get member 'objtype'
+841: [] 1
+842: get member 'doortype'
+843: if false goto 858
+if (!GetObjProperty(doors, "Flow"))
+844: local #3
+845: "Flow"
+846: Func(2,1): GetObjProperty
+847: if true goto 853
+SetObjProperty(doors, "Flow", "E");
+848: local #3
+849: "Flow"
+850: "E"
+851: Func(2,2): SetObjProperty
+852: #
+SetObjProperty(doors, "UseFlow", 1);
+853: local #3
+854: "UseFlow"
+855: 1L
+856: Func(2,2): SetObjProperty
+857: #
+858: stepforeach @838
+859: leave block(3)
+foreach doors in ListItemsAtLocation((house.x+1),(house.y+4),(house.z+46))
+860: local #0
+861: get member 'x'
+862: 1L
+863: +
+864: local #0
+865: get member 'y'
+866: 4L
+867: +
+868: local #0
+869: get member 'z'
+870: 46L
+871: +
+872: Func(2,0): ListItemsAtLocation
+873: initforeach @894
+if (doordesc[doors.objtype].doortype)
+874: local #1
+875: local #3
+876: get member 'objtype'
+877: [] 1
+878: get member 'doortype'
+879: if false goto 894
+if (!GetObjProperty(doors, "Flow"))
+880: local #3
+881: "Flow"
+882: Func(2,1): GetObjProperty
+883: if true goto 889
+SetObjProperty(doors, "Flow", "E");
+884: local #3
+885: "Flow"
+886: "E"
+887: Func(2,2): SetObjProperty
+888: #
+SetObjProperty(doors, "UseFlow", 1);
+889: local #3
+890: "UseFlow"
+891: 1L
+892: Func(2,2): SetObjProperty
+893: #
+894: stepforeach @874
+895: leave block(3)
+896: goto1389
+foreach doors in ListItemsAtLocation((house.x),(house.y+10),(house.z+6))
+897: local #0
+898: get member 'x'
+899: local #0
+900: get member 'y'
+901: 10L
+902: +
+903: local #0
+904: get member 'z'
+905: 6L
+906: +
+907: Func(2,0): ListItemsAtLocation
+908: initforeach @934
+if (doordesc[doors.objtype].doortype)
+909: local #1
+910: local #3
+911: get member 'objtype'
+912: [] 1
+913: get member 'doortype'
+914: if false goto 934
+if (!GetObjProperty(doors, "Flow"))
+915: local #3
+916: "Flow"
+917: Func(2,1): GetObjProperty
+918: if true goto 924
+SetObjProperty(doors, "Flow", "N");
+919: local #3
+920: "Flow"
+921: "N"
+922: Func(2,2): SetObjProperty
+923: #
+SetObjProperty(doors, "Front", 1);
+924: local #3
+925: "Front"
+926: 1L
+927: Func(2,2): SetObjProperty
+928: #
+SetObjProperty(doors, "UseFlow", 1);
+929: local #3
+930: "UseFlow"
+931: 1L
+932: Func(2,2): SetObjProperty
+933: #
+934: stepforeach @909
+935: leave block(3)
+foreach doors in ListItemsAtLocation((house.x+1),(house.y+10),(house.z+6))
+936: local #0
+937: get member 'x'
+938: 1L
+939: +
+940: local #0
+941: get member 'y'
+942: 10L
+943: +
+944: local #0
+945: get member 'z'
+946: 6L
+947: +
+948: Func(2,0): ListItemsAtLocation
+949: initforeach @975
+if (doordesc[doors.objtype].doortype)
+950: local #1
+951: local #3
+952: get member 'objtype'
+953: [] 1
+954: get member 'doortype'
+955: if false goto 975
+if (!GetObjProperty(doors, "Flow"))
+956: local #3
+957: "Flow"
+958: Func(2,1): GetObjProperty
+959: if true goto 965
+SetObjProperty(doors, "Flow", "N");
+960: local #3
+961: "Flow"
+962: "N"
+963: Func(2,2): SetObjProperty
+964: #
+SetObjProperty(doors, "Front", 1);
+965: local #3
+966: "Front"
+967: 1L
+968: Func(2,2): SetObjProperty
+969: #
+SetObjProperty(doors, "UseFlow", 1);
+970: local #3
+971: "UseFlow"
+972: 1L
+973: Func(2,2): SetObjProperty
+974: #
+975: stepforeach @950
+976: leave block(3)
+977: goto1389
+foreach doors in ListItemsAtLocation((house.x),(house.y+15),(house.z+6))
+978: local #0
+979: get member 'x'
+980: local #0
+981: get member 'y'
+982: 15L
+983: +
+984: local #0
+985: get member 'z'
+986: 6L
+987: +
+988: Func(2,0): ListItemsAtLocation
+989: initforeach @1015
+if (doordesc[doors.objtype].doortype)
+990: local #1
+991: local #3
+992: get member 'objtype'
+993: [] 1
+994: get member 'doortype'
+995: if false goto 1015
+if (!GetObjProperty(doors, "Flow"))
+996: local #3
+997: "Flow"
+998: Func(2,1): GetObjProperty
+999: if true goto 1005
+SetObjProperty(doors, "Flow", "N");
+1000: local #3
+1001: "Flow"
+1002: "N"
+1003: Func(2,2): SetObjProperty
+1004: #
+SetObjProperty(doors, "Front", 1);
+1005: local #3
+1006: "Front"
+1007: 1L
+1008: Func(2,2): SetObjProperty
+1009: #
+SetObjProperty(doors, "UseFlow", 1);
+1010: local #3
+1011: "UseFlow"
+1012: 1L
+1013: Func(2,2): SetObjProperty
+1014: #
+1015: stepforeach @990
+1016: leave block(3)
+foreach doors in ListItemsAtLocation((house.x+1),(house.y+15),(house.z+6))
+1017: local #0
+1018: get member 'x'
+1019: 1L
+1020: +
+1021: local #0
+1022: get member 'y'
+1023: 15L
+1024: +
+1025: local #0
+1026: get member 'z'
+1027: 6L
+1028: +
+1029: Func(2,0): ListItemsAtLocation
+1030: initforeach @1056
+if (doordesc[doors.objtype].doortype)
+1031: local #1
+1032: local #3
+1033: get member 'objtype'
+1034: [] 1
+1035: get member 'doortype'
+1036: if false goto 1056
+if (!GetObjProperty(doors, "Flow"))
+1037: local #3
+1038: "Flow"
+1039: Func(2,1): GetObjProperty
+1040: if true goto 1046
+SetObjProperty(doors, "Flow", "N");
+1041: local #3
+1042: "Flow"
+1043: "N"
+1044: Func(2,2): SetObjProperty
+1045: #
+SetObjProperty(doors, "Front", 1);
+1046: local #3
+1047: "Front"
+1048: 1L
+1049: Func(2,2): SetObjProperty
+1050: #
+SetObjProperty(doors, "UseFlow", 1);
+1051: local #3
+1052: "UseFlow"
+1053: 1L
+1054: Func(2,2): SetObjProperty
+1055: #
+1056: stepforeach @1031
+1057: leave block(3)
+foreach doors in ListItemsAtLocation((house.x),(house.y+11),(house.z+6))
+1058: local #0
+1059: get member 'x'
+1060: local #0
+1061: get member 'y'
+1062: 11L
+1063: +
+1064: local #0
+1065: get member 'z'
+1066: 6L
+1067: +
+1068: Func(2,0): ListItemsAtLocation
+1069: initforeach @1090
+if (doordesc[doors.objtype].doortype)
+1070: local #1
+1071: local #3
+1072: get member 'objtype'
+1073: [] 1
+1074: get member 'doortype'
+1075: if false goto 1090
+if (!GetObjProperty(doors, "Flow"))
+1076: local #3
+1077: "Flow"
+1078: Func(2,1): GetObjProperty
+1079: if true goto 1085
+SetObjProperty(doors, "Flow", "N");
+1080: local #3
+1081: "Flow"
+1082: "N"
+1083: Func(2,2): SetObjProperty
+1084: #
+SetObjProperty(doors, "UseFlow", 1);
+1085: local #3
+1086: "UseFlow"
+1087: 1L
+1088: Func(2,2): SetObjProperty
+1089: #
+1090: stepforeach @1070
+1091: leave block(3)
+foreach doors in ListItemsAtLocation((house.x+1),(house.y+11),(house.z+6))
+1092: local #0
+1093: get member 'x'
+1094: 1L
+1095: +
+1096: local #0
+1097: get member 'y'
+1098: 11L
+1099: +
+1100: local #0
+1101: get member 'z'
+1102: 6L
+1103: +
+1104: Func(2,0): ListItemsAtLocation
+1105: initforeach @1126
+if (doordesc[doors.objtype].doortype)
+1106: local #1
+1107: local #3
+1108: get member 'objtype'
+1109: [] 1
+1110: get member 'doortype'
+1111: if false goto 1126
+if (!GetObjProperty(doors, "Flow"))
+1112: local #3
+1113: "Flow"
+1114: Func(2,1): GetObjProperty
+1115: if true goto 1121
+SetObjProperty(doors, "Flow", "N");
+1116: local #3
+1117: "Flow"
+1118: "N"
+1119: Func(2,2): SetObjProperty
+1120: #
+SetObjProperty(doors, "UseFlow", 1);
+1121: local #3
+1122: "UseFlow"
+1123: 1L
+1124: Func(2,2): SetObjProperty
+1125: #
+1126: stepforeach @1106
+1127: leave block(3)
+foreach doors in ListItemsAtLocation((house.x),(house.y+5),(house.z+6))
+1128: local #0
+1129: get member 'x'
+1130: local #0
+1131: get member 'y'
+1132: 5L
+1133: +
+1134: local #0
+1135: get member 'z'
+1136: 6L
+1137: +
+1138: Func(2,0): ListItemsAtLocation
+1139: initforeach @1160
+if (doordesc[doors.objtype].doortype)
+1140: local #1
+1141: local #3
+1142: get member 'objtype'
+1143: [] 1
+1144: get member 'doortype'
+1145: if false goto 1160
+if (!GetObjProperty(doors, "Flow"))
+1146: local #3
+1147: "Flow"
+1148: Func(2,1): GetObjProperty
+1149: if true goto 1155
+SetObjProperty(doors, "Flow", "N");
+1150: local #3
+1151: "Flow"
+1152: "N"
+1153: Func(2,2): SetObjProperty
+1154: #
+SetObjProperty(doors, "UseFlow", 1);
+1155: local #3
+1156: "UseFlow"
+1157: 1L
+1158: Func(2,2): SetObjProperty
+1159: #
+1160: stepforeach @1140
+1161: leave block(3)
+foreach doors in ListItemsAtLocation((house.x+1),(house.y+5),(house.z+6))
+1162: local #0
+1163: get member 'x'
+1164: 1L
+1165: +
+1166: local #0
+1167: get member 'y'
+1168: 5L
+1169: +
+1170: local #0
+1171: get member 'z'
+1172: 6L
+1173: +
+1174: Func(2,0): ListItemsAtLocation
+1175: initforeach @1196
+if (doordesc[doors.objtype].doortype)
+1176: local #1
+1177: local #3
+1178: get member 'objtype'
+1179: [] 1
+1180: get member 'doortype'
+1181: if false goto 1196
+if (!GetObjProperty(doors, "Flow"))
+1182: local #3
+1183: "Flow"
+1184: Func(2,1): GetObjProperty
+1185: if true goto 1191
+SetObjProperty(doors, "Flow", "N");
+1186: local #3
+1187: "Flow"
+1188: "N"
+1189: Func(2,2): SetObjProperty
+1190: #
+SetObjProperty(doors, "UseFlow", 1);
+1191: local #3
+1192: "UseFlow"
+1193: 1L
+1194: Func(2,2): SetObjProperty
+1195: #
+1196: stepforeach @1176
+1197: leave block(3)
+1198: goto1389
+foreach doors in ListItemsAtLocation((house.x+1),(house.y-4),(house.z+7))
+1199: local #0
+1200: get member 'x'
+1201: 1L
+1202: +
+1203: local #0
+1204: get member 'y'
+1205: 4L
+1206: -
+1207: local #0
+1208: get member 'z'
+1209: 7L
+1210: +
+1211: Func(2,0): ListItemsAtLocation
+1212: initforeach @1233
+if (doordesc[doors.objtype].doortype)
+1213: local #1
+1214: local #3
+1215: get member 'objtype'
+1216: [] 1
+1217: get member 'doortype'
+1218: if false goto 1233
+if (!GetObjProperty(doors, "Flow"))
+1219: local #3
+1220: "Flow"
+1221: Func(2,1): GetObjProperty
+1222: if true goto 1228
+SetObjProperty(doors, "Flow", "W");
+1223: local #3
+1224: "Flow"
+1225: "W"
+1226: Func(2,2): SetObjProperty
+1227: #
+SetObjProperty(doors, "UseFlow", 1);
+1228: local #3
+1229: "UseFlow"
+1230: 1L
+1231: Func(2,2): SetObjProperty
+1232: #
+1233: stepforeach @1213
+1234: leave block(3)
+foreach doors in ListItemsAtLocation((house.x+4),(house.y-1),(house.z+7))
+1235: local #0
+1236: get member 'x'
+1237: 4L
+1238: +
+1239: local #0
+1240: get member 'y'
+1241: 1L
+1242: -
+1243: local #0
+1244: get member 'z'
+1245: 7L
+1246: +
+1247: Func(2,0): ListItemsAtLocation
+1248: initforeach @1269
+if (doordesc[doors.objtype].doortype)
+1249: local #1
+1250: local #3
+1251: get member 'objtype'
+1252: [] 1
+1253: get member 'doortype'
+1254: if false goto 1269
+if (!GetObjProperty(doors, "Flow"))
+1255: local #3
+1256: "Flow"
+1257: Func(2,1): GetObjProperty
+1258: if true goto 1264
+SetObjProperty(doors, "Flow", "N");
+1259: local #3
+1260: "Flow"
+1261: "N"
+1262: Func(2,2): SetObjProperty
+1263: #
+SetObjProperty(doors, "UseFlow", 1);
+1264: local #3
+1265: "UseFlow"
+1266: 1L
+1267: Func(2,2): SetObjProperty
+1268: #
+1269: stepforeach @1249
+1270: leave block(3)
+foreach doors in ListItemsAtLocation((house.x+1),(house.y+4),(house.z+7))
+1271: local #0
+1272: get member 'x'
+1273: 1L
+1274: +
+1275: local #0
+1276: get member 'y'
+1277: 4L
+1278: +
+1279: local #0
+1280: get member 'z'
+1281: 7L
+1282: +
+1283: Func(2,0): ListItemsAtLocation
+1284: initforeach @1305
+if (doordesc[doors.objtype].doortype)
+1285: local #1
+1286: local #3
+1287: get member 'objtype'
+1288: [] 1
+1289: get member 'doortype'
+1290: if false goto 1305
+if (!GetObjProperty(doors, "Flow"))
+1291: local #3
+1292: "Flow"
+1293: Func(2,1): GetObjProperty
+1294: if true goto 1300
+SetObjProperty(doors, "Flow", "E");
+1295: local #3
+1296: "Flow"
+1297: "E"
+1298: Func(2,2): SetObjProperty
+1299: #
+SetObjProperty(doors, "UseFlow", 1);
+1300: local #3
+1301: "UseFlow"
+1302: 1L
+1303: Func(2,2): SetObjProperty
+1304: #
+1305: stepforeach @1285
+1306: leave block(3)
+foreach doors in ListItemsAtLocation((house.x-4),(house.y+6),(house.z+7))
+1307: local #0
+1308: get member 'x'
+1309: 4L
+1310: -
+1311: local #0
+1312: get member 'y'
+1313: 6L
+1314: +
+1315: local #0
+1316: get member 'z'
+1317: 7L
+1318: +
+1319: Func(2,0): ListItemsAtLocation
+1320: initforeach @1346
+if (doordesc[doors.objtype].doortype)
+1321: local #1
+1322: local #3
+1323: get member 'objtype'
+1324: [] 1
+1325: get member 'doortype'
+1326: if false goto 1341
+if (!GetObjProperty(doors, "Flow"))
+1327: local #3
+1328: "Flow"
+1329: Func(2,1): GetObjProperty
+1330: if true goto 1336
+SetObjProperty(doors, "Flow", "N");
+1331: local #3
+1332: "Flow"
+1333: "N"
+1334: Func(2,2): SetObjProperty
+1335: #
+SetObjProperty(doors, "Front", 1);
+1336: local #3
+1337: "Front"
+1338: 1L
+1339: Func(2,2): SetObjProperty
+1340: #
+SetObjProperty(doors, "UseFlow", 1);
+1341: local #3
+1342: "UseFlow"
+1343: 1L
+1344: Func(2,2): SetObjProperty
+1345: #
+1346: stepforeach @1321
+1347: leave block(3)
+foreach doors in ListItemsAtLocation((house.x-3),(house.y+6),(house.z+7))
+1348: local #0
+1349: get member 'x'
+1350: 3L
+1351: -
+1352: local #0
+1353: get member 'y'
+1354: 6L
+1355: +
+1356: local #0
+1357: get member 'z'
+1358: 7L
+1359: +
+1360: Func(2,0): ListItemsAtLocation
+1361: initforeach @1387
+if (doordesc[doors.objtype].doortype)
+1362: local #1
+1363: local #3
+1364: get member 'objtype'
+1365: [] 1
+1366: get member 'doortype'
+1367: if false goto 1387
+if (!GetObjProperty(doors, "Flow"))
+1368: local #3
+1369: "Flow"
+1370: Func(2,1): GetObjProperty
+1371: if true goto 1377
+SetObjProperty(doors, "Flow", "N");
+1372: local #3
+1373: "Flow"
+1374: "N"
+1375: Func(2,2): SetObjProperty
+1376: #
+SetObjProperty(doors, "Front", 1);
+1377: local #3
+1378: "Front"
+1379: 1L
+1380: Func(2,2): SetObjProperty
+1381: #
+SetObjProperty(doors, "UseFlow", 1);
+1382: local #3
+1383: "UseFlow"
+1384: 1L
+1385: Func(2,2): SetObjProperty
+1386: #
+1387: stepforeach @1362
+1388: leave block(3)
+1389: leave block(3)
+1390: progend

@@ -1,0 +1,48 @@
+use uo; 
+use os; 
+
+include "include/dist";
+include "include/casas";
+
+program destrancar(who)
+
+var casa := who.multi; 
+ 
+if(!casa)
+SendSysMessage(who,"Voce nao esta em uma casa.");
+return;
+endif
+
+if(!Socio(who,casa))
+SendSysMessage(who, "Voce Precisa ser dono ou socio da casa para poder usar esse comando!"); 
+return;
+endif
+
+var itemptrancar := Target(who); 
+    
+if(!itemptrancar) 
+SendSysMessage(who, "Cancelado"); 
+return; 
+endif
+
+if(itemptrancar.movable == 1) 
+sendsysmessage(who, "Este item nao esta trancado"); 
+return; 
+endif
+
+if(itemptrancar.multi.serial != casa.serial)
+SendSysMessage(who,"Voce nao pode destrancar itens fora de sua casa.");
+return;
+endif
+
+if((GetObjProperty(itemptrancar, "lockeddown") == 1) && (itemptrancar.movable == 0)) 
+itemptrancar.movable := 1; 
+EraseObjProperty(itemptrancar, "lockeddown"); 
+EraseObjProperty(itemptrancar, "houseserial"); 
+SetObjProperty(casa, "numlockdowns", (GetObjProperty(casa, "numlockdowns") + 1)); 
+PrintTextAbovePrivate(itemptrancar, "*Destrancado*", who); 
+else 
+SendSysMessage(who, "Este item nao pode ser destrancado."); 
+return; 
+endif 
+endprogram

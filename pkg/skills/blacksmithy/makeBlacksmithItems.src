@@ -1,0 +1,1112 @@
+use cfgfile;
+use util;
+
+include ":gumps:gumps";
+include "include/attributes";
+include "include/gumpUtil";
+include "include/dist";
+include "util/repair";
+include "include/client";
+include "include/objtype";
+include "include/client";
+include "include/objtype";
+include "include/canAccess";
+include "include/toolWear";
+
+include "include/client";
+include "include/attributes";
+include "include/yesno";
+
+
+var itemcfg   := ReadConfigFile(":combat:itemdesc");
+var smith_cfg := ReadConfigFile("blacksmithy");
+gfref.x := 50;
+gfref.y := 50;
+var O := 501;
+
+program use_hammer(who, hammer)
+UnloadConfigFile(":blacksmithy:blacksmithy");
+var cont;
+  if(!can_access(who, hammer))
+    return;
+  endif
+  if(!hammer.movable)
+    SendSysMessage(who, "Voce nao pode usar isto.",9,89);
+    return;
+  endif
+  if(!ReserveItem(hammer))
+    SendSysMessage(who, "Voce nao pode usar isto.",9,89);
+    return;
+  endif
+var hand1 := (GetEquipmentByLayer(who, 1));
+  var hand2 := (GetEquipmentByLayer(who, 2));
+if((hand1.graphic > 1) && (hand1.graphic != 5091) || (hand2.graphic > 1) && (hand1.graphic != 5091))
+sendsysmessage(who, "Voce guardou o item que estava segurando em sua mochila para poder trabalhar.",9,89);
+MoveItemToContainer( hand1, who.backpack, 136, 101 );
+MoveItemToContainer( hand2, who.backpack, 137, 102 );
+endif
+equipitem(who, hammer);
+colocaritemsgump(who,cont, hammer);
+
+function repair_this(who)
+var itemcfg   := ReadConfigFile(":combat:itemdesc");
+var smith_cfg := ReadConfigFile("blacksmithy");
+
+  SendSysMessage(who, "Selecione o item que voce deseja reparar.",9,89);
+  var use_on := Target(who);
+
+if(!use_on)
+sendsysmessage(who,"Cancelado.",9,89);
+  return;
+endif
+  if(!can_access(who, use_on))
+    return;
+  endif
+  if(use_on.movable == 0)
+    SendSysMessage(who, "Voce nao pode reparar items trancado.",9,89);
+    return;
+  endif
+var dificuldadefazeritem := smith_cfg[use_on.objtype].dificuldade;
+var hp := use_on.hp;
+
+var rint := dificuldadefazeritem - randomint(10);
+if(!reparavel(use_on.objtype))
+sendsysmessage(who, "Voce nao pode reparar este item.",9,89);
+return;
+endif
+if(cint(hp) < use_on.maxhp - 4)
+Sendsysmessage(who, "Voce comeca a reparar os items...",9,89);
+     PerformAction(who, 0x0b);
+      sleepms(350);
+      PlaySoundEffect(who, SFX_ANVIL);
+      sleep(2); 
+      PerformAction(who, 0x0b);
+      PlaySoundEffect(who, SFX_ANVIL);
+      sleep(2);
+      PerformAction(who, 0x0b);
+      PlaySoundEffect(who, SFX_ANVIL);
+      sleep(2);
+
+
+else
+sendsysmessage(who, "Humm, Este item me parece estar como novo e nao precisa ser reformado.",9,89);
+return;
+endif
+  var modpts := Cint(GetEffectiveSkill(who, SKILLID_BLACKSMITHY) / 2 + randomdiceroll("135") + 10 );
+
+ var excmod := Cint(GetEffectiveSkill(who, SKILLID_ARMSLORE) / 2 + randomdiceroll("1d35") + 10);
+var aa := excmod - randomint(4) + modpts + randomint(25) + 10;
+         if((cint(aa) ) >= rint)
+Printtextabove(who, "OBA! Consegui Reforma-lo!");
+eraseobjproperty(use_on, "quebrar");
+sleepms(250);
+sendsysmessage(who, "Voce para de reformar items.",9,89);
+use_on.hp := use_on.maxhp - 5;
+else
+if(!getobjproperty(use_on, "quebrar"))
+sendsysmessage(who, "Voce nao consegue repara-lo e acaba avariando ele mais ainda",9,89);
+use_on.hp := use_on.hp - 5;
+setobjproperty(use_on, "quebrar",1);
+sleepms(250);
+sendsysmessage(who, "Voce para de reformar items.",9,89);
+else
+sendsysmessage(who, "Voce errou novamente para reformar e acabou quebrando o item",9,89);
+destroyitem(use_on);
+sleepms(250);
+sendsysmessage(who, "Voce para de reformar items.",9,89);
+return;
+endif
+endif
+
+endfunction
+
+function reparavel(what)
+  var elem := FindConfigElem(itemcfg, what);
+  var repairable := GetConfigInt(elem,"repairable");
+  if (repairable == 1)
+    return 1;
+  else
+    return 0;
+  endif
+endfunction
+
+ function makeblacksmithitems(who, what,  cont, hammer)
+
+  var anvil_near := 0;
+  foreach item in ListItemsNearLocation(who.x, who.y, who.z, 3)
+    if((item.objtype == 0x0faf) || (item.objtype == 0x0fb0))
+      anvil_near := 1;
+      break;
+    endif
+  endforeach
+  if(anvil_near == 0)
+    SendSysMessage(who, "Voce deve apoiar o material em uma bigorna para poder trabalhar",9,89);
+    return;
+  endif
+  var tname, skil, element, material, pts, points, maxhp, itemname;
+  var nme, excmod, val, num, rint, word, theitem, holder, dmg;
+  SendSysMessage(who, "Selecione o material que deseja usar.",9,89);
+  var use_on := Target(who);
+if(!use_on)
+sendsysmessage(who, "Cancelado",9,89);
+return;
+endif
+
+  if(!can_access(who, use_on))
+    return;
+  endif
+  if(!Accessible(who, use_on) || (Distance(who, use_on) > 2))
+    SendSysMessage(who, "Voce nao tem acesso ao item.",9,89);
+    return;
+  endif
+  var is_ingot := 0;
+  var ptmod :=0 ;
+
+
+
+maxhp    := smith_cfg[what].maxhp;
+  case(use_on.objtype)
+    0x6309: is_ingot := 1; ptmod := 0;  dmg := theitem.maxhp - 75;   ///Ferro
+    0x630b: is_ingot := 1; ptmod := 10; dmg := theitem.maxhp - 50;   ///Onyx
+    0x630c: is_ingot := 1; ptmod := 5;  dmg := theitem.maxhp - 40;   ///Cobre
+    0x6310: is_ingot := 1; ptmod := 20; dmg := theitem.maxhp - 10;   ///Verite
+    0x6313: is_ingot := 1; ptmod := 30; dmg := theitem.maxhp;        ///Esmeralda
+    0x6315: is_ingot := 1; ptmod := 35; dmg := theitem.maxhp;        ///quartzo
+    0x6402: is_ingot := 1; ptmod := 35; dmg := theitem.maxhp;        ///Cobalto
+    0x6400: is_ingot := 1; ptmod := 30; dmg := theitem.maxhp;        ///Criptonita
+    0x6401: is_ingot := 1; ptmod := 25; dmg := theitem.maxhp;        ///Manganes
+    0x6404: is_ingot := 1; ptmod := 25; dmg := theitem.maxhp;        ///Bauxita
+    0x6403: is_ingot := 1; ptmod := 25; dmg := theitem.maxhp;        ///Silicio
+endcase
+    if(GetAmount(use_on) < material)
+ sendsysmessage(who, "Materiais insuficientes...",9,89);
+return;
+endif
+  if(is_ingot == 0)
+    SendSysMessage(who, "Voce so pode usar lingotes..",9,89);
+    return;
+  endif
+  if(use_on.movable == 0)
+    SendSysMessage(who, "Voce nao pode usar lingotes trancados",9,89);
+    return;
+  endif
+   if(!Accessible(who, use_on))
+    SendSysMessage(who, "Voce so pode usar lingotes..",9,89);
+    return;
+  endif
+  if(!ReserveItem(use_on))
+    SendSysMessage(who, "O item ja esta em uso.",9,89);
+    return;
+  endif
+  if(!what)
+    SendSysMessage(who, "Cancelado",9,89);
+    return;
+  endif
+var amt := cint(SendTextEntryGump( who, "Selecione A Quantidade de itens a serem feitos(max 10) ", TE_STYLE_NORMAL,TE_CANCEL_ENABLE));
+if((amt > 10) || (!amt))
+sendsysmessage(who, "Cancelado",9,89);
+return;
+endif
+    itemname := smith_cfg[what].name;
+  material := Cint(smith_cfg[what].material);
+  skil     := Cint(smith_cfg[what].skill);
+  var dano  := Cint(smith_cfg[what].Damage);
+  points   := Cint(smith_cfg[what].points) * 2;
+  var counter := 0;
+  var x := who.x;
+  var y := who.y;
+  var modpts := Cint(GetEffectiveSkill(who, SKILLID_BLACKSMITHY) / 2 + randomdiceroll("1d50") + 15 );
+  pts := getpoints(who, skil, pts);
+  excmod := Cint(GetEffectiveSkill(who, SKILLID_ARMSLORE) / 2 + randomdiceroll("1d50") + 15);
+
+    while(counter < amt)
+    if(!GetAmount(use_on) >= material)
+sendsysmessage(who, "Materiais insuficientes",9,89);
+return;
+endif
+    if((who.x != x) || (who.y != y))
+      SendSysMessage(who, "Voce para de trabalhar.",9,89);
+      break;
+    endif
+    if(!hammer)
+      break;
+    endif
+ 
+     if(GetAmount(use_on) >= material)
+      PerformAction(who, 0x0b);
+      sleepms(350);
+      PlaySoundEffect(who, SFX_ANVIL);
+      sleep(2); 
+      PerformAction(who, 0x0b);
+      PlaySoundEffect(who, SFX_ANVIL);
+      sleep(2);
+      PerformAction(who, 0x0b);
+      PlaySoundEffect(who, SFX_ANVIL);
+      sleep(2);
+
+        theitem := CreateItemInContainer(who.backpack, what, 1);
+        //if(theitem)
+        ///  CheckToolWear (who, hammer, SKILLID_BLACKSMITHY);
+          if(!theitem.isa)
+            case(use_on.objtype)
+              0x6309:   nme := "Ferro "; 	theitem.color := 0x0;		theitem.dmg_mod:= 0; 	theitem.ar_mod := 1;
+              0x630c:   nme := "Cobre "; 	theitem.color := 0x845e;   	theitem.dmg_mod:= 1; 	theitem.ar_mod := 3;
+              0x630b:   nme := "Onyx "; 	theitem.color := 0x8455; 	theitem.dmg_mod:= 2; 	theitem.ar_mod := 6;
+	      0x6310:   nme := "Verite "; 	theitem.color := 0x889f; 	theitem.dmg_mod:= 8; 	theitem.ar_mod := 8;
+	      0x6403:   nme := "Silicio "; 	theitem.color := 71;	 	theitem.dmg_mod:= 10; 	theitem.ar_mod := 10;
+	      0x6404:   nme := "Bauxita "; 	theitem.color := 1161;	 	theitem.dmg_mod:= 14; 	theitem.ar_mod := 12;
+	      0x6401:   nme := "Manganes "; 	theitem.color := 92;	 	theitem.dmg_mod:= 15; 	theitem.ar_mod := 12;
+	      0x6400:   nme := "Criptonita "; 	theitem.color := 1166;	 	theitem.dmg_mod:= 16; 	theitem.ar_mod := 13;
+	      0x6313:   nme := "Esmeralda "; 	theitem.color := 88;	 	theitem.dmg_mod:= 17; 	theitem.ar_mod := 13;
+	      0x6315:   nme := "Quartzo Rosado "; theitem.color := 1165;	theitem.dmg_mod:= 18; 	theitem.ar_mod := 15;
+	      0x6402:   nme := "Cobalto "; 	theitem.color := 1151;		theitem.dmg_mod:= 20; 	theitem.ar_mod := 16;
+endcase
+          else
+            nme;
+          endif
+
+var dificuldadefazeritem := smith_cfg[what].dificuldade;
+    rint := dificuldadefazeritem - randomint(10);
+var aa :=excmod - randomint(4) + modpts + randomint(15);
+
+///sendsysmessage(who, "AA:" + cint(aa));
+///sendsysmessage(who, "AA:" + cint(rint));
+if((cint(aa) < rint - 20))
+sendsysmessage(who, "Voce destroi um pouco do material",9,89);
+destroyitem(theitem);
+var aaa := cint(material) / 2 + randomdiceroll("1d4") - randomdiceroll("1d3");
+///sendsysmessage(who, "Aa:" +aaa);
+SubtractAmount(use_on, aaa);
+counter := counter + 1;
+else
+
+  if(!SubtractAmount(use_on, material))
+          DestroyItem(theitem);
+                  return;
+          endif
+         if((cint(aa) ) >= rint)
+            theitem.quality := 1.2;
+            theitem.hp      := theitem.maxhp;
+                 tname := itemname + " Excepcional" + " [Feito por " + who.name + " ]";
+                     SendSysMessage(who, "Voce fez um item excepcional e colocou em sua mochila",9,89);
+  SetName(theitem, tname);
+     counter := counter + 1;
+
+else
+                 
+        SendSysMessage( who, "Voce criou um item e colocou em sua mochila.",9,89 );
+ tname := itemname ;
+           theitem.quality := 1.0;
+              theitem.hp := theitem.maxhp - 5;
+ SetName(theitem, tname);
+     counter := counter + 1;
+
+          endif
+
+endif
+else
+Sendsysmessage(who, "Materiais Insuficientes....",9,89);
+return;
+endif
+
+ 
+     endwhile
+
+endfunction
+
+function GetBaseMod(skill, diff, emod)
+  var holder := 0;
+  var max := diff + 20;
+  var min := diff - 20;
+  if(skill > max)
+    holder := 20;
+  elseif((skill <= max) and (skill >= min))
+    holder := 20 + Cint((max - skill) / 2);
+  else
+    holder :=  40;
+  endif
+  return Cint(holder - emod);
+endfunction
+
+
+function getpoints(who, diff, pts)
+  var skill := GetEffectiveSkill(who, SKILLID_BLACKSMITHY);
+  if(diff > 20)
+    diff := diff - 20;
+  else
+    diff := 1;
+  endif
+  if(skill > diff)
+    if((skill - diff) <= 5)
+      pts := pts;
+    elseif((skill - diff) <= 10)
+      pts := (pts * 3) / 4;
+    elseif((skill - diff) <= 15)
+      pts := pts / 2;
+    elseif((skill - diff) <= 20)
+      pts := pts / 4;
+    else
+      pts := 0;
+    endif
+  endif
+  return pts;
+endfunction
+
+function checkskillfordifferentmetals(who, ingot)
+  case( ingot.objtype )
+    0x6309:   return(checkhisskill(who,  0));
+	0x630a:   return(checkhisskill(who, 65));
+    0x630b:   return(checkhisskill(who, 70));
+    0x630c:   return(checkhisskill(who, 75));
+    0x630d:   return(checkhisskill(who, 80));
+    0x630e:   return(checkhisskill(who, 85));
+    0x630f:   return(checkhisskill(who, 90));
+    0x6310:   return(checkhisskill(who, 95));
+    0x6311:   return(checkhisskill(who, 99));
+    0x6313:   return(checkhisskill(who, 100));
+    0x6315:   return(checkhisskill(who, 100));
+    0x6317:   return(checkhisskill(who, 100));
+    0x6319:   return(checkhisskill(who, 100));
+    0x6321:   return(checkhisskill(who, 100));
+    0x6323:   return(checkhisskill(who, 100));
+    0x6325:   return(checkhisskill(who, 100));
+    0x6327:   return(checkhisskill(who, 99));
+    0x6329:   return(checkhisskill(who, 100));
+default:  SendSysMessage(who, "You can't forge that.");
+  endcase
+endfunction
+
+function checkhisskill(who, skill)
+  var his_skill := GetEffectiveSkill(who, SKILLID_BLACKSMITHY);
+  if(his_skill >= skill)
+    return 1;
+  else
+    return 0;
+  endif
+endfunction
+
+function resmelt(who, tongs);
+  var near_items := ListItemsNearLocation(who.x, who.y, who.z, 3);
+  var forge_near := 0;
+  foreach forge in near_items
+    if((forge.objtype == 0xfb1) || ((forge.objtype >= 0x197a) && (forge.objtype <= 0x19a9)))
+      forge_near := 1;
+      break;
+    endif
+  endforeach
+  if(forge_near == 0)
+    SendSysMessage(who, "You must be near a forge to re-smelt items.");
+    return;
+  endif
+  SendSysMessage(who, "Select the item you wish to melt down");
+  var use_on := Target(who, TGTOPT_CHECK_LOS);
+  if(!use_on)
+	SendSysMessage(who, "Targetting cancelled");
+	return;
+  endif
+  if(!can_access(who, use_on))
+    SendSysMessage(who, "You cannot use that.");
+    return;
+  endif
+  if(!Accessible(who, use_on) || !ReserveItem( use_on ))
+    SendSysMessage(who, "You cannot use that.");
+    return;
+  endif
+  if(use_on.container != who.backpack)
+	SendSysMessage(who, "You can only melt items stored in the top level of your backpack");
+	return;
+  endif
+  var skill := smith_cfg[use_on.objtype]."skill";
+  var amt := Cint(smith_cfg[use_on.objtype]."material");
+  if((!skill) || (!amt))
+    SendSysMessage(who, "You cannot resmelt that.");
+    return;
+  endif
+  amt := Cint((amt * GetEffectiveSkill(who,SKILLID_BLACKSMITHY) * 75 ) / 10000);
+  if(amt < 1)
+	amt := 1;
+  endif
+  var itemcfg := ReadConfigFile(":mining:itemdesc");
+  if(!itemcfg)
+	return;
+  endif
+  var elemcol;
+  var ingot := -1;
+  var color := use_on.color;
+  var valid_ingot := { 0x6309, 0x630a, 0x630b, 0x630c, 0x630d, 0x630e, 0x630f, 0x6310, 0x6311, 0x6313, 0x6315, 0x6317, 0x6319, 0x6321, 0x6323, 0x6325, 0x6327, 0x6329 };
+  foreach entry in valid_ingot
+    elemcol := itemcfg[entry]."Color";
+	if(color == elemcol)
+	  ingot := entry;
+	  break;
+	endif
+  endforeach
+  if(ingot == -1)
+	PrintTextAbovePrivate(use_on, "Voce so pode fundir lingots!", who);
+	return;
+  endif
+  PlaySoundEffect(who, 0x2c);
+  sleep(1);
+  if(DestroyItem(use_on))
+	if(CheckSkill(who, SKILLID_BLACKSMITHY, skill, 10))
+	  SendSysMessage(who, "You manage to get a bit of material out of that");
+	  CreateItemInBackpack(who, ingot, amt);
+	else
+	  SendSysMessage(who, "You fail, and destroy the item");
+	endif
+    return;
+  endif
+endfunction
+function colocaritemsgump(who,cont, hammer)
+
+
+
+
+    var bstotal   := CreateMenu("Escolha o que deseja fazer");
+
+ var armaduras := CreateMenu("Escolha a armadura que deseja fazer");
+ var armas     := CreateMenu("Escolha a arma que deseja fazer");
+var armass     := CreateMenu("Escolha a arma que deseja fazer");
+var plate := CreateMenu("Selecione a peca que deseja fazer");
+var  malha := CreateMenu("Selecione a peca que deseja fazer");
+var loriga := CreateMenu("Selecione a peca que deseja fazer");
+var elmo := CreateMenu("Selecione a peca que deseja fazer");
+var escudo := CreateMenu("Selecione a peca que deseja fazer");
+var machado := CreateMenu("Selecione a peca que deseja fazer");
+var longa := CreateMenu("Selecione a peca que deseja fazer");
+
+
+    var config    := ReadConfigFile("blacksmith");
+ var itemcfg   := ReadConfigFile(":combat:itemdesc");
+var smith_cfg := ReadConfigFile("blacksmithy");
+
+      
+       ///sendsysmessage(who, "aa" + itemcfg,9,89);
+
+
+
+AddMenuItem(bstotal, 0x1415, "Armaduras");
+AddMenuItem(bstotal, 0x1441, "Armas");
+AddMenuItem(bstotal, 0x13E4, "Reparar items");
+   var thetarget := SelectMenuItem2(who, bstotal);
+if(!thetarget)
+sendsysmessage(who, "Cancelado",9,89);
+return;
+endif
+var listtype := {};
+ case(thetarget.objtype)
+      0x1415: listtype := "Armaduras";
+      0x1441: listtype := "Armas";
+      0x13e4: listtype := "Reparar items";
+
+    endcase
+
+
+if((listtype == "Reparar items"))
+repair_this(who);
+endif
+
+if((listtype == "Armaduras"))
+
+
+AddMenuItem(armaduras, 0x1415, "Plates");
+AddMenuItem(armaduras, 0x13bf, "Malhas");
+AddMenuItem(armaduras, 0x13EC ,"Lorigas");
+AddMenuItem(armaduras, 0x1B76, "Escudos");
+AddMenuItem(armaduras, 0x140E, "Elmos");
+var thetargett := SelectMenuItem2(who, armaduras);
+if(!thetargett)
+sendsysmessage(who, "Cancelado",9,89);
+return;
+endif
+var listtype := {};
+ case(thetargett.objtype)
+      0x1415: listtype := "Plates";
+      0x13bf  : listtype := "Malhas";
+      0x13EC: listtype := "Lorigas";
+      0x1B76: listtype := "Escudos";
+      0x140E: listtype := "Elmos";
+
+    endcase
+
+if((listtype == "Plates"))
+AddMenuItem(plate, 5141, "Peitoral de metal (20)");
+AddMenuItem(plate, 0x1411,  "Calca de metal (15)");
+AddMenuItem(plate, 0x1410 ,"Ombreiras de metal (15)");
+AddMenuItem(plate, 0x1413, "Gorgel de metal (10)");
+AddMenuItem(plate, 0x1414, "Luvas de  metal (12)");
+AddMenuItem(plate, 0x1c04, "Armadura Feminina (20)");
+
+var thetargett := SelectMenuItem2(who, plate);
+if(!thetargett)
+sendsysmessage(who, "Cancelado",9,89);
+return;
+endif
+var listtype := {};
+ case(thetargett.objtype)
+      5141: listtype := "Peitoral";
+      0x1411: listtype := "Calca";
+      0x1410: listtype := "Ombreira";
+      0x1413: listtype := "Gorgel";
+      0x1414: listtype := "Luvas";
+      0x1c04: listtype := "Feminina";
+    endcase
+
+///function plate/////
+if((listtype == "Peitoral"))
+var what;
+what := 5141;
+makeblacksmithitems(who, what,  cont, hammer); 
+endif
+if((listtype == "Calca"))
+var what;
+what := 5137;
+makeblacksmithitems(who, what,  cont, hammer); 
+endif
+if((listtype == "Ombreira"))
+var what;
+what := 5136;
+makeblacksmithitems(who, what,  cont, hammer); 
+endif
+if((listtype == "Gorgel"))
+var what;
+what := 5139;
+makeblacksmithitems(who, what,  cont, hammer); 
+endif
+if((listtype == "Luvas"))
+var what;
+what := 5140;
+makeblacksmithitems(who, what,  cont, hammer); 
+endif
+if((listtype == "Feminina"))
+var what;
+what := 7172;
+makeblacksmithitems(who, what,  cont, hammer); 
+endif
+endif
+
+
+///function malha///
+
+if((listtype == "Malhas"))
+AddMenuItem(malha, 0x13bf,  "Tunica de malha (20)");
+AddMenuItem(malha, 0x13be,  "Calcas de malha (18)");
+AddMenuItem(malha, 0x13bb , "Capuz de malha (10)");
+AddMenuItem(malha, 0x13eb,  "Luvas de malha (12)");
+
+
+var thetargett := SelectMenuItem2(who, malha);
+if(!thetargett)
+sendsysmessage(who, "Cancelado",9,89);
+return;
+endif
+var listtype := {};
+ case(thetargett.objtype)
+      0x13bf: listtype := "Peitoral";
+      0x13be: listtype := "Calca";
+      0x13eb: listtype := "Luvas";
+      0x13bb: listtype := "Capuz";
+
+    endcase
+
+
+if((listtype == "Peitoral"))
+var what;
+what := 5055;
+makeblacksmithitems(who, what,  cont, hammer); 
+endif
+if((listtype == "Calca"))
+var what;
+what := 0x13be;
+makeblacksmithitems(who, what,  cont, hammer); 
+endif
+if((listtype == "Luvas"))
+var what;
+what := 5099;
+makeblacksmithitems(who, what,  cont, hammer); 
+endif
+if((listtype == "Capuz"))
+var what;
+what := 5051;
+makeblacksmithitems(who, what,  cont, hammer); 
+endif
+endif
+
+
+///function loriga///
+if((listtype == "Lorigas"))
+
+AddMenuItem(loriga, 0x13ec,  "Tunica de loriga (18)");
+AddMenuItem(loriga, 0x13f0,  "Calcas de loriga (16)");
+AddMenuItem(loriga, 0x13ee,  "Ombreiras de loriga (12)");
+AddMenuItem(loriga, 0x13f3 , "Capuz de loriga (8)");
+AddMenuItem(loriga, 0x13f2,  "Luvas de loriga (10)");
+
+
+
+
+var thetargett := SelectMenuItem2(who, loriga);
+if(!thetargett)
+sendsysmessage(who, "Cancelado",9,89);
+return;
+endif
+var listtype := {};
+ case(thetargett.objtype)
+      0x13ec: listtype := "Peitoral";
+      0x13f0: listtype := "Calca"; 
+      0x13ee: listtype := "Ombreira"; 
+      0x13f2: listtype := "Luvas";
+      0x13f3: listtype := "Capuz";
+
+    endcase
+
+
+if((listtype == "Peitoral"))
+var what;
+what := 0x13ec;
+makeblacksmithitems(who, what,  cont, hammer); 
+endif
+if((listtype == "Calca"))
+var what;
+what := 0x13f0;
+makeblacksmithitems(who, what,  cont, hammer); 
+endif
+if((listtype == "Ombreira"))
+var what;
+what := 0x13ee;
+makeblacksmithitems(who, what,  cont, hammer); 
+endif
+if((listtype == "Luvas"))
+var what;
+what := 0x13f2;
+makeblacksmithitems(who, what,  cont, hammer); 
+endif
+if((listtype == "Capuz"))
+var what;
+what := 0x13f3;
+makeblacksmithitems(who, what,  cont, hammer); 
+endif
+endif
+
+
+if((listtype == "Escudos"))
+AddMenuItem(escudo, 0x1b76,  "Escudo Corporal (18)");
+AddMenuItem(escudo, 0x1b74,  "Escudo Medio (16)");
+AddMenuItem(escudo, 0x1bc4,  "Escudo da Ordem (26)");
+AddMenuItem(escudo, 0x1bc3,  "Escudo do Caos (22)");
+AddMenuItem(escudo, 0x1b7b,  "Escudo de metal (14)");
+AddMenuItem(escudo, 0x1b72,  "Escudo de bronze (12)");
+AddMenuItem(escudo, 0x1b73 , "Tampa de panela (10)");
+
+
+
+
+
+var thetargett := SelectMenuItem2(who, escudo);
+if(!thetargett)
+sendsysmessage(who, "Cancelado",9,89);
+return;
+endif
+var listtype := {};
+ case(thetargett.objtype)
+      0x1b76: listtype := "Corporal";
+      0x1b74: listtype := "Medio"; 
+      0x1b73: listtype := "Panela"; 
+      0x1b72: listtype := "Bronze";
+      0x1b7b: listtype := "Metal";
+      
+      0x1bc4: listtype := "ordem";
+      0x1bc3: listtype := "caos";
+    endcase
+
+if((listtype == "ordem"))
+var what;
+what := 0x1bc4;
+makeblacksmithitems(who, what,  cont, hammer); 
+endif
+if((listtype == "caos"))
+var what;
+what := 0x1bc3;
+makeblacksmithitems(who, what,  cont, hammer); 
+endif
+
+
+if((listtype == "Corporal"))
+var what;
+what := 0x1b76;
+makeblacksmithitems(who, what,  cont, hammer); 
+endif
+if((listtype == "Medio"))
+var what;
+what := 0x1b74;
+makeblacksmithitems(who, what,  cont, hammer); 
+endif
+if((listtype == "Panela"))
+var what;
+what := 0x1b73;
+makeblacksmithitems(who, what,  cont, hammer); 
+endif
+if((listtype == "Bronze"))
+var what;
+what := 0x1b7b;
+makeblacksmithitems(who, what,  cont, hammer); 
+endif
+if((listtype == "Metal"))
+var what;
+what := 0x1b7b;
+makeblacksmithitems(who, what,  cont, hammer); 
+endif
+endif
+
+
+if((listtype == "Elmos"))
+AddMenuItem(escudo, 0x1408,  "Elmo Fechado (15)");
+AddMenuItem(escudo, 0x140c,  "Basinet (15)");
+AddMenuItem(escudo, 0x140a,  "Elmo (15)");
+AddMenuItem(escudo, 0x140e,  "Elmo Aberto (15)");
+AddMenuItem(escudo, 0x1412 , "Elmo de metal (15)");
+
+
+
+
+
+var thetargett := SelectMenuItem2(who, escudo);
+if(!thetargett)
+sendsysmessage(who, "Cancelado",9,89);
+return;
+endif
+var listtype := {};
+ case(thetargett.objtype)
+      0x1408: listtype := "Fechado";
+      0x140c: listtype := "Basinet"; 
+      0x140a: listtype := "Elmo"; 
+      0x140e: listtype := "Aberto";
+      0x1412: listtype := "Metal";
+
+
+    endcase
+if((listtype == "Fechado"))
+var what;
+what := 0x1408;
+makeblacksmithitems(who, what,  cont, hammer); 
+endif
+if((listtype == "Basinet"))
+var what;
+what := 0x140c;
+makeblacksmithitems(who, what,  cont, hammer); 
+endif
+if((listtype == "Elmo"))
+var what;
+what := 0x140a;
+makeblacksmithitems(who, what,  cont, hammer); 
+endif
+if((listtype == "Aberto"))
+var what;
+what := 0x140eb;
+makeblacksmithitems(who, what,  cont, hammer); 
+endif
+if((listtype == "Metal"))
+var what;
+what := 0x1412;
+makeblacksmithitems(who, what,  cont, hammer); 
+endif
+endif
+endif
+
+
+
+
+
+
+
+
+if((listtype == "Armas"))
+
+
+AddMenuItem(armas, 0x13ff, "Espadas");
+AddMenuItem(armas, 0x13fb,"Machados");
+AddMenuItem(armas, 0x1439 ,"Armas Longas");
+AddMenuItem(armas, 0x0f4d, "Poliarmas");
+
+var thetargett := SelectMenuItem2(who, armas);
+if(!thetargett)
+sendsysmessage(who, "Cancelado",9,89);
+return;
+endif
+var listtype := {};
+ case(thetargett.objtype)
+      0x13ff : listtype := "Espadas";
+      0x13fb: listtype := "Machados";
+      0x1439: listtype := "Longas";
+      0x0f4d: listtype := "Poliarmas";
+
+
+    endcase
+
+
+
+if((listtype == "Espadas"))
+AddMenuItem(armass, 0x13ff, "Katana (8)");
+AddMenuItem(armass, 0x1401, "Kopesh (8)");
+AddMenuItem(armass, 0x0f52, "Adaga (3)");
+AddMenuItem(armass, 0x1441, "Cutelo (6)");
+AddMenuItem(armass, 0x13b9, "Espada Bastarda (16)");
+AddMenuItem(armass, 0x0f61, "Espada Longa (12)");
+AddMenuItem(armass, 0x0f5e, "Espada Larga (12)");
+AddMenuItem(armass, 0x13b6, "Cimitarra (8)");
+
+
+var thetargett := SelectMenuItem2(who, armass);
+if(!thetargett)
+sendsysmessage(who, "Cancelado",9,89);
+return;
+endif
+var listtype := {};
+ case(thetargett.objtype)
+      0x13ff : listtype := "Katana";
+      0x1401: listtype := "Kopesh";
+      0x0f52: listtype := "Adaga";
+      0x1441: listtype := "Cutelo";
+      0x13b9 : listtype := "Bastarda";
+      0x0f61: listtype := "Longa";
+      0x0f5e: listtype := "Larga";
+      0x13b6: listtype := "Cimitarra";
+
+    endcase
+
+if((listtype == "Katana"))
+var what;
+what := 0x13fe;
+makeblacksmithitems(who, what,  cont, hammer); 
+endif
+if((listtype == "Kopesh"))
+var what;
+what := 0x1401;
+makeblacksmithitems(who, what,  cont, hammer); 
+endif
+if((listtype == "Adaga"))
+var what;
+what := 0x0f51;
+makeblacksmithitems(who, what,  cont, hammer); 
+endif
+if((listtype == "Cutelo"))
+var what;
+what := 0x1440;
+makeblacksmithitems(who, what,  cont, hammer); 
+endif
+if((listtype == "Bastarda"))
+var what;
+what := 0x13b9;
+makeblacksmithitems(who, what,  cont, hammer); 
+endif
+if((listtype == "Longa"))
+var what;
+what := 0x0f60;
+makeblacksmithitems(who, what,  cont, hammer); 
+endif
+if((listtype == "Larga"))
+var what;
+what := 0x0f5e;
+makeblacksmithitems(who, what,  cont, hammer); 
+endif
+if((listtype == "Cimitarra"))
+var what;
+what := 0x13b5;
+makeblacksmithitems(who, what,  cont, hammer); 
+endif
+endif
+
+if((listtype == "Machados"))
+AddMenuItem(armass, 0x0f49, "Machado (12)");
+AddMenuItem(armass, 0x0f47, "Machado De Batalha (14)");
+AddMenuItem(armass, 0x0f4b, "Machado Duplo (12)");
+AddMenuItem(armass, 0x0f45, "Machado Do Executor (16)");
+AddMenuItem(armass, 0x13fb, "Machado Largo de batalha (16)");
+AddMenuItem(armass, 0x1443, "Machado De Duas Maos (16)");
+AddMenuItem(armass, 5040, "Machado De Guerra (16)");
+
+
+
+var thetargett := SelectMenuItem2(who, armass);
+if(!thetargett)
+sendsysmessage(who, "Cancelado",9,89);
+return;
+endif
+var listtype := {};
+ case(thetargett.objtype)
+      0x0f49 : listtype := "Machado";
+      0x0f47: listtype := "Batalha";
+      0x0f4b: listtype := "Duplo";
+      0x0f45: listtype := "Executor";
+      0x13fb : listtype := "Largo";
+      0x1443: listtype := "Duas";
+      5040: listtype := "Guerra";
+   
+
+    endcase
+
+if((listtype == "Machado"))
+var what;
+what := 0x0f49;
+makeblacksmithitems(who, what,  cont, hammer); 
+endif
+if((listtype == "Batalha"))
+var what;
+what := 0x0f47;
+makeblacksmithitems(who, what,  cont, hammer); 
+endif
+if((listtype == "Duplo"))
+var what;
+what := 0x0f4b;
+makeblacksmithitems(who, what,  cont, hammer); 
+endif
+if((listtype == "Executor"))
+var what;
+what := 0x0f45;
+makeblacksmithitems(who, what,  cont, hammer); 
+endif
+if((listtype == "Largo"))
+var what;
+what := 0x13fa;
+makeblacksmithitems(who, what,  cont, hammer); 
+endif
+if((listtype == "Duas"))
+var what;
+what := 0x1443;
+makeblacksmithitems(who, what,  cont, hammer); 
+endif
+if((listtype == "Guerra"))
+var what;
+what := 0x13af;
+makeblacksmithitems(who, what,  cont, hammer); 
+endif
+endif
+
+if((listtype == "Longas"))
+AddMenuItem(armass, 0x143d, "Marreta (18)");
+AddMenuItem(armass, 0x0f5c, "Maca Estrela (6)");
+AddMenuItem(armass, 0x143b, "Maca Longa (10)");
+AddMenuItem(armass, 0x1439, "Martelo De Guerra (16)");
+AddMenuItem(armass, 0x1407, "Maca De Guerra (12)");
+AddMenuItem(armass, 0x1404, "Garfo de Guerra (16)");
+
+
+
+
+var thetargett := SelectMenuItem2(who, armass);
+if(!thetargett)
+sendsysmessage(who, "Cancelado",9,89);
+return;
+endif
+var listtype := {};
+ case(thetargett.objtype)
+      0x143d : listtype := "Machado";
+      0x0f5c: listtype := "Batalha";
+      0x143b: listtype := "Duplo";
+      0x1439: listtype := "Executor";
+      0x1407: listtype := "Largo";
+      0x1404: listtype := "Garfo";
+   
+
+    endcase
+
+if((listtype == "Garfo"))
+var what;
+what := 0x1404;
+makeblacksmithitems(who, what,  cont, hammer); 
+endif
+
+if((listtype == "Machado"))
+var what;
+what := 0x143c;
+makeblacksmithitems(who, what,  cont, hammer); 
+endif
+if((listtype == "Batalha"))
+var what;
+what := 0x0f5c;
+makeblacksmithitems(who, what,  cont, hammer); 
+endif
+if((listtype == "Duplo"))
+var what;
+what := 0x143a;
+makeblacksmithitems(who, what,  cont, hammer); 
+endif
+if((listtype == "Executor"))
+var what;
+what := 0x1438;
+makeblacksmithitems(who, what,  cont, hammer); 
+endif
+if((listtype == "Largo"))
+var what;
+what := 0x1406;
+makeblacksmithitems(who, what,  cont, hammer); 
+endif
+
+endif
+if((listtype == "Poliarmas"))
+AddMenuItem(armass, 0x143f, "Alabarda (20)");
+AddMenuItem(armass, 0x0f4d, "Bardiche (18)");
+AddMenuItem(armass, 0x0e87, "Tridente (20)");
+AddMenuItem(armass, 0x0f62, "Lanca Grande (12)");
+AddMenuItem(armass, 0x1403, "Lanca Pequena (6)");
+
+
+
+
+
+var thetargett := SelectMenuItem2(who, armass);
+if(!thetargett)
+sendsysmessage(who, "Cancelado",9,89);
+return;
+endif
+var listtype := {};
+ case(thetargett.objtype)
+      0x143f : listtype := "Katana";
+      0x0f4d: listtype := "Kopesh";
+      0x1403: listtype := "Adaga";
+      0x0f62: listtype := "Cutelo";
+      0x1405 : listtype := "Bastarda";
+      0x0e87: listtype := "tridente";
+
+
+    endcase
+
+if((listtype == "tridente"))
+var what;
+what := 0x0e87;
+makeblacksmithitems(who, what,  cont, hammer); 
+endif
+
+if((listtype == "Katana"))
+var what;
+what := 0x143e;
+makeblacksmithitems(who, what,  cont, hammer); 
+endif
+if((listtype == "Kopesh"))
+var what;
+what := 0x0f4e;
+makeblacksmithitems(who, what,  cont, hammer); 
+endif
+if((listtype == "Adaga"))
+var what;
+what := 0x1402;
+makeblacksmithitems(who, what,  cont, hammer); 
+endif
+if((listtype == "Cutelo"))
+var what;
+what := 0x0f63;
+makeblacksmithitems(who, what,  cont, hammer); 
+endif
+if((listtype == "Bastarda"))
+var what;
+what := 0x1404;
+makeblacksmithitems(who, what,  cont, hammer); 
+endif
+endif
+endif
+
+
+
+endfunction
+
+endprogram

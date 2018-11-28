@@ -1,0 +1,122 @@
+///use npc;
+use uo;
+use os;
+use cfgfile;
+use util;
+
+include "include/client";
+include "../pkg/guardas/locais";
+include "include/attributes";
+include "include/eventID";
+include "include/sysEvent";
+include "include/utility";
+
+program guardas(who)
+if (who.dead)
+SendSysMessage(who, "Os Guardas nao atendem aos mortos.",9,89);
+return;
+elseif (who.criminal)
+SendSysMessage(who, "Criminosos nao podem chamar guardas",9,89);
+return;
+endif
+var prote;
+vercidade(who,prote);
+
+endprogram
+
+
+function vercidade(who,prote);
+var cidade;
+
+if((who.x >= 1414) && (who.y >= 1534 ) && (who.x <= 1540) && (who.y <= 1576))
+cidade:="Brit";
+prote:=1;
+
+elseif((who.x >= 2398) && (who.y >= 360) && (who.x <= 2628) && (who.y <= 587))
+cidade:="Minoc";
+prote:=1;
+
+elseif((who.x >= 523) && (who.y >= 2106) && (who.x <= 687) && (who.y <= 2299))
+cidade:="Skara";
+prote:=1;
+
+elseif((who.x >= 1449) && (who.y >= 1177) && (who.x <= 1613) && (who.y <= 1241))
+cidade:="Gullan";
+prote:=1;
+
+else
+prote:=0;
+endif
+
+
+if(GetGlobalProperty(cidade) == 0)
+sendsysmessage(who,"Esta regiao esta temporariamente desprotegida.",9,89);
+return;
+endif
+
+if(prote == 0)
+sendsysmessage(who,"Esta regiao nao e protegida por guardas.",9,89);
+return;
+endif
+
+var protanimalred:=Cint(GetGlobalProperty(cidade+ "animalred"));
+
+if(protanimalred == 0)
+sendsysmessage(who,"A Guarda especilizada em matar seres malignos nao esta nesta regiao.",9,89);
+endif
+
+if(prote == 1)
+var msgguarda:= (randomInt(9) + 1);
+case(msgguarda)
+1:PrintTextAbove(who,"Socorro Um Santista GUARDASSSSSSSSSSS!",3,1000);
+2:PrintTextAbove(who,"Socorro Um Corinthiano GUARDASSSSSSSSSSSS!!",3,1000);
+3:PrintTextAbove(who,"Socorro Um Sao Paulino GUARDASSSS!!",3,1000);
+4:PrintTextAbove(who,"SOCORROOOOOOOOOOOOOO!! ALGUEM ME ACUDA!",3,1000);
+5:PrintTextAbove(who,"Guardas, Prendam Este Melhiante!",3,1000);
+6:PrintTextAbove(who,"Oh e agora quem podera me defender?",3,1000);
+7:PrintTextAbove(who,"Por Deus... Socorroo!!",3,1000);
+8:PrintTextAbove(who,"Me ajudaaaaaaaa!!!!",3,1000);
+9:PrintTextAbove(who,"Agora fudeuuuuu!!",3,1000);
+10:PrintTextAbove(who,"Guardas!!!",3,1000);
+endcase
+endif
+
+var props array;
+var matar;
+var dono;
+props.+facing := who.facing;
+var pessoas := ListMobilesNearLocationEx(who.x, who.y, who.z, 10, LISTEX_FLAG_HIDDEN+LISTEX_FLAG_NORMAL);
+foreach pessoa in pessoas
+
+if(pessoa.isA(POLCLASS_NPC))
+dono:=SystemFindObjectBySerial(GetObjProperty(pessoa, "master"), SYSFIND_SEARCH_OFFLINE_MOBILES);
+
+ if(GetObjProperty(pessoa, "animalred") == 1)
+ matar:=1;
+ elseif((pessoa.script == "tamed") && (dono.criminal))
+ matar:=1;
+ endif
+
+ if((matar == 1) && (protanimalred == 1) && (!GetObjProperty(pessoa, "guarda")))
+ SetObjProperty(pessoa,"guarda", 1);
+ pessoa.hidden := 0;
+ var guarda := CreateNpcFromTemplate( "guarda", who.x, who.y, who.z, props );
+ movecharactertolocation(guarda,pessoa.x, pessoa.y, pessoa.z, MOVECHAR_FORCELOCATION);
+ SetObjProperty(guarda, "atacar", pessoa.serial); 
+ endif
+
+else
+
+ if((pessoa.criminal) && (!GetObjProperty(pessoa, "guarda")))
+ SetObjProperty(pessoa,"guarda", 1);
+ pessoa.hidden := 0;
+ var guarda := CreateNpcFromTemplate( "guarda", who.x, who.y, who.z, props );
+ movecharactertolocation(guarda,pessoa.x, pessoa.y, pessoa.z, MOVECHAR_FORCELOCATION);
+ SetObjProperty(guarda, "atacar", pessoa.serial); 
+ endif
+
+endif
+
+endforeach
+
+endfunction

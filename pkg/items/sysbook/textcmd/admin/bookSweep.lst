@@ -1,0 +1,314 @@
+C:\pol2\pkg\items\sysbook\textcmd\admin\bookSweep.src, Line 7
+program shelfstock();
+var globalshelves;
+0: decl local #0
+1: #
+var shelf;
+2: decl local #1
+3: #
+globalshelves := GetGlobalProperty("shelves");
+4: "shelves"
+5: Func(2,0): GetGlobalProperty
+6: local0 := 
+if(globalshelves)
+7: local #0
+8: if false goto 35
+foreach thing in globalshelves
+9: local #0
+10: initforeach @29
+shelf := SystemFindObjectBySerial(thing);
+11: local #2
+12: 0L
+13: Func(2,1): SystemFindObjectBySerial
+14: local1 := 
+if(shelf)
+15: local #1
+16: if false goto 22
+addbooks(shelf);
+17: local #1
+18: makelocal
+19: jmp userfunc @37
+20: #
+21: goto29
+globalshelves.erase(ReturnIndex(globalshelves, thing));
+22: local #0
+23: local #0
+24: local #2
+25: makelocal
+26: jmp userfunc @131
+27: Call Method erase (1 params)
+28: #
+29: stepforeach @11
+30: leave block(3)
+SetGlobalProperty("shelves", globalshelves);
+31: "shelves"
+32: local #0
+33: Func(2,2): SetGlobalProperty
+34: #
+35: leave block(2)
+36: progend
+C:\pol2\pkg\items\sysbook\textcmd\admin\bookSweep.src, Line 23
+function addbooks(bookcase)
+37: pop param 'bookcase'
+var count := 0;
+38: decl local #1
+39: 0L
+40: :=
+41: #
+var books := EnumerateItemsInContainer(bookcase);
+42: decl local #2
+43: local #0
+44: Func(2,3): EnumerateItemsInContainer
+45: :=
+46: #
+var max := GetObjProperty(bookcase, "MaxBooks");
+47: decl local #3
+48: local #0
+49: "MaxBooks"
+50: Func(2,4): GetObjProperty
+51: :=
+52: #
+if(!max)
+53: local #3
+54: if true goto 63
+max := RandomDiceRoll("1d6+4");
+55: "1d6+4"
+56: Func(4,0): RandomDiceRoll
+57: local3 := 
+SetObjProperty(bookcase, "MaxBooks", max);
+58: local #0
+59: "MaxBooks"
+60: local #3
+61: Func(2,5): SetObjProperty
+62: #
+if(books.size()!=0)
+63: local #2
+64: Call Method size (0 params)
+65: 0L
+66: <>
+67: if false goto 81
+foreach book in books
+68: local #2
+69: initforeach @79
+if(book.objtype == 0xfef)
+70: local #4
+71: get member 'objtype'
+72: 4079L
+73: ==
+74: if false goto 79
+count:=count+1;
+75: local #1
+76: 1L
+77: +
+78: local1 := 
+79: stepforeach @70
+80: leave block(3)
+var book;
+81: decl local #4
+82: #
+while(count < max)
+83: local #1
+84: local #3
+85: <
+86: if false goto 129
+if((RandomInt(5)+1) > 3)
+87: 5L
+88: Func(4,1): RandomInt
+89: 1L
+90: +
+91: 3L
+92: >
+93: if false goto 99
+book := SpecialBook(bookcase);
+94: local #0
+95: makelocal
+96: jmp userfunc @161
+97: local4 := 
+98: goto104
+book := CreateItemInContainer(bookcase, 0xfef, 1);
+99: local #0
+100: 4079L
+101: 1L
+102: Func(2,6): CreateItemInContainer
+103: local4 := 
+case(RandomInt(4)+1)
+104: 4L
+105: Func(4,1): RandomInt
+106: 1L
+107: +
+108: casejmp
+	1: @109
+	2: @113
+	3: @117
+	4: @121
+	default: @124
+book.graphic := 4079;
+109: local #4
+110: 4079L
+111: set member 'graphic' #
+112: goto124
+book.graphic := 4080;
+113: local #4
+114: 4080L
+115: set member 'graphic' #
+116: goto124
+book.graphic := 4081;
+117: local #4
+118: 4081L
+119: set member 'graphic' #
+120: goto124
+book.graphic := 4082;
+121: local #4
+122: 4082L
+123: set member 'graphic' #
+count := count + 1;
+124: local #1
+125: 1L
+126: +
+127: local1 := 
+128: goto83
+129: 0L
+130: return
+C:\pol2\pkg\items\sysbook\textcmd\admin\bookSweep.src, Line 83
+function ReturnIndex(friendinfo, information)
+131: pop param 'information'
+132: pop param 'friendinfo'
+var i;
+133: decl local #2
+134: #
+for(i:=1; i<=len(friendinfo); i:=i+1)
+135: local #2
+136: 1L
+137: :=
+138: #
+139: local #2
+140: local #1
+141: Func(0,1): len
+142: <=
+143: if false goto 159
+if(friendinfo[i] == information)
+144: local #1
+145: local #2
+146: [] 1
+147: local #0
+148: ==
+149: if false goto 152
+return i;
+150: local #2
+151: return
+152: local #2
+153: local #2
+154: 1L
+155: +
+156: :=
+157: #
+158: goto139
+return 0;
+159: 0L
+160: return
+C:\pol2\pkg\items\sysbook\textcmd\admin\bookSweep.src, Line 55
+function SpecialBook(bookcase)
+161: pop param 'bookcase'
+var book := CreateItemInContainer(bookcase, 0xfef, 1);
+162: decl local #1
+163: local #0
+164: 4079L
+165: 1L
+166: Func(2,6): CreateItemInContainer
+167: :=
+168: #
+var rint := CInt(RandomInt(30) + 1);
+169: decl local #2
+170: 30L
+171: Func(4,1): RandomInt
+172: 1L
+173: +
+174: Func(0,0): CInt
+175: :=
+176: #
+var title := GetTitle(book, rint);
+177: decl local #3
+178: local #1
+179: local #2
+180: makelocal
+181: jmp userfunc @236
+182: :=
+183: #
+book.setprop("contents", GetContents(book, rint));
+184: local #1
+185: "contents"
+186: local #1
+187: local #2
+188: makelocal
+189: jmp userfunc @228
+190: Call Method setprop (2 params)
+191: #
+book.setprop("title",    title);
+192: local #1
+193: "title"
+194: local #3
+195: Call Method setprop (2 params)
+196: #
+book.setprop("author",   GetAuthor(book, rint));
+197: local #1
+198: "author"
+199: local #1
+200: local #2
+201: makelocal
+202: jmp userfunc @210
+203: Call Method setprop (2 params)
+204: #
+book.name := title;
+205: local #1
+206: local #3
+207: set member 'name' #
+return book;
+208: local #1
+209: return
+C:\pol2\pkg\items\sysbook\textcmd\admin\bookSweep.src, Line 79
+function GetAuthor(book, rint)
+210: pop param 'rint'
+211: pop param 'book'
+return GetBookElem(rint).getprop("author");
+212: local #0
+213: makelocal
+214: jmp userfunc @218
+215: "author"
+216: Call Method getprop (1 params)
+217: return
+C:\pol2\pkg\items\sysbook\textcmd\admin\bookSweep.src, Line 66
+function GetBookElem(bookid)
+218: pop param 'bookid'
+var df := OpenDataFile("staticbooks");
+219: decl local #1
+220: "staticbooks"
+221: Func(5,0): OpenDataFile
+222: :=
+223: #
+return df.FindElement(bookid);
+224: local #1
+225: local #0
+226: Call Method findelement (1 params)
+227: return
+C:\pol2\pkg\items\sysbook\textcmd\admin\bookSweep.src, Line 71
+function GetContents(book, rint)
+228: pop param 'rint'
+229: pop param 'book'
+return GetBookElem(rint).getprop("contents");
+230: local #0
+231: makelocal
+232: jmp userfunc @218
+233: "contents"
+234: Call Method getprop (1 params)
+235: return
+C:\pol2\pkg\items\sysbook\textcmd\admin\bookSweep.src, Line 75
+function GetTitle(book, rint)
+236: pop param 'rint'
+237: pop param 'book'
+return GetBookElem(rint).getprop("title");
+238: local #0
+239: makelocal
+240: jmp userfunc @218
+241: "title"
+242: Call Method getprop (1 params)
+243: return

@@ -1,0 +1,142 @@
+use uo;
+use os;
+use util;
+use cfgfile;
+
+include "include/client";
+include "include/attributes";
+include "include/NPCBackpacks";
+include "include/noto";
+
+var cfg := ReadConfigFile( "npcdesc" );
+
+program npcdeath(corpse)
+corpse.name := "Corpo De" + corpse.name - "A corpse of";
+SetObjProperty(corpse, "criminoso", 1); 
+
+///Se foi morto pelo guarda nao ficar o corpo no chao
+if(GetObjProperty(corpse, "guarda") == 1)
+DestroyItem(corpse);
+endif
+
+  if(GetObjProperty(corpse, "restockserial"))
+    var stocklist := SystemFindObjectBySerial(CInt(GetObjProperty(corpse, "restockserial")));
+    DestroyItem(stocklist);
+  endif
+  var killer := GetObjProperty(corpse, "LastHit");
+  if((killer != error) && (!GetObjProperty(corpse, "guardkill")))
+    AdjustNoto((SystemFindObjectBySerial(killer[2])), corpse);
+  endif
+  var char;
+  var mounted_char;
+  var onchars := EnumerateOnlineCharacters();
+  if(GetObjProperty(corpse,"mounted"))
+    char := GetObjProperty(corpse,"mounted_on");
+    foreach person in onchars
+      if(person.serial == CInt(char))
+        mounted_char := person;
+        break;
+      endif
+    endforeach
+    dismountme(mounted_char, corpse);
+  endif
+char := GetObjProperty(corpse,"mounted_on");
+
+  var elem := GetObjProperty(corpse, "npctemplate");
+  var deathsound := 0;
+  var graphic := GetObjProperty(corpse, "Graphic");
+  if((graphic != 0x190) && (graphic != 0x191))
+    deathsound := cfg[elem]."deathsound";
+    if (deathsound)
+      PlaySoundEffect(corpse, deathsound);
+    endif
+  endif
+  set_critical(1);
+  dismount(corpse);
+  Run_Script_To_Completion(":spawnregion:death", corpse);
+  if(GetObjProperty(corpse, "regspawn"))
+	var spawnname := GetObjProperty(corpse, "regspawn");
+	var numspawns := CInt(GetGlobalProperty(spawnname))-1;
+	SetGlobalProperty(spawnname,numspawns);
+  endif
+  set_critical(0);
+  if(GetObjProperty(corpse, "guardkill"))
+    DestroyItem(corpse);
+    return;
+  endif
+  if(GetObjProperty(corpse,"npctemplate") == "employee")
+    foreach thing in EnumerateItemsInContainer(corpse)
+      if((thing.layer) && (thing.isa(POLCLASS_WEAPON) || thing.isa(POLCLASS_ARMOR)))
+        DestroyItem(thing);
+      endif
+    endforeach
+  endif
+  MoveBackpackToCorpse(corpse);
+  if(GetObjProperty(corpse, "npctemplate") == "playervendor")
+    var itemdesc := ReadConfigFile(":*:itemdesc");
+    var elm, dsc;
+    foreach thing in EnumerateItemsInContainer(corpse)
+      EraseObjProperty(thing, "Vendored");
+      if(GetObjProperty(thing, "Vendor"))
+        DestroyItem(thing);
+      else
+        var oldname := GetObjProperty(thing, "OldName");
+        if(oldname)
+          SetName(thing, oldname);
+        else
+          elm := FindConfigElem(itemdesc, thing.objtype);
+          dsc := itemdesc[thing.objtype].desc;
+          SetName(thing, dsc);
+        endif
+        EraseObjProperty(thing, "Master");
+        EraseObjProperty(thing, "OldName");
+        EraseObjProperty(thing, "price");
+      endif
+    endforeach
+  endif
+  if(GetObjProperty(corpse, "summoned"))
+    DestroyItem(corpse);
+  elseif(GetObjProperty(corpse, "nocorpse"))
+    foreach item in EnumerateItemsInContainer(corpse);
+      MoveItemToLocation(item, corpse.x, corpse.y, corpse.z, MOVEITEM_FORCELOCATION);
+    endforeach
+    DestroyItem(corpse);
+  else
+    var corpseof := GetObjProperty(corpse,"npctemplate");
+  endif
+endprogram
+
+function dismount(corpse)
+  var mount := GetEquipmentByLayer( corpse, 25 );
+  foreach item in EnumerateItemsInContainer(corpse)
+	if (item.objtype == 0xf021)
+	  mount := item;
+	  break;
+	endif
+  endforeach
+  if (!mount)
+	return;
+  endif
+  var animal := SystemFindObjectBySerial(CInt(GetObjProperty(mount,"serial")));
+  animal.facing := corpse.facing;
+  EraseObjProperty(animal, "mounted");
+  EraseObjProperty(animal, "mounted_on");
+  MoveCharacterToLocation( animal, corpse.x, corpse.y, corpse.z, MOVECHAR_FORCELOCATION);
+  DestroyItem(mount);
+
+endfunction
+
+function dismountme(who, corpse)
+
+
+endfunction
+
+function ListRootItemsInContainer(container)
+  var ret := { };
+  foreach item in EnumerateItemsInContainer(container)
+    if ( item.container.serial == container.serial )
+	  ret[len(ret)+1] := item;
+    endif
+  endforeach
+  return ret;
+endfunction

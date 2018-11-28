@@ -1,0 +1,89 @@
+C:\pol2\pkg\tools\gmtools\textcmd\gm\jailkeeper.src, Line 5
+program textcmd_jailkeeper(who)
+use cfgfile;
+0: get arg 'who'
+var acctcfg := ReadConfigFile(":gmtools:accts");
+1: decl local #1
+2: ":gmtools:accts"
+3: Func(4,0): ReadConfigFile
+4: :=
+5: #
+var relday;
+6: decl local #2
+7: #
+var elem;
+8: decl local #3
+9: #
+var act;
+10: decl local #4
+11: #
+var accounts := ListAccounts();
+12: decl local #5
+13: Func(2,0): ListAccounts
+14: :=
+15: #
+foreach account in accounts
+16: local #5
+17: initforeach @63
+elem := acctcfg[account];
+18: local #1
+19: local #6
+20: [] 1
+21: local3 := 
+SendSysMessage(who,"elem= " + account);
+22: local #0
+23: "elem= "
+24: local #6
+25: +
+26: 3L
+27: 1000L
+28: Func(2,1): SendSysMessage
+29: #
+relday := elem.releaseday;
+30: local #3
+31: get member 'releaseday'
+32: local2 := 
+if (relday)
+33: local #2
+34: if false goto 63
+SendSysMessage(who,"releaseday= " + CInt(relday));
+35: local #0
+36: "releaseday= "
+37: local #2
+38: Func(0,0): CInt
+39: +
+40: 3L
+41: 1000L
+42: Func(2,1): SendSysMessage
+43: #
+SendSysMessage(who,"time= " + ReadGameClock());
+44: local #0
+45: "time= "
+46: Func(2,2): ReadGameClock
+47: +
+48: 3L
+49: 1000L
+50: Func(2,1): SendSysMessage
+51: #
+if (ReadGameClock() >= CInt(relday))
+52: Func(2,2): ReadGameClock
+53: local #2
+54: Func(0,0): CInt
+55: >=
+56: if false goto 63
+act := FindAccount(account);
+57: local #6
+58: Func(2,3): FindAccount
+59: local4 := 
+act.enable();
+60: local #4
+61: Call Method enable (0 params)
+62: #
+63: stepforeach @18
+64: leave block(3)
+UnloadConfigFile(":gmtools:accts");
+65: ":gmtools:accts"
+66: Func(4,1): UnloadConfigFile
+67: #
+68: leave block(6)
+69: progend

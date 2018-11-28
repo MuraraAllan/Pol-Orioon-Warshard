@@ -1,0 +1,66 @@
+use os;
+use uo;
+use cfgfile;
+use util;
+use basic;
+
+include "include/client";
+include "include/attributes";
+
+program zerarskills(who)
+
+
+
+foreach acc in ListAccounts()
+
+var conta:=FindAccount( acc );
+
+if((conta.GetCharacter(1)))
+var i;
+for (i := 0; i <= SKILLID__HIGHEST; i := i + 1)
+var res := SetBaseSkillBaseValue( conta.GetCharacter(1), i, 0 );
+endfor
+endif
+
+
+if((conta.GetCharacter(2)))
+var i;
+for (i := 0; i <= SKILLID__HIGHEST; i := i + 1)
+var res := SetBaseSkillBaseValue( conta.GetCharacter(2), i, 0 );
+endfor
+endif
+
+
+
+
+if((conta.GetCharacter(3)))
+var i;
+for (i := 0; i <= SKILLID__HIGHEST; i := i + 1)
+var res := SetBaseSkillBaseValue( conta.GetCharacter(3), i, 0);
+endfor
+endif
+
+
+
+
+if((conta.GetCharacter(4)))
+var i;
+for (i := 0; i <= SKILLID__HIGHEST; i := i + 1)
+var res := SetBaseSkillBaseValue( conta.GetCharacter(4), i, 0);
+endfor
+endif
+
+
+
+
+if((conta.GetCharacter(5)))
+var i;
+for (i := 0; i <= SKILLID__HIGHEST; i := i + 1)
+var res := SetBaseSkillBaseValue( conta.GetCharacter(5), i, 0 );
+endfor
+endif
+
+
+endforeach
+endprogram
+ 

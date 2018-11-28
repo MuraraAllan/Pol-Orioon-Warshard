@@ -1,0 +1,14 @@
+
+use uo;
+include "include/attributes";
+
+program textcmd_showstats( who, action )
+    SendSysMessage( who, "Select a mobile" );
+
+    var mobile := Target( who );
+    if (mobile)
+        Sendsysmessage( who, "Str: " + GetStrength(mobile),0x9,90);
+        Sendsysmessage( who, "Dex: " + GetDexterity(mobile),0x9,90 );
+        Sendsysmessage( who, "Int: " + GetIntelligence(mobile),0x9,90 );
+    endif
+endprogram

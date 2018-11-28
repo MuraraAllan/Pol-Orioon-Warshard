@@ -1,0 +1,48 @@
+use os;
+use uo;
+
+include "include/client";
+include "include/attributes";
+include "include/yesno";
+
+program walk_on_moongate(mobile, gate)
+if(GetObjProperty(mobile,"#justgated"))
+  EraseObjProperty(mobile,"#justgated");
+  return;
+endif
+  if((mobile.npctemplate) && (mobile.script != "employed") && (mobile.script != "tamed") && (mobile.script != "escortee"))
+    return;
+  endif
+  var magery := CInt(GetObjProperty(gate,"magery"));
+  if((magery) && (mobile.acctname))
+    if(GetEffectiveSkill(mobile, SKILLID_MAGERY) < magery)
+      SendSysMessage(mobile,"your knowledge of the arcane arts is too low to traverse this gate.");
+      return;
+    endif
+  endif
+  set_critical(1);
+  var x, y, z;
+  x := GetObjProperty( gate, "GateDestX" );
+  y := GetObjProperty( gate, "GateDestY" );
+  z := GetObjProperty( gate, "GateDestZ" );
+  foreach critter in ListMobilesNearLocation(gate.x, gate.y, gate.z, 8);
+    if(((critter.script == "employed") && (CInt(GetObjProperty(critter, "master")) == mobile.serial)) || ((critter.script == "escortee") && (CInt(GetObjProperty(critter, "Escortee")) == mobile.serial)) || ((critter.script == "tamed") && (CInt(GetObjProperty(critter, "master")) == mobile.serial)))
+      SetObjProperty(critter, "Pause", 1);
+      MoveCharacterToLocation(critter, gate.x, gate.y, gate.z, MOVECHAR_FORCELOCATION);
+      EraseObjProperty(critter, "Pause");;
+    endif
+  endforeach
+  SetObjProperty(mobile,"#justgated",1);
+  var movx:=mobile.x;
+  var movy:=mobile.y;
+  var tele := yesno(mobile,"Entrar?");
+  if(!tele)
+    sendsysmessage(mobile,"Cancelado",9,90);
+  return;
+  elseif(mobile.x<>movx or mobile.y<>movy)
+    sendsysmessage(mobile,"Voce precisa estar em cima do gate para poder se teletransportar",9,89);
+    return;
+  else
+  MoveCharacterToLocation(mobile, x , y, z );
+  endif
+endprogram

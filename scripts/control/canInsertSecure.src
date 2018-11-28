@@ -1,0 +1,36 @@
+use uo;
+use os;
+
+include "include/casas";
+
+//add your own logic for these checking functions
+function CanIncreaseStack( mob, container, movetype, existing_stack, amt_to_add, item_to_add ) 
+   return 1; 
+endfunction 
+
+function CanAddItem( mob, container, movetype, item_to_add ) 
+   return 1; 
+endfunction 
+
+//if inserttype == INSERT_ADD_ITEM, existing_stack and amt_to_add are uninit
+program can_insert(who, container, movetype, inserttype, adding_item, existing_stack, amt_to_add)
+
+ var ok := 0;
+  if (inserttype == INSERT_INCREASE_STACK) 
+    ok := CanIncreaseStack( who, container, movetype, existing_stack, amt_to_add, adding_item ); 
+  elseif (inserttype == INSERT_ADD_ITEM) 
+    ok := CanAddItem( who, container, movetype, adding_item ); 
+  endif
+  if(!ok)
+    return 0;
+  endif
+
+var casa:=container.multi;
+if(!casa)
+return 0;
+endif
+if(!Socio(who,casa))
+return 0;
+endif
+
+endprogram

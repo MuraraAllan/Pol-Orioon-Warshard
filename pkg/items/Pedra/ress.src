@@ -1,0 +1,13 @@
+use uo;
+use os;
+
+include "include/attributes";
+include "include/client";
+include ":poisonwatcher:poisons";
+
+program resme(who,item)
+if(who.dead)
+Resurrect( who ); //// Ressucita o char
+DestroyItem(GetEquipmentByLayer(who, 22)); /// Destroi o item com o Layer 22, aqui no caso o robe.
+endif
+endprogram

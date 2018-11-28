@@ -1,0 +1,235 @@
+C:\pol2\pkg\items\magic\chargedSpellItem.src, Line 8
+program use_chargedspellitem( who, item )
+include "include/canAccess";
+0: get arg 'who'
+1: get arg 'item'
+EraseObjProperty(who, "IsMeditating");
+2: local #0
+3: "IsMeditating"
+4: Func(2,5): EraseObjProperty
+5: #
+EraseObjProperty(who, "HealTimer");
+6: local #0
+7: "HealTimer"
+8: Func(2,5): EraseObjProperty
+9: #
+if(!can_access(who, item))
+10: local #0
+11: local #1
+12: 0L
+13: makelocal
+14: jmp userfunc @72
+15: if true goto 18
+return;
+16: ""
+17: progend
+if(item.movable == 0)
+18: local #1
+19: get member 'movable'
+20: 0L
+21: ==
+22: if false goto 31
+SendSysMessage(who, "You cannot use that.");
+23: local #0
+24: "You cannot use that."
+25: 3L
+26: 1000L
+27: Func(2,1): SendSysMessage
+28: #
+return;
+29: ""
+30: progend
+var charges := CInt(GetObjProperty(item, "charges"));
+31: decl local #2
+32: local #1
+33: "charges"
+34: Func(2,0): GetObjProperty
+35: Func(0,0): CInt
+36: :=
+37: #
+if (charges)
+38: local #2
+39: if false goto 63
+charges := charges - 1;
+40: local #2
+41: 1L
+42: -
+43: local2 := 
+SetObjProperty(item, "charges", charges);
+44: local #1
+45: "charges"
+46: local #2
+47: Func(2,6): SetObjProperty
+48: #
+var spellid := GetSpellId( item );
+49: decl local #0
+50: local #1
+51: makelocal
+52: jmp userfunc @179
+53: :=
+54: #
+Detach();
+55: Func(2,7): Detach
+56: #
+StartSpellEffect( who, spellid );
+57: local #0
+58: local #3
+59: Func(2,8): StartSpellEffect
+60: #
+61: leave block(1)
+62: goto70
+PrintTextAbovePrivate( item, "That is out of charges", who );
+63: local #1
+64: "That is out of charges"
+65: local #0
+66: 3L
+67: 1000L
+68: Func(2,9): PrintTextAbovePrivate
+69: #
+70: leave block(3)
+71: progend
+C:/pol2/scripts/include/canAccess.inc, Line 2
+function can_access(who, item, flags := 0)
+72: pop param 'flags'
+73: pop param 'item'
+74: pop param 'who'
+var owner := Cint(GetObjProperty(item, "Owner"));
+75: decl local #3
+76: local #1
+77: "Owner"
+78: Func(2,0): GetObjProperty
+79: Func(0,0): CInt
+80: :=
+81: #
+if((owner) and (owner != who.serial))
+82: local #3
+83: local #3
+84: local #2
+85: get member 'serial'
+86: <>
+87: &&
+88: if false goto 98
+SendSysMessage(who, "You cannot use that.");
+89: local #2
+90: "You cannot use that."
+91: 3L
+92: 1000L
+93: Func(2,1): SendSysMessage
+94: #
+return 0;
+95: 0L
+96: return
+97: goto177
+elseif(GetObjProperty(item, "Vendored"))
+98: local #1
+99: "Vendored"
+100: Func(2,0): GetObjProperty
+101: if false goto 111
+SendSysMessage(who, "You cannot use that.");
+102: local #2
+103: "You cannot use that."
+104: 3L
+105: 1000L
+106: Func(2,1): SendSysMessage
+107: #
+return 0;
+108: 0L
+109: return
+110: goto177
+elseif(!Accessible(who, item))
+111: local #2
+112: local #1
+113: Func(2,2): Accessible
+114: if true goto 124
+SendSysMessage(who, "You cannot use that.");
+115: local #2
+116: "You cannot use that."
+117: 3L
+118: 1000L
+119: Func(2,1): SendSysMessage
+120: #
+return 0;
+121: 0L
+122: return
+123: goto177
+elseif((!flags["distance"]) and ((Distance(who, item) > 2)))
+124: local #0
+125: "distance"
+126: [] 1
+127: !
+128: local #2
+129: local #1
+130: Func(2,3): Distance
+131: 2L
+132: >
+133: &&
+134: if false goto 144
+SendSysMessage(who, "That item is too far away.");
+135: local #2
+136: "That item is too far away."
+137: 3L
+138: 1000L
+139: Func(2,1): SendSysMessage
+140: #
+return 0;
+141: 0L
+142: return
+143: goto177
+elseif((!flags["unmovable"]) and (item.movable == 0))
+144: local #0
+145: "unmovable"
+146: [] 1
+147: !
+148: local #1
+149: get member 'movable'
+150: 0L
+151: ==
+152: &&
+153: if false goto 163
+SendSysMessage(who, "You cannot use that while locked down.");
+154: local #2
+155: "You cannot use that while locked down."
+156: 3L
+157: 1000L
+158: Func(2,1): SendSysMessage
+159: #
+return 0;
+160: 0L
+161: return
+162: goto177
+elseif(!ReserveItem(item))
+163: local #1
+164: Func(2,4): ReserveItem
+165: if true goto 175
+SendSysMessage(who, "That item is already in use.");
+166: local #2
+167: "That item is already in use."
+168: 3L
+169: 1000L
+170: Func(2,1): SendSysMessage
+171: #
+return 0;
+172: 0L
+173: return
+174: goto177
+return 1;
+175: 1L
+176: return
+177: 0L
+178: return
+C:\pol2\pkg\items\magic\getSpellID.inc, Line 8
+function GetSpellId( magicitem )
+179: pop param 'magicitem'
+var itemdesc_cfg := ReadConfigFile( "itemdesc" );
+180: decl local #1
+181: "itemdesc"
+182: Func(4,0): ReadConfigFile
+183: :=
+184: #
+return itemdesc_cfg[ magicitem.objtype ].spellid;
+185: local #1
+186: local #0
+187: get member 'objtype'
+188: [] 1
+189: get member 'spellid'
+190: return

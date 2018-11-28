@@ -1,0 +1,312 @@
+C:\pol2\pkg\skills\tailoring\tailoring.src, Line 8
+program use_thread(who, thread)
+include "include/canAccess";
+0: get arg 'who'
+1: get arg 'thread'
+EraseObjProperty(who, "IsMeditating");
+2: local #0
+3: "IsMeditating"
+4: Func(2,5): EraseObjProperty
+5: #
+EraseObjProperty(who, "HealTimer");
+6: local #0
+7: "HealTimer"
+8: Func(2,5): EraseObjProperty
+9: #
+if(!can_access(who, thread))
+10: local #0
+11: local #1
+12: 0L
+13: makelocal
+14: jmp userfunc @87
+15: if true goto 18
+return;
+16: ""
+17: progend
+if(thread.movable == 0)
+18: local #1
+19: get member 'movable'
+20: 0L
+21: ==
+22: if false goto 31
+SendSysMessage(who, "You cannot use that.");
+23: local #0
+24: "You cannot use that."
+25: 3L
+26: 1000L
+27: Func(2,1): SendSysMessage
+28: #
+return;
+29: ""
+30: progend
+SendSysMessage(who, "Select the loom to use that on");
+31: local #0
+32: "Select the loom to use that on"
+33: 3L
+34: 1000L
+35: Func(2,1): SendSysMessage
+36: #
+var useon := Target(who);
+37: decl local #2
+38: local #0
+39: 1L
+40: Func(2,6): Target
+41: :=
+42: #
+if (!useon)
+43: local #2
+44: if true goto 47
+return;
+45: ""
+46: progend
+if(!ReserveItem(useon))
+47: local #2
+48: Func(2,4): ReserveItem
+49: if true goto 58
+SendSysMessage(who,"that is already in use.");
+50: local #0
+51: "that is already in use."
+52: 3L
+53: 1000L
+54: Func(2,1): SendSysMessage
+55: #
+return;
+56: ""
+57: progend
+var obj := useon.objtype;
+58: decl local #3
+59: local #2
+60: get member 'objtype'
+61: :=
+62: #
+if ( (obj < UOBJ_LOOM_START) || (obj > UOBJ_LOOM_END))
+63: local #3
+64: 4191L
+65: <
+66: local #3
+67: 4198L
+68: >
+69: ||
+70: if false goto 80
+SendSysMessage(who,"You can only use that on a loom");
+71: local #0
+72: "You can only use that on a loom"
+73: 3L
+74: 1000L
+75: Func(2,1): SendSysMessage
+76: #
+return;
+77: ""
+78: progend
+79: goto85
+MakeCloth(who, thread);
+80: local #0
+81: local #1
+82: makelocal
+83: jmp userfunc @194
+84: #
+85: leave block(4)
+86: progend
+C:/pol2/scripts/include/canAccess.inc, Line 2
+function can_access(who, item, flags := 0)
+87: pop param 'flags'
+88: pop param 'item'
+89: pop param 'who'
+var owner := Cint(GetObjProperty(item, "Owner"));
+90: decl local #3
+91: local #1
+92: "Owner"
+93: Func(2,0): GetObjProperty
+94: Func(0,0): CInt
+95: :=
+96: #
+if((owner) and (owner != who.serial))
+97: local #3
+98: local #3
+99: local #2
+100: get member 'serial'
+101: <>
+102: &&
+103: if false goto 113
+SendSysMessage(who, "You cannot use that.");
+104: local #2
+105: "You cannot use that."
+106: 3L
+107: 1000L
+108: Func(2,1): SendSysMessage
+109: #
+return 0;
+110: 0L
+111: return
+112: goto192
+elseif(GetObjProperty(item, "Vendored"))
+113: local #1
+114: "Vendored"
+115: Func(2,0): GetObjProperty
+116: if false goto 126
+SendSysMessage(who, "You cannot use that.");
+117: local #2
+118: "You cannot use that."
+119: 3L
+120: 1000L
+121: Func(2,1): SendSysMessage
+122: #
+return 0;
+123: 0L
+124: return
+125: goto192
+elseif(!Accessible(who, item))
+126: local #2
+127: local #1
+128: Func(2,2): Accessible
+129: if true goto 139
+SendSysMessage(who, "You cannot use that.");
+130: local #2
+131: "You cannot use that."
+132: 3L
+133: 1000L
+134: Func(2,1): SendSysMessage
+135: #
+return 0;
+136: 0L
+137: return
+138: goto192
+elseif((!flags["distance"]) and ((Distance(who, item) > 2)))
+139: local #0
+140: "distance"
+141: [] 1
+142: !
+143: local #2
+144: local #1
+145: Func(2,3): Distance
+146: 2L
+147: >
+148: &&
+149: if false goto 159
+SendSysMessage(who, "That item is too far away.");
+150: local #2
+151: "That item is too far away."
+152: 3L
+153: 1000L
+154: Func(2,1): SendSysMessage
+155: #
+return 0;
+156: 0L
+157: return
+158: goto192
+elseif((!flags["unmovable"]) and (item.movable == 0))
+159: local #0
+160: "unmovable"
+161: [] 1
+162: !
+163: local #1
+164: get member 'movable'
+165: 0L
+166: ==
+167: &&
+168: if false goto 178
+SendSysMessage(who, "You cannot use that while locked down.");
+169: local #2
+170: "You cannot use that while locked down."
+171: 3L
+172: 1000L
+173: Func(2,1): SendSysMessage
+174: #
+return 0;
+175: 0L
+176: return
+177: goto192
+elseif(!ReserveItem(item))
+178: local #1
+179: Func(2,4): ReserveItem
+180: if true goto 190
+SendSysMessage(who, "That item is already in use.");
+181: local #2
+182: "That item is already in use."
+183: 3L
+184: 1000L
+185: Func(2,1): SendSysMessage
+186: #
+return 0;
+187: 0L
+188: return
+189: goto192
+return 1;
+190: 1L
+191: return
+192: 0L
+193: return
+C:\pol2\pkg\skills\tailoring\tailoring.src, Line 36
+function MakeCloth(character, yarn)
+194: pop param 'yarn'
+195: pop param 'character'
+if(!Accessible(character, yarn))
+196: local #1
+197: local #0
+198: Func(2,2): Accessible
+199: if true goto 208
+SendSysMessage(character, "You don't have any thread!");
+200: local #1
+201: "You don't have any thread!"
+202: 3L
+203: 1000L
+204: Func(2,1): SendSysMessage
+205: #
+return;
+206: ""
+207: return
+if(yarn.amount >= 5)
+208: local #0
+209: get member 'amount'
+210: 5L
+211: >=
+212: if false goto 247
+set_critical(1);
+213: 1L
+214: Func(3,0): set_critical
+215: #
+if( yarn.amount >= 5)
+216: local #0
+217: get member 'amount'
+218: 5L
+219: >=
+220: if false goto 240
+if(SubtractAmount(yarn, 5))
+221: local #0
+222: 5L
+223: Func(2,7): SubtractAmount
+224: if false goto 239
+var cloth := CreateItemInBackpack(character, UOBJ_CLOTH, 1);
+225: decl local #0
+226: local #1
+227: 3989L
+228: 1L
+229: Func(2,8): CreateItemInBackpack
+230: :=
+231: #
+SendSysMessage(character, "You use some thread and create a bolt of cloth");
+232: local #1
+233: "You use some thread and create a bolt of cloth"
+234: 3L
+235: 1000L
+236: Func(2,1): SendSysMessage
+237: #
+238: leave block(1)
+239: goto246
+SendSysMessage(character, "You don't have enough thread for the bolt of cloth."
+240: local #1
+241: "You don't have enough thread for the bolt of cloth."
+242: 3L
+243: 1000L
+244: Func(2,1): SendSysMessage
+245: #
+246: goto253
+SendSysMessage(character, "You don't have enough thread for the bolt of cloth."
+247: local #1
+248: "You don't have enough thread for the bolt of cloth."
+249: 3L
+250: 1000L
+251: Func(2,1): SendSysMessage
+252: #
+253: 0L
+254: return

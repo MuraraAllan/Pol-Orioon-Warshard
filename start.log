@@ -1,0 +1,345 @@
+POL095-2003-07-05 (VS.NET) compiled on Jul  5 2003 16:38:41
+Copyright (C) 1993-2003 Eric N. Swanson
+
+Reading Configuration.
+Opening UO client data files.
+Reading UO data (takes a while)...Done!
+hostname is tafac055
+address: 192.168.26.23
+LAN IP address is 192.168.26.23
+No entry for MultiID 0x96 found in multis.cfg
+No entry for MultiID 0x98 found in multis.cfg
+No entry for MultiID 0x9a found in multis.cfg
+No entry for MultiID 0x9c found in multis.cfg
+No entry for MultiID 0x9e found in multis.cfg
+No entry for MultiID 0xa0 found in multis.cfg
+No entry for MultiID 0xa2 found in multis.cfg
+No entry for MultiID 0x1f4 found in multis.cfg
+No entry for MultiID 0x1f5 found in multis.cfg
+No entry for MultiID 0x1f6 found in multis.cfg
+No entry for MultiID 0xfa0 found in multis.cfg
+No entry for MultiID 0xfa1 found in multis.cfg
+No entry for MultiID 0xfa2 found in multis.cfg
+No entry for MultiID 0xfa3 found in multis.cfg
+No entry for MultiID 0xfa4 found in multis.cfg
+No entry for MultiID 0xfa5 found in multis.cfg
+No entry for MultiID 0xfa6 found in multis.cfg
+No entry for MultiID 0xfa7 found in multis.cfg
+No entry for MultiID 0xfa8 found in multis.cfg
+No entry for MultiID 0xfa9 found in multis.cfg
+No entry for MultiID 0xfaa found in multis.cfg
+No entry for MultiID 0xfab found in multis.cfg
+No entry for MultiID 0xfac found in multis.cfg
+No entry for MultiID 0x1388 found in multis.cfg
+No entry for MultiID 0x13ec found in multis.cfg
+No entry for MultiID 0x13ed found in multis.cfg
+No entry for MultiID 0x13ee found in multis.cfg
+No entry for MultiID 0x13ef found in multis.cfg
+No entry for MultiID 0x13f0 found in multis.cfg
+No entry for MultiID 0x13f1 found in multis.cfg
+No entry for MultiID 0x13f8 found in multis.cfg
+No entry for MultiID 0x13f9 found in multis.cfg
+No entry for MultiID 0x13fa found in multis.cfg
+No entry for MultiID 0x13fb found in multis.cfg
+No entry for MultiID 0x13fc found in multis.cfg
+No entry for MultiID 0x13fd found in multis.cfg
+No entry for MultiID 0x13fe found in multis.cfg
+No entry for MultiID 0x1404 found in multis.cfg
+No entry for MultiID 0x1405 found in multis.cfg
+No entry for MultiID 0x1406 found in multis.cfg
+No entry for MultiID 0x1407 found in multis.cfg
+No entry for MultiID 0x1408 found in multis.cfg
+No entry for MultiID 0x1409 found in multis.cfg
+No entry for MultiID 0x140a found in multis.cfg
+No entry for MultiID 0x140b found in multis.cfg
+No entry for MultiID 0x1410 found in multis.cfg
+No entry for MultiID 0x1411 found in multis.cfg
+No entry for MultiID 0x1412 found in multis.cfg
+No entry for MultiID 0x1413 found in multis.cfg
+No entry for MultiID 0x1414 found in multis.cfg
+No entry for MultiID 0x1415 found in multis.cfg
+No entry for MultiID 0x1416 found in multis.cfg
+No entry for MultiID 0x1417 found in multis.cfg
+No entry for MultiID 0x1418 found in multis.cfg
+No entry for MultiID 0x141c found in multis.cfg
+No entry for MultiID 0x141d found in multis.cfg
+No entry for MultiID 0x141e found in multis.cfg
+No entry for MultiID 0x141f found in multis.cfg
+No entry for MultiID 0x1420 found in multis.cfg
+No entry for MultiID 0x1421 found in multis.cfg
+No entry for MultiID 0x1422 found in multis.cfg
+No entry for MultiID 0x1423 found in multis.cfg
+No entry for MultiID 0x1424 found in multis.cfg
+No entry for MultiID 0x1425 found in multis.cfg
+No entry for MultiID 0x1428 found in multis.cfg
+No entry for MultiID 0x1429 found in multis.cfg
+No entry for MultiID 0x142a found in multis.cfg
+No entry for MultiID 0x142b found in multis.cfg
+No entry for MultiID 0x142c found in multis.cfg
+No entry for MultiID 0x142d found in multis.cfg
+No entry for MultiID 0x142e found in multis.cfg
+No entry for MultiID 0x142f found in multis.cfg
+No entry for MultiID 0x1430 found in multis.cfg
+No entry for MultiID 0x1431 found in multis.cfg
+No entry for MultiID 0x1432 found in multis.cfg
+No entry for MultiID 0x1435 found in multis.cfg
+No entry for MultiID 0x1436 found in multis.cfg
+No entry for MultiID 0x1437 found in multis.cfg
+No entry for MultiID 0x1438 found in multis.cfg
+No entry for MultiID 0x1439 found in multis.cfg
+No entry for MultiID 0x143a found in multis.cfg
+No entry for MultiID 0x143b found in multis.cfg
+No entry for MultiID 0x143c found in multis.cfg
+No entry for MultiID 0x143d found in multis.cfg
+No entry for MultiID 0x143e found in multis.cfg
+No entry for MultiID 0x143f found in multis.cfg
+No entry for MultiID 0x1442 found in multis.cfg
+No entry for MultiID 0x1443 found in multis.cfg
+No entry for MultiID 0x1444 found in multis.cfg
+No entry for MultiID 0x1445 found in multis.cfg
+No entry for MultiID 0x1446 found in multis.cfg
+No entry for MultiID 0x1447 found in multis.cfg
+No entry for MultiID 0x1448 found in multis.cfg
+No entry for MultiID 0x1449 found in multis.cfg
+No entry for MultiID 0x144a found in multis.cfg
+No entry for MultiID 0x144b found in multis.cfg
+No entry for MultiID 0x144f found in multis.cfg
+No entry for MultiID 0x1450 found in multis.cfg
+No entry for MultiID 0x1451 found in multis.cfg
+No entry for MultiID 0x1452 found in multis.cfg
+No entry for MultiID 0x1453 found in multis.cfg
+No entry for MultiID 0x1454 found in multis.cfg
+No entry for MultiID 0x1455 found in multis.cfg
+No entry for MultiID 0x1456 found in multis.cfg
+No entry for MultiID 0x1457 found in multis.cfg
+No entry for MultiID 0x145c found in multis.cfg
+No entry for MultiID 0x145d found in multis.cfg
+No entry for MultiID 0x145e found in multis.cfg
+No entry for MultiID 0x145f found in multis.cfg
+No entry for MultiID 0x1460 found in multis.cfg
+No entry for MultiID 0x1461 found in multis.cfg
+No entry for MultiID 0x1462 found in multis.cfg
+No entry for MultiID 0x1463 found in multis.cfg
+No entry for MultiID 0x1469 found in multis.cfg
+No entry for MultiID 0x146a found in multis.cfg
+No entry for MultiID 0x146b found in multis.cfg
+No entry for MultiID 0x146c found in multis.cfg
+No entry for MultiID 0x146d found in multis.cfg
+No entry for MultiID 0x146e found in multis.cfg
+No entry for MultiID 0x146f found in multis.cfg
+No entry for MultiID 0x1476 found in multis.cfg
+No entry for MultiID 0x1477 found in multis.cfg
+No entry for MultiID 0x1478 found in multis.cfg
+No entry for MultiID 0x1479 found in multis.cfg
+No entry for MultiID 0x147a found in multis.cfg
+No entry for MultiID 0x147b found in multis.cfg
+No entry for MultiID 0x1d4c found in multis.cfg
+No entry for MultiID 0x1db0 found in multis.cfg
+No entry for MultiID 0x1db1 found in multis.cfg
+No entry for MultiID 0x1db2 found in multis.cfg
+No entry for MultiID 0x1db3 found in multis.cfg
+No entry for MultiID 0x1db4 found in multis.cfg
+No entry for MultiID 0x1db5 found in multis.cfg
+No entry for MultiID 0x1db6 found in multis.cfg
+No entry for MultiID 0x1db7 found in multis.cfg
+No entry for MultiID 0x1db8 found in multis.cfg
+No entry for MultiID 0x1db9 found in multis.cfg
+No entry for MultiID 0x1dba found in multis.cfg
+No entry for MultiID 0x1dbb found in multis.cfg
+No entry for MultiID 0x1dbc found in multis.cfg
+No entry for MultiID 0x1dbd found in multis.cfg
+No entry for MultiID 0x1dbe found in multis.cfg
+No entry for MultiID 0x1dbf found in multis.cfg
+No entry for MultiID 0x1dc0 found in multis.cfg
+No entry for MultiID 0x1dc1 found in multis.cfg
+No entry for MultiID 0x1dc2 found in multis.cfg
+No entry for MultiID 0x1dc3 found in multis.cfg
+No entry for MultiID 0x1dc4 found in multis.cfg
+No entry for MultiID 0x1dc5 found in multis.cfg
+No entry for MultiID 0x1dc6 found in multis.cfg
+No entry for MultiID 0x1dc7 found in multis.cfg
+No entry for MultiID 0x1dc8 found in multis.cfg
+No entry for MultiID 0x1dc9 found in multis.cfg
+No entry for MultiID 0x1dca found in multis.cfg
+No entry for MultiID 0x1dcb found in multis.cfg
+No entry for MultiID 0x1dcc found in multis.cfg
+No entry for MultiID 0x1dcd found in multis.cfg
+No entry for MultiID 0x1dce found in multis.cfg
+No entry for MultiID 0x1dcf found in multis.cfg
+No entry for MultiID 0x1dd0 found in multis.cfg
+No entry for MultiID 0x1dd1 found in multis.cfg
+No entry for MultiID 0x1dd2 found in multis.cfg
+No entry for MultiID 0x1dd3 found in multis.cfg
+No entry for MultiID 0x1dd4 found in multis.cfg
+No entry for MultiID 0x1dd7 found in multis.cfg
+No entry for MultiID 0x1dd8 found in multis.cfg
+No entry for MultiID 0x1dd9 found in multis.cfg
+No entry for MultiID 0x1dda found in multis.cfg
+No entry for MultiID 0x1ddb found in multis.cfg
+No entry for MultiID 0x1ddc found in multis.cfg
+No entry for MultiID 0x1ddd found in multis.cfg
+No entry for MultiID 0x1dde found in multis.cfg
+No entry for MultiID 0x1ddf found in multis.cfg
+No entry for MultiID 0x1de0 found in multis.cfg
+No entry for MultiID 0x1de1 found in multis.cfg
+No entry for MultiID 0x1de2 found in multis.cfg
+No entry for MultiID 0x1de3 found in multis.cfg
+No entry for MultiID 0x1de4 found in multis.cfg
+No entry for MultiID 0x1de5 found in multis.cfg
+No entry for MultiID 0x1de6 found in multis.cfg
+No entry for MultiID 0x1de7 found in multis.cfg
+No entry for MultiID 0x1de8 found in multis.cfg
+No entry for MultiID 0x1de9 found in multis.cfg
+No entry for MultiID 0x1dea found in multis.cfg
+No entry for MultiID 0x1deb found in multis.cfg
+No entry for MultiID 0x1dec found in multis.cfg
+Loading package in pkg/apostador/
+Loading package in pkg/AuxPhp/
+Loading package in pkg/AuxService/
+Loading package in pkg/capture_flag/
+Loading package in pkg/foundations/gumps/
+Loading package in pkg/foundations/hooks/
+Loading package in pkg/guardas/
+Loading package in pkg/items/arenatele/
+Loading package in pkg/items/bountyboard/
+Loading package in pkg/items/commcrystals/
+Loading package in pkg/items/decorations/
+Loading package in pkg/items/doors/
+Loading package in pkg/items/drinking/
+Loading package in pkg/items/encolher/
+Loading package in pkg/items/gates/
+Loading package in pkg/items/gelo/
+Loading package in pkg/items/guildstone/
+Loading package in pkg/items/lighting/
+Loading package in pkg/items/magic/
+Loading package in pkg/items/moongates/
+Loading package in pkg/items/Pedra/
+Loading package in pkg/items/pedritas/
+Loading package in pkg/items/red/
+Loading package in pkg/items/runebook/
+Loading package in pkg/items/sysbook/
+Loading package in pkg/items/training/
+Loading package in pkg/items/traps/
+Loading package in pkg/items/treasuremap/
+Loading package in pkg/items/wands/
+Loading package in pkg/npcs/animaltrainer/
+Loading package in pkg/npcs/barber/
+Loading package in pkg/npcs/playervendor/
+Loading package in pkg/skills/alchemy/
+Loading package in pkg/skills/anatomy/
+Loading package in pkg/skills/animallore/
+Loading package in pkg/skills/armslore/
+Loading package in pkg/skills/blacksmithy/
+Loading package in pkg/skills/camping/
+Loading package in pkg/skills/carpentry/
+Loading package in pkg/skills/cartography/
+Loading package in pkg/skills/cooking/
+Loading package in pkg/skills/detecthidden/
+Loading package in pkg/skills/evalint/
+Loading package in pkg/skills/fishing/
+Loading package in pkg/skills/forensicevaluation/
+Loading package in pkg/skills/healing/
+Loading package in pkg/skills/herding/
+Loading package in pkg/skills/hiding/
+Loading package in pkg/skills/inscription/
+Loading package in pkg/skills/itemid/
+Loading package in pkg/skills/lockpicking/
+Loading package in pkg/skills/lumberjacking/
+Loading package in pkg/skills/meditation/
+Loading package in pkg/skills/mining/
+Loading package in pkg/skills/musicianship/
+Loading package in pkg/skills/poisoning/
+Loading package in pkg/skills/removetrap/
+Loading package in pkg/skills/spells/
+Loading package in pkg/skills/spiritspeak/
+Loading package in pkg/skills/stealing/
+Loading package in pkg/skills/stealth/
+Loading package in pkg/skills/tailoring/
+Loading package in pkg/skills/taming/
+Loading package in pkg/skills/TasteIdentification/
+Loading package in pkg/skills/Tinkering/
+Loading package in pkg/skills/tracking/
+Loading package in pkg/skills/veterinary/
+Loading package in pkg/systems/boat/
+Loading package in pkg/systems/combat/
+Loading package in pkg/systems/housing/
+Loading package in pkg/systems/jail/
+Loading package in pkg/systems/murder/
+Loading package in pkg/systems/poisonwatcher/
+Loading package in pkg/systems/pushthrough/
+Loading package in pkg/systems/rank/
+Loading package in pkg/systems/saver/
+Loading package in pkg/systems/spawnpoint/
+Loading package in pkg/systems/spawnregion/
+Loading package in pkg/systems/stafflist/
+Loading package in pkg/tools/gmtools/
+Loading package in pkg/tools/motd/
+Warning! pkg/systems/housing/changeOwner.ecl does not exist!
+Warning! pkg/systems/housing/houseBanning.ecl does not exist!
+Warning! pkg/systems/housing/houseBanning.ecl does not exist!
+Warning! pkg/systems/housing/houseBanning.ecl does not exist!
+Warning! pkg/systems/housing/houseBanning.ecl does not exist!
+Warning! pkg/systems/housing/houseBanning.ecl does not exist!
+Warning! pkg/systems/housing/houseBanning.ecl does not exist!
+Warning! pkg/systems/housing/houseBanning.ecl does not exist!
+Warning! pkg/systems/housing/houseBanning.ecl does not exist!
+Warning! pkg/systems/housing/houseBanning.ecl does not exist!
+Warning! pkg/systems/housing/houseBanning.ecl does not exist!
+Warning! pkg/systems/housing/houseBanning.ecl does not exist!
+Warning! pkg/systems/housing/houseBanning.ecl does not exist!
+Warning! pkg/systems/housing/houseBanning.ecl does not exist!
+Warning! pkg/systems/housing/houseBanning.ecl does not exist!
+Warning! pkg/systems/housing/houseBanning.ecl does not exist!
+Warning! pkg/systems/housing/houseBanning.ecl does not exist!
+Warning! pkg/systems/housing/houseBanning.ecl does not exist!
+Warning! pkg/systems/housing/houseBanning.ecl does not exist!
+Warning! pkg/systems/housing/houseBanning.ecl does not exist!
+Warning! pkg/systems/housing/houseBanning.ecl does not exist!
+Warning! pkg/systems/housing/houseBanning.ecl does not exist!
+Warning! pkg/systems/housing/houseBanning.ecl does not exist!
+Warning! pkg/systems/housing/houseBanning.ecl does not exist!
+Warning! pkg/systems/housing/houseBanning.ecl does not exist!
+Warning! pkg/systems/housing/houseBanning.ecl does not exist!
+Warning! pkg/systems/housing/houseBanning.ecl does not exist!
+Warning! pkg/systems/housing/houseBanning.ecl does not exist!
+Warning! pkg/systems/housing/houseBanning.ecl does not exist!
+Warning! pkg/systems/housing/houseBanning.ecl does not exist!
+Warning! pkg/systems/housing/houseBanning.ecl does not exist!
+Warning! pkg/systems/housing/houseBanning.ecl does not exist!
+Warning! pkg/systems/housing/houseBanning.ecl does not exist!
+Warning! pkg/systems/housing/houseBanning.ecl does not exist!
+Warning! pkg/systems/housing/houseBanning.ecl does not exist!
+Warning! pkg/systems/housing/houseBanning.ecl does not exist!
+Warning! objtype 0xe97: ObjtypeName 'SilverChest' has already been specified for objtype 0xe7c
+Reading data files:
+  data/accounts.txt: 1 elements in 22 ms.
+  data/pol.txt: 2 elements in 24 ms.
+  data/objects.txt: 0 elements in 0 ms.
+  data/pcs.txt: 2 elements in 20 ms.
+  data/pcequip.txt: 76 elements in 37 ms.
+  data/npcs.txt:. 1881 elements in 674 ms.
+  data/npcequip.txt:... 2400 elements in 560 ms.
+  data/items.txt:................. 16640 elements in 685 ms.
+  data/permitems.txt: 0 elements in 0 ms.
+  data/multis.txt: 0 elements in 0 ms.
+  data/storage.txt:....... 7739 elements in 433 ms.
+Done! 2657 milliseconds.
+Running startup script.
+....Abrindo bancos do mundo
+Inicializando respawn de mercadores
+Wiping merchant storage
+Initializing teleporters
+.Iniciando o sistema de AM
+
+Initializing moongates
+syslog [pkg/items/moongates/start.ecl]: Creating moongates.
+Iniciando o Respawn de Minerios...
+Iniciando Sistema de JAIL
+Iniciando Sistema de Murder
+Iniciando Sistema de Ranking
+Iniciando Sistema de Save
+Starting stafflist system
+Starting jail keeper
+Startup script complete.
+Initialization complete.  POL is active.  Ctrl-C to stop.
+

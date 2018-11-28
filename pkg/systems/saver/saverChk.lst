@@ -1,0 +1,71 @@
+C:\pol2\pkg\systems\saver\saverChk.src, Line 6
+while (1)
+0: 1L
+1: if false goto 57
+sleep( (MINUTES_BETWEEN_SAVES + 2) * 60 );
+2: 1920L
+3: Func(2,0): sleep
+4: #
+var lastsave := GetGlobalProperty( "#:saver:lastsave" );
+5: decl local #0
+6: "#:saver:lastsave"
+7: Func(3,0): GetGlobalProperty
+8: :=
+9: #
+if (!lastsave)
+10: local #0
+11: if true goto 22
+Broadcast( "Saver doesn't seem to have ever saved" );
+12: "Saver doesn't seem to have ever saved"
+13: 3L
+14: 1000L
+15: Func(3,1): Broadcast
+16: #
+syslog( "Saver doesn't seem to have ever saved" );
+17: "Saver doesn't seem to have ever saved"
+18: Func(2,1): syslog
+19: #
+continue;
+20: leave block(1)
+21: goto0
+var seconds_since_last := ReadGameClock() - lastsave;
+22: decl local #1
+23: Func(3,2): ReadGameClock
+24: local #0
+25: -
+26: :=
+27: #
+if (seconds_since_last > (MINUTES_BETWEEN_SAVES + 2) * 60)
+28: local #1
+29: 1920L
+30: >
+31: if false goto 55
+var minutes_old := seconds_since_last/60;
+32: decl local #0
+33: local #1
+34: 60L
+35: /
+36: :=
+37: #
+Broadcast( "Warning! Most recent save is " + minutes_old + " minutes old" );
+38: "Warning! Most recent save is "
+39: local #2
+40: +
+41: " minutes old"
+42: +
+43: 3L
+44: 1000L
+45: Func(3,1): Broadcast
+46: #
+syslog( "Most recent save is " + minutes_old + " minutes old" );
+47: "Most recent save is "
+48: local #2
+49: +
+50: " minutes old"
+51: +
+52: Func(2,1): syslog
+53: #
+54: leave block(1)
+55: leave block(2)
+56: goto0
+57: progend

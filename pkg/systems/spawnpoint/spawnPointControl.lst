@@ -1,0 +1,1103 @@
+C:\pol2\pkg\systems\spawnpoint\spawnPointControl.src, Line 6
+program spawnpointcontrol(spawnpoint)
+const VITALID_STAMINA              := "Stamina";
+0: get arg 'spawnpoint'
+var spawn := GetObjProperty(spawnpoint, "Spawn");
+1: decl local #1
+2: local #0
+3: "Spawn"
+4: Func(2,1): GetObjProperty
+5: :=
+6: #
+var amount := GetObjProperty(spawnpoint, "Amount");
+7: decl local #2
+8: local #0
+9: "Amount"
+10: Func(2,1): GetObjProperty
+11: :=
+12: #
+var i, x;
+13: decl local #3
+14: #
+15: decl local #4
+16: #
+var spawnqueue := {};
+17: decl local #5
+18: array
+19: :=
+20: #
+var children := {};
+21: decl local #6
+22: array
+23: :=
+24: #
+spawn := GetObjProperty(spawnpoint, "Spawn");
+25: local #0
+26: "Spawn"
+27: Func(2,1): GetObjProperty
+28: local1 := 
+while(spawn == "NONE")
+29: local #1
+30: "NONE"
+31: ==
+32: if false goto 41
+sleep(10);
+33: 10L
+34: Func(3,2): sleep
+35: #
+spawn := GetObjProperty(spawnpoint, "Spawn");
+36: local #0
+37: "Spawn"
+38: Func(2,1): GetObjProperty
+39: local1 := 
+40: goto29
+KillChildren(spawnpoint);
+41: local #0
+42: makelocal
+43: jmp userfunc @676
+44: #
+ResetSpawnQueue(spawnpoint);
+45: local #0
+46: makelocal
+47: jmp userfunc @764
+48: #
+i := RandomInt(20);
+49: 20L
+50: Func(4,0): RandomInt
+51: local3 := 
+sleep(i);
+52: local #3
+53: Func(3,2): sleep
+54: #
+while(1)
+55: 1L
+56: if false goto 234
+var resetme := GetObjProperty(spawnpoint, "ResetMe");
+57: decl local #0
+58: local #0
+59: "ResetMe"
+60: Func(2,1): GetObjProperty
+61: :=
+62: #
+if(resetme)
+63: local #7
+64: if false goto 81
+amount := GetObjProperty(spawnpoint, "Amount");
+65: local #0
+66: "Amount"
+67: Func(2,1): GetObjProperty
+68: local2 := 
+KillChildren(spawnpoint);
+69: local #0
+70: makelocal
+71: jmp userfunc @676
+72: #
+ResetSpawnQueue(spawnpoint);
+73: local #0
+74: makelocal
+75: jmp userfunc @764
+76: #
+EraseObjProperty(spawnpoint, "ResetMe");
+77: local #0
+78: "ResetMe"
+79: Func(2,15): EraseObjProperty
+80: #
+spawn := GetObjProperty(spawnpoint, "Spawn");
+81: local #0
+82: "Spawn"
+83: Func(2,1): GetObjProperty
+84: local1 := 
+while(spawn == "NONE")
+85: local #1
+86: "NONE"
+87: ==
+88: if false goto 97
+sleep(10);
+89: 10L
+90: Func(3,2): sleep
+91: #
+spawn := GetObjProperty(spawnpoint, "Spawn");
+92: local #0
+93: "Spawn"
+94: Func(2,1): GetObjProperty
+95: local1 := 
+96: goto85
+children := GetObjProperty(spawnpoint, "Children");
+97: local #0
+98: "Children"
+99: Func(2,1): GetObjProperty
+100: local6 := 
+spawnqueue := GetObjProperty(spawnpoint, "SpawnQueue");
+101: local #0
+102: "SpawnQueue"
+103: Func(2,1): GetObjProperty
+104: local5 := 
+for(i:=1; i<=amount; i:=i+1);
+105: local #3
+106: 1L
+107: :=
+108: #
+109: local #3
+110: local #2
+111: <=
+112: if false goto 153
+if(children[i] != "Empty")
+113: local #6
+114: local #3
+115: [] 1
+116: "Empty"
+117: <>
+118: if false goto 146
+x := SystemFindObjectBySerial(children[i]);
+119: local #6
+120: local #3
+121: [] 1
+122: 0L
+123: Func(2,16): SystemFindObjectBySerial
+124: local4 := 
+if((!x) || (x.dead == 1) || (x.script=="tamed"))
+125: local #4
+126: !
+127: local #4
+128: get member 'dead'
+129: 1L
+130: ==
+131: ||
+132: local #4
+133: get member 'script'
+134: "tamed"
+135: ==
+136: ||
+137: if false goto 146
+spawnqueue[i] := "Empty";
+138: local #5
+139: local #3
+140: "Empty"
+141: [] := (1) #
+children[i] := "Empty";
+142: local #6
+143: local #3
+144: "Empty"
+145: [] := (1) #
+146: local #3
+147: local #3
+148: 1L
+149: +
+150: :=
+151: #
+152: goto109
+SetObjProperty(spawnpoint, "Children", children);
+153: local #0
+154: "Children"
+155: local #6
+156: Func(2,3): SetObjProperty
+157: #
+SetObjProperty(spawnpoint, "SpawnQueue", spawnqueue);
+158: local #0
+159: "SpawnQueue"
+160: local #5
+161: Func(2,3): SetObjProperty
+162: #
+ResetSpawnQueue(spawnpoint);
+163: local #0
+164: makelocal
+165: jmp userfunc @764
+166: #
+spawnqueue := GetObjProperty(spawnpoint, "SpawnQueue");
+167: local #0
+168: "SpawnQueue"
+169: Func(2,1): GetObjProperty
+170: local5 := 
+for(i:=1; i<=amount; i:=i+1)
+171: local #3
+172: 1L
+173: :=
+174: #
+175: local #3
+176: local #2
+177: <=
+178: if false goto 219
+x := spawnqueue[i];
+179: local #5
+180: local #3
+181: [] 1
+182: local4 := 
+if((x != "Empty") && (x != "Active"))
+183: local #4
+184: "Empty"
+185: <>
+186: local #4
+187: "Active"
+188: <>
+189: &&
+190: if false goto 212
+if(x == 0)
+191: local #4
+192: 0L
+193: ==
+194: if false goto 206
+children[i] := CreateSpawn(spawnpoint);
+195: local #6
+196: local #3
+197: local #0
+198: makelocal
+199: jmp userfunc @236
+200: [] := (1) #
+spawnqueue[i] := "Active";
+201: local #5
+202: local #3
+203: "Active"
+204: [] := (1) #
+205: goto212
+spawnqueue[i] := x - 1;
+206: local #5
+207: local #3
+208: local #4
+209: 1L
+210: -
+211: [] := (1) #
+212: local #3
+213: local #3
+214: 1L
+215: +
+216: :=
+217: #
+218: goto175
+SetObjProperty(spawnpoint, "SpawnQueue", spawnqueue);
+219: local #0
+220: "SpawnQueue"
+221: local #5
+222: Func(2,3): SetObjProperty
+223: #
+SetObjProperty(spawnpoint, "Children", children);
+224: local #0
+225: "Children"
+226: local #6
+227: Func(2,3): SetObjProperty
+228: #
+sleep(60);
+229: 60L
+230: Func(3,2): sleep
+231: #
+232: leave block(1)
+233: goto55
+234: leave block(7)
+235: progend
+C:\pol2\pkg\systems\spawnpoint\spawnPointControl.src, Line 108
+function CreateSpawn(spawnpoint)
+236: pop param 'spawnpoint'
+var loscheck := GetObjProperty(spawnpoint, "IgnoreLOS");
+237: decl local #1
+238: local #0
+239: "IgnoreLOS"
+240: Func(2,1): GetObjProperty
+241: :=
+242: #
+var spawn := GetObjProperty(spawnpoint, "Spawn");
+243: decl local #2
+244: local #0
+245: "Spawn"
+246: Func(2,1): GetObjProperty
+247: :=
+248: #
+if((spawn == "orchorde") || (spawn == "undead") || (spawn == "lesserundead") ||
+249: local #2
+250: "orchorde"
+251: ==
+252: local #2
+253: "undead"
+254: ==
+255: ||
+256: local #2
+257: "lesserundead"
+258: ==
+259: ||
+260: local #2
+261: "trolls"
+262: ==
+263: ||
+264: local #2
+265: "vermin"
+266: ==
+267: ||
+268: local #2
+269: "dracos"
+270: ==
+271: ||
+272: local #2
+273: "orcs"
+274: ==
+275: ||
+276: local #2
+277: "lizardmen"
+278: ==
+279: ||
+280: local #2
+281: "ratmen"
+282: ==
+283: ||
+284: if false goto 289
+spawn := GetCritter(spawn);
+285: local #2
+286: makelocal
+287: jmp userfunc @419
+288: local2 := 
+var range := GetObjProperty(spawnpoint, "Range");
+289: decl local #3
+290: local #0
+291: "Range"
+292: Func(2,1): GetObjProperty
+293: :=
+294: #
+var x, y, z, success := 0;
+295: decl local #4
+296: #
+297: decl local #5
+298: #
+299: decl local #6
+300: #
+301: decl local #7
+302: 0L
+303: :=
+304: #
+var i := 1;
+305: decl local #8
+306: 1L
+307: :=
+308: #
+while(success == 0)
+309: local #7
+310: 0L
+311: ==
+312: if false goto 417
+if(range == 0)
+313: local #3
+314: 0L
+315: ==
+316: if false goto 327
+x := spawnpoint.x;
+317: local #0
+318: get member 'x'
+319: local4 := 
+y := spawnpoint.y;
+320: local #0
+321: get member 'y'
+322: local5 := 
+z := spawnpoint.z;
+323: local #0
+324: get member 'z'
+325: local6 := 
+326: goto351
+x := spawnpoint.x + RandomInt(2 * range) - range;
+327: local #0
+328: get member 'x'
+329: 2L
+330: local #3
+331: *
+332: Func(4,0): RandomInt
+333: +
+334: local #3
+335: -
+336: local4 := 
+y := spawnpoint.y + RandomInt(2 * range) - range;
+337: local #0
+338: get member 'y'
+339: 2L
+340: local #3
+341: *
+342: Func(4,0): RandomInt
+343: +
+344: local #3
+345: -
+346: local5 := 
+z := GetWorldHeight(x, y);
+347: local #4
+348: local #5
+349: Func(2,18): GetWorldHeight
+350: local6 := 
+if(!loscheck)
+351: local #1
+352: if true goto 375
+if(CheckLosAt(spawnpoint, x, y, z))
+353: local #0
+354: local #4
+355: local #5
+356: local #6
+357: Func(2,19): CheckLosAt
+358: if false goto 374
+var i := CreateNpcFromTemplate(spawn, x, y, z);
+359: decl local #0
+360: local #2
+361: local #4
+362: local #5
+363: local #6
+364: 0L
+365: Func(2,20): CreateNpcFromTemplate
+366: :=
+367: #
+success := 1;
+368: 1L
+369: local7 := 
+return i.serial;
+370: local #9
+371: get member 'serial'
+372: return
+373: leave block(1)
+374: goto390
+var i := CreateNpcFromTemplate(spawn, x, y, z);
+375: decl local #0
+376: local #2
+377: local #4
+378: local #5
+379: local #6
+380: 0L
+381: Func(2,20): CreateNpcFromTemplate
+382: :=
+383: #
+success := 1;
+384: 1L
+385: local7 := 
+return i.serial;
+386: local #9
+387: get member 'serial'
+388: return
+389: leave block(1)
+i := i + 1;
+390: local #8
+391: 1L
+392: +
+393: local8 := 
+if(i > 10)
+394: local #8
+395: 10L
+396: >
+397: if false goto 416
+var i := CreateNpcFromTemplate(spawn, spawnpoint.x, spawnpoint.y, spawnpoint.z)
+398: decl local #0
+399: local #2
+400: local #0
+401: get member 'x'
+402: local #0
+403: get member 'y'
+404: local #0
+405: get member 'z'
+406: 0L
+407: Func(2,20): CreateNpcFromTemplate
+408: :=
+409: #
+success := 1;
+410: 1L
+411: local7 := 
+return i.serial;
+412: local #9
+413: get member 'serial'
+414: return
+415: leave block(1)
+416: goto309
+417: 0L
+418: return
+C:\pol2\pkg\systems\spawnpoint\spawnPointControl.src, Line 147
+function GetCritter(type)
+419: pop param 'type'
+if(type == "vermin")
+420: local #0
+421: "vermin"
+422: ==
+423: if false goto 462
+case(RandomInt(11) + 1)
+424: 11L
+425: Func(4,0): RandomInt
+426: 1L
+427: +
+428: casejmp
+	1: @429
+	2: @432
+	3: @435
+	4: @438
+	5: @441
+	6: @444
+	7: @447
+	8: @450
+	9: @453
+	10: @456
+	11: @459
+	default: @461
+return "grat";
+429: "grat"
+430: return
+431: goto461
+return "grat";
+432: "grat"
+433: return
+434: goto461
+return "grat";
+435: "grat"
+436: return
+437: goto461
+return "jwilson";
+438: "jwilson"
+439: return
+440: goto461
+return "slime";
+441: "slime"
+442: return
+443: goto461
+return "slime";
+444: "slime"
+445: return
+446: goto461
+return "slime";
+447: "slime"
+448: return
+449: goto461
+return "giant_serpent";
+450: "giant_serpent"
+451: return
+452: goto461
+return "giant_serpent";
+453: "giant_serpent"
+454: return
+455: goto461
+return "giantscorp";
+456: "giantscorp"
+457: return
+458: goto461
+return "giantscorp";
+459: "giantscorp"
+460: return
+461: goto674
+elseif(type == "orcs")
+462: local #0
+463: "orcs"
+464: ==
+465: if false goto 501
+case(RandomInt(10) + 1)
+466: 10L
+467: Func(4,0): RandomInt
+468: 1L
+469: +
+470: casejmp
+	1: @471
+	2: @474
+	3: @477
+	4: @480
+	5: @483
+	6: @486
+	7: @489
+	8: @492
+	9: @495
+	10: @498
+	default: @500
+return "orcmage";
+471: "orcmage"
+472: return
+473: goto500
+return "orclord";
+474: "orclord"
+475: return
+476: goto500
+return "orc1";
+477: "orc1"
+478: return
+479: goto500
+return "orc1";
+480: "orc1"
+481: return
+482: goto500
+return "orc1";
+483: "orc1"
+484: return
+485: goto500
+return "orc2";
+486: "orc2"
+487: return
+488: goto500
+return "orc2";
+489: "orc2"
+490: return
+491: goto500
+return "orc2";
+492: "orc2"
+493: return
+494: goto500
+return "ettin";
+495: "ettin"
+496: return
+497: goto500
+return "ettin2";
+498: "ettin2"
+499: return
+500: goto674
+elseif(type == "orchorde")
+501: local #0
+502: "orchorde"
+503: ==
+504: if false goto 534
+case(RandomInt(8) + 1)
+505: 8L
+506: Func(4,0): RandomInt
+507: 1L
+508: +
+509: casejmp
+	1: @510
+	2: @513
+	3: @516
+	4: @519
+	5: @522
+	6: @525
+	7: @528
+	8: @531
+	default: @533
+return "orc1";
+510: "orc1"
+511: return
+512: goto533
+return "orc1";
+513: "orc1"
+514: return
+515: goto533
+return "orc1";
+516: "orc1"
+517: return
+518: goto533
+return "orcmage";
+519: "orcmage"
+520: return
+521: goto533
+return "orclord";
+522: "orclord"
+523: return
+524: goto533
+return "orc2";
+525: "orc2"
+526: return
+527: goto533
+return "orc2";
+528: "orc2"
+529: return
+530: goto533
+return "orc2";
+531: "orc2"
+532: return
+533: goto674
+elseif(type == "ratmen")
+534: local #0
+535: "ratmen"
+536: ==
+537: if false goto 552
+case(RandomInt(3) + 1)
+538: 3L
+539: Func(4,0): RandomInt
+540: 1L
+541: +
+542: casejmp
+	1: @543
+	2: @546
+	3: @549
+	default: @551
+return "ratman3";
+543: "ratman3"
+544: return
+545: goto551
+return "ratman2";
+546: "ratman2"
+547: return
+548: goto551
+return "ratman1";
+549: "ratman1"
+550: return
+551: goto674
+elseif(type == "lizardmen")
+552: local #0
+553: "lizardmen"
+554: ==
+555: if false goto 570
+case(RandomInt(3) + 1)
+556: 3L
+557: Func(4,0): RandomInt
+558: 1L
+559: +
+560: casejmp
+	1: @561
+	2: @564
+	3: @567
+	default: @569
+return "lizardman3";
+561: "lizardman3"
+562: return
+563: goto569
+return "lizardman2";
+564: "lizardman2"
+565: return
+566: goto569
+return "lizardman1";
+567: "lizardman1"
+568: return
+569: goto674
+elseif(type == "dracos")
+570: local #0
+571: "dracos"
+572: ==
+573: if false goto 591
+case(RandomInt(4) + 1)
+574: 4L
+575: Func(4,0): RandomInt
+576: 1L
+577: +
+578: casejmp
+	1: @579
+	2: @582
+	3: @585
+	4: @588
+	default: @590
+return "dragon1";
+579: "dragon1"
+580: return
+581: goto590
+return "dragon2";
+582: "dragon2"
+583: return
+584: goto590
+return "drake1";
+585: "drake1"
+586: return
+587: goto590
+return "drake2";
+588: "drake2"
+589: return
+590: goto674
+elseif(type == "trolls")
+591: local #0
+592: "trolls"
+593: ==
+594: if false goto 609
+case(RandomInt(3) + 1)
+595: 3L
+596: Func(4,0): RandomInt
+597: 1L
+598: +
+599: casejmp
+	1: @600
+	2: @603
+	3: @606
+	default: @608
+return "troll1";
+600: "troll1"
+601: return
+602: goto608
+return "troll2";
+603: "troll2"
+604: return
+605: goto608
+return "troll3";
+606: "troll3"
+607: return
+608: goto674
+elseif(type == "undead")
+609: local #0
+610: "undead"
+611: ==
+612: if false goto 639
+case(RandomInt(7) + 1)
+613: 7L
+614: Func(4,0): RandomInt
+615: 1L
+616: +
+617: casejmp
+	1: @618
+	2: @621
+	3: @624
+	4: @627
+	5: @630
+	6: @633
+	7: @636
+	default: @638
+return "zombie";
+618: "zombie"
+619: return
+620: goto638
+return "zombie";
+621: "zombie"
+622: return
+623: goto638
+return "skeleton";
+624: "skeleton"
+625: return
+626: goto638
+return "skeleton";
+627: "skeleton"
+628: return
+629: goto638
+return "shade";
+630: "shade"
+631: return
+632: goto638
+return "shade";
+633: "shade"
+634: return
+635: goto638
+return "liche";
+636: "liche"
+637: return
+638: goto674
+elseif(type == "lesserundead")
+639: local #0
+640: "lesserundead"
+641: ==
+642: if false goto 660
+case(RandomInt(4) + 1)
+643: 4L
+644: Func(4,0): RandomInt
+645: 1L
+646: +
+647: casejmp
+	1: @648
+	2: @651
+	3: @654
+	4: @657
+	default: @659
+return "zombie";
+648: "zombie"
+649: return
+650: goto659
+return "zombie";
+651: "zombie"
+652: return
+653: goto659
+return "skeleton";
+654: "skeleton"
+655: return
+656: goto659
+return "skeleton";
+657: "skeleton"
+658: return
+659: goto674
+elseif(type == "ettins")
+660: local #0
+661: "ettins"
+662: ==
+663: if false goto 674
+case(RandomInt(2) + 1)
+664: 2L
+665: Func(4,0): RandomInt
+666: 1L
+667: +
+668: casejmp
+	1: @669
+	2: @672
+	default: @674
+return "ettin";
+669: "ettin"
+670: return
+671: goto674
+return "ettin2";
+672: "ettin2"
+673: return
+674: 0L
+675: return
+C:\pol2\pkg\systems\spawnpoint\spawnPointControl.src, Line 66
+function KillChildren(spawnpoint)
+676: pop param 'spawnpoint'
+var i, x;
+677: decl local #1
+678: #
+679: decl local #2
+680: #
+var children := GetObjProperty(spawnpoint, "Children");
+681: decl local #3
+682: local #0
+683: "Children"
+684: Func(2,1): GetObjProperty
+685: :=
+686: #
+if(children)
+687: local #3
+688: if false goto 717
+foreach x in children
+689: local #3
+690: initforeach @715
+if(x != "Empty")
+691: local #4
+692: "Empty"
+693: <>
+694: if false goto 715
+x := CInt(x);
+695: local #4
+696: Func(0,0): CInt
+697: local4 := 
+i := SystemFindObjectBySerial(x);
+698: local #4
+699: 0L
+700: Func(2,16): SystemFindObjectBySerial
+701: local1 := 
+SetObjProperty(i, "summoned", 1);
+702: local #1
+703: "summoned"
+704: 1L
+705: Func(2,3): SetObjProperty
+706: #
+ApplyRawDamage(i, GetHp(i)+3);
+707: local #1
+708: local #1
+709: makelocal
+710: jmp userfunc @839
+711: 3L
+712: +
+713: Func(2,17): ApplyRawDamage
+714: #
+715: stepforeach @691
+716: leave block(3)
+var amount := GetObjProperty(spawnpoint, "Amount");
+717: decl local #4
+718: local #0
+719: "Amount"
+720: Func(2,1): GetObjProperty
+721: :=
+722: #
+var spawnqueue := {};
+723: decl local #5
+724: array
+725: :=
+726: #
+children := {};
+727: array
+728: local3 := 
+for(i:=1; i<=amount; i:=i+1);
+729: local #1
+730: 1L
+731: :=
+732: #
+733: local #1
+734: local #4
+735: <=
+736: if false goto 752
+spawnqueue[i] := "Empty";
+737: local #5
+738: local #1
+739: "Empty"
+740: [] := (1) #
+children[i] := "Empty";
+741: local #3
+742: local #1
+743: "Empty"
+744: [] := (1) #
+745: local #1
+746: local #1
+747: 1L
+748: +
+749: :=
+750: #
+751: goto733
+SetObjProperty(spawnpoint, "Children", children);
+752: local #0
+753: "Children"
+754: local #3
+755: Func(2,3): SetObjProperty
+756: #
+SetObjProperty(spawnpoint, "SpawnQueue", spawnqueue);
+757: local #0
+758: "SpawnQueue"
+759: local #5
+760: Func(2,3): SetObjProperty
+761: #
+762: 0L
+763: return
+C:\pol2\pkg\systems\spawnpoint\spawnPointControl.src, Line 90
+function ResetSpawnQueue(spawnpoint)
+764: pop param 'spawnpoint'
+var i;
+765: decl local #1
+766: #
+var amount := GetObjProperty(spawnpoint, "Amount");
+767: decl local #2
+768: local #0
+769: "Amount"
+770: Func(2,1): GetObjProperty
+771: :=
+772: #
+var mindelay := GetObjProperty(spawnpoint, "MinDelay");
+773: decl local #3
+774: local #0
+775: "MinDelay"
+776: Func(2,1): GetObjProperty
+777: :=
+778: #
+var maxdelay := GetObjProperty(spawnpoint, "MaxDelay");
+779: decl local #4
+780: local #0
+781: "MaxDelay"
+782: Func(2,1): GetObjProperty
+783: :=
+784: #
+var spawnqueue := GetObjProperty(spawnpoint, "SpawnQueue");
+785: decl local #5
+786: local #0
+787: "SpawnQueue"
+788: Func(2,1): GetObjProperty
+789: :=
+790: #
+for(i:=1; i<=amount; i:=i+1)
+791: local #1
+792: 1L
+793: :=
+794: #
+795: local #1
+796: local #2
+797: <=
+798: if false goto 832
+if(spawnqueue[i] == "Empty")
+799: local #5
+800: local #1
+801: [] 1
+802: "Empty"
+803: ==
+804: if false goto 825
+if(mindelay == maxdelay)
+805: local #3
+806: local #4
+807: ==
+808: if false goto 814
+spawnqueue[i] := mindelay;
+809: local #5
+810: local #1
+811: local #3
+812: [] := (1) #
+813: goto825
+spawnqueue[i] := RandomInt(maxdelay - mindelay) + mindelay + 1;
+814: local #5
+815: local #1
+816: local #4
+817: local #3
+818: -
+819: Func(4,0): RandomInt
+820: local #3
+821: +
+822: 1L
+823: +
+824: [] := (1) #
+825: local #1
+826: local #1
+827: 1L
+828: +
+829: :=
+830: #
+831: goto795
+SetObjProperty(spawnpoint, "SpawnQueue", spawnqueue);
+832: local #0
+833: "SpawnQueue"
+834: local #5
+835: Func(2,3): SetObjProperty
+836: #
+837: 0L
+838: return
+C:/pol2/scripts/include/attributes.inc, Line 448
+function GetHp(who)
+839: pop param 'who'
+return Cint(GetVital(who, VITALID_LIFE)/ 100);
+840: local #0
+841: "Life"
+842: Func(2,10): GetVital
+843: 100L
+844: /
+845: Func(0,0): CInt
+846: return

@@ -1,0 +1,56 @@
+use uo; 
+use os; 
+
+include "include/client"; 
+
+program kp(who) 
+
+var temguilda:=GetObjProperty(who, "guild_id");
+var kp := GetObjProperty(who, "kp");
+var wp := GetObjProperty(who, "warpoints");
+var pvp:= GetObjProperty(who, "pvppoint");
+var longs := GetObjProperty(who, "longmurders");
+///var mortes := GetObjProperty(who, "mortes");
+///var resultado := kp - mortes; 
+///var BK := GetObjProperty(who, "BK");
+	if(!wp)
+	   SetObjProperty(who, "warpoints", 0);
+	   wp := GetObjProperty(who, "warpoints");
+        endif 	
+
+	if(wp < 0)
+	   SetObjProperty(who, "warpoints", 0);
+	   wp := GetObjProperty(who, "warpoints");
+	endif
+
+        if(!kp) 
+           kp := 0; 
+        endif 
+   
+        if(!pvp)
+	   pvp:= 0;
+	endif
+
+	if(!longs)
+	   longs:=0;
+	endif
+
+        ///if(!mortes) 
+        ///     mortes := 0; 
+        ///endif 
+
+        ///if(!resultado) 
+        ///      resultado := 0; 
+        ///endif 
+        ///if(!BK) 
+        ///      BK := 0; 
+        ///endif 
+
+
+SendSysMessage(who,"KillPoints: "+kp+"",0x9,90);
+if(temguilda)
+SendSysMessage(who,"WarPoints: "+wp+"",0x9,90);
+endif
+SendSysMessage(who,"Pvp Points: "+pvp+"",0x9,90);
+SendSysMessage(who,"Longs: "+longs+"",0x9,90);
+endprogram

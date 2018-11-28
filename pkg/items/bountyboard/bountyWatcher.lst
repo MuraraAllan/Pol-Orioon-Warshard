@@ -1,0 +1,355 @@
+C:/pol2/scripts/include/bounty.inc, Line 3
+var bountyfile := DFOPenDataFile("BountySystem", 1);
+0: decl global #0
+1: "BountySystem"
+2: 1L
+3: 0L
+4: makelocal
+5: jmp userfunc @34
+6: :=
+7: #
+C:/pol2/scripts/include/datafile.inc, Line 57
+var DF_DEBUG_MODE	:= 1;
+8: decl global #1
+9: 1L
+10: :=
+11: #
+C:\pol2\pkg\items\bountyboard\bountyWatcher.src, Line 8
+program bountyWatcher()
+print("////////////////////////////////");
+12: "////////////////////////////////"
+13: Func(1,0): print
+14: #
+print("// Initializing Bounty System");
+15: "// Initializing Bounty System"
+16: Func(1,0): print
+17: #
+print("////////////////////////////////");
+18: "////////////////////////////////"
+19: Func(1,0): print
+20: #
+sleep(30);
+21: 30L
+22: Func(3,0): sleep
+23: #
+while(1)
+24: 1L
+25: if false goto 33
+MaintainBountySystem();
+26: makelocal
+27: jmp userfunc @93
+28: #
+sleep(3600);
+29: 3600L
+30: Func(3,0): sleep
+31: #
+32: goto24
+33: progend
+C:/pol2/scripts/include/datafile.inc, Line 59
+function DFOpenDataFile(filename, create:=DF_NO_CREATE, flags:=DF_KEYTYPE_STRIN
+34: pop param 'flags'
+35: pop param 'create'
+36: pop param 'filename'
+var temp := OpenDataFile(filename);
+37: decl local #3
+38: local #2
+39: Func(4,0): OpenDataFile
+40: :=
+41: #
+if ( (!temp) && (create) )
+42: local #3
+43: !
+44: local #1
+45: &&
+46: if false goto 60
+DF_OutPut("Creating data file: " + filename);
+47: "Creating data file: "
+48: local #2
+49: +
+50: makelocal
+51: jmp userfunc @149
+52: #
+CreateDataFile(filename, flags);
+53: local #2
+54: local #0
+55: Func(4,1): CreateDataFile
+56: #
+temp := OpenDataFile(filename);
+57: local #2
+58: Func(4,0): OpenDataFile
+59: local3 := 
+if ( temp )
+60: local #3
+61: if false goto 65
+return temp;
+62: local #3
+63: return
+64: goto91
+elseif ( create ) 
+65: local #1
+66: if false goto 91
+var errmsg := error;
+67: decl local #0
+68: error
+69: :=
+70: #
+errmsg.+errortext := "Could not open " + filename + ":" + temp.errortext;
+71: local #4
+72: "errortext"
+73: .+
+74: "Could not open "
+75: local #2
+76: +
+77: ":"
+78: +
+79: local #3
+80: get member 'errortext'
+81: +
+82: := #
+DF_OutPut(errmsg.errortext);
+83: local #4
+84: get member 'errortext'
+85: makelocal
+86: jmp userfunc @149
+87: #
+return errmsg;
+88: local #4
+89: return
+90: leave block(1)
+91: 0L
+92: return
+C:/pol2/scripts/include/bounty.inc, Line 44
+function MaintainBountySystem()
+var count := 0;
+93: decl local #0
+94: 0L
+95: :=
+96: #
+foreach thing in (bountyfile.keys())
+97: global #0
+98: Call Method keys (0 params)
+99: initforeach @129
+var elem := DFFindElement(bountyfile, thing);
+100: decl local #0
+101: global #0
+102: local #1
+103: 0L
+104: makelocal
+105: jmp userfunc @157
+106: :=
+107: #
+if(ReadGameClock() > DFGetProp(elem, "Expires"))
+108: Func(2,0): ReadGameClock
+109: local #4
+110: "Expires"
+111: 0L
+112: 0L
+113: makelocal
+114: jmp userfunc @222
+115: >
+116: if false goto 125
+bountyfile.DeleteElement(thing);
+117: global #0
+118: local #1
+119: Call Method deleteelement (1 params)
+120: #
+count := count + 1;
+121: local #0
+122: 1L
+123: +
+124: local0 := 
+sleep(1);
+125: 1L
+126: Func(3,0): sleep
+127: #
+128: leave block(1)
+129: stepforeach @100
+130: leave block(3)
+print("//////////////////////////////////////////");
+131: "//////////////////////////////////////////"
+132: Func(1,0): print
+133: #
+print("// Bounty System Maintenance");
+134: "// Bounty System Maintenance"
+135: Func(1,0): print
+136: #
+print("// Removed " + count + " expired bounties.");
+137: "// Removed "
+138: local #0
+139: +
+140: " expired bounties."
+141: +
+142: Func(1,0): print
+143: #
+print("//////////////////////////////////////////");
+144: "//////////////////////////////////////////"
+145: Func(1,0): print
+146: #
+147: 0L
+148: return
+C:/pol2/scripts/include/datafile.inc, Line 140
+function DF_OutPut(text)
+149: pop param 'text'
+if ( DF_DEBUG_MODE )
+150: global #1
+151: if false goto 155
+SysLog(text);
+152: local #0
+153: Func(3,1): syslog
+154: #
+155: 0L
+156: return
+C:/pol2/scripts/include/datafile.inc, Line 89
+function DFFindElement(byref file_ref, elem_name, create:=DF_NO_CREATE)
+157: pop param 'create'
+158: pop param 'elem_name'
+159: pop param byref 'file_ref'
+var temp := file_ref.FindElement( cstr(elem_name) );
+160: decl local #3
+161: local #2
+162: local #1
+163: Func(0,0): CStr
+164: Call Method findelement (1 params)
+165: :=
+166: #
+if (!temp && create)
+167: local #3
+168: !
+169: local #0
+170: &&
+171: if false goto 189
+DF_OutPut("Creating elem: " +  cstr(elem_name) );
+172: "Creating elem: "
+173: local #1
+174: Func(0,0): CStr
+175: +
+176: makelocal
+177: jmp userfunc @149
+178: #
+file_ref.CreateElement( cstr(elem_name) );
+179: local #2
+180: local #1
+181: Func(0,0): CStr
+182: Call Method createelement (1 params)
+183: #
+temp := file_ref.FindElement( cstr(elem_name) );
+184: local #2
+185: local #1
+186: Func(0,0): CStr
+187: Call Method findelement (1 params)
+188: local3 := 
+if ( temp )
+189: local #3
+190: if false goto 194
+return temp;
+191: local #3
+192: return
+193: goto220
+elseif (create)
+194: local #0
+195: if false goto 220
+var errmsg := error;
+196: decl local #0
+197: error
+198: :=
+199: #
+errmsg.+errortext := "Could not open data elem " + elem_name + ":" + temp.error
+200: local #4
+201: "errortext"
+202: .+
+203: "Could not open data elem "
+204: local #1
+205: +
+206: ":"
+207: +
+208: local #3
+209: get member 'errortext'
+210: +
+211: := #
+DF_OutPut(errmsg.errortext);
+212: local #4
+213: get member 'errortext'
+214: makelocal
+215: jmp userfunc @149
+216: #
+return errmsg;
+217: local #4
+218: return
+219: leave block(1)
+220: 0L
+221: return
+C:/pol2/scripts/include/datafile.inc, Line 119
+function DFGetProp(byref elem_ref, prop_name, create:=DF_NO_CREATE, assignval:=
+222: pop param 'assignval'
+223: pop param 'create'
+224: pop param 'prop_name'
+225: pop param byref 'elem_ref'
+var temp := elem_ref.GetProp(prop_name);
+226: decl local #4
+227: local #3
+228: local #2
+229: Call Method getprop (1 params)
+230: :=
+231: #
+if ( (!temp) && (create) )
+232: local #4
+233: !
+234: local #1
+235: &&
+236: if false goto 246
+elem_ref.SetProp(prop_name, assignval);
+237: local #3
+238: local #2
+239: local #0
+240: Call Method setprop (2 params)
+241: #
+temp := elem_ref.GetProp(prop_name);
+242: local #3
+243: local #2
+244: Call Method getprop (1 params)
+245: local4 := 
+if ( temp || (create) && (!assignval) )
+246: local #4
+247: local #1
+248: local #0
+249: !
+250: &&
+251: ||
+252: if false goto 256
+return temp;
+253: local #4
+254: return
+255: goto282
+elseif (create)
+256: local #1
+257: if false goto 282
+var errmsg := error;
+258: decl local #0
+259: error
+260: :=
+261: #
+errmsg.+errortext := "Could not read data file property " + prop_name + ":" + t
+262: local #5
+263: "errortext"
+264: .+
+265: "Could not read data file property "
+266: local #2
+267: +
+268: ":"
+269: +
+270: local #4
+271: get member 'errortext'
+272: +
+273: := #
+DF_OutPut(errmsg.errortext);
+274: local #5
+275: get member 'errortext'
+276: makelocal
+277: jmp userfunc @149
+278: #
+return errmsg;
+279: local #5
+280: return
+281: leave block(1)
+282: 0L
+283: return

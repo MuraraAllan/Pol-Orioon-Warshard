@@ -1,0 +1,18 @@
+use uo;
+use os;
+
+include "include/casas";
+
+program can_remove(who, container, item, movetype)
+set_critical(1);
+
+var casa:=container.multi;
+if(!casa)
+return 0;
+endif
+if(!Socio(who,casa))
+return 0;
+endif
+
+set_critical(0);
+endprogram

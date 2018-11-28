@@ -1,0 +1,9 @@
+c:\pol\pkg\items\guildstone\guildDestroy.src, Line 4
+program guildDestroy(stone)
+use os;
+0: get arg 'stone'
+return 1;
+1: 1L
+2: progend
+3: leave block(1)
+4: progend

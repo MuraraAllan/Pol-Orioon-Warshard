@@ -1,0 +1,16 @@
+use os;
+use uo;
+use util;
+use http;
+
+include "include/webPage";
+include "include/accounts";
+
+program openforumall (who)
+
+foreach onlinechr in EnumerateOnlineCharacters()
+OpenWebSite(onlinechr, "www.sysco.ma.cx");
+sendsysmessage(onlinechr, "Abrindo FORUM! Caso nao seja Cadastrado, Cadastre-se! xD",3,33);
+endforeach
+
+endprogram

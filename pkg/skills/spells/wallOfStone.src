@@ -1,0 +1,226 @@
+use os;
+use uo;
+use util;
+
+include "include/spellRestrictions";
+include "include/attributes";
+include "include/client";
+
+
+program stonewall( parms, who )
+ var circle := 3;
+  var delivery := "indirect";
+  var noto := "neutral";
+  var result := maincast(parms, delivery, circle, noto, 24);
+  if(result == 0)
+    return;
+  endif
+  var caster := result[1];
+  var cast_on := result[2];
+  var fields1 := {};
+  var fields2 := {};
+  var fields3 := {};
+  var fields4 := {};
+  var fields5 := {};
+  var duration;
+  var listeners := {};
+  var sufferers := {};
+  var x := cast_on.x;
+  var y := cast_on.y;
+  var z := cast_on.z;
+
+
+
+  duration := CInt(GetEffectiveSkill( caster, SKILLID_MAGERY ) )/4;
+  if (duration < 30)
+    duration := 30;
+  endif
+
+sleepms(100);
+///if((x == caster.x) && (y == caster.y))
+if(get_direction(caster) == "NS")
+wallselfNS(caster, fields2, fields1, fields3, fields4, fields5, duration, x, y, z);
+return;
+endif
+
+if(get_direction(caster) == "EW")
+wallselfEW(caster, fields2, fields1, fields3, fields4, fields5, duration, x, y, z);
+return;
+endif
+
+///endif
+
+///if((x != caster.x) || (y != caster.y))
+///if(get_direction(caster) == "NS")
+///wallNS(caster, fields2, fields1, fields3, fields4, fields5, duration, x, y, z);
+///return;
+///endif
+
+///if(get_direction(caster) == "EW")
+///wallEW(caster, fields2, fields1, fields3, fields4, fields5, duration, x, y, z);
+///return;
+///endif
+
+///endif
+
+endprogram
+
+function wallselfNS(caster, fields2, fields1, fields3, fields4, fields5, duration, x, y, z)
+var cor;
+
+var pessoas1 := ListMobilesNearLocation ( x+2, y, z, 0);
+if(pessoas1.size() == 0)
+fields2:= CreateItemAtLocation(x+2,y,z, 88, 1 );
+cor:=randomint((998) + 2);
+fields2.color:=cor;
+sleepms(200);
+endif
+
+var pessoas2 := ListMobilesNearLocation ( x+1, y, z, 0);
+if(pessoas2.size() == 0)
+fields1:= CreateItemAtLocation(x+1,y,z, 88, 1 );
+cor:=randomint((998) + 2);
+fields1.color:=cor;
+sleepms(200);
+endif
+
+var pessoas5 := ListMobilesNearLocation ( x, y, z, 0);
+if(pessoas5.size() == 0)
+fields5:= CreateItemAtLocation(x,y,z, 88, 1 );
+cor:=randomint((998) + 2);
+fields5.color:=cor;
+sleepms(200);
+endif
+
+var pessoas3 := ListMobilesNearLocation ( x+(-1), y, z, 0);
+if(pessoas3.size() == 0)
+fields3:= CreateItemAtLocation(x+(-1),y,z, 88, 1 );
+cor:=randomint((998) + 2);
+fields3.color:=cor;
+sleepms(200);
+endif
+
+var pessoas4 := ListMobilesNearLocation ( x+(-2), y, z, 0);
+if(pessoas4.size() == 0)
+fields4:= CreateItemAtLocation(x+(-2),y,z, 88, 1 );
+cor:=randomint((998) + 2);
+fields4.color:=cor;
+endif
+
+SetObjProperty(fields1, "f", "1");
+SetObjProperty(fields2, "f", "1");
+SetObjProperty(fields3, "f", "1");
+SetObjProperty(fields4, "f", "1");
+SetObjProperty(fields5, "f", "1");
+  Detach();
+sleep(duration);
+DestroyItem(fields1);
+DestroyItem(fields2);
+DestroyItem(fields3);
+DestroyItem(fields4);
+DestroyItem(fields5);
+return;
+endfunction
+
+function wallNS(caster, fields2, fields1, fields3, fields4, fields5, duration, x, y, z)
+fields2:= CreateItemAtLocation(x+2,y,z, 88, 1 );
+sleepms(200);
+fields1:= CreateItemAtLocation(x+1,y,z, 88, 1 );
+sleepms(200);
+fields5:= CreateItemAtLocation(x,y,z, 88, 1 );
+sleepms(200);
+fields3:= CreateItemAtLocation(x+(-1),y,z, 88, 1 );
+sleepms(200);
+fields4:= CreateItemAtLocation(x+(-2),y,z, 88, 1 );
+SetObjProperty(fields1, "f", "1");
+SetObjProperty(fields2, "f", "1");
+SetObjProperty(fields3, "f", "1");
+SetObjProperty(fields4, "f", "1");
+SetObjProperty(fields5, "f", "1");
+Detach();
+sleep(duration);
+DestroyItem(fields1);
+DestroyItem(fields2);
+DestroyItem(fields3);
+DestroyItem(fields4);
+DestroyItem(fields5);
+endfunction
+
+function wallselfEW(caster, fields2, fields1, fields3, fields4, fields5, duration, x, y, z)
+var cor;
+
+var pessoas1 := ListMobilesNearLocation ( x, y+2, z, 0);
+if(pessoas1.size() == 0)
+fields2:= CreateItemAtLocation(x,y+2,z, 87, 1 );
+cor:=randomint((998) + 2);
+fields2.color:=cor;
+sleepms(200);
+endif
+
+var pessoas2 := ListMobilesNearLocation ( x, y+1, z, 0);
+if(pessoas2.size() == 0)
+fields1:= CreateItemAtLocation(x,y+1,z, 87, 1 );
+cor:=randomint((998) + 2);
+fields1.color:=cor;
+sleepms(200);
+endif
+
+var pessoas5 := ListMobilesNearLocation ( x, y, z, 0);
+if(pessoas5.size() == 0)
+fields5:= CreateItemAtLocation(x,y,z, 87, 1 );
+cor:=randomint((998) + 2);
+fields5.color:=cor;
+sleepms(200);
+endif
+
+var pessoas3 := ListMobilesNearLocation ( x, y+(-1), z, 0);
+if(pessoas3.size() == 0)
+fields3:= CreateItemAtLocation(x,y+(-1),z, 87, 1 );
+cor:=randomint((998) + 2);
+fields3.color:=cor;
+sleepms(200);
+endif
+
+var pessoas4 := ListMobilesNearLocation ( x, y+(-2), z, 0);
+if(pessoas4.size() == 0)
+fields4:= CreateItemAtLocation(x,y+(-2),z, 87, 1 );
+cor:=randomint((998) + 2);
+fields4.color:=cor;
+endif
+  Detach();
+SetObjProperty(fields1, "f", "1");
+SetObjProperty(fields2, "f", "1");
+SetObjProperty(fields3, "f", "1");
+SetObjProperty(fields4, "f", "1");
+SetObjProperty(fields5, "f", "1");
+sleep(duration);
+DestroyItem(fields1);
+DestroyItem(fields2);
+DestroyItem(fields3);
+DestroyItem(fields4);
+DestroyItem(fields5);
+endfunction
+
+function wallEW(caster, fields2, fields1, fields3, fields4, fields5, duration, x, y, z)
+fields2:= CreateItemAtLocation(x,y+2,z, 87, 1 );
+sleepms(200);
+fields1:= CreateItemAtLocation(x,y+1,z, 87, 1 );
+sleepms(200);
+fields5:= CreateItemAtLocation(x,y,z, 87, 1 );
+sleepms(200);
+fields3:= CreateItemAtLocation(x,y+(-1),z, 87, 1 );
+sleepms(200);
+fields4:= CreateItemAtLocation(x,y+(-2),z, 87, 1 );
+SetObjProperty(fields1, "f", "1");
+SetObjProperty(fields2, "f", "1");
+SetObjProperty(fields3, "f", "1");
+SetObjProperty(fields4, "f", "1");
+SetObjProperty(fields5, "f", "1");
+Detach();
+sleep(duration);
+DestroyItem(fields1);
+DestroyItem(fields2);
+DestroyItem(fields3);
+DestroyItem(fields4);
+DestroyItem(fields5);
+endfunction

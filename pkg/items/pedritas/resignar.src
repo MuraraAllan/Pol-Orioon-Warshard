@@ -1,0 +1,87 @@
+use uo;
+use os;
+
+include "include/yesNo";
+
+program use_guild_stone(who)
+  EraseObjProperty(who, "IsMeditating");
+  EraseObjProperty(who, "HealTimer");
+  var guild_id := who.guildid;
+  var guild:= FindGuild(guild_id);
+  resign(guild, who);
+endprogram
+
+function resign(guild,who)
+  
+  if(!guild)
+  SendSysMessage(who, "Voce nao esta em uma guilda!",0,33);
+  else
+
+var x:=who.x;
+var y:=who.y;
+ 
+  SendSysMessage(who, "Deseja mesmo sair de sua guilda?",0x9,90);
+  var answer:=YesNo(who, "Sair da guilda?");
+
+if((x != who.x) || (y != who.y))
+SendSysMessage(who, "Voce nao pode andar antes de responder.",0,33);
+return;
+endif
+
+  if(!answer)
+    SendSysMessage(who, "Cancelado.",3,38);
+    return;
+  endif
+  var gm:=findgm(guild);
+  if(who.serial==gm[2])
+    guild.setprop("gm", 0);
+  endif
+  guild.removemember(who);
+  EraseObjProperty(who, "guildtitle");
+  EraseObjProperty(who, "guild_id");
+  EraseObjProperty(who, "fealty");
+  who.title_guild:="";
+  EraseObjProperty(who, "titullo");
+  EraseObjProperty(who, "abv");
+var classe:=GetObjProperty(who, "classe");
+    if(classe == "guerreiro")
+     SetObjProperty( who, "titullo", ", Player Do Sysco WS (Guerreiro)");
+     who.title_suffix := ", Player Do Sysco WS (Guerreiro)";
+    endif
+    if(classe == "trabalhador")
+     SetObjProperty( who, "titullo", ", Player Do Sysco WS (Trabalhador)");
+     who.title_suffix := ", Player Do Sysco WS (Trabalhador)";
+    endif
+SetObjProperty(who, "abv", "0");
+eraseobjproperty(who,"wp");
+  SendSysMessage(who, "Voce nao e mais membro da guilda "+guild.getprop("guildname")+".",0x9,90);
+  var i,all:=guild.members;
+  if(all.size() == 0)
+    all := guild.allyguilds;
+    if(all.size()!=0)
+      for(i:=1;i<=all.size();i:=i+1)
+        guild.removeallyguild(all[i]);
+      endfor
+    endif
+    all:=guild.enemyguilds;
+    if(all.size()!=0)
+      for(i:=1;i<=all.size();i:=i+1)
+        guild.removeenemyguild(all[i]);
+      endfor
+    endif
+    DestroyGuild(guild);
+  endif
+endif
+endfunction
+
+function findgm(guild)
+  var returninfo:={"In Vote", "0"},i,all:=guild.members,gm:=guild.getprop("gm");
+  for(i:=1;i<=all.size();i:=i+1)
+    if(all[i].serial==gm)
+      returninfo[1]:=all[i].name;
+      returninfo[2]:=all[i].serial;
+      returninfo[3]:=all[i];
+    endif
+  endfor
+  return returninfo;
+endfunction

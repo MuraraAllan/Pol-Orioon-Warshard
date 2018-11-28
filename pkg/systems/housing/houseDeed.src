@@ -1,0 +1,369 @@
+use cfgfile;
+use uo;
+use os;
+
+include "util/key";
+include "include/objtype";
+include "include/findCity";
+include "include/canAccess";
+include "include/isValidLoc";
+
+const UOBJECT_DOORS_START:=0x675;
+const UOBJECT_DOORS_END:=0x6f4;
+const UOBJECT_BRASS_SIGN:=0xbd2;
+const UOBJECT_WOOD_SIGN:=0xbd0;
+const UOBJECT_WOOD_SIGNTWO:=0xbd1;
+const UOBJECT_TENT_CHEST:=0xe43;
+
+
+program usehousedeed(character, deed)
+var contawho:=FindAccount(character.acctname);
+
+if((contawho.getprop("possui_casa") == 1) && (character.cmdlevel < 3))
+SendSysMessage(character, "Voce so pode possuir uma casa.");
+return;
+endif
+
+  if(!ReserveItem(deed))
+   return;
+  endif
+  if(!can_access(character, deed))
+    return;
+  endif
+    if(!IsInContainer(character.backpack, deed))
+    SendSysMessage(character, "O item precisa estar em sua mochila.");
+    return;
+  endif
+  if(deed.movable == 0)
+    SendSysMessage(character, "O item esta trancado.");
+    return;
+  endif
+  if(DeedAlreadyBuiltFrom(deed))
+    PrintTextAbovePrivate(deed, "Esta Casa Ja Foi Construida.", character);
+    DestroyItem(deed);
+    return;
+  endif
+
+  EraseObjProperty(character, "IsMeditating");
+
+  var housetype := GetHouseObjtype(deed);
+  if(housetype == error)
+    SendSysMessage(character, "Este tipo de casa nao existe, contate um Game Master.",3,33);
+    return;
+  endif
+
+var where := TargetMultiPlacement(character, housetype);
+
+
+//evitar bugs
+if((where.x == 0) || (where.y == 0))
+return;
+endif
+
+///SendSysMessage(character, "x: " +where.x+ " y: " +where.y,3,95);
+///abcs
+
+
+var diferencaX:=Cint(where.x-character.x);
+ if (diferencaX < 0)
+ diferencaX:=Cint(diferencaX*(-1));
+ endif
+var diferencaY:=Cint(where.y-character.y);
+ if (diferencaY < 0)
+ diferencaY:=Cint(diferencaY*(-1));
+ endif
+
+if((diferencaX > 40) || (diferencaY > 40))
+return;
+endif
+
+if(!where)
+return;
+endif
+
+if((character.cmdlevel < 3) && (FindCity(character) != "no city") && (FindCity(where) != "no city"))
+ SendSysMessage(character, "Voce nao pode construir a casa dentro de uma cidade.");
+ return;
+endif
+if(Distance(character,where) > 20)
+ SendSysMessage(character, "Voce esta muito longe do terreno para construir a casa.");
+ return;
+endif
+
+set_critical(1);
+
+var created:=CreatehouseKeysAndBuiltDeed(character, housetype, where, deed);
+
+if(!created)
+return;
+endif
+
+  var lock := GetObjProperty(deed, "numlockdowns");
+  var sec  := GetObjProperty(deed, "numsecure");
+
+if(!DestroyItem(deed))
+SendSysMessage(character, "Problema ao construir a casa, contate um Game Master.",3,33);
+DestroyItem(created.builtdeed);
+DestroyItem(created.packkey);
+DestroyItem(created.bankkey);
+foreach item in(created.house.components)
+DestroyItem(item);
+endforeach
+DestroyMulti(created.house);
+return;
+endif
+
+contawho.setprop("possui_casa", 1);
+
+    var lockid := AllocLockId();
+    SetObjProperty(created.builtdeed, "builtserial",  created.house.serial);
+    SetObjProperty(created.builtdeed, "new",          1);
+   
+    SetObjProperty(created.builtdeed, "numlockdowns", lock);
+    SetObjProperty(created.builtdeed, "numsecure",    sec);
+    SetObjProperty(created.packkey,   "lockid",       lockid);
+    SetObjProperty(created.bankkey,   "lockid",       lockid);
+    SetObjProperty(created.house,     "numlockdowns", lock);
+    SetObjProperty(created.house,     "numsecure",    sec);
+    SetObjProperty(created.house,     "footage",      created.footage);
+    SetObjProperty(created.house, "socios", array);
+    SetObjProperty(created.house, "amigos", array);
+    SetObjProperty(created.house, "ColocadaAt", ReadGameClock());
+    var logdoor, item, abc := 0, staticbanstrip, number_ := 0;
+    foreach item in(created.house.components)
+      if(((item.objtype >= UOBJECT_DOORS_START) &&(item.objtype <= UOBJECT_DOORS_END)) || item.objtype == UOBJECT_TENT_CHEST || item.objtype == 0x6ad)
+        item.locked := 1;
+        SetObjProperty(item, "lockid", lockid);
+        SetObjProperty(item, "houseserial", created.house.serial);
+      elseif((item.objtype == UOBJECT_BRASS_SIGN) || (item.objtype == UOBJECT_WOOD_SIGN) || (item.objtype == UOBJECT_WOOD_SIGNTWO))
+        SetObjProperty(item,"lockid",lockid);
+        SetObjProperty(item, "house_serial", created.house.serial);
+        SetObjProperty(created.house, "signserial", item.serial);
+      endif
+    endforeach
+
+endprogram
+
+function CreatehouseKeysAndBuiltDeed(character, housetype, where, deed)
+  var logdoor, x := where.x, y := where.y, z := where.z;
+  var packkey := CreateItemInBackpack(character, UOBJ_GOLD_KEY);
+  if(!packkey)
+    PrintTextAbovePrivate(character, "Minha mochila esta cheia!", character);
+    CreateItemAtLocation( character.x, character.y, character.z, UOBJ_GOLD_KEY, 1 );
+  endif
+   
+var house := CreateMultiAtLocation(x, y, z, housetype);
+
+if(!house)
+ SendSysMessage(character, "Voce nao pode construir sua casa aqui.");
+ return;
+endif
+ 
+var footage := FindBoxArray(housetype, house);
+
+var test := CStr(footage);
+var sign := UOBJECT_WOOD_SIGN;
+sign.name := "-, [10 Dias para Decair]";
+
+
+  SetObjProperty(house,"numlockdowns",GetObjProperty(deed,"numlockdowns"));
+  SetObjProperty(house,"numsecure",GetObjProperty(deed,"numsecure"));
+  SetObjProperty(house,"ownerserial",character.serial);
+  SetObjProperty(house,"owneracct",character.acctname);
+  SetObjProperty(house,"decay", (ReadGameClock()+ 864000));
+  SetObjProperty(sign,"decay", Cint(ReadGameClock() + 864000));
+  
+  
+  var result array;
+  result .+ packkey := packkey;  
+  result .+ house := house;
+  result .+ footage := footage;
+  return result;
+endfunction
+
+function DeedAlreadyBuiltFrom(deed)
+  if(GetObjProperty(deed, "builtserial"))
+    return 1;
+  else
+    return 0;
+  endif
+endfunction
+
+function GetHouseObjtype(deed)
+  var id := ReadConfigFile("itemdesc");
+  var elem := id[ deed.objtype ];
+  var ot := GetObjtypeByName(elem.HouseObjType);
+  return ot;
+endfunction
+
+function IsInContainer(container, item)
+  foreach thing in EnumerateItemsInContainer(container)
+    if(thing.serial == item.serial)
+      return 1;
+    endif
+  endforeach
+  return 0;
+endfunction
+
+
+///Corrigir bugs utilizando itens
+function FindBoxArray(housetype, house)
+  var footage;
+  case(housetype)
+    0x6060: footage := smallhousearray(house, house.x, house.y, house.z); //smallstoneandplasterhouse
+    0x6061: footage := smallhousearray(house, house.x, house.y, house.z); //smallstonehouse
+    0x6062: footage := smallhousearray(house, house.x, house.y, house.z); //smallstonehousetwo
+    0x6063: footage := smallhousearray(house, house.x, house.y, house.z); //smallwoodenhouse
+    0x6064: footage := smallhousearray(house, house.x, house.y, house.z); //smallplasterhouse
+    0x6073: footage := smallhousearray(house, house.x, house.y, house.z); //smallwoodandstrawhouse
+    0x6065: footage := largehousearray(house, house.x, house.y, house.z); //largebrickhouse
+    0x6072: footage := largehousearray(house, house.x, house.y, house.z); //largepatiohouse
+    0x6066: footage := twostoryarray(house, house.x, house.y, house.z); //twostorywoodandplasterhouse
+    0x6068: footage := twostoryarray(house, house.x, house.y, house.z); //twostorystoneandplasterhouse
+    0x6069: footage := bigtowerarray(house, house.x, house.y, house.z); //tower
+    0x6070: footage := keeparray(house, house.x, house.y, house.z); //keep
+    0x6071: footage := castlearray(house, house.x, house.y, house.z); //castle
+    0x6075: footage := quintalarray(house, house.x, house.y, house.z); //casagrandecomquintal
+ 
+    0x6915: footage := minitowerarray(house, house.x, house.y, house.z); //mini_tower
+    0x6917: footage := troncosarray(house, house.x, house.y, house.z); //sobrado_troncos
+    0x6919: footage := arenitoenrustidaarray(house, house.x, house.y, house.z); //arenito_enrustida
+    0x6925: footage := shopmarmorearray(house, house.x, house.y, house.z); //shop_marmore
+    0x6923: footage := shop_pedraarray(house, house.x, house.y, house.z); //shop_pedra
+endcase
+  return footage;
+endfunction
+
+function smallhousearray(house, x, y, z)
+
+endfunction
+
+function largehousearray(house, x, y, z)
+
+endfunction
+
+function twostoryarray(house, x, y, z)
+
+endfunction
+
+function bigtowerarray(house, x, y, z)
+
+endfunction
+
+function castlearray(house, x, y, z)
+
+endfunction
+
+function keeparray(house, x, y, z)
+
+endfunction
+
+function quintalarray(house, x, y, z)
+
+endfunction
+
+function minitowerarray(house, x, y,z)
+//ageitar bugs das escadinhas
+var abc;
+ abc:=CreateItemAtLocation(x+3, y-1, Z+5, 1955, 1);
+ abc.movable := 0;
+ SetObjProperty(abc, "houseserial", house.serial); 
+ SetObjProperty(abc, "antibug", 1); 
+
+ abc:=CreateItemAtLocation(x+3, y-2, Z+14, 1955, 1);
+ abc.movable := 0;
+ SetObjProperty(abc, "houseserial", house.serial); 
+ SetObjProperty(abc, "antibug", 1);
+
+ abc:=CreateItemAtLocation(x+3, y-2, Z+10, 1955, 1);
+ abc.movable := 0;
+ SetObjProperty(abc, "houseserial", house.serial); 
+ SetObjProperty(abc, "antibug", 1);
+
+ abc:=CreateItemAtLocation(x+3, y-2, Z+5, 1955, 1);
+ abc.movable := 0;
+ SetObjProperty(abc, "houseserial", house.serial); 
+ SetObjProperty(abc, "antibug", 1);
+
+ abc:=CreateItemAtLocation(x-2, y-2, Z+34, 1955, 1);
+ abc.movable := 0;
+ SetObjProperty(abc, "houseserial", house.serial); 
+ SetObjProperty(abc, "antibug", 1);
+
+ abc:=CreateItemAtLocation(x-2, y-2, Z+29, 1955, 1);
+ abc.movable := 0;
+ SetObjProperty(abc, "houseserial", house.serial); 
+ SetObjProperty(abc, "antibug", 1);
+
+ abc:=CreateItemAtLocation(x-2, y-2, Z+26, 1955, 1);
+ abc.movable := 0;
+ SetObjProperty(abc, "houseserial", house.serial); 
+ SetObjProperty(abc, "antibug", 1);
+endfunction
+
+function troncosarray(house,x,y,z)
+//ageitar bugs das escadinhas
+var abc;
+ abc:=CreateItemAtLocation(x+3, y-4, Z+10, 2211, 1);
+ abc.movable := 0;
+ SetObjProperty(abc, "houseserial", house.serial); 
+ SetObjProperty(abc, "antibug", 1); 
+
+ abc:=CreateItemAtLocation(x+3, y-5, Z+19, 2211, 1);
+ abc.movable := 0;
+ SetObjProperty(abc, "houseserial", house.serial); 
+ SetObjProperty(abc, "antibug", 1);
+endfunction
+
+function arenitoenrustidaarray(house,x,y,z)
+//ageitar bugs das escadinhas
+var abc;
+ abc:=CreateItemAtLocation(x-5, y-4, z, 2848, 1);
+ abc.movable := 0;
+ SetObjProperty(abc, "houseserial", house.serial); 
+ SetObjProperty(abc, "antibug", 1); 
+endfunction
+
+function shopmarmorearray(house,x,y,z)
+//ageitar bugs das escadinhas
+var abc;
+ abc:=CreateItemAtLocation(x-2, y+1, z+7, 0x709, 1);
+ abc.movable := 0;
+ SetObjProperty(abc, "houseserial", house.serial); 
+ SetObjProperty(abc, "antibug", 1); 
+
+ abc:=CreateItemAtLocation(x-2, y+1, z+4, 0x709, 1);
+ abc.movable := 0;
+ SetObjProperty(abc, "houseserial", house.serial); 
+ SetObjProperty(abc, "antibug", 1); 
+
+ abc:=CreateItemAtLocation(x-3, y-1, z+4, 0x100, 1);
+ abc.movable := 0;
+ SetObjProperty(abc, "houseserial", house.serial); 
+ SetObjProperty(abc, "antibug", 1);
+
+ abc:=CreateItemAtLocation(x-3, y, z+4, 0x100, 1);
+ abc.movable := 0;
+ SetObjProperty(abc, "houseserial", house.serial); 
+ SetObjProperty(abc, "antibug", 1);
+endfunction
+
+function shop_pedraarray(house,x,y,z)
+//ageitar bugs das escadinhas
+var abc;
+ abc:=CreateItemAtLocation(x-2, y, z+7, 1872, 1);
+ abc.movable := 0;
+ SetObjProperty(abc, "houseserial", house.serial); 
+ SetObjProperty(abc, "antibug", 1);
+
+ abc:=CreateItemAtLocation(x-2, y, z+12, 1872, 1);
+ abc.movable := 0;
+ SetObjProperty(abc, "houseserial", house.serial); 
+ SetObjProperty(abc, "antibug", 1);
+
+
+ abc:=CreateItemAtLocation(x-2, y, z+17, 1872, 1);
+ abc.movable := 0;
+ SetObjProperty(abc, "houseserial", house.serial); 
+ SetObjProperty(abc, "antibug", 1);
+endfunction

@@ -1,0 +1,3304 @@
+C:/pol2/scripts/include/startEqp.inc, Line 6
+var unique_items_created := {};
+0: decl global #0
+1: array
+2: :=
+3: #
+var starteqp_cfg;
+4: decl global #1
+5: #
+var template;
+6: decl global #2
+7: #
+var magicspawnchance := 0;
+8: decl global #3
+9: 0L
+10: :=
+11: #
+var magicadjustment  := 0;
+12: decl global #4
+13: 0L
+14: :=
+15: #
+var making_starting_equipment := 0;
+16: decl global #5
+17: 0L
+18: :=
+19: #
+var thecritter;
+20: decl global #6
+21: #
+C:\pol2\pkg\skills\lockpicking\lockpicking.src, Line 13
+program pick( me, lockpick )
+include "include/canAccess";
+22: get arg 'me'
+23: get arg 'lockpick'
+EraseObjProperty(me, "IsMeditating");
+24: local #0
+25: "IsMeditating"
+26: Func(2,27): EraseObjProperty
+27: #
+EraseObjProperty(me, "HealTimer");
+28: local #0
+29: "HealTimer"
+30: Func(2,27): EraseObjProperty
+31: #
+if(!can_access(me, lockpick))
+32: local #0
+33: local #1
+34: 0L
+35: makelocal
+36: jmp userfunc @142
+37: if true goto 40
+return;
+38: ""
+39: progend
+if(lockpick.movable == 0)
+40: local #1
+41: get member 'movable'
+42: 0L
+43: ==
+44: if false goto 53
+SendSysMessage(me, "You cannot use that.");
+45: local #0
+46: "You cannot use that."
+47: 3L
+48: 1000L
+49: Func(2,24): SendSysMessage
+50: #
+return;
+51: ""
+52: progend
+if (!ReserveItem(lockpick))
+53: local #1
+54: Func(2,26): ReserveItem
+55: if true goto 58
+return;
+56: ""
+57: progend
+SendSysMessage(me, "choose something to pick?");
+58: local #0
+59: "choose something to pick?"
+60: 3L
+61: 1000L
+62: Func(2,24): SendSysMessage
+63: #
+var chest := Target(me);
+64: decl local #2
+65: local #0
+66: 1L
+67: Func(2,28): Target
+68: :=
+69: #
+if (!chest)
+70: local #2
+71: if true goto 80
+SendSysMessage(me,"canceled");
+72: local #0
+73: "canceled"
+74: 3L
+75: 1000L
+76: Func(2,24): SendSysMessage
+77: #
+return;
+78: ""
+79: progend
+if ( (!Accessible(me,chest)) || (!Accessible(me,lockpick)) )
+80: local #0
+81: local #2
+82: Func(2,25): Accessible
+83: !
+84: local #0
+85: local #1
+86: Func(2,25): Accessible
+87: !
+88: ||
+89: if false goto 98
+SendSysMessage(me, "Can't reach it!");
+90: local #0
+91: "Can't reach it!"
+92: 3L
+93: 1000L
+94: Func(2,24): SendSysMessage
+95: #
+return;
+96: ""
+97: progend
+if (GetObjProperty(chest,"spawnchest"))
+98: local #2
+99: "spawnchest"
+100: Func(2,2): GetObjProperty
+101: if false goto 109
+PickSpawnChest(me, lockpick, chest);
+102: local #0
+103: local #1
+104: local #2
+105: makelocal
+106: jmp userfunc @350
+107: #
+108: goto140
+elseif (GetObjProperty(chest,"lockable"))
+109: local #2
+110: "lockable"
+111: Func(2,2): GetObjProperty
+112: if false goto 120
+PickLockedItem(me, lockpick, chest);
+113: local #0
+114: local #1
+115: local #2
+116: makelocal
+117: jmp userfunc @249
+118: #
+119: goto140
+elseif (GetObjProperty(chest,"level"))
+120: local #2
+121: "level"
+122: Func(2,2): GetObjProperty
+123: if false goto 131
+PickTreasureChest(me, lockpick, chest);
+124: local #0
+125: local #1
+126: local #2
+127: makelocal
+128: jmp userfunc @492
+129: #
+130: goto140
+SendSysMessage(me, "You have no chance of picking that lock!");
+131: local #0
+132: "You have no chance of picking that lock!"
+133: 3L
+134: 1000L
+135: Func(2,24): SendSysMessage
+136: #
+ReleaseItem(lockpick);
+137: local #1
+138: Func(2,29): ReleaseItem
+139: #
+140: leave block(3)
+141: progend
+C:/pol2/scripts/include/canAccess.inc, Line 2
+function can_access(who, item, flags := 0)
+142: pop param 'flags'
+143: pop param 'item'
+144: pop param 'who'
+var owner := Cint(GetObjProperty(item, "Owner"));
+145: decl local #3
+146: local #1
+147: "Owner"
+148: Func(2,2): GetObjProperty
+149: Func(0,0): CInt
+150: :=
+151: #
+if((owner) and (owner != who.serial))
+152: local #3
+153: local #3
+154: local #2
+155: get member 'serial'
+156: <>
+157: &&
+158: if false goto 168
+SendSysMessage(who, "You cannot use that.");
+159: local #2
+160: "You cannot use that."
+161: 3L
+162: 1000L
+163: Func(2,24): SendSysMessage
+164: #
+return 0;
+165: 0L
+166: return
+167: goto247
+elseif(GetObjProperty(item, "Vendored"))
+168: local #1
+169: "Vendored"
+170: Func(2,2): GetObjProperty
+171: if false goto 181
+SendSysMessage(who, "You cannot use that.");
+172: local #2
+173: "You cannot use that."
+174: 3L
+175: 1000L
+176: Func(2,24): SendSysMessage
+177: #
+return 0;
+178: 0L
+179: return
+180: goto247
+elseif(!Accessible(who, item))
+181: local #2
+182: local #1
+183: Func(2,25): Accessible
+184: if true goto 194
+SendSysMessage(who, "You cannot use that.");
+185: local #2
+186: "You cannot use that."
+187: 3L
+188: 1000L
+189: Func(2,24): SendSysMessage
+190: #
+return 0;
+191: 0L
+192: return
+193: goto247
+elseif((!flags["distance"]) and ((Distance(who, item) > 2)))
+194: local #0
+195: "distance"
+196: [] 1
+197: !
+198: local #2
+199: local #1
+200: Func(2,0): Distance
+201: 2L
+202: >
+203: &&
+204: if false goto 214
+SendSysMessage(who, "That item is too far away.");
+205: local #2
+206: "That item is too far away."
+207: 3L
+208: 1000L
+209: Func(2,24): SendSysMessage
+210: #
+return 0;
+211: 0L
+212: return
+213: goto247
+elseif((!flags["unmovable"]) and (item.movable == 0))
+214: local #0
+215: "unmovable"
+216: [] 1
+217: !
+218: local #1
+219: get member 'movable'
+220: 0L
+221: ==
+222: &&
+223: if false goto 233
+SendSysMessage(who, "You cannot use that while locked down.");
+224: local #2
+225: "You cannot use that while locked down."
+226: 3L
+227: 1000L
+228: Func(2,24): SendSysMessage
+229: #
+return 0;
+230: 0L
+231: return
+232: goto247
+elseif(!ReserveItem(item))
+233: local #1
+234: Func(2,26): ReserveItem
+235: if true goto 245
+SendSysMessage(who, "That item is already in use.");
+236: local #2
+237: "That item is already in use."
+238: 3L
+239: 1000L
+240: Func(2,24): SendSysMessage
+241: #
+return 0;
+242: 0L
+243: return
+244: goto247
+return 1;
+245: 1L
+246: return
+247: 0L
+248: return
+C:\pol2\pkg\skills\lockpicking\lockpicking.src, Line 131
+function PickLockedItem(me, lockpick, chest)
+249: pop param 'chest'
+250: pop param 'lockpick'
+251: pop param 'me'
+var lvl := GetObjProperty(chest,"lockable" );
+252: decl local #3
+253: local #0
+254: "lockable"
+255: Func(2,2): GetObjProperty
+256: :=
+257: #
+if (!lvl)
+258: local #3
+259: if true goto 268
+SendSysMessage(me,"that cannot be picked");
+260: local #2
+261: "that cannot be picked"
+262: 3L
+263: 1000L
+264: Func(2,24): SendSysMessage
+265: #
+return;
+266: ""
+267: return
+if (!chest.locked)
+268: local #0
+269: get member 'locked'
+270: if true goto 279
+SendSysMessage(me,"That doesn't appear to be locked");
+271: local #2
+272: "That doesn't appear to be locked"
+273: 3L
+274: 1000L
+275: Func(2,24): SendSysMessage
+276: #
+return;
+277: ""
+278: return
+PlaySoundEffect(chest,SFX_242);
+279: local #0
+280: 578L
+281: Func(2,30): PlaySoundEffect
+282: #
+sleepms(1500);
+283: 1500L
+284: Func(3,4): sleepms
+285: #
+var diff := (lvl+10);
+286: decl local #4
+287: local #3
+288: 10L
+289: +
+290: :=
+291: #
+if ( CheckSkill(me,SKILLID_LOCKPICKING,diff,(diff*2)) )
+292: local #2
+293: 24L
+294: local #4
+295: local #4
+296: 2L
+297: *
+298: Func(2,31): CheckSkill
+299: if false goto 308
+PlaySoundEffect(chest,SFX_200);
+300: local #0
+301: 512L
+302: Func(2,30): PlaySoundEffect
+303: #
+chest.locked := 0;
+304: local #0
+305: 0L
+306: set member 'locked' #
+307: goto348
+SendSysMessage(me,"You fail to pick the lock.");
+308: local #2
+309: "You fail to pick the lock."
+310: 3L
+311: 1000L
+312: Func(2,24): SendSysMessage
+313: #
+if (diff < 10)
+314: local #4
+315: 10L
+316: <
+317: if false goto 321
+diff := 0;
+318: 0L
+319: local4 := 
+320: goto325
+diff := diff -10;
+321: local #4
+322: 10L
+323: -
+324: local4 := 
+if ((RandomInt(99)+1) <= diff)
+325: 99L
+326: Func(5,0): RandomInt
+327: 1L
+328: +
+329: local #4
+330: <=
+331: if false goto 346
+PlaySoundEffect(chest,0xef);
+332: local #0
+333: 239L
+334: Func(2,30): PlaySoundEffect
+335: #
+SendSysMessage(me,"Your pick breaks!");
+336: local #2
+337: "Your pick breaks!"
+338: 3L
+339: 1000L
+340: Func(2,24): SendSysMessage
+341: #
+SubtractAmount(lockpick,1);
+342: local #1
+343: 1L
+344: Func(2,33): SubtractAmount
+345: #
+return;
+346: ""
+347: return
+348: 0L
+349: return
+C:\pol2\pkg\skills\lockpicking\lockpicking.src, Line 83
+function PickSpawnChest(me, lockpick, chest)
+350: pop param 'chest'
+351: pop param 'lockpick'
+352: pop param 'me'
+var lvl := GetObjProperty(chest,"lockpicking" );
+353: decl local #3
+354: local #0
+355: "lockpicking"
+356: Func(2,2): GetObjProperty
+357: :=
+358: #
+if (!lvl)
+359: local #3
+360: if true goto 364
+DestroyItem(chest);
+361: local #0
+362: Func(2,19): DestroyItem
+363: #
+if (!chest.locked)
+364: local #0
+365: get member 'locked'
+366: if true goto 375
+SendSysMessage(me,"That doesn't appear to be locked");
+367: local #2
+368: "That doesn't appear to be locked"
+369: 3L
+370: 1000L
+371: Func(2,24): SendSysMessage
+372: #
+return;
+373: ""
+374: return
+PlaySoundEffect(chest,SFX_242);
+375: local #0
+376: 578L
+377: Func(2,30): PlaySoundEffect
+378: #
+sleep(2);
+379: 2L
+380: Func(3,3): sleep
+381: #
+var diff := (lvl * 10)+10;
+382: decl local #4
+383: local #3
+384: 10L
+385: *
+386: 10L
+387: +
+388: :=
+389: #
+if ( CheckSkill(me,SKILLID_LOCKPICKING,diff,0) )
+390: local #2
+391: 24L
+392: local #4
+393: 0L
+394: Func(2,31): CheckSkill
+395: if false goto 408
+PlaySoundEffect(chest,SFX_200);
+396: local #0
+397: 512L
+398: Func(2,30): PlaySoundEffect
+399: #
+PrintTextAbovePrivate(chest,"*Unlocked!*",me);
+400: local #0
+401: "*Unlocked!*"
+402: local #2
+403: 3L
+404: 1000L
+405: Func(2,32): PrintTextAbovePrivate
+406: #
+407: goto448
+PrintTextAbovePrivate(chest,"You fail to pick the lock.",me);
+408: local #0
+409: "You fail to pick the lock."
+410: local #2
+411: 3L
+412: 1000L
+413: Func(2,32): PrintTextAbovePrivate
+414: #
+if (diff < 10)
+415: local #4
+416: 10L
+417: <
+418: if false goto 422
+diff := 0;
+419: 0L
+420: local4 := 
+421: goto426
+diff := diff -10;
+422: local #4
+423: 10L
+424: -
+425: local4 := 
+if (!CheckSkill(me,SKILLID_LOCKPICKING,diff,0) )
+426: local #2
+427: 24L
+428: local #4
+429: 0L
+430: Func(2,31): CheckSkill
+431: if true goto 446
+PlaySoundEffect(chest,0xef);
+432: local #0
+433: 239L
+434: Func(2,30): PlaySoundEffect
+435: #
+SendSysMessage(me,"Your pick breaks!");
+436: local #2
+437: "Your pick breaks!"
+438: 3L
+439: 1000L
+440: Func(2,24): SendSysMessage
+441: #
+SubtractAmount(lockpick,1);
+442: local #1
+443: 1L
+444: Func(2,33): SubtractAmount
+445: #
+return;
+446: ""
+447: return
+set_critical(1);
+448: 1L
+449: Func(3,0): set_critical
+450: #
+SpawnTheChest(chest,lvl);
+451: local #0
+452: local #3
+453: makelocal
+454: jmp userfunc @604
+455: #
+chest.locked := 0;
+456: local #0
+457: 0L
+458: set member 'locked' #
+var allchests := GetGlobalProperty("unlockedchests");
+459: decl local #5
+460: "unlockedchests"
+461: Func(2,21): GetGlobalProperty
+462: :=
+463: #
+if (!allchests)
+464: local #5
+465: if true goto 472
+allchests[1]:=chest.serial;
+466: local #5
+467: 1L
+468: local #0
+469: get member 'serial'
+470: [] := (1) #
+471: goto480
+allchests[len(allchests)+1]:=chest.serial;
+472: local #5
+473: local #5
+474: Func(0,5): len
+475: 1L
+476: +
+477: local #0
+478: get member 'serial'
+479: [] := (1) #
+SetGlobalProperty("unlockedchests",allchests);
+480: "unlockedchests"
+481: local #5
+482: Func(2,22): SetGlobalProperty
+483: #
+set_critical(0);
+484: 0L
+485: Func(3,0): set_critical
+486: #
+ReleaseItem(lockpick);
+487: local #1
+488: Func(2,29): ReleaseItem
+489: #
+490: 0L
+491: return
+C:\pol2\pkg\skills\lockpicking\lockpicking.src, Line 48
+function PickTreasureChest(me, lockpick, chest)
+492: pop param 'chest'
+493: pop param 'lockpick'
+494: pop param 'me'
+var lvl := GetObjProperty(chest,"level" );
+495: decl local #3
+496: local #0
+497: "level"
+498: Func(2,2): GetObjProperty
+499: :=
+500: #
+if (!lvl)
+501: local #3
+502: if true goto 506
+DestroyItem(chest);
+503: local #0
+504: Func(2,19): DestroyItem
+505: #
+if (!chest.locked)
+506: local #0
+507: get member 'locked'
+508: if true goto 517
+SendSysMessage(me,"That doesn't appear to be locked");
+509: local #2
+510: "That doesn't appear to be locked"
+511: 3L
+512: 1000L
+513: Func(2,24): SendSysMessage
+514: #
+return;
+515: ""
+516: return
+PlaySoundEffect(chest,SFX_242);
+517: local #0
+518: 578L
+519: Func(2,30): PlaySoundEffect
+520: #
+sleep(2);
+521: 2L
+522: Func(3,3): sleep
+523: #
+var diff := (lvl * 20)+10;
+524: decl local #4
+525: local #3
+526: 20L
+527: *
+528: 10L
+529: +
+530: :=
+531: #
+if ( CheckSkill(me,SKILLID_LOCKPICKING,diff,0) )
+532: local #2
+533: 24L
+534: local #4
+535: 0L
+536: Func(2,31): CheckSkill
+537: if false goto 550
+PlaySoundEffect(chest,SFX_200);
+538: local #0
+539: 512L
+540: Func(2,30): PlaySoundEffect
+541: #
+PrintTextAbovePrivate(chest,"*Unlocked!*",me);
+542: local #0
+543: "*Unlocked!*"
+544: local #2
+545: 3L
+546: 1000L
+547: Func(2,32): PrintTextAbovePrivate
+548: #
+549: goto590
+PrintTextAbovePrivate(chest,"You fail to pick the lock.",me);
+550: local #0
+551: "You fail to pick the lock."
+552: local #2
+553: 3L
+554: 1000L
+555: Func(2,32): PrintTextAbovePrivate
+556: #
+if (diff < 10)
+557: local #4
+558: 10L
+559: <
+560: if false goto 564
+diff := 0;
+561: 0L
+562: local4 := 
+563: goto568
+diff := diff -10;
+564: local #4
+565: 10L
+566: -
+567: local4 := 
+if (!CheckSkill(me,SKILLID_LOCKPICKING,diff,0) )
+568: local #2
+569: 24L
+570: local #4
+571: 0L
+572: Func(2,31): CheckSkill
+573: if true goto 588
+PlaySoundEffect(chest,0xef);
+574: local #0
+575: 239L
+576: Func(2,30): PlaySoundEffect
+577: #
+SendSysMessage(me,"Your pick breaks!");
+578: local #2
+579: "Your pick breaks!"
+580: 3L
+581: 1000L
+582: Func(2,24): SendSysMessage
+583: #
+SubtractAmount(lockpick,1);
+584: local #1
+585: 1L
+586: Func(2,33): SubtractAmount
+587: #
+return;
+588: ""
+589: return
+set_critical(1);
+590: 1L
+591: Func(3,0): set_critical
+592: #
+chest.locked := 0;
+593: local #0
+594: 0L
+595: set member 'locked' #
+set_critical(0);
+596: 0L
+597: Func(3,0): set_critical
+598: #
+ReleaseItem(lockpick);
+599: local #1
+600: Func(2,29): ReleaseItem
+601: #
+602: 0L
+603: return
+C:\pol2\pkg\skills\lockpicking\lockpicking.src, Line 126
+function SpawnTheChest(chest, lvl)
+604: pop param 'lvl'
+605: pop param 'chest'
+var lootgroup := (108+lvl);
+606: decl local #2
+607: 108L
+608: local #0
+609: +
+610: :=
+611: #
+MakeLoot( chest, lootgroup );
+612: local #1
+613: local #2
+614: makelocal
+615: jmp userfunc @619
+616: #
+617: 0L
+618: return
+C:/pol2/scripts/include/startEqp.inc, Line 15
+function MakeLoot(corpse, lootgroup)
+619: pop param 'lootgroup'
+620: pop param 'corpse'
+var npcdesc := ReadConfigFile("::npcdesc");
+621: decl local #2
+622: "::npcdesc"
+623: Func(4,0): ReadConfigFile
+624: :=
+625: #
+var elem := FindConfigElem(npcdesc, corpse.npctemplate);
+626: decl local #3
+627: local #2
+628: local #1
+629: get member 'npctemplate'
+630: Func(4,1): FindConfigElem
+631: :=
+632: #
+var mprop, madj;
+633: decl local #4
+634: #
+635: decl local #5
+636: #
+if(elem)
+637: local #3
+638: if false goto 650
+mprop := CInt(GetConfigInt(elem, "Magicitemchance"));
+639: local #3
+640: "Magicitemchance"
+641: Func(4,2): GetConfigInt
+642: Func(0,0): CInt
+643: local4 := 
+madj  := CInt(GetConfigInt(elem, "MagicAdjustment"));
+644: local #3
+645: "MagicAdjustment"
+646: Func(4,2): GetConfigInt
+647: Func(0,0): CInt
+648: local5 := 
+649: goto679
+mprop := 1;
+650: 1L
+651: local4 := 
+if(corpse.objtype == 0x9e40)
+652: local #1
+653: get member 'objtype'
+654: 40512L
+655: ==
+656: if false goto 677
+case(CInt(GetObjProperty(corpse,"level")))
+657: local #1
+658: "level"
+659: Func(2,2): GetObjProperty
+660: Func(0,0): CInt
+661: casejmp
+	1: @662
+	2: @665
+	3: @668
+	4: @671
+	5: @674
+	default: @676
+madj := 0;
+662: 0L
+663: local5 := 
+664: goto676
+madj := 2;
+665: 2L
+666: local5 := 
+667: goto676
+madj := 4;
+668: 4L
+669: local5 := 
+670: goto676
+madj := 6;
+671: 6L
+672: local5 := 
+673: goto676
+madj := 8;
+674: 8L
+675: local5 := 
+676: goto679
+magicadjustment := 0;
+677: 0L
+678: global4 := 
+if(GetHp(corpse))
+679: local #1
+680: makelocal
+681: jmp userfunc @1419
+682: if false goto 696
+foreach thing in ListEquippedItems(corpse)
+683: local #1
+684: Func(2,16): ListEquippedItems
+685: initforeach @694
+if(thing.objtype == 0xe75)
+686: local #6
+687: get member 'objtype'
+688: 3701L
+689: ==
+690: if false goto 694
+corpse := thing;
+691: local #6
+692: local1 := 
+break;
+693: goto695
+694: stepforeach @686
+695: leave block(3)
+thecritter := corpse;
+696: local #1
+697: global6 := 
+if(mprop)
+698: local #4
+699: if false goto 703
+magicspawnchance := 1;
+700: 1L
+701: global3 := 
+702: goto718
+if((corpse.objtype == 0x9e40) || (corpse.objtype == 0xe40))
+703: local #1
+704: get member 'objtype'
+705: 40512L
+706: ==
+707: local #1
+708: get member 'objtype'
+709: 3648L
+710: ==
+711: ||
+712: if false goto 716
+magicspawnchance := 1;
+713: 1L
+714: global3 := 
+715: goto718
+magicspawnchance := 0;
+716: 0L
+717: global3 := 
+magicadjustment  := madj;
+718: local #5
+719: global4 := 
+starteqp_cfg := ReadConfigFile("::nlootgroup");
+720: "::nlootgroup"
+721: Func(4,0): ReadConfigFile
+722: global1 := 
+if(lootgroup)
+723: local #0
+724: if false goto 731
+CreateFromGroup(corpse, lootgroup);
+725: local #1
+726: local #0
+727: makelocal
+728: jmp userfunc @750
+729: #
+730: goto748
+var lootgroups := GetConfigStringArray(elem, "lootgroup");
+731: decl local #0
+732: local #3
+733: "lootgroup"
+734: Func(4,3): GetConfigStringArray
+735: :=
+736: #
+foreach str in lootgroups
+737: local #6
+738: initforeach @745
+CreateFromGroup(corpse, CInt(str));
+739: local #1
+740: local #7
+741: Func(0,0): CInt
+742: makelocal
+743: jmp userfunc @750
+744: #
+745: stepforeach @739
+746: leave block(3)
+747: leave block(1)
+748: 0L
+749: return
+C:/pol2/scripts/include/startEqp.inc, Line 76
+function CreateFromGroup(who, group)
+750: pop param 'group'
+751: pop param 'who'
+if(making_starting_equipment != 1)
+752: global #5
+753: 1L
+754: <>
+755: if false goto 759
+starteqp_cfg := ReadConfigFile("::nlootgroup");
+756: "::nlootgroup"
+757: Func(4,0): ReadConfigFile
+758: global1 := 
+var elem := starteqp_cfg[group];
+759: decl local #2
+760: global #1
+761: local #0
+762: [] 1
+763: :=
+764: #
+foreach str in GetConfigStringArray(elem, "Stack")
+765: local #2
+766: "Stack"
+767: Func(4,3): GetConfigStringArray
+768: initforeach @774
+CreateFromStackString(who, str);
+769: local #1
+770: local #3
+771: makelocal
+772: jmp userfunc @1234
+773: #
+774: stepforeach @769
+775: leave block(3)
+foreach str in GetConfigStringArray(elem, "Item")
+776: local #2
+777: "Item"
+778: Func(4,3): GetConfigStringArray
+779: initforeach @785
+CreateFromItemString(who, str);
+780: local #1
+781: local #3
+782: makelocal
+783: jmp userfunc @822
+784: #
+785: stepforeach @780
+786: leave block(3)
+foreach str in GetConfigStringArray(elem, "Random")
+787: local #2
+788: "Random"
+789: Func(4,3): GetConfigStringArray
+790: initforeach @796
+CreateFromRandomString(who, str);
+791: local #1
+792: local #3
+793: makelocal
+794: jmp userfunc @1098
+795: #
+796: stepforeach @791
+797: leave block(3)
+foreach str in GetConfigStringArray(elem, "Group")
+798: local #2
+799: "Group"
+800: Func(4,3): GetConfigStringArray
+801: initforeach @807
+CreateFromGroup(who, str);
+802: local #1
+803: local #3
+804: makelocal
+805: jmp userfunc @750
+806: #
+807: stepforeach @802
+808: leave block(3)
+foreach str in GetConfigStringArray(elem, "Unique")
+809: local #2
+810: "Unique"
+811: Func(4,3): GetConfigStringArray
+812: initforeach @818
+CreateFromUniqueString(who, str);
+813: local #1
+814: local #3
+815: makelocal
+816: jmp userfunc @1358
+817: #
+818: stepforeach @813
+819: leave block(3)
+820: 0L
+821: return
+C:/pol2/scripts/include/startEqp.inc, Line 103
+function CreateFromItemString(who, str)
+822: pop param 'str'
+823: pop param 'who'
+var params := SplitWords(str);
+824: decl local #2
+825: local #0
+826: Func(0,1): SplitWords
+827: :=
+828: #
+var count, objname, color, chance;
+829: decl local #3
+830: #
+831: decl local #4
+832: #
+833: decl local #5
+834: #
+835: decl local #6
+836: #
+var couleurs := ReadConfigFile("::colors");
+837: decl local #7
+838: "::colors"
+839: Func(4,0): ReadConfigFile
+840: :=
+841: #
+count := RandomDiceRoll(CStr(params[1]));
+842: local #2
+843: 1L
+844: [] 1
+845: Func(0,4): CStr
+846: Func(5,1): RandomDiceRoll
+847: local3 := 
+params[1] := params[2];
+848: local #2
+849: 1L
+850: local #2
+851: 2L
+852: [] 1
+853: [] := (1) #
+params[2] := params[3];
+854: local #2
+855: 2L
+856: local #2
+857: 3L
+858: [] 1
+859: [] := (1) #
+params[3] := params[4];
+860: local #2
+861: 3L
+862: local #2
+863: 4L
+864: [] 1
+865: [] := (1) #
+if (!count)
+866: local #3
+867: if true goto 870
+count := 1;
+868: 1L
+869: local3 := 
+objname := params[1];
+870: local #2
+871: 1L
+872: [] 1
+873: local4 := 
+if(CInt(params[2]))
+874: local #2
+875: 2L
+876: [] 1
+877: Func(0,0): CInt
+878: if false goto 885
+color := CInt(params[2]);
+879: local #2
+880: 2L
+881: [] 1
+882: Func(0,0): CInt
+883: local5 := 
+884: goto977
+elseif (params[2])
+885: local #2
+886: 2L
+887: [] 1
+888: if false goto 977
+color := 0;
+889: 0L
+890: local5 := 
+var colorg := FindConfigElem(couleurs, params[2]);
+891: decl local #0
+892: local #7
+893: local #2
+894: 2L
+895: [] 1
+896: Func(4,1): FindConfigElem
+897: :=
+898: #
+if(colorg)
+899: local #8
+900: if false goto 976
+var str := GetConfigStringArray(colorg, "color");
+901: decl local #0
+902: local #8
+903: "color"
+904: Func(4,3): GetConfigStringArray
+905: :=
+906: #
+var ar := {};
+907: decl local #1
+908: array
+909: :=
+910: #
+var rndint := RandomInt(len(str)) + 1;
+911: decl local #2
+912: local #9
+913: Func(0,5): len
+914: Func(5,0): RandomInt
+915: 1L
+916: +
+917: :=
+918: #
+ar := SplitWords(str[rndint]);
+919: local #9
+920: local #11
+921: [] 1
+922: Func(0,1): SplitWords
+923: local10 := 
+if(len(ar) > 1)
+924: local #10
+925: Func(0,5): len
+926: 1L
+927: >
+928: if false goto 960
+if(CInt(ar[2]) > 0)
+929: local #10
+930: 2L
+931: [] 1
+932: Func(0,0): CInt
+933: 0L
+934: >
+935: if false goto 950
+color := RandomInt(CInt(ar[2]) - CInt(ar[1]))+1;
+936: local #10
+937: 2L
+938: [] 1
+939: Func(0,0): CInt
+940: local #10
+941: 1L
+942: [] 1
+943: Func(0,0): CInt
+944: -
+945: Func(5,0): RandomInt
+946: 1L
+947: +
+948: local5 := 
+949: goto959
+color := CInt(str[RandomInt(len(str))+1]);
+950: local #9
+951: local #9
+952: Func(0,5): len
+953: Func(5,0): RandomInt
+954: 1L
+955: +
+956: [] 1
+957: Func(0,0): CInt
+958: local5 := 
+959: goto969
+color := CInt(str[RandomInt(len(str))+1]);
+960: local #9
+961: local #9
+962: Func(0,5): len
+963: Func(5,0): RandomInt
+964: 1L
+965: +
+966: [] 1
+967: Func(0,0): CInt
+968: local5 := 
+if(color == 1)
+969: local #5
+970: 1L
+971: ==
+972: if false goto 975
+color := 0;
+973: 0L
+974: local5 := 
+975: leave block(3)
+976: leave block(1)
+if (!color)
+977: local #5
+978: if true goto 981
+color := 0;
+979: 0L
+980: local5 := 
+if(CInt(params[3]))
+981: local #2
+982: 3L
+983: [] 1
+984: Func(0,0): CInt
+985: if false goto 992
+chance := CInt(params[3]);
+986: local #2
+987: 3L
+988: [] 1
+989: Func(0,0): CInt
+990: local6 := 
+991: goto994
+chance := 100;
+992: 100L
+993: local6 := 
+if(CInt(RandomInt(100)+1) <= CInt(chance))
+994: 100L
+995: Func(5,0): RandomInt
+996: 1L
+997: +
+998: Func(0,0): CInt
+999: local #6
+1000: Func(0,0): CInt
+1001: <=
+1002: if false goto 1096
+var i, canbemagic;
+1003: decl local #0
+1004: #
+1005: decl local #1
+1006: #
+for(i:=1; i<=CInt(count); i:=i+1)
+1007: local #8
+1008: 1L
+1009: :=
+1010: #
+1011: local #8
+1012: local #3
+1013: Func(0,0): CInt
+1014: <=
+1015: if false goto 1095
+if (CInt(objname))
+1016: local #4
+1017: Func(0,0): CInt
+1018: if false goto 1022
+objname := CInt(objname);
+1019: local #4
+1020: Func(0,0): CInt
+1021: local4 := 
+var item := CreateItemInContainer(who, objname);
+1022: decl local #0
+1023: local #1
+1024: local #4
+1025: 1L
+1026: Func(2,17): CreateItemInContainer
+1027: :=
+1028: #
+item.color := color;
+1029: local #10
+1030: local #5
+1031: set member 'color' #
+if(making_starting_equipment)
+1032: global #5
+1033: if false goto 1039
+item.newbie := 1;
+1034: local #10
+1035: 1L
+1036: set member 'newbie' #
+continue;
+1037: leave block(1)
+1038: goto1088
+if( (item.graphic in array( 0xdf2, 0xdf3, 0xdf4, 0xdf5, 0x13f9 )) && (magicspaw
+1039: local #10
+1040: get member 'graphic'
+1041: array
+1042: 3570L
+1043: +=
+1044: 3571L
+1045: +=
+1046: 3572L
+1047: +=
+1048: 3573L
+1049: +=
+1050: 5113L
+1051: +=
+1052: in
+1053: global #3
+1054: 1L
+1055: ==
+1056: &&
+1057: if false goto 1063
+ProcessWand(item);
+1058: local #10
+1059: makelocal
+1060: jmp userfunc @1493
+1061: #
+1062: goto1087
+if(magicspawnchance == 1)
+1063: global #3
+1064: 1L
+1065: ==
+1066: if false goto 1087
+canbemagic := MagicAllowedandType(objname);
+1067: local #4
+1068: makelocal
+1069: jmp userfunc @1427
+1070: local9 := 
+case(canbemagic)
+1071: local #9
+1072: casejmp
+	1: @1073
+	2: @1078
+	3: @1083
+	default: @1087
+WeaponTable(item);
+1073: local #10
+1074: makelocal
+1075: jmp userfunc @1661
+1076: #
+1077: goto1087
+ArmorTable(item);
+1078: local #10
+1079: makelocal
+1080: jmp userfunc @2089
+1081: #
+1082: goto1087
+ClothTable(item);
+1083: local #10
+1084: makelocal
+1085: jmp userfunc @2175
+1086: #
+1087: leave block(1)
+1088: local #8
+1089: local #8
+1090: 1L
+1091: +
+1092: :=
+1093: #
+1094: goto1011
+1095: leave block(2)
+1096: 0L
+1097: return
+C:/pol2/scripts/include/startEqp.inc, Line 350
+function CreateFromRandomString(who, desc)
+1098: pop param 'desc'
+1099: pop param 'who'
+var params := SplitWords(desc);
+1100: decl local #2
+1101: local #0
+1102: Func(0,1): SplitWords
+1103: :=
+1104: #
+var amt := Cint(params[1]);
+1105: decl local #3
+1106: local #2
+1107: 1L
+1108: [] 1
+1109: Func(0,0): CInt
+1110: :=
+1111: #
+var count := 1;
+1112: decl local #4
+1113: 1L
+1114: :=
+1115: #
+if(amt != 1)
+1116: local #3
+1117: 1L
+1118: <>
+1119: if false goto 1126
+count := RandomDiceRoll(Cstr(amt + 1));
+1120: local #3
+1121: 1L
+1122: +
+1123: Func(0,4): CStr
+1124: Func(5,1): RandomDiceRoll
+1125: local4 := 
+var group := params[2];
+1126: decl local #5
+1127: local #2
+1128: 2L
+1129: [] 1
+1130: :=
+1131: #
+var chance := params[4];
+1132: decl local #6
+1133: local #2
+1134: 4L
+1135: [] 1
+1136: :=
+1137: #
+var elem := FindConfigElem(starteqp_cfg, group);
+1138: decl local #7
+1139: global #1
+1140: local #5
+1141: Func(4,1): FindConfigElem
+1142: :=
+1143: #
+if(elem == error)
+1144: local #7
+1145: error
+1146: ==
+1147: if false goto 1155
+syslog("Unable to find group " + group);
+1148: "Unable to find group "
+1149: local #5
+1150: +
+1151: Func(3,2): syslog
+1152: #
+return;
+1153: ""
+1154: return
+var items := GetConfigStringArray(elem, "Item");
+1155: decl local #8
+1156: local #7
+1157: "Item"
+1158: Func(4,3): GetConfigStringArray
+1159: :=
+1160: #
+if(items == error)
+1161: local #8
+1162: error
+1163: ==
+1164: if false goto 1174
+syslog("Group " + group + " does not contain items!");
+1165: "Group "
+1166: local #5
+1167: +
+1168: " does not contain items!"
+1169: +
+1170: Func(3,2): syslog
+1171: #
+return;
+1172: ""
+1173: return
+if(!chance)
+1174: local #6
+1175: if true goto 1178
+chance := 100;
+1176: 100L
+1177: local6 := 
+var rand := RandomInt(99)+1;
+1178: decl local #9
+1179: 99L
+1180: Func(5,0): RandomInt
+1181: 1L
+1182: +
+1183: :=
+1184: #
+if(CInt(rand) <= CInt(chance))
+1185: local #9
+1186: Func(0,0): CInt
+1187: local #6
+1188: Func(0,0): CInt
+1189: <=
+1190: if false goto 1232
+if(count > len(items))
+1191: local #4
+1192: local #8
+1193: Func(0,5): len
+1194: >
+1195: if false goto 1199
+count := len(items);
+1196: local #8
+1197: Func(0,5): len
+1198: local4 := 
+while(count)
+1199: local #4
+1200: if false goto 1232
+var n := RandomInt(len(items)) + 1;
+1201: decl local #0
+1202: local #8
+1203: Func(0,5): len
+1204: Func(5,0): RandomInt
+1205: 1L
+1206: +
+1207: :=
+1208: #
+if(items[n])
+1209: local #8
+1210: local #10
+1211: [] 1
+1212: if false goto 1230
+CreateFromItemString(who, items[n]);
+1213: local #1
+1214: local #8
+1215: local #10
+1216: [] 1
+1217: makelocal
+1218: jmp userfunc @822
+1219: #
+if(making_starting_equipment)
+1220: global #5
+1221: if false goto 1226
+items[n] := "";
+1222: local #8
+1223: local #10
+1224: ""
+1225: [] := (1) #
+count := count - 1;
+1226: local #4
+1227: 1L
+1228: -
+1229: local4 := 
+1230: leave block(1)
+1231: goto1199
+1232: 0L
+1233: return
+C:/pol2/scripts/include/startEqp.inc, Line 410
+function CreateFromStackString(who, str)
+1234: pop param 'str'
+1235: pop param 'who'
+var params := SplitWords(str);
+1236: decl local #2
+1237: local #0
+1238: Func(0,1): SplitWords
+1239: :=
+1240: #
+var count;
+1241: decl local #3
+1242: #
+var objname;
+1243: decl local #4
+1244: #
+var color;
+1245: decl local #5
+1246: #
+var chance;
+1247: decl local #6
+1248: #
+count := RandomDiceRoll(CStr(params[1]));
+1249: local #2
+1250: 1L
+1251: [] 1
+1252: Func(0,4): CStr
+1253: Func(5,1): RandomDiceRoll
+1254: local3 := 
+params[1] := params[2];
+1255: local #2
+1256: 1L
+1257: local #2
+1258: 2L
+1259: [] 1
+1260: [] := (1) #
+params[2] := params[3];
+1261: local #2
+1262: 2L
+1263: local #2
+1264: 3L
+1265: [] 1
+1266: [] := (1) #
+params[3] := params[4];
+1267: local #2
+1268: 3L
+1269: local #2
+1270: 4L
+1271: [] 1
+1272: [] := (1) #
+if (!count)
+1273: local #3
+1274: if true goto 1277
+count := 1;
+1275: 1L
+1276: local3 := 
+objname := params[1];
+1277: local #2
+1278: 1L
+1279: [] 1
+1280: local4 := 
+if(CInt(params[2]))
+1281: local #2
+1282: 2L
+1283: [] 1
+1284: Func(0,0): CInt
+1285: if false goto 1292
+color := CInt(params[2]);
+1286: local #2
+1287: 2L
+1288: [] 1
+1289: Func(0,0): CInt
+1290: local5 := 
+1291: goto1294
+color := 0;
+1292: 0L
+1293: local5 := 
+if (CInt(params[3]))
+1294: local #2
+1295: 3L
+1296: [] 1
+1297: Func(0,0): CInt
+1298: if false goto 1305
+chance := CInt(params[3]);
+1299: local #2
+1300: 3L
+1301: [] 1
+1302: Func(0,0): CInt
+1303: local6 := 
+1304: goto1307
+chance := 100;
+1305: 100L
+1306: local6 := 
+var rand := RandomInt(100)+1;
+1307: decl local #7
+1308: 100L
+1309: Func(5,0): RandomInt
+1310: 1L
+1311: +
+1312: :=
+1313: #
+if(CInt(rand) <= CInt(chance))
+1314: local #7
+1315: Func(0,0): CInt
+1316: local #6
+1317: Func(0,0): CInt
+1318: <=
+1319: if false goto 1356
+if (CInt(objname))
+1320: local #4
+1321: Func(0,0): CInt
+1322: if false goto 1326
+objname := CInt(objname);
+1323: local #4
+1324: Func(0,0): CInt
+1325: local4 := 
+var item := CreateItemInContainer(who, objname, count);
+1326: decl local #0
+1327: local #1
+1328: local #4
+1329: local #3
+1330: Func(2,17): CreateItemInContainer
+1331: :=
+1332: #
+if(!item)
+1333: local #8
+1334: if true goto 1347
+syslog("Unable to create " + objname + " on " + who.name + ".");
+1335: "Unable to create "
+1336: local #4
+1337: +
+1338: " on "
+1339: +
+1340: local #1
+1341: get member 'name'
+1342: +
+1343: "."
+1344: +
+1345: Func(3,2): syslog
+1346: #
+item.color := color;
+1347: local #8
+1348: local #5
+1349: set member 'color' #
+if(making_starting_equipment)
+1350: global #5
+1351: if false goto 1355
+item.newbie := 1;
+1352: local #8
+1353: 1L
+1354: set member 'newbie' #
+1355: leave block(1)
+1356: 0L
+1357: return
+C:/pol2/scripts/include/startEqp.inc, Line 390
+function CreateFromUniqueString(who, str)
+1358: pop param 'str'
+1359: pop param 'who'
+var params := SplitWords(str);
+1360: decl local #2
+1361: local #0
+1362: Func(0,1): SplitWords
+1363: :=
+1364: #
+var objtype;
+1365: decl local #3
+1366: #
+if (CInt(params[1]))
+1367: local #2
+1368: 1L
+1369: [] 1
+1370: Func(0,0): CInt
+1371: if false goto 1377
+objtype := params[1];
+1372: local #2
+1373: 1L
+1374: [] 1
+1375: local3 := 
+1376: goto1382
+objtype := GetObjtypeByName(params[1]);
+1377: local #2
+1378: 1L
+1379: [] 1
+1380: Func(2,20): GetObjtypeByName
+1381: local3 := 
+if(!objtype)
+1382: local #3
+1383: if true goto 1393
+syslog("Don't know what a " + str + " is");
+1384: "Don't know what a "
+1385: local #0
+1386: +
+1387: " is"
+1388: +
+1389: Func(3,2): syslog
+1390: #
+return;
+1391: ""
+1392: return
+if(objtype in unique_items_created)
+1393: local #3
+1394: global #0
+1395: in
+1396: if false goto 1399
+return;
+1397: ""
+1398: return
+unique_items_created[len(unique_items_created) + 1] := objtype;
+1399: global #0
+1400: global #0
+1401: Func(0,5): len
+1402: 1L
+1403: +
+1404: local #3
+1405: [] := (1) #
+var newstr := "1 " + str;
+1406: decl local #4
+1407: "1 "
+1408: local #0
+1409: +
+1410: :=
+1411: #
+CreateFromItemString(who, newstr);
+1412: local #1
+1413: local #4
+1414: makelocal
+1415: jmp userfunc @822
+1416: #
+1417: 0L
+1418: return
+C:/pol2/scripts/include/attributes.inc, Line 448
+function GetHp(who)
+1419: pop param 'who'
+return Cint(GetVital(who, VITALID_LIFE)/ 100);
+1420: local #0
+1421: "Life"
+1422: Func(2,11): GetVital
+1423: 100L
+1424: /
+1425: Func(0,0): CInt
+1426: return
+C:/pol2/scripts/include/startEqp.inc, Line 450
+function MagicAllowedandType(objname)
+1427: pop param 'objname'
+var magicweapcfg := ReadConfigFile(":combat:magicweaps");
+1428: decl local #1
+1429: ":combat:magicweaps"
+1430: Func(4,0): ReadConfigFile
+1431: :=
+1432: #
+var magicarmorcfg := ReadConfigFile(":combat:magicarmor");
+1433: decl local #2
+1434: ":combat:magicarmor"
+1435: Func(4,0): ReadConfigFile
+1436: :=
+1437: #
+var magicclothcfg := ReadConfigFile(":combat:magiccloth");
+1438: decl local #3
+1439: ":combat:magiccloth"
+1440: Func(4,0): ReadConfigFile
+1441: :=
+1442: #
+var elem1 := FindConfigElem(magicweapcfg, "1");
+1443: decl local #4
+1444: local #1
+1445: "1"
+1446: Func(4,1): FindConfigElem
+1447: :=
+1448: #
+var data1 := GetConfigInt(elem1, objname);
+1449: decl local #5
+1450: local #4
+1451: local #0
+1452: Func(4,2): GetConfigInt
+1453: :=
+1454: #
+if(data1)
+1455: local #5
+1456: if false goto 1459
+return 1;
+1457: 1L
+1458: return
+var elem2 := FindConfigElem(magicarmorcfg, "1");
+1459: decl local #6
+1460: local #2
+1461: "1"
+1462: Func(4,1): FindConfigElem
+1463: :=
+1464: #
+var data2 := GetConfigInt(elem2, objname);
+1465: decl local #7
+1466: local #6
+1467: local #0
+1468: Func(4,2): GetConfigInt
+1469: :=
+1470: #
+if(data2)
+1471: local #7
+1472: if false goto 1475
+return 2;
+1473: 2L
+1474: return
+var elem3 := FindConfigElem(magicclothcfg, "1");
+1475: decl local #8
+1476: local #3
+1477: "1"
+1478: Func(4,1): FindConfigElem
+1479: :=
+1480: #
+var data3 := GetConfigInt(elem3, objname);
+1481: decl local #9
+1482: local #8
+1483: local #0
+1484: Func(4,2): GetConfigInt
+1485: :=
+1486: #
+if(data3)
+1487: local #9
+1488: if false goto 1491
+return 3;
+1489: 3L
+1490: return
+return 0;
+1491: 0L
+1492: return
+C:/pol2/scripts/include/startEqp.inc, Line 175
+function ProcessWand(item)
+1493: pop param 'item'
+var amt;
+1494: decl local #1
+1495: #
+case(RandomInt(10) + 1)
+1496: 10L
+1497: Func(5,0): RandomInt
+1498: 1L
+1499: +
+1500: casejmp
+	1: @1501
+	2: @1514
+	3: @1527
+	4: @1540
+	5: @1553
+	6: @1566
+	7: @1579
+	8: @1592
+	9: @1605
+	10: @1618
+	default: @1630
+amt :=  15;   SetObjProperty(item, "SpellId",  1);   SetObjProperty(item, "dama
+1501: 15L
+1502: local1 := 
+SetObjProperty(item, "SpellId",  1);   SetObjProperty(item, "damagemod", "of cl
+1503: local #0
+1504: "SpellId"
+1505: 1L
+1506: Func(2,4): SetObjProperty
+1507: #
+SetObjProperty(item, "damagemod", "of clumsiness");
+1508: local #0
+1509: "damagemod"
+1510: "of clumsiness"
+1511: Func(2,4): SetObjProperty
+1512: #
+1513: goto1630
+amt :=  15;   SetObjProperty(item, "SpellId",  3);   SetObjProperty(item, "dama
+1514: 15L
+1515: local1 := 
+SetObjProperty(item, "SpellId",  3);   SetObjProperty(item, "damagemod", "of fe
+1516: local #0
+1517: "SpellId"
+1518: 3L
+1519: Func(2,4): SetObjProperty
+1520: #
+SetObjProperty(item, "damagemod", "of feeblemindedness");
+1521: local #0
+1522: "damagemod"
+1523: "of feeblemindedness"
+1524: Func(2,4): SetObjProperty
+1525: #
+1526: goto1630
+amt :=  15;   SetObjProperty(item, "SpellId",  4);   SetObjProperty(item, "dama
+1527: 15L
+1528: local1 := 
+SetObjProperty(item, "SpellId",  4);   SetObjProperty(item, "damagemod", "of he
+1529: local #0
+1530: "SpellId"
+1531: 4L
+1532: Func(2,4): SetObjProperty
+1533: #
+SetObjProperty(item, "damagemod", "of healing");
+1534: local #0
+1535: "damagemod"
+1536: "of healing"
+1537: Func(2,4): SetObjProperty
+1538: #
+1539: goto1630
+amt :=  15;   SetObjProperty(item, "SpellId",  8);   SetObjProperty(item, "dama
+1540: 15L
+1541: local1 := 
+SetObjProperty(item, "SpellId",  8);   SetObjProperty(item, "damagemod", "of we
+1542: local #0
+1543: "SpellId"
+1544: 8L
+1545: Func(2,4): SetObjProperty
+1546: #
+SetObjProperty(item, "damagemod", "of weakness");
+1547: local #0
+1548: "damagemod"
+1549: "of weakness"
+1550: Func(2,4): SetObjProperty
+1551: #
+1552: goto1630
+amt :=  10;   SetObjProperty(item, "SpellId", 12);   SetObjProperty(item, "dama
+1553: 10L
+1554: local1 := 
+SetObjProperty(item, "SpellId", 12);   SetObjProperty(item, "damagemod", "of ha
+1555: local #0
+1556: "SpellId"
+1557: 12L
+1558: Func(2,4): SetObjProperty
+1559: #
+SetObjProperty(item, "damagemod", "of harming");
+1560: local #0
+1561: "damagemod"
+1562: "of harming"
+1563: Func(2,4): SetObjProperty
+1564: #
+1565: goto1630
+amt :=   5;   SetObjProperty(item, "SpellId", 18);   SetObjProperty(item, "dama
+1566: 5L
+1567: local1 := 
+SetObjProperty(item, "SpellId", 18);   SetObjProperty(item, "damagemod", "of fi
+1568: local #0
+1569: "SpellId"
+1570: 18L
+1571: Func(2,4): SetObjProperty
+1572: #
+SetObjProperty(item, "damagemod", "of fireballs");
+1573: local #0
+1574: "damagemod"
+1575: "of fireballs"
+1576: Func(2,4): SetObjProperty
+1577: #
+1578: goto1630
+amt :=   5;   SetObjProperty(item, "SpellId", 29);   SetObjProperty(item, "dama
+1579: 5L
+1580: local1 := 
+SetObjProperty(item, "SpellId", 29);   SetObjProperty(item, "damagemod", "of gr
+1581: local #0
+1582: "SpellId"
+1583: 29L
+1584: Func(2,4): SetObjProperty
+1585: #
+SetObjProperty(item, "damagemod", "of greater healing");
+1586: local #0
+1587: "damagemod"
+1588: "of greater healing"
+1589: Func(2,4): SetObjProperty
+1590: #
+1591: goto1630
+amt :=   3;   SetObjProperty(item, "SpellId", 30);   SetObjProperty(item, "dama
+1592: 3L
+1593: local1 := 
+SetObjProperty(item, "SpellId", 30);   SetObjProperty(item, "damagemod", "of li
+1594: local #0
+1595: "SpellId"
+1596: 30L
+1597: Func(2,4): SetObjProperty
+1598: #
+SetObjProperty(item, "damagemod", "of lightning");
+1599: local #0
+1600: "damagemod"
+1601: "of lightning"
+1602: Func(2,4): SetObjProperty
+1603: #
+1604: goto1630
+amt :=  10;   SetObjProperty(item, "SpellId", 31);   SetObjProperty(item, "dama
+1605: 10L
+1606: local1 := 
+SetObjProperty(item, "SpellId", 31);   SetObjProperty(item, "damagemod", "of ma
+1607: local #0
+1608: "SpellId"
+1609: 31L
+1610: Func(2,4): SetObjProperty
+1611: #
+SetObjProperty(item, "damagemod", "of mana draining");
+1612: local #0
+1613: "damagemod"
+1614: "of mana draining"
+1615: Func(2,4): SetObjProperty
+1616: #
+1617: goto1630
+amt := 100;   SetObjProperty(item, "SpellId", 65);   SetObjProperty(item, "dama
+1618: 100L
+1619: local1 := 
+SetObjProperty(item, "SpellId", 65);   SetObjProperty(item, "damagemod", "of id
+1620: local #0
+1621: "SpellId"
+1622: 65L
+1623: Func(2,4): SetObjProperty
+1624: #
+SetObjProperty(item, "damagemod", "of identification");
+1625: local #0
+1626: "damagemod"
+1627: "of identification"
+1628: Func(2,4): SetObjProperty
+1629: #
+SetObjProperty(item, "charges", (amt + RandomInt(10)));
+1630: local #0
+1631: "charges"
+1632: local #1
+1633: 10L
+1634: Func(5,0): RandomInt
+1635: +
+1636: Func(2,4): SetObjProperty
+1637: #
+item.usescript := ":wands:magicWands";
+1638: local #0
+1639: ":wands:magicWands"
+1640: set member 'usescript' #
+var dsc;
+1641: decl local #2
+1642: #
+if(item.objtype == 0x13f9)
+1643: local #0
+1644: get member 'objtype'
+1645: 5113L
+1646: ==
+1647: if false goto 1651
+dsc := "gnarled staff";
+1648: "gnarled staff"
+1649: local2 := 
+1650: goto1653
+dsc := "wand";
+1651: "wand"
+1652: local2 := 
+SetName(item, "a magic " + dsc);
+1653: local #0
+1654: "a magic "
+1655: local #2
+1656: +
+1657: Func(2,18): SetName
+1658: #
+1659: 0L
+1660: return
+C:/pol2/scripts/include/startEqp.inc, Line 317
+function WeaponTable(item)
+1661: pop param 'item'
+var newarray := array(1, 2, 3);
+1662: decl local #1
+1663: array
+1664: 1L
+1665: +=
+1666: 2L
+1667: +=
+1668: 3L
+1669: +=
+1670: :=
+1671: #
+var count := RandomInt(100) + 1;
+1672: decl local #2
+1673: 100L
+1674: Func(5,0): RandomInt
+1675: 1L
+1676: +
+1677: :=
+1678: #
+var counter;
+1679: decl local #3
+1680: #
+if(count >= 60)
+1681: local #2
+1682: 60L
+1683: >=
+1684: if false goto 1688
+counter := 1;
+1685: 1L
+1686: local3 := 
+1687: goto1704
+elseif(count >= 40)
+1688: local #2
+1689: 40L
+1690: >=
+1691: if false goto 1695
+counter := 2;
+1692: 2L
+1693: local3 := 
+1694: goto1704
+elseif(count >= 10)
+1695: local #2
+1696: 10L
+1697: >=
+1698: if false goto 1702
+counter := 3;
+1699: 3L
+1700: local3 := 
+1701: goto1704
+counter := 4;
+1702: 4L
+1703: local3 := 
+if(counter == 1)
+1704: local #3
+1705: 1L
+1706: ==
+1707: if false goto 1713
+DestroyItem(item);
+1708: local #0
+1709: Func(2,19): DestroyItem
+1710: #
+return;
+1711: ""
+1712: return
+count := 0;
+1713: 0L
+1714: local2 := 
+var num, val;
+1715: decl local #4
+1716: #
+1717: decl local #5
+1718: #
+while(count <= counter)
+1719: local #2
+1720: local #3
+1721: <=
+1722: if false goto 1758
+num := RandomInt(len(newarray)) + 1;
+1723: local #1
+1724: Func(0,5): len
+1725: Func(5,0): RandomInt
+1726: 1L
+1727: +
+1728: local4 := 
+val := newarray[num];
+1729: local #1
+1730: local #4
+1731: [] 1
+1732: local5 := 
+case(val)
+1733: local #5
+1734: casejmp
+	1: @1735
+	2: @1740
+	3: @1745
+	default: @1749
+ApplyAccyMod(item);
+1735: local #0
+1736: makelocal
+1737: jmp userfunc @1811
+1738: #
+1739: goto1749
+ApplyHPMod(item);
+1740: local #0
+1741: makelocal
+1742: jmp userfunc @1988
+1743: #
+1744: goto1749
+ApplyDmgMod(item);
+1745: local #0
+1746: makelocal
+1747: jmp userfunc @1902
+1748: #
+newarray.erase(num);
+1749: local #1
+1750: local #4
+1751: Call Method erase (1 params)
+1752: #
+count := count + 1;
+1753: local #2
+1754: 1L
+1755: +
+1756: local2 := 
+1757: goto1719
+AddName(item);
+1758: local #0
+1759: makelocal
+1760: jmp userfunc @1764
+1761: #
+1762: 0L
+1763: return
+C:/pol2/scripts/include/startEqp.inc, Line 582
+function AddName(item)
+1764: pop param 'item'
+var currdesc := item.desc;
+1765: decl local #1
+1766: local #0
+1767: get member 'desc'
+1768: :=
+1769: #
+if(currdesc[1] == "a")
+1770: local #1
+1771: 1L
+1772: [] 1
+1773: "a"
+1774: ==
+1775: if false goto 1803
+var space := find(item.desc, " ", 1);
+1776: decl local #0
+1777: local #0
+1778: get member 'desc'
+1779: " "
+1780: 1L
+1781: Func(0,6): find
+1782: :=
+1783: #
+var newname := currdesc[space+1,len(item.desc)];
+1784: decl local #1
+1785: local #1
+1786: local #2
+1787: 1L
+1788: +
+1789: local #0
+1790: get member 'desc'
+1791: Func(0,5): len
+1792: [,]
+1793: :=
+1794: #
+SetName(item,"a magic " + newname);
+1795: local #0
+1796: "a magic "
+1797: local #3
+1798: +
+1799: Func(2,18): SetName
+1800: #
+1801: leave block(2)
+1802: goto1809
+SetName(item, "magic " + currdesc);
+1803: local #0
+1804: "magic "
+1805: local #1
+1806: +
+1807: Func(2,18): SetName
+1808: #
+1809: 0L
+1810: return
+C:/pol2/scripts/include/startEqp.inc, Line 496
+function ApplyAccyMod(item)
+1811: pop param 'item'
+var numb := ((RandomInt(100)+1) - magicadjustment);
+1812: decl local #1
+1813: 100L
+1814: Func(5,0): RandomInt
+1815: 1L
+1816: +
+1817: global #4
+1818: -
+1819: :=
+1820: #
+if(numb < 1)
+1821: local #1
+1822: 1L
+1823: <
+1824: if false goto 1827
+numb := 1;
+1825: 1L
+1826: local1 := 
+var modifier := 0;
+1827: decl local #2
+1828: 0L
+1829: :=
+1830: #
+if(numb >= 50)
+1831: local #1
+1832: 50L
+1833: >=
+1834: if false goto 1843
+modifier := 5;
+1835: 5L
+1836: local2 := 
+SetObjProperty(item, "accuracy", "accurate");
+1837: local #0
+1838: "accuracy"
+1839: "accurate"
+1840: Func(2,4): SetObjProperty
+1841: #
+1842: goto1890
+elseif(numb >= 25)
+1843: local #1
+1844: 25L
+1845: >=
+1846: if false goto 1855
+modifier := 10;
+1847: 10L
+1848: local2 := 
+SetObjProperty(item, "accuracy", "surpassingly accurate");
+1849: local #0
+1850: "accuracy"
+1851: "surpassingly accurate"
+1852: Func(2,4): SetObjProperty
+1853: #
+1854: goto1890
+elseif(numb >= 15)
+1855: local #1
+1856: 15L
+1857: >=
+1858: if false goto 1867
+modifier := 15;
+1859: 15L
+1860: local2 := 
+SetObjProperty(item, "accuracy", "eminently accurate");
+1861: local #0
+1862: "accuracy"
+1863: "eminently accurate"
+1864: Func(2,4): SetObjProperty
+1865: #
+1866: goto1890
+elseif(numb >= 5)
+1867: local #1
+1868: 5L
+1869: >=
+1870: if false goto 1879
+modifier := 20;
+1871: 20L
+1872: local2 := 
+SetObjProperty(item, "accuracy", "exceedingly accurate");
+1873: local #0
+1874: "accuracy"
+1875: "exceedingly accurate"
+1876: Func(2,4): SetObjProperty
+1877: #
+1878: goto1890
+elseif(numb >= 1)
+1879: local #1
+1880: 1L
+1881: >=
+1882: if false goto 1890
+modifier := 25;
+1883: 25L
+1884: local2 := 
+SetObjProperty(item, "accuracy", "supremely accurate");
+1885: local #0
+1886: "accuracy"
+1887: "supremely accurate"
+1888: Func(2,4): SetObjProperty
+1889: #
+SetObjProperty(item, "type", "accuracy");
+1890: local #0
+1891: "type"
+1892: "accuracy"
+1893: Func(2,4): SetObjProperty
+1894: #
+SetObjProperty(item, "gain", modifier);
+1895: local #0
+1896: "gain"
+1897: local #2
+1898: Func(2,4): SetObjProperty
+1899: #
+1900: 0L
+1901: return
+C:/pol2/scripts/include/startEqp.inc, Line 472
+function ApplyDmgMod(item)
+1902: pop param 'item'
+var numb := ((RandomInt(100)+1) - magicadjustment);
+1903: decl local #1
+1904: 100L
+1905: Func(5,0): RandomInt
+1906: 1L
+1907: +
+1908: global #4
+1909: -
+1910: :=
+1911: #
+if(numb < 1)
+1912: local #1
+1913: 1L
+1914: <
+1915: if false goto 1918
+numb := 1;
+1916: 1L
+1917: local1 := 
+if(numb >= 50)
+1918: local #1
+1919: 50L
+1920: >=
+1921: if false goto 1931
+item.dmg_mod := 1;
+1922: local #0
+1923: 1L
+1924: set member 'dmg_mod' #
+SetObjProperty(item, "damagemod", "of ruin");
+1925: local #0
+1926: "damagemod"
+1927: "of ruin"
+1928: Func(2,4): SetObjProperty
+1929: #
+1930: goto1982
+elseif(numb >= 25)
+1931: local #1
+1932: 25L
+1933: >=
+1934: if false goto 1944
+item.dmg_mod := 3;
+1935: local #0
+1936: 3L
+1937: set member 'dmg_mod' #
+SetObjProperty(item, "damagemod", "of might");
+1938: local #0
+1939: "damagemod"
+1940: "of might"
+1941: Func(2,4): SetObjProperty
+1942: #
+1943: goto1982
+elseif(numb >= 15)
+1944: local #1
+1945: 15L
+1946: >=
+1947: if false goto 1957
+item.dmg_mod := 5;
+1948: local #0
+1949: 5L
+1950: set member 'dmg_mod' #
+SetObjProperty(item, "damagemod", "of force");
+1951: local #0
+1952: "damagemod"
+1953: "of force"
+1954: Func(2,4): SetObjProperty
+1955: #
+1956: goto1982
+elseif(numb >= 5)
+1957: local #1
+1958: 5L
+1959: >=
+1960: if false goto 1970
+item.dmg_mod := 7;
+1961: local #0
+1962: 7L
+1963: set member 'dmg_mod' #
+SetObjProperty(item, "damagemod", "of power");
+1964: local #0
+1965: "damagemod"
+1966: "of power"
+1967: Func(2,4): SetObjProperty
+1968: #
+1969: goto1982
+elseif(numb >= 1)
+1970: local #1
+1971: 1L
+1972: >=
+1973: if false goto 1982
+item.dmg_mod := 9;
+1974: local #0
+1975: 9L
+1976: set member 'dmg_mod' #
+SetObjProperty(item, "damagemod", "of vanquishing");
+1977: local #0
+1978: "damagemod"
+1979: "of vanquishing"
+1980: Func(2,4): SetObjProperty
+1981: #
+SilverMod(item);
+1982: local #0
+1983: makelocal
+1984: jmp userfunc @2539
+1985: #
+1986: 0L
+1987: return
+C:/pol2/scripts/include/startEqp.inc, Line 522
+function ApplyHPMod(item)
+1988: pop param 'item'
+var numb := ((RandomInt(100)+1) - magicadjustment);
+1989: decl local #1
+1990: 100L
+1991: Func(5,0): RandomInt
+1992: 1L
+1993: +
+1994: global #4
+1995: -
+1996: :=
+1997: #
+if(numb < 1)
+1998: local #1
+1999: 1L
+2000: <
+2001: if false goto 2004
+numb := 1;
+2002: 1L
+2003: local1 := 
+if(numb >= 50)
+2004: local #1
+2005: 50L
+2006: >=
+2007: if false goto 2020
+item.maxhp_mod := item.maxhp_mod + 05;
+2008: local #0
+2009: local #0
+2010: get member 'maxhp_mod'
+2011: 5L
+2012: +
+2013: set member 'maxhp_mod' #
+SetObjProperty(item, "durability", "durable");
+2014: local #0
+2015: "durability"
+2016: "durable"
+2017: Func(2,4): SetObjProperty
+2018: #
+2019: goto2083
+elseif(numb >= 25)
+2020: local #1
+2021: 25L
+2022: >=
+2023: if false goto 2036
+item.maxhp_mod := item.maxhp_mod + 10;
+2024: local #0
+2025: local #0
+2026: get member 'maxhp_mod'
+2027: 10L
+2028: +
+2029: set member 'maxhp_mod' #
+SetObjProperty(item, "durability", "substantial");
+2030: local #0
+2031: "durability"
+2032: "substantial"
+2033: Func(2,4): SetObjProperty
+2034: #
+2035: goto2083
+elseif(numb >= 15)
+2036: local #1
+2037: 15L
+2038: >=
+2039: if false goto 2052
+item.maxhp_mod := item.maxhp_mod + 15;
+2040: local #0
+2041: local #0
+2042: get member 'maxhp_mod'
+2043: 15L
+2044: +
+2045: set member 'maxhp_mod' #
+SetObjProperty(item, "durability", "massive");
+2046: local #0
+2047: "durability"
+2048: "massive"
+2049: Func(2,4): SetObjProperty
+2050: #
+2051: goto2083
+elseif(numb >= 5)
+2052: local #1
+2053: 5L
+2054: >=
+2055: if false goto 2068
+item.maxhp_mod := item.maxhp_mod + 20;
+2056: local #0
+2057: local #0
+2058: get member 'maxhp_mod'
+2059: 20L
+2060: +
+2061: set member 'maxhp_mod' #
+SetObjProperty(item, "durability", "fortified");
+2062: local #0
+2063: "durability"
+2064: "fortified"
+2065: Func(2,4): SetObjProperty
+2066: #
+2067: goto2083
+elseif(numb >= 1)
+2068: local #1
+2069: 1L
+2070: >=
+2071: if false goto 2083
+item.maxhp_mod := item.maxhp_mod + 25;
+2072: local #0
+2073: local #0
+2074: get member 'maxhp_mod'
+2075: 25L
+2076: +
+2077: set member 'maxhp_mod' #
+SetObjProperty(item, "durability", "indestructable");
+2078: local #0
+2079: "durability"
+2080: "indestructable"
+2081: Func(2,4): SetObjProperty
+2082: #
+item.hp := item.maxhp;
+2083: local #0
+2084: local #0
+2085: get member 'maxhp'
+2086: set member 'hp' #
+2087: 0L
+2088: return
+C:/pol2/scripts/include/startEqp.inc, Line 236
+function ArmorTable(item)
+2089: pop param 'item'
+var newarray := {1, 2};
+2090: decl local #1
+2091: array
+2092: 1L
+2093: +=
+2094: 2L
+2095: +=
+2096: :=
+2097: #
+var count := RandomInt(99) + 1;
+2098: decl local #2
+2099: 99L
+2100: Func(5,0): RandomInt
+2101: 1L
+2102: +
+2103: :=
+2104: #
+var counter;
+2105: decl local #3
+2106: #
+if(count >= 40)
+2107: local #2
+2108: 40L
+2109: >=
+2110: if false goto 2114
+counter := 1;
+2111: 1L
+2112: local3 := 
+2113: goto2116
+counter := 2;
+2114: 2L
+2115: local3 := 
+count := 0;
+2116: 0L
+2117: local2 := 
+var num;
+2118: decl local #4
+2119: #
+while(count <= counter)
+2120: local #2
+2121: local #3
+2122: <=
+2123: if false goto 2158
+num := RandomInt(99) + 1;
+2124: 99L
+2125: Func(5,0): RandomInt
+2126: 1L
+2127: +
+2128: local4 := 
+if(num >=  50)
+2129: local #4
+2130: 50L
+2131: >=
+2132: if false goto 2136
+num := 1;
+2133: 1L
+2134: local4 := 
+2135: goto2138
+num := 2;
+2136: 2L
+2137: local4 := 
+case(num)
+2138: local #4
+2139: casejmp
+	1: @2140
+	2: @2145
+	default: @2149
+ApplyHPMod(item);
+2140: local #0
+2141: makelocal
+2142: jmp userfunc @1988
+2143: #
+2144: goto2149
+ApplyARMod(item);
+2145: local #0
+2146: makelocal
+2147: jmp userfunc @2578
+2148: #
+newarray.erase(num);
+2149: local #1
+2150: local #4
+2151: Call Method erase (1 params)
+2152: #
+count := count + 1;
+2153: local #2
+2154: 1L
+2155: +
+2156: local2 := 
+2157: goto2120
+if((RandomInt(10)+1) <= 1)
+2158: 10L
+2159: Func(5,0): RandomInt
+2160: 1L
+2161: +
+2162: 1L
+2163: <=
+2164: if false goto 2169
+ExtraArmorTable(item);
+2165: local #0
+2166: makelocal
+2167: jmp userfunc @2352
+2168: #
+AddName(item);
+2169: local #0
+2170: makelocal
+2171: jmp userfunc @1764
+2172: #
+2173: 0L
+2174: return
+C:/pol2/scripts/include/startEqp.inc, Line 200
+function ClothTable(item)
+2175: pop param 'item'
+var val := RandomInt(19) + 1;
+2176: decl local #1
+2177: 19L
+2178: Func(5,0): RandomInt
+2179: 1L
+2180: +
+2181: :=
+2182: #
+if(val >= 14)
+2183: local #1
+2184: 14L
+2185: >=
+2186: if false goto 2211
+var charges := RandomDiceRoll("1d30") + 10;
+2187: decl local #0
+2188: "1d30"
+2189: Func(5,1): RandomDiceRoll
+2190: 10L
+2191: +
+2192: :=
+2193: #
+SetObjProperty(item, "charges", charges);
+2194: local #0
+2195: "charges"
+2196: local #2
+2197: Func(2,4): SetObjProperty
+2198: #
+SetObjProperty(item, "type", "sight");
+2199: local #0
+2200: "type"
+2201: "sight"
+2202: Func(2,4): SetObjProperty
+2203: #
+SetObjProperty(item, "damagemod", " of nightsight");
+2204: local #0
+2205: "damagemod"
+2206: " of nightsight"
+2207: Func(2,4): SetObjProperty
+2208: #
+2209: leave block(1)
+2210: goto2346
+elseif(val >= 11)
+2211: local #1
+2212: 11L
+2213: >=
+2214: if false goto 2239
+var charges := RandomDiceRoll("1d30") + 10;
+2215: decl local #0
+2216: "1d30"
+2217: Func(5,1): RandomDiceRoll
+2218: 10L
+2219: +
+2220: :=
+2221: #
+SetObjProperty(item, "charges", charges);
+2222: local #0
+2223: "charges"
+2224: local #2
+2225: Func(2,4): SetObjProperty
+2226: #
+SetObjProperty(item, "type", "protection");
+2227: local #0
+2228: "type"
+2229: "protection"
+2230: Func(2,4): SetObjProperty
+2231: #
+SetObjProperty(item, "damagemod", " of protection");
+2232: local #0
+2233: "damagemod"
+2234: " of protection"
+2235: Func(2,4): SetObjProperty
+2236: #
+2237: leave block(1)
+2238: goto2346
+elseif(val <= 8)
+2239: local #1
+2240: 8L
+2241: <=
+2242: if false goto 2267
+var charges := RandomDiceRoll("1d30") + 10;
+2243: decl local #0
+2244: "1d30"
+2245: Func(5,1): RandomDiceRoll
+2246: 10L
+2247: +
+2248: :=
+2249: #
+SetObjProperty(item, "charges", charges);
+2250: local #0
+2251: "charges"
+2252: local #2
+2253: Func(2,4): SetObjProperty
+2254: #
+SetObjProperty(item, "type", "strength");
+2255: local #0
+2256: "type"
+2257: "strength"
+2258: Func(2,4): SetObjProperty
+2259: #
+SetObjProperty(item, "damagemod", " of strength");
+2260: local #0
+2261: "damagemod"
+2262: " of strength"
+2263: Func(2,4): SetObjProperty
+2264: #
+2265: leave block(1)
+2266: goto2346
+elseif(val > 5)
+2267: local #1
+2268: 5L
+2269: >
+2270: if false goto 2295
+var charges := RandomDiceRoll("1d30") + 10;
+2271: decl local #0
+2272: "1d30"
+2273: Func(5,1): RandomDiceRoll
+2274: 10L
+2275: +
+2276: :=
+2277: #
+SetObjProperty(item, "charges", charges);
+2278: local #0
+2279: "charges"
+2280: local #2
+2281: Func(2,4): SetObjProperty
+2282: #
+SetObjProperty(item, "type", "invisibility");
+2283: local #0
+2284: "type"
+2285: "invisibility"
+2286: Func(2,4): SetObjProperty
+2287: #
+SetObjProperty(item, "damagemod", " of invisibility");
+2288: local #0
+2289: "damagemod"
+2290: " of invisibility"
+2291: Func(2,4): SetObjProperty
+2292: #
+2293: leave block(1)
+2294: goto2346
+elseif(val == 3)
+2295: local #1
+2296: 3L
+2297: ==
+2298: if false goto 2323
+var charges := RandomDiceRoll("1d30") + 10;
+2299: decl local #0
+2300: "1d30"
+2301: Func(5,1): RandomDiceRoll
+2302: 10L
+2303: +
+2304: :=
+2305: #
+SetObjProperty(item, "charges", charges);
+2306: local #0
+2307: "charges"
+2308: local #2
+2309: Func(2,4): SetObjProperty
+2310: #
+SetObjProperty(item, "type", "blessing");
+2311: local #0
+2312: "type"
+2313: "blessing"
+2314: Func(2,4): SetObjProperty
+2315: #
+SetObjProperty(item, "damagemod", " of blessing");
+2316: local #0
+2317: "damagemod"
+2318: " of blessing"
+2319: Func(2,4): SetObjProperty
+2320: #
+2321: leave block(1)
+2322: goto2346
+var charges := RandomDiceRoll("1d30") + 10;
+2323: decl local #0
+2324: "1d30"
+2325: Func(5,1): RandomDiceRoll
+2326: 10L
+2327: +
+2328: :=
+2329: #
+SetObjProperty(item, "charges", charges);
+2330: local #0
+2331: "charges"
+2332: local #2
+2333: Func(2,4): SetObjProperty
+2334: #
+SetObjProperty(item, "type", "reflect");
+2335: local #0
+2336: "type"
+2337: "reflect"
+2338: Func(2,4): SetObjProperty
+2339: #
+SetObjProperty(item, "damagemod", " of magic reflection");
+2340: local #0
+2341: "damagemod"
+2342: " of magic reflection"
+2343: Func(2,4): SetObjProperty
+2344: #
+2345: leave block(1)
+AddName(item);
+2346: local #0
+2347: makelocal
+2348: jmp userfunc @1764
+2349: #
+2350: 0L
+2351: return
+C:/pol2/scripts/include/startEqp.inc, Line 267
+function ExtraArmorTable(item)
+2352: pop param 'item'
+var val := RandomInt(4) + 1;
+2353: decl local #1
+2354: 4L
+2355: Func(5,0): RandomInt
+2356: 1L
+2357: +
+2358: :=
+2359: #
+case(val)
+2360: local #1
+2361: casejmp
+	1: @2362
+	2: @2406
+	3: @2450
+	4: @2494
+	default: @2537
+var charges := RandomDiceRoll("1d30") + 10;
+2362: decl local #0
+2363: "1d30"
+2364: Func(5,1): RandomDiceRoll
+2365: 10L
+2366: +
+2367: :=
+2368: #
+SetObjProperty(item, "charges", charges);
+2369: local #0
+2370: "charges"
+2371: local #2
+2372: Func(2,4): SetObjProperty
+2373: #
+SetObjProperty(item, "type", "protection");
+2374: local #0
+2375: "type"
+2376: "protection"
+2377: Func(2,4): SetObjProperty
+2378: #
+var dmgmod := GetObjProperty(item, "damagemod");
+2379: decl local #1
+2380: local #0
+2381: "damagemod"
+2382: Func(2,2): GetObjProperty
+2383: :=
+2384: #
+if(dmgmod)
+2385: local #3
+2386: if false goto 2397
+dmgmod := dmgmod + " and protection";
+2387: local #3
+2388: " and protection"
+2389: +
+2390: local3 := 
+SetObjProperty(item, "damagemod", dmgmod);
+2391: local #0
+2392: "damagemod"
+2393: local #3
+2394: Func(2,4): SetObjProperty
+2395: #
+2396: goto2404
+dmgmod := " of protection";
+2397: " of protection"
+2398: local3 := 
+SetObjProperty(item, "damagemod", dmgmod);
+2399: local #0
+2400: "damagemod"
+2401: local #3
+2402: Func(2,4): SetObjProperty
+2403: #
+2404: leave block(2)
+2405: goto2537
+var charges := RandomDiceRoll("1d30") + 10;
+2406: decl local #0
+2407: "1d30"
+2408: Func(5,1): RandomDiceRoll
+2409: 10L
+2410: +
+2411: :=
+2412: #
+SetObjProperty(item, "charges", charges);
+2413: local #0
+2414: "charges"
+2415: local #2
+2416: Func(2,4): SetObjProperty
+2417: #
+SetObjProperty(item, "type", "strength");
+2418: local #0
+2419: "type"
+2420: "strength"
+2421: Func(2,4): SetObjProperty
+2422: #
+var dmgmod := GetObjProperty(item, "damagemod");
+2423: decl local #1
+2424: local #0
+2425: "damagemod"
+2426: Func(2,2): GetObjProperty
+2427: :=
+2428: #
+if(dmgmod)
+2429: local #3
+2430: if false goto 2441
+dmgmod := dmgmod + " and strength";
+2431: local #3
+2432: " and strength"
+2433: +
+2434: local3 := 
+SetObjProperty(item, "damagemod", dmgmod);
+2435: local #0
+2436: "damagemod"
+2437: local #3
+2438: Func(2,4): SetObjProperty
+2439: #
+2440: goto2448
+dmgmod := " of strength";
+2441: " of strength"
+2442: local3 := 
+SetObjProperty(item, "damagemod", dmgmod);
+2443: local #0
+2444: "damagemod"
+2445: local #3
+2446: Func(2,4): SetObjProperty
+2447: #
+2448: leave block(2)
+2449: goto2537
+var charges := RandomDiceRoll("1d30") + 10;
+2450: decl local #0
+2451: "1d30"
+2452: Func(5,1): RandomDiceRoll
+2453: 10L
+2454: +
+2455: :=
+2456: #
+SetObjProperty(item, "charges", charges);
+2457: local #0
+2458: "charges"
+2459: local #2
+2460: Func(2,4): SetObjProperty
+2461: #
+SetObjProperty(item, "type", "blessing");
+2462: local #0
+2463: "type"
+2464: "blessing"
+2465: Func(2,4): SetObjProperty
+2466: #
+var dmgmod := GetObjProperty(item, "damagemod");
+2467: decl local #1
+2468: local #0
+2469: "damagemod"
+2470: Func(2,2): GetObjProperty
+2471: :=
+2472: #
+if(dmgmod)
+2473: local #3
+2474: if false goto 2485
+dmgmod := dmgmod + " and blessing";
+2475: local #3
+2476: " and blessing"
+2477: +
+2478: local3 := 
+SetObjProperty(item, "damagemod", dmgmod);
+2479: local #0
+2480: "damagemod"
+2481: local #3
+2482: Func(2,4): SetObjProperty
+2483: #
+2484: goto2492
+dmgmod := " of blessing";
+2485: " of blessing"
+2486: local3 := 
+SetObjProperty(item, "damagemod", dmgmod);
+2487: local #0
+2488: "damagemod"
+2489: local #3
+2490: Func(2,4): SetObjProperty
+2491: #
+2492: leave block(2)
+2493: goto2537
+var charges := RandomDiceRoll("1d30") + 10;
+2494: decl local #0
+2495: "1d30"
+2496: Func(5,1): RandomDiceRoll
+2497: 10L
+2498: +
+2499: :=
+2500: #
+SetObjProperty(item, "charges", charges);
+2501: local #0
+2502: "charges"
+2503: local #2
+2504: Func(2,4): SetObjProperty
+2505: #
+SetObjProperty(item, "type", "reflect");
+2506: local #0
+2507: "type"
+2508: "reflect"
+2509: Func(2,4): SetObjProperty
+2510: #
+var dmgmod := GetObjProperty(item, "damagemod");
+2511: decl local #1
+2512: local #0
+2513: "damagemod"
+2514: Func(2,2): GetObjProperty
+2515: :=
+2516: #
+if(dmgmod)
+2517: local #3
+2518: if false goto 2529
+dmgmod := dmgmod + " and magic reflection";
+2519: local #3
+2520: " and magic reflection"
+2521: +
+2522: local3 := 
+SetObjProperty(item, "damagemod", dmgmod);
+2523: local #0
+2524: "damagemod"
+2525: local #3
+2526: Func(2,4): SetObjProperty
+2527: #
+2528: goto2536
+dmgmod := " of magic reflection";
+2529: " of magic reflection"
+2530: local3 := 
+SetObjProperty(item, "damagemod", dmgmod);
+2531: local #0
+2532: "damagemod"
+2533: local #3
+2534: Func(2,4): SetObjProperty
+2535: #
+2536: leave block(2)
+2537: 0L
+2538: return
+C:/pol2/scripts/include/startEqp.inc, Line 569
+function SilverMod(item)
+2539: pop param 'item'
+var numb := (RandomInt(10) + 1);
+2540: decl local #1
+2541: 10L
+2542: Func(5,0): RandomInt
+2543: 1L
+2544: +
+2545: :=
+2546: #
+if(numb == 1)
+2547: local #1
+2548: 1L
+2549: ==
+2550: if false goto 2576
+var hits := GetObjProperty(item, "OnHit");
+2551: decl local #0
+2552: local #0
+2553: "OnHit"
+2554: Func(2,2): GetObjProperty
+2555: :=
+2556: #
+if(!hits)
+2557: local #2
+2558: if true goto 2561
+hits := {};
+2559: array
+2560: local2 := 
+hits.append("silverHit");
+2561: local #2
+2562: "silverHit"
+2563: Call Method append (1 params)
+2564: #
+SetObjProperty(item, "OnHit", hits);
+2565: local #0
+2566: "OnHit"
+2567: local #2
+2568: Func(2,4): SetObjProperty
+2569: #
+SetObjProperty(item, "silvermod", 1);
+2570: local #0
+2571: "silvermod"
+2572: 1L
+2573: Func(2,4): SetObjProperty
+2574: #
+2575: leave block(1)
+2576: 0L
+2577: return
+C:/pol2/scripts/include/startEqp.inc, Line 546
+function ApplyARMod(item)
+2578: pop param 'item'
+var numb := ((RandomInt(100)+1) - magicadjustment);
+2579: decl local #1
+2580: 100L
+2581: Func(5,0): RandomInt
+2582: 1L
+2583: +
+2584: global #4
+2585: -
+2586: :=
+2587: #
+if(numb < 1)
+2588: local #1
+2589: 1L
+2590: <
+2591: if false goto 2594
+numb := 1;
+2592: 1L
+2593: local1 := 
+if(numb >= 50)
+2594: local #1
+2595: 50L
+2596: >=
+2597: if false goto 2607
+item.ar_mod := 5;
+2598: local #0
+2599: 5L
+2600: set member 'ar_mod' #
+SetObjProperty(item, "damagemod", "of defense");
+2601: local #0
+2602: "damagemod"
+2603: "of defense"
+2604: Func(2,4): SetObjProperty
+2605: #
+2606: goto2658
+elseif(numb >= 25)
+2607: local #1
+2608: 25L
+2609: >=
+2610: if false goto 2620
+item.ar_mod := 10;
+2611: local #0
+2612: 10L
+2613: set member 'ar_mod' #
+SetObjProperty(item, "damagemod", "of guarding");
+2614: local #0
+2615: "damagemod"
+2616: "of guarding"
+2617: Func(2,4): SetObjProperty
+2618: #
+2619: goto2658
+elseif(numb >= 15)
+2620: local #1
+2621: 15L
+2622: >=
+2623: if false goto 2633
+item.ar_mod := 15;
+2624: local #0
+2625: 15L
+2626: set member 'ar_mod' #
+SetObjProperty(item, "damagemod", "of hardening");
+2627: local #0
+2628: "damagemod"
+2629: "of hardening"
+2630: Func(2,4): SetObjProperty
+2631: #
+2632: goto2658
+elseif(numb >= 5)
+2633: local #1
+2634: 5L
+2635: >=
+2636: if false goto 2646
+item.ar_mod := 20;
+2637: local #0
+2638: 20L
+2639: set member 'ar_mod' #
+SetObjProperty(item, "damagemod", "of fortification");
+2640: local #0
+2641: "damagemod"
+2642: "of fortification"
+2643: Func(2,4): SetObjProperty
+2644: #
+2645: goto2658
+elseif(numb >= 1)
+2646: local #1
+2647: 1L
+2648: >=
+2649: if false goto 2658
+item.ar_mod := 25;
+2650: local #0
+2651: 25L
+2652: set member 'ar_mod' #
+SetObjProperty(item, "damagemod", "of invulnerability");
+2653: local #0
+2654: "damagemod"
+2655: "of invulnerability"
+2656: Func(2,4): SetObjProperty
+2657: #
+2658: 0L
+2659: return

@@ -1,0 +1,139 @@
+C:\pol2\pkg\systems\combat\reactiveArmorHit.src, Line 5
+program reactivearmorhit(param)
+use os;
+0: get arg 'param'
+var attacker := param[1];
+1: decl local #1
+2: local #0
+3: 1L
+4: [] 1
+5: :=
+6: #
+var defender := param[2];
+7: decl local #2
+8: local #0
+9: 2L
+10: [] 1
+11: :=
+12: #
+var weapon := param[3];
+13: decl local #3
+14: local #0
+15: 3L
+16: [] 1
+17: :=
+18: #
+var armor := param[4];
+19: decl local #4
+20: local #0
+21: 4L
+22: [] 1
+23: :=
+24: #
+var basedamage := param[5];
+25: decl local #5
+26: local #0
+27: 5L
+28: [] 1
+29: :=
+30: #
+var rawdamage := param[6];
+31: decl local #6
+32: local #0
+33: 6L
+34: [] 1
+35: :=
+36: #
+if((attacker.dead) || (defender.dead))
+37: local #1
+38: get member 'dead'
+39: local #2
+40: get member 'dead'
+41: ||
+42: if false goto 45
+return;
+43: ""
+44: progend
+var charges := CInt(GetObjProperty(defender, "ReactiveArmor") );
+45: decl local #7
+46: local #2
+47: "ReactiveArmor"
+48: Func(2,0): GetObjProperty
+49: Func(0,0): CInt
+50: :=
+51: #
+if(!charges)
+52: local #7
+53: if true goto 61
+SetObjProperty(defender, "TempDamage", rawdamage);
+54: local #2
+55: "TempDamage"
+56: local #6
+57: Func(2,1): SetObjProperty
+58: #
+return;
+59: ""
+60: progend
+charges := charges - 1;
+61: local #7
+62: 1L
+63: -
+64: local7 := 
+if(charges == 0)
+65: local #7
+66: 0L
+67: ==
+68: if false goto 74
+EraseObjProperty(defender, "ReactiveArmor");
+69: local #2
+70: "ReactiveArmor"
+71: Func(2,2): EraseObjProperty
+72: #
+73: goto79
+SetObjProperty(defender, "ReactiveArmor", charges);
+74: local #2
+75: "ReactiveArmor"
+76: local #7
+77: Func(2,1): SetObjProperty
+78: #
+PlayObjectCenteredEffect(attacker, 0x374a, 10,10);
+79: local #1
+80: 14154L
+81: 10L
+82: 10L
+83: Func(2,3): PlayObjectCenteredEffect
+84: #
+PlaySoundEffect(attacker, 0x1f2);
+85: local #1
+86: 498L
+87: Func(2,4): PlaySoundEffect
+88: #
+rawdamage := CInt((rawdamage *3) / 4);
+89: local #6
+90: 3L
+91: *
+92: 4L
+93: /
+94: Func(0,0): CInt
+95: local6 := 
+var newdamage := CInt(rawdamage / 4);
+96: decl local #8
+97: local #6
+98: 4L
+99: /
+100: Func(0,0): CInt
+101: :=
+102: #
+ApplyRawDamage(attacker, newdamage);
+103: local #1
+104: local #8
+105: Func(2,5): ApplyRawDamage
+106: #
+SetObjProperty(defender, "TempDamage", rawdamage);
+107: local #2
+108: "TempDamage"
+109: local #6
+110: Func(2,1): SetObjProperty
+111: #
+112: leave block(9)
+113: progend

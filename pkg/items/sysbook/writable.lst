@@ -1,0 +1,340 @@
+Exported Functions:
+   PC  Args  Name
+    3     1  GetAuthor
+   22     1  GetContents
+   40     2  GetLine
+   81     1  GetNumLines
+   91     1  GetTitle
+  110     1  IsWritable
+  143     2  SetAuthor
+  159     3  SetLine
+  190     2  SetTitle
+C:\pol2\pkg\items\sysbook\writable.src, Line 105
+program BookInterface()
+return 1;
+0: 1L
+1: progend
+2: progend
+C:\pol2\pkg\items\sysbook\writable.src, Line 35
+exported function GetAuthor(book)
+3: makelocal
+4: jmp userfunc @6
+5: progend
+6: pop param 'book'
+var res := book.getprop("author");
+7: decl local #1
+8: local #0
+9: "author"
+10: Call Method getprop (1 params)
+11: :=
+12: #
+if(res)
+13: local #1
+14: if false goto 18
+return res;
+15: local #1
+16: return
+17: goto20
+return "";
+18: ""
+19: return
+20: 0L
+21: return
+C:\pol2\pkg\items\sysbook\writable.src, Line 50
+exported function GetContents(book)
+22: makelocal
+23: jmp userfunc @25
+24: progend
+25: pop param 'book'
+var contents := book.getprop("contents");
+26: decl local #1
+27: local #0
+28: "contents"
+29: Call Method getprop (1 params)
+30: :=
+31: #
+if(contents == error)
+32: local #1
+33: error
+34: ==
+35: if false goto 38
+contents := array;
+36: array
+37: local1 := 
+return contents;
+38: local #1
+39: return
+C:\pol2\pkg\items\sysbook\writable.src, Line 58
+exported function GetLine(book, line)
+40: makelocal
+41: jmp userfunc @43
+42: progend
+43: pop param 'line'
+44: pop param 'book'
+var contents := book.getprop("contents");
+45: decl local #2
+46: local #1
+47: "contents"
+48: Call Method getprop (1 params)
+49: :=
+50: #
+if(contents == error)
+51: local #2
+52: error
+53: ==
+54: if false goto 57
+contents := array;
+55: array
+56: local2 := 
+if(line <= contents.size())
+57: local #0
+58: local #2
+59: Call Method size (0 params)
+60: <=
+61: if false goto 77
+var text := contents[line];
+62: decl local #0
+63: local #2
+64: local #0
+65: [] 1
+66: :=
+67: #
+if(text)
+68: local #3
+69: if false goto 73
+return text;
+70: local #3
+71: return
+72: goto75
+return "";
+73: ""
+74: return
+75: leave block(1)
+76: goto79
+return "";
+77: ""
+78: return
+79: 0L
+80: return
+C:\pol2\pkg\items\sysbook\writable.src, Line 15
+exported function GetNumLines(book)
+81: makelocal
+82: jmp userfunc @84
+83: progend
+84: pop param 'book'
+return book.getprop("maxpages") * 8;
+85: local #0
+86: "maxpages"
+87: Call Method getprop (1 params)
+88: 8L
+89: *
+90: return
+C:\pol2\pkg\items\sysbook\writable.src, Line 19
+exported function GetTitle(book)
+91: makelocal
+92: jmp userfunc @94
+93: progend
+94: pop param 'book'
+var res := book.getprop("title");
+95: decl local #1
+96: local #0
+97: "title"
+98: Call Method getprop (1 params)
+99: :=
+100: #
+if(res)
+101: local #1
+102: if false goto 106
+return res;
+103: local #1
+104: return
+105: goto108
+return "";
+106: ""
+107: return
+108: 0L
+109: return
+C:\pol2\pkg\items\sysbook\writable.src, Line 4
+exported function IsWritable(book)
+110: makelocal
+111: jmp userfunc @113
+112: progend
+113: pop param 'book'
+if(GetObjProperty(book, "NoWrite") || (book.movable == 0) || ((book.container).
+114: local #0
+115: "NoWrite"
+116: Func(2,0): GetObjProperty
+117: local #0
+118: get member 'movable'
+119: 0L
+120: ==
+121: ||
+122: local #0
+123: get member 'container'
+124: get member 'objtype'
+125: 2719L
+126: ==
+127: ||
+128: if false goto 132
+return 0;
+129: 0L
+130: return
+131: goto141
+if(book.movable == 0)
+132: local #0
+133: get member 'movable'
+134: 0L
+135: ==
+136: if false goto 139
+return 0;
+137: 0L
+138: return
+return 1;
+139: 1L
+140: return
+141: 0L
+142: return
+C:\pol2\pkg\items\sysbook\writable.src, Line 44
+exported function SetAuthor(book, author)
+143: makelocal
+144: jmp userfunc @146
+145: progend
+146: pop param 'author'
+147: pop param 'book'
+author := nettoie(author);
+148: local #0
+149: makelocal
+150: jmp userfunc @209
+151: local0 := 
+book.setprop("author", author);
+152: local #1
+153: "author"
+154: local #0
+155: Call Method setprop (2 params)
+156: #
+157: 0L
+158: return
+C:\pol2\pkg\items\sysbook\writable.src, Line 75
+exported function SetLine(book, line, text)
+159: makelocal
+160: jmp userfunc @162
+161: progend
+162: pop param 'text'
+163: pop param 'line'
+164: pop param 'book'
+var contents := book.getprop("contents");
+165: decl local #3
+166: local #2
+167: "contents"
+168: Call Method getprop (1 params)
+169: :=
+170: #
+if(contents == error)
+171: local #3
+172: error
+173: ==
+174: if false goto 177
+contents := array;
+175: array
+176: local3 := 
+contents[ line ] := nettoie(text);
+177: local #3
+178: local #1
+179: local #0
+180: makelocal
+181: jmp userfunc @209
+182: [] := (1) #
+book.setprop("contents", contents);
+183: local #2
+184: "contents"
+185: local #3
+186: Call Method setprop (2 params)
+187: #
+return 1;
+188: 1L
+189: return
+C:\pol2\pkg\items\sysbook\writable.src, Line 28
+exported function SetTitle(book, title)
+190: makelocal
+191: jmp userfunc @193
+192: progend
+193: pop param 'title'
+194: pop param 'book'
+title := nettoie(title);
+195: local #0
+196: makelocal
+197: jmp userfunc @209
+198: local0 := 
+book.setprop("title", title);
+199: local #1
+200: "title"
+201: local #0
+202: Call Method setprop (2 params)
+203: #
+book.name := title;
+204: local #1
+205: local #0
+206: set member 'name' #
+207: 0L
+208: return
+C:\pol2\pkg\items\sysbook\writable.src, Line 85
+function nettoie(chaine)
+209: pop param 'chaine'
+var tabchaine := CascZ(chaine);
+210: decl local #1
+211: local #0
+212: Func(0,0): CAscZ
+213: :=
+214: #
+var result := "";
+215: decl local #2
+216: ""
+217: :=
+218: #
+var i := 1;
+219: decl local #3
+220: 1L
+221: :=
+222: #
+var bon := 1;
+223: decl local #4
+224: 1L
+225: :=
+226: #
+while (bon == 1)
+227: local #4
+228: 1L
+229: ==
+230: if false goto 255
+var car := tabchaine[i];
+231: decl local #0
+232: local #1
+233: local #3
+234: [] 1
+235: :=
+236: #
+if (car > 0)
+237: local #5
+238: 0L
+239: >
+240: if false goto 251
+result := result + Cchr(car);
+241: local #2
+242: local #5
+243: Func(0,1): CChr
+244: +
+245: local2 := 
+i := i + 1;
+246: local #3
+247: 1L
+248: +
+249: local3 := 
+250: goto253
+bon := 0;
+251: 0L
+252: local4 := 
+253: leave block(1)
+254: goto227
+return result;
+255: local #2
+256: return

@@ -1,0 +1,31 @@
+use uo;
+use os;
+include "../pkg/foundations/gumps/gumps";
+
+program a(who);
+
+if(!GetObjProperty(who, "auxgumpRESOLUCAO"))
+SetObjProperty(who, "auxgumpRESOLUCAO", CStr("640x480"));
+endif
+if(!GetObjProperty(who, "auxgumpSTATUS"))
+SetObjProperty(who, "auxgumpSTATUS", CStr("ON"));
+endif
+if(GetObjProperty(who, "auxgumpSTATUS") == "ON")
+start_script("auxgump/auxgumpmontar", who);
+else
+start_script("auxgump/auxgumpopenopcoes", who);
+endif
+while(1)
+if(!who)
+break;
+endif
+if(GetObjProperty(who, "auxgumpSTATUS") == "ON")
+var gump:=start_script("auxgump/auxgumpopen", who);
+sleep(8);
+CloseGump(who, gump.pid, 0);
+else
+sleep(15);
+endif
+endwhile
+endprogram
+

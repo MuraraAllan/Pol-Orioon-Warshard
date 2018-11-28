@@ -1,0 +1,144 @@
+use npc;
+use basic;
+use os;
+use uo;
+
+include "include/listex";
+include "include/eventID";
+include "include/sysEvent";
+include "include/randName";
+include "include/utility";
+include "include/client";
+include "include/vetement";
+include "include/NPCBackpacks";
+include "util/bank";
+include "include/anchors";
+include "include/dist";
+include "include/skillLists";
+include "include/begging";
+include "include/attributes";
+const MAX_SKILLS      := 48;     // There are currently 48 Skills.
+const UOBJ_GOLDCOIN   := 0x0eed; // A gold coi n
+const UOBJ_METALCHEST := 0x0e7c; // A Metal Chest
+const REACT_THRESHOLD := 2;
+
+set_priority( 50 );
+
+var me := Self();
+var inv_rs, inv_fs, inv_pb, inv_1c;
+var player, counter;
+
+program guarda(who)
+/////////Vestimenta////////////
+var mochila:=CreateItemAtLocation(0, 0, 0, 3701);
+mochila.color:=1153;
+mochila.name:="Mochila";
+EquipItem(me, mochila);
+
+var robe:=CreateItemInBackpack(me, 8271, 1 );
+robe.color:=1153;
+robe.name:="";
+EquipItem(me, robe);
+/////////Vestimenta////////////
+
+var casa:=SystemFindObjectBySerial(GetProperty("Serial_Casa")); 
+var placa:=SystemFindObjectBySerial(GetProperty("Serial_Placa")); 
+var decayAt:=Cint(GetProperty("DecayAT"));
+
+sleep(1);
+
+if((!casa) || (!placa) || (!decayAt))
+PrintTextAbove(me, "Algum erro detectado. Estou caindo fora...",3,95);
+sleepms(1500);
+PrintTextAbove(me, "Kal Ort Por",3,33);
+PerformAction(me,ANIM_CAST_DIR);
+sleepms(2500);
+PlaySoundEffect(me, SFX_SPELL_RESSURECTION); 
+movecharactertolocation(me, 0, 0, 0, MOVECHAR_FORCELOCATION);
+DestroyItem(mochila);
+DestroyItem(robe);
+RevokePrivilege(me, "invul" );
+Damage( me, 6000 );
+return;
+endif
+
+PrintTextAbove(me, "Ola, estou aqui para avisar que esta casa esta em lugar irregular e deve ser retirada.",3,33);
+var resta_dia, resta_hora, resta_min, resta_seg;
+
+while(1)
+
+resta_seg:=decayAt-ReadGameClock();
+resta_min:=resta_seg/60;
+resta_hora:=resta_min/60;
+resta_dia:=resta_hora/24;
+
+if(resta_dia > 0)
+resta_hora:=Cint(resta_hora-(resta_dia*24));
+me.name:="Esta casa deve ser retirada em menos de "+Cint(resta_dia)+" dias e "+Cint(resta_hora)+" horas, ou sera demolida.";
+endif
+///elseif(resta_hora > 0)
+if((resta_hora > 0) && (resta_dia < 1))
+resta_min:=Cint(resta_min-(resta_hora*60));
+me.name:="Esta casa deve ser retirada em menos de "+Cint(resta_hora)+" horas e "+Cint(resta_min)+" minutos, ou sera demolida.";
+endif
+///elseif(resta_min > 0)
+if((resta_min > 0) && (resta_hora < 1))
+me.name:="Esta casa deve ser retirada em menos de "+Cint(resta_min)+" minutos, ou sera demolida.";
+endif
+///elseif(resta_seg > 0)
+if((resta_seg > 0) && (resta_min < 1))
+me.name:="Esta casa deve ser retirada em menos de "+Cint(resta_seg)+" segundos, ou sera demolida.";
+endif
+///else
+if(resta_seg < 0)
+  PrintTextAbove(me, "O Dono da casa demorou para retira-la, estou demolindo-a.",3,33);
+  demolish(casa);
+  CreateItemAtLocation(casa.x, casa.y, casa.z, 2750, 1);
+  sleep(1);
+  PrintTextAbove(me, "Servico feito, estou indo embora...",3,33);
+  sleep(1);
+  PrintTextAbove(me, "Kal Ort Por",3,95);
+  PerformAction(me,ANIM_CAST_DIR);
+  sleepms(2500);
+  PlaySoundEffect(me, SFX_SPELL_RESSURECTION); 
+  movecharactertolocation(me, 0, 0, 0, MOVECHAR_FORCELOCATION);
+  DestroyItem(mochila);
+  DestroyItem(robe);
+  RevokePrivilege(me, "invul" );
+  Damage( me, 6000 );
+  return;
+endif
+sleep(10);
+endwhile
+endprogram
+
+
+function demolish(house)
+///Retirar a Prop de q ja possui uma casa
+var contawho:=FindAccount(GetObjProperty(house, "owneracct"));
+contawho.setprop("possui_casa", 0);
+
+DestroyItem(SystemFindObjectBySerial(GetObjProperty(house, "builtdeed")));
+
+///Verificar NPC´s, Itens que não podem ser destruidos.
+foreach npc in (house.mobiles)
+ if(npc.npctemplate == "playervendor")
+  movecharactertolocation(npc , 5310, 1160, 0, MOVECHAR_FORCELOCATION);
+ endif
+endforeach  
+
+foreach item in (house.items)
+ if(item.objtype == 0xa390)
+  MoveItemToLocation(item, 5275, 1160, 0, MOVEITEM_FORCELOCATION);
+ endif
+endforeach
+
+///Destroy Itens da casa
+foreach item in (house.items)
+item.movable := 1;
+DestroyItem(item);
+endforeach
+
+DestroyMulti(house );
+
+endfunction

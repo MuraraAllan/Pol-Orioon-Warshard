@@ -1,0 +1,627 @@
+C:\pol2\pkg\tools\gmtools\mailkeeper.src, Line 5
+var layout := array(
+0: decl global #0
+1: array
+2: "page 0"
+3: +=
+4: "nomove"
+5: +=
+6: "noclose"
+7: +=
+8: "nodispose"
+9: +=
+10: "gumppic  20  60 2624            "
+11: +=
+12: "gumppic 285  60 2624            "
+13: +=
+14: "gumppic  20   5 2624            "
+15: +=
+16: "gumppic 285   5 2624            "
+17: +=
+18: "gumppic  20   0 2621            "
+19: +=
+20: "gumppic 285   0 2621            "
+21: +=
+22: "gumppic  20   0 2620            "
+23: +=
+24: "gumppic 535   0 2622            "
+25: +=
+26: "gumppic  20   5 2623            "
+27: +=
+28: "gumppic 535   5 2625            "
+29: +=
+30: "gumppic  20  45 2623            "
+31: +=
+32: "gumppic 535  45 2625            "
+33: +=
+34: "gumppic  20 250 2627            "
+35: +=
+36: "gumppic  20 250 2626            "
+37: +=
+38: "gumppic 285 250 2627            "
+39: +=
+40: "gumppic 537 250 2628            "
+41: +=
+42: "text     90  30   37      0     "
+43: +=
+44: "text     90  45   37      1     "
+45: +=
+46: "text     90  60   37      2     "
+47: +=
+48: "text     90  75   37      3     "
+49: +=
+50: "text     90  90   37      4     "
+51: +=
+52: "text     90 105   37      5     "
+53: +=
+54: "text     90 120   37      6     "
+55: +=
+56: "text    150 135   37      7     "
+57: +=
+58: "gumppic 125 158 1141            "
+59: +=
+60: "textentry 135 160  250 60 910 8  8"
+61: +=
+62: "button  255 220  247  249 1 0  1"
+63: +=
+64: :=
+65: #
+var data := array(
+66: decl global #1
+67: array
+68: "Greetings... In order to keep our mail system up to date,"
+69: +=
+70: "periodically we need to request that you verify your email"
+71: +=
+72: "address so that we may contact you if we need to pass on"
+73: +=
+74: "any shard related information.. Your Email address will"
+75: +=
+76: "be kept confidential, and will not be shared with anyone"
+77: +=
+78: "outside this shard, and will only be used for official"
+79: +=
+80: "shard business.. At this time, we have the following email"
+81: +=
+82: "address on file for your account: "
+83: +=
+84: ""
+85: +=
+86: ""
+87: +=
+88: ""
+89: +=
+90: :=
+91: #
+C:\pol2\pkg\tools\gmtools\mailkeeper.src, Line 57
+program mailkeeper(who)
+92: get arg 'who'
+controlgump(who);
+93: local #0
+94: makelocal
+95: jmp userfunc @99
+96: #
+97: leave block(1)
+98: progend
+C:\pol2\pkg\tools\gmtools\mailkeeper.src, Line 58
+function controlgump(who)
+99: pop param 'who'
+var trg := FindAccount(who.acctname);
+100: decl local #1
+101: local #0
+102: get member 'acctname'
+103: Func(2,0): FindAccount
+104: :=
+105: #
+var mail := trg.getprop("email");
+106: decl local #2
+107: local #1
+108: "email"
+109: Call Method getprop (1 params)
+110: :=
+111: #
+if(!mail)
+112: local #2
+113: if true goto 116
+mail := "Not Provided";
+114: "Not Provided"
+115: local2 := 
+data[9] := mail;
+116: global #1
+117: 9L
+118: local #2
+119: [] := (1) #
+var result := SendDialogGump( who, layout, data);
+120: decl local #3
+121: local #0
+122: global #0
+123: global #1
+124: Func(2,1): SendDialogGump
+125: :=
+126: #
+setmail(who, result, trg);
+127: local #0
+128: local #3
+129: local #1
+130: makelocal
+131: jmp userfunc @135
+132: #
+133: 0L
+134: return
+C:\pol2\pkg\tools\gmtools\mailkeeper.src, Line 69
+function setmail(who, result, trg)
+135: pop param 'trg'
+136: pop param 'result'
+137: pop param 'who'
+var note:=result[8];
+138: decl local #3
+139: local #1
+140: 8L
+141: [] 1
+142: :=
+143: #
+note[1, find(note, ": ", 1)+1]:="";
+144: local #3
+145: 1L
+146: local #3
+147: ": "
+148: 1L
+149: Func(0,0): find
+150: 1L
+151: +
+152: ""
+153: [,] :=
+154: #
+if((note == "") || (note == "Not Provided") || (!note) || (note == "error"))
+155: local #3
+156: ""
+157: ==
+158: local #3
+159: "Not Provided"
+160: ==
+161: ||
+162: local #3
+163: !
+164: ||
+165: local #3
+166: "error"
+167: ==
+168: ||
+169: if false goto 175
+controlgump(who);
+170: local #2
+171: makelocal
+172: jmp userfunc @99
+173: #
+174: goto563
+var length := len(note);
+175: decl local #0
+176: local #3
+177: Func(0,1): len
+178: :=
+179: #
+var i;
+180: decl local #1
+181: #
+var atsign := 0;
+182: decl local #2
+183: 0L
+184: :=
+185: #
+var dot := 0;
+186: decl local #3
+187: 0L
+188: :=
+189: #
+for(i:=1; i<=length; i:=i+1)
+190: local #5
+191: 1L
+192: :=
+193: #
+194: local #5
+195: local #4
+196: <=
+197: if false goto 544
+if(note[i] == "@")
+198: local #3
+199: local #5
+200: [] 1
+201: "@"
+202: ==
+203: if false goto 207
+atsign := 1;
+204: 1L
+205: local6 := 
+206: goto537
+elseif(note[i] == ".")
+207: local #3
+208: local #5
+209: [] 1
+210: "."
+211: ==
+212: if false goto 537
+if((note[i+1] == "n") && (note[i+2] == "e") && (note[i+3] == "t"))
+213: local #3
+214: local #5
+215: 1L
+216: +
+217: [] 1
+218: "n"
+219: ==
+220: local #3
+221: local #5
+222: 2L
+223: +
+224: [] 1
+225: "e"
+226: ==
+227: &&
+228: local #3
+229: local #5
+230: 3L
+231: +
+232: [] 1
+233: "t"
+234: ==
+235: &&
+236: if false goto 240
+dot := 1;
+237: 1L
+238: local7 := 
+239: goto537
+elseif((note[i+1] == "o") && (note[i+2] == "r") && (note[i+3] == "g"))
+240: local #3
+241: local #5
+242: 1L
+243: +
+244: [] 1
+245: "o"
+246: ==
+247: local #3
+248: local #5
+249: 2L
+250: +
+251: [] 1
+252: "r"
+253: ==
+254: &&
+255: local #3
+256: local #5
+257: 3L
+258: +
+259: [] 1
+260: "g"
+261: ==
+262: &&
+263: if false goto 267
+dot := 1;
+264: 1L
+265: local7 := 
+266: goto537
+elseif((note[i+1] == "g") && (note[i+2] == "o") && (note[i+3] == "v"))
+267: local #3
+268: local #5
+269: 1L
+270: +
+271: [] 1
+272: "g"
+273: ==
+274: local #3
+275: local #5
+276: 2L
+277: +
+278: [] 1
+279: "o"
+280: ==
+281: &&
+282: local #3
+283: local #5
+284: 3L
+285: +
+286: [] 1
+287: "v"
+288: ==
+289: &&
+290: if false goto 294
+dot := 1;
+291: 1L
+292: local7 := 
+293: goto537
+elseif((note[i+1] == "c") && (note[i+2] == "o") && (note[i+3] == "m"))
+294: local #3
+295: local #5
+296: 1L
+297: +
+298: [] 1
+299: "c"
+300: ==
+301: local #3
+302: local #5
+303: 2L
+304: +
+305: [] 1
+306: "o"
+307: ==
+308: &&
+309: local #3
+310: local #5
+311: 3L
+312: +
+313: [] 1
+314: "m"
+315: ==
+316: &&
+317: if false goto 321
+dot := 1;
+318: 1L
+319: local7 := 
+320: goto537
+elseif((note[i+1] == "e") && (note[i+2] == "d") && (note[i+3] == "u"))
+321: local #3
+322: local #5
+323: 1L
+324: +
+325: [] 1
+326: "e"
+327: ==
+328: local #3
+329: local #5
+330: 2L
+331: +
+332: [] 1
+333: "d"
+334: ==
+335: &&
+336: local #3
+337: local #5
+338: 3L
+339: +
+340: [] 1
+341: "u"
+342: ==
+343: &&
+344: if false goto 348
+dot := 1;
+345: 1L
+346: local7 := 
+347: goto537
+elseif((note[i+1] == "c") && (note[i+2] == "c"))
+348: local #3
+349: local #5
+350: 1L
+351: +
+352: [] 1
+353: "c"
+354: ==
+355: local #3
+356: local #5
+357: 2L
+358: +
+359: [] 1
+360: "c"
+361: ==
+362: &&
+363: if false goto 367
+dot := 1;
+364: 1L
+365: local7 := 
+366: goto537
+elseif((note[i+1] == "u") && (note[i+2] == "k"))
+367: local #3
+368: local #5
+369: 1L
+370: +
+371: [] 1
+372: "u"
+373: ==
+374: local #3
+375: local #5
+376: 2L
+377: +
+378: [] 1
+379: "k"
+380: ==
+381: &&
+382: if false goto 386
+dot := 1;
+383: 1L
+384: local7 := 
+385: goto537
+elseif((note[i+1] == "d") && (note[i+2] == "k"))
+386: local #3
+387: local #5
+388: 1L
+389: +
+390: [] 1
+391: "d"
+392: ==
+393: local #3
+394: local #5
+395: 2L
+396: +
+397: [] 1
+398: "k"
+399: ==
+400: &&
+401: if false goto 405
+dot := 1;
+402: 1L
+403: local7 := 
+404: goto537
+elseif((note[i+1] == "f") && (note[i+2] == "i"))
+405: local #3
+406: local #5
+407: 1L
+408: +
+409: [] 1
+410: "f"
+411: ==
+412: local #3
+413: local #5
+414: 2L
+415: +
+416: [] 1
+417: "i"
+418: ==
+419: &&
+420: if false goto 424
+dot := 1;
+421: 1L
+422: local7 := 
+423: goto537
+elseif((note[i+1] == "z") && (note[i+2] == "a"))
+424: local #3
+425: local #5
+426: 1L
+427: +
+428: [] 1
+429: "z"
+430: ==
+431: local #3
+432: local #5
+433: 2L
+434: +
+435: [] 1
+436: "a"
+437: ==
+438: &&
+439: if false goto 443
+dot := 1;
+440: 1L
+441: local7 := 
+442: goto537
+elseif((note[i+1] == "d") && (note[i+2] == "e"))
+443: local #3
+444: local #5
+445: 1L
+446: +
+447: [] 1
+448: "d"
+449: ==
+450: local #3
+451: local #5
+452: 2L
+453: +
+454: [] 1
+455: "e"
+456: ==
+457: &&
+458: if false goto 462
+dot := 1;
+459: 1L
+460: local7 := 
+461: goto537
+elseif((note[i+1] == "c") && (note[i+2] == "a"))
+462: local #3
+463: local #5
+464: 1L
+465: +
+466: [] 1
+467: "c"
+468: ==
+469: local #3
+470: local #5
+471: 2L
+472: +
+473: [] 1
+474: "a"
+475: ==
+476: &&
+477: if false goto 481
+dot := 1;
+478: 1L
+479: local7 := 
+480: goto537
+elseif((note[i+1] == "n") && (note[i+2] == "z"))
+481: local #3
+482: local #5
+483: 1L
+484: +
+485: [] 1
+486: "n"
+487: ==
+488: local #3
+489: local #5
+490: 2L
+491: +
+492: [] 1
+493: "z"
+494: ==
+495: &&
+496: if false goto 500
+dot := 1;
+497: 1L
+498: local7 := 
+499: goto537
+elseif((note[i+1] == "s") && (note[i+2] == "e"))
+500: local #3
+501: local #5
+502: 1L
+503: +
+504: [] 1
+505: "s"
+506: ==
+507: local #3
+508: local #5
+509: 2L
+510: +
+511: [] 1
+512: "e"
+513: ==
+514: &&
+515: if false goto 519
+dot := 1;
+516: 1L
+517: local7 := 
+518: goto537
+elseif((note[i+1] == "n") && (note[i+2] == "l"))
+519: local #3
+520: local #5
+521: 1L
+522: +
+523: [] 1
+524: "n"
+525: ==
+526: local #3
+527: local #5
+528: 2L
+529: +
+530: [] 1
+531: "l"
+532: ==
+533: &&
+534: if false goto 537
+dot := 1;
+535: 1L
+536: local7 := 
+537: local #5
+538: local #5
+539: 1L
+540: +
+541: :=
+542: #
+543: goto194
+if((atsign == 1) && (dot == 1))
+544: local #6
+545: 1L
+546: ==
+547: local #7
+548: 1L
+549: ==
+550: &&
+551: if false goto 558
+trg.setprop("email", note);
+552: local #0
+553: "email"
+554: local #3
+555: Call Method setprop (2 params)
+556: #
+557: goto562
+controlgump(who);
+558: local #2
+559: makelocal
+560: jmp userfunc @99
+561: #
+562: leave block(4)
+563: 0L
+564: return

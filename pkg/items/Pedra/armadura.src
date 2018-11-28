@@ -1,0 +1,121 @@
+use uo;
+use os;
+include "include/attributes";
+include "../pkg/foundations/gumps/gumps";
+
+
+program arma(who,item)
+status(who, item); 
+endprogram
+
+
+function status(who,item)
+DestroyItem(item);
+return;
+
+  GFInitGump( 250 , 100 );
+  GFNoMove();
+  GFResizePic(50, 5, 5120, 285, 225);
+  GFTextLine( 135 , 20, 1153 , "Pedra De Armaduras" );
+  var bt2 := GFButtonID( 70, 50,  0x04b9, 0x04b9, 1);
+  var bt3 := GFButtonID( 70, 80,  0x04b9, 0x04b9, 1);
+  var bt4 := GFButtonID( 70, 110, 0x04b9, 0x04b9, 1);
+  var bt5 := GFButtonID( 70, 140, 0x04b9, 0x04b9, 1);
+  var bt6 := GFButtonID( 70, 170, 0x04b9, 0x04b9, 1);
+  var bt8 := GFButtonID( 185, 50, 0x04b9, 0x04b9, 1);
+ 
+
+  GFTextLine(90, 50, 1154 , "Malha"); 
+  GFTextLine(90, 80, 1154 , "Loriga"); 
+  GFTextLine(90, 110, 1154 , "Plate"); 
+  GFTextLine(90, 140, 1154 , "Couro"); 
+  GFTextLine(90, 170, 1154 , "Couro reforcado");
+  GFTextLine(205, 50, 1154 , "Escudo Corporal"); 
+  GFTextLine(170, 200,33, "#ORIOON"); 
+   
+ 
+
+  var res := GFSendGump(who);
+
+  if(res[bt2.keyid]) 
+  var a := CreateItemInBackpack(who, 0x13BB, 1);
+  var b := CreateItemInBackpack(who, 0x13BE, 1);
+  var c := CreateItemInBackpack(who, 0x13BF, 1);
+  var d := CreateItemInBackpack(who, 0x13f2, 1);
+  sendsysmessage(who, "Armadura criada!",9,89);
+  equipitem(who, a);  
+  equipitem(who, b);
+  equipitem(who, c);
+  equipitem(who, d);  
+endif
+
+  if(res[bt3.keyid]) 
+  var a := CreateItemInBackpack(who, 0x13ec, 1);
+  var b := CreateItemInBackpack(who, 0x13ee, 1);
+  var c := CreateItemInBackpack(who, 0x13f0, 1);
+  var d := CreateItemInBackpack(who, 0x13f2, 1);
+  sendsysmessage(who, "Armadura criada!",9,89);
+  equipitem(who, a);  
+  equipitem(who, b);
+  equipitem(who, c);
+  equipitem(who, d);
+endif
+
+if(res[bt4.keyid]) 
+  var a := CreateItemInBackpack(who, 0x1415, 1); 
+  var b := CreateItemInBackpack(who, 0x1410, 1); 
+  var c := CreateItemInBackpack(who, 0x1411, 1); 
+  var d := CreateItemInBackpack(who, 0x1413, 1); 
+  var e := CreateItemInBackpack(who, 0x1414, 1);   
+  var f := CreateItemInBackpack(who, 0x140E, 1);
+  sendsysmessage(who, "Armadura criada!",9,89);
+  equipitem(who, a);  
+  equipitem(who, b);
+  equipitem(who, c);
+  equipitem(who, d);
+  equipitem(who, e);
+  equipitem(who, f);
+endif
+
+if(res[bt5.keyid]) 
+   var a := CreateItemInBackpack(who, 0x13C7, 1);
+   var b := CreateItemInBackpack(who, 0x13C6, 1);
+   var c := CreateItemInBackpack(who, 0x13CB, 1);
+   var d := CreateItemInBackpack(who, 0x13CC, 1);
+   var e := CreateItemInBackpack(who, 0x1DB9, 1);
+   var f := CreateItemInBackpack(who, 0x13CD, 1);
+   sendsysmessage(who, "Armadura criada!",9,89);
+   equipitem(who, a);  
+   equipitem(who, b);
+   equipitem(who, c);
+   equipitem(who, d);
+  equipitem(who, e);
+  equipitem(who, f);
+endif
+
+if(res[bt6.keyid]) 
+var a := CreateItemInBackpack(who, 0x13D6, 1);  
+var b := CreateItemInBackpack(who, 0x13D5, 1);  
+var c := CreateItemInBackpack(who, 0x13D4, 1);  
+var d := CreateItemInBackpack(who, 0x13DA, 1);  
+var e := CreateItemInBackpack(who, 0x13DB, 1); 
+var f := CreateItemInBackpack(who, 0x1DB9, 1);   
+    sendsysmessage(who, "Armadura criada!",9,89);
+  equipitem(who, a);  
+  equipitem(who, b);
+  equipitem(who, c);
+  equipitem(who, d);
+  equipitem(who, e);
+  equipitem(who, f);
+endif
+
+
+if(res[bt8.keyid]) 
+CreateItemInbackpack(who, 0x1B76, 1);
+    sendsysmessage(who, "Armadura criada!",9,89);
+    who.equip := 1;  
+endif
+
+who.equip := 1; 
+
+endfunction

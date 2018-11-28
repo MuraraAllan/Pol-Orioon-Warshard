@@ -1,0 +1,73 @@
+use uo; 
+use os; 
+
+include "include/casas";
+
+program secure(who, house) 
+var casa := who.multi; 
+
+if(!casa)
+SendSysMessage(who,"Voce nao esta em uma casa.");
+return;
+endif
+
+if(!Socio(who,casa))
+SendSysMessage(who, "Voce Precisa ser dono ou socio da casa para poder usar esse comando!"); 
+return;
+endif
+
+var secures := GetObjProperty(Casa, "numsecure"); 
+if(secures == 0) 
+sendsysmessage(who, "Numero maximo de Cofres Seguros atingido."); 
+return;
+endif
+
+var chk := 0;
+foreach item in ListItemsNearLocation(who.x, who.y, who.z, 1)
+  if((item.objtype >= 0x0675) && (item.objtype <= 0x06f4))
+      if((((((((item.x == who.x+1) || (item.x == who.x-1) || (item.y == who.y) ||  (item.y == who.x+2) || (item.y == who.y+2) || (item.y == who.x-2) || (item.y == who.y-2) ||(item.y == who.y+1) || (item.y == who.y-1) && (item.x == who.x))))))))
+        chk := 1;
+        break;
+      endif
+endif
+  endforeach
+
+if(chk == 1)
+SendSysMessage(who, "Voce nao pode por o Cofre Seguro tao perto de uma porta.");
+return;
+endif
+
+
+var secure := CreateItemAtLocation(who.x , who.y, who.z, 0x0e97); 
+if(secure)
+secure.color := 775;
+SetObjProperty(casa, "numsecure", (secures - 1)); 
+SetObjProperty(secure, "boxserial", secure.serial); 
+SetObjProperty(secure, "houseserial", casa.serial); 
+SetObjProperty(secure, "secure", 1); 
+endif
+
+endprogram
+
+function achaplaca(who)
+  var casa := who.multi.components;
+
+  foreach placa in casa
+if ((placa.objtype >= 3000) && (placa.objtype <= 3086)) 
+return placa;
+endif
+  endforeach
+return 0;
+endfunction
+
+function sousocio(who, socios)
+
+foreach ssocio in socios
+
+if(ssocio == who.serial)
+return ssocio;
+endif
+
+endforeach
+
+endfunction

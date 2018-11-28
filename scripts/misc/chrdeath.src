@@ -1,0 +1,181 @@
+use uo; 
+use os; 
+use util;
+
+include ":poisonwatcher:poisons";
+include "include/reportMurder";  
+
+program chrdeath(corpse, ghost)
+SetObjProperty(corpse,"serial", ghost.serial);
+//Tirar Prop do Medit e curar Poison do morto
+EraseObjProperty(ghost, "IsMeditating"); 
+CurePoison(ghost, 1, "defaultPoison", 7); 
+
+//Nomear Corpo Inocente / Criminoso
+if(ghost.criminal)
+corpse.name:=("Corpo de " +ghost.name+ " [Criminoso]");
+SetObjProperty(corpse, "criminoso", 1); 
+else
+corpse.name:=("Corpo de " +ghost.name+ " [Inocente]");
+SetObjProperty(corpse, "criminoso", 0); 
+endif
+
+///Ultimo Atacante////
+var killer := GetObjProperty(ghost, "LastHit"); 
+killer := SystemFindObjectBySerial(killer[2], SYSFIND_SEARCH_OFFLINE_MOBILES);
+
+
+////KIll Points///
+var KPatacante := GetObjProperty(killer, "kp"); 
+if(!KPatacante) 
+KPatacante := 0;
+endif 
+
+var KPmorto := GetObjProperty(ghost, "kp"); 
+if(!KPmorto) 
+KPmorto := 0; 
+endif 
+
+///Delay Anti Points por RK///
+var delay:=CInt(GetObjProperty(ghost, "delaymorrer"));
+if(!delay)
+SetObjProperty(ghost, "delaymorrer", ReadGameClock());
+endif
+
+
+///////////////////////////////
+//////// Sistema de WP/////////
+///////////////////////////////
+var gghost:=FindGuild( GetObjProperty(ghost,"guild_id") );
+var wpmorto:=GetObjProperty(ghost, "warpoints");
+var wpgsmorto:=gghost.getprop("warpoints");
+
+var gkiller:=FindGuild( GetObjProperty(killer,"guild_id") );
+var wpatacante:=GetObjProperty(killer, "warpoints");
+var wpgsatacante:=gkiller.getprop("warpoints");
+
+if(!wpgsmorto)
+gghost.setprop("warpoints", 0);
+endif
+
+if(!wpgsatacante)
+gkiller.setprop("warpoints", 0);
+endif
+
+if(!wpmorto)
+SetObjProperty(ghost, "warpoints", 0);
+endif
+
+if(!wpatacante)
+SetObjProperty(killer, "warpoints", 0);
+endif
+
+if((gghost.isenemyguild(gkiller)) && (delay <= ReadGameClock()))
+SendSysMessage(killer,"Voce ganhou um warpoint.",0x9,86);
+SetObjProperty(killer, "warpoints", Cint(wpatacante+1));
+gkiller.setprop("warpoints", Cint(wpgsatacante+1));
+
+SendSysMessage(ghost,"Voce perdeu um warpoint.",0x9,86);
+ if(wpgsmorto > 0)
+ gghost.setprop("warpoints", Cint(wpgsmorto-1));
+ endif
+
+ if(wpmorto > 0)
+  SetObjProperty(ghost, "warpoints", Cint(wpmorto-1));
+ endif
+endif
+///FIM DO SIS DE WP///
+
+
+///Suicidio///
+if(ghost==killer)
+ BroadCast(""+ghost.name+" se suicidou.",9,46);
+ if(KPmorto > 0)
+ SendSysMessage(ghost,"Voce perdeu um killpoint.",0x9,86);
+ SetObjProperty(ghost, "kp", Cint(KPmorto-1)); 
+ endif
+endif
+
+
+///Dar KP e Retirar KP///
+if((killer) && (delay <= ReadGameClock()) && (killer.acct) && (ghost != killer))
+
+ SetObjProperty(killer, "kp", Cint(KPatacante+1));
+ SendSysMessage(killer,"Voce ganhou um killpoint",0x9,86);
+
+ if(KPmorto > 0)
+ SendSysMessage(ghost,"Voce perdeu um killpoint.",0x9,86);
+ SetObjProperty(ghost, "kp", Cint(KPmorto-1)); 
+ endif
+
+SetObjProperty(ghost, "delaymorrer", ReadGameClock() + 180 );
+endif
+
+
+///Setar RED se necessario///
+if(GetObjProperty(killer, "longmurders") < 5)
+   killer.title_prefix:="";
+   killer.setMurderer(0);
+   killer.alignment := "good";
+endif
+if(GetObjProperty(ghost, "longmurders") < 5)
+   ghost.title_prefix:="";
+   ghost.setMurderer(0);
+   ghost.alignment := "good";
+endif
+
+
+///Bcast anunciando a morte
+if((killer.acct) && (killer != ghost))
+BroadCast(""+Killer.name+" matou "+ghost.name+".",9,46);
+endif
+if((!killer) || (!killer.acct))
+BroadCast(""+ghost.name+" morreu.",9,46);
+endif
+
+
+///Msg de morte no Corpo
+case(randomInt(8) + 1)
+1:PrintTextAbove(corpse,""+ghost.name+" virou comida para Wyrms",3,1000);
+2:PrintTextAbove(corpse,"Todos olham para "+ghost.name+" e comecam a rir",3,1000);
+3:PrintTextAbove(corpse,""+ghost.name+" foi para um mundo melhor",3,1000);
+4:PrintTextAbove(corpse,""+ghost.name+" bateu as botas",3,1000);
+5:PrintTextAbove(corpse,""+ghost.name+" se fudeu",3,1000);
+6:PrintTextAbove(corpse,""+ghost.name+" se fudeu buniiiittto",3,1000);
+7:PrintTextAbove(corpse,"Egua desse noob ,saia daqui "+ghost.name+"",3,1000);
+8:PrintTextAbove(corpse,""+ghost.name+" agora faz parte da historia",3,1000);
+9:PrintTextAbove(corpse,"Menos um noob nesse mundo, ne "+ghost.name+"?",3,1000);
+endcase
+
+dismount(ghost, corpse);
+
+///report
+if((corpse.x >= 4285) && (corpse.y >= 947) && (corpse.x <= 4335) && (corpse.y <= 962))
+//se tiver na arena nao tem gump de report
+else
+if((len(ghost.reportables)>0))
+FillInArrays(ghost);
+endif
+endif
+endprogram
+
+
+function dismount(me,corpse) 
+  var mount := GetEquipmentByLayer( corpse, 25 );
+  if (!mount) 
+   return; 
+  endif 
+  var animal := SystemFindObjectBySerial(CInt(GetObjProperty(mount,"serial"))); 
+  animal.facing := corpse.facing; 
+  EraseObjProperty(animal, "mounted"); 
+  EraseObjProperty(animal, "mounted_on");
+  DestroyItem(mount);
+  restartscript(animal);
+ 
+MoveCharacterToLocation( animal, corpse.x, corpse.y, corpse.z, MOVECHAR_FORCELOCATION);
+ 
+if((corpse.x >= 4285) && (corpse.y >= 947) && (corpse.x <= 4335) && (corpse.y <= 962))
+MoveCharacterToLocation( animal, 1, 20, 1, MOVECHAR_FORCELOCATION);
+endif
+
+endfunction

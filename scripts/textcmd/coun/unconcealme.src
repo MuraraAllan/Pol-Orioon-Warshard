@@ -1,0 +1,37 @@
+use uo;
+use os;
+use util;
+
+include "include/client";
+
+program concealme( who )
+who.concealed := 0;
+var newtarg;
+var i := 20;
+var range := 12;
+var victims := ListMobilesNearLocationEx( who.x, who.y, who.z, range, LISTEX_FLAG_NORMAL + LISTEX_FLAG_HIDDEN );
+PlaySoundEffect( who, SFX_220 );
+foreach mobile in victims
+PlayLightningBoltEffect( mobile );
+PlaySoundEffect(mobile, SFX_SPELL_LIGHTNING);
+PlaySoundEffect( mobile, SFX_SPELL_EARTHQUAKE );
+PlayObjectCenteredEffect( mobile, FX_SMOKE, 7, 7);
+PlayStationaryEffect( mobile.x,mobile.y,mobile.z, FX_EXPLODE_3, 7, 0x10 );
+endforeach
+PlaySoundEffect( who, SFX_223 );
+Detach();
+PlaySoundEffect(who, 0x231);
+while(i > 0)
+newtarg := CreateItemAtLocation(who.x, who.y, who.z, 0xeed, 1);
+newtarg.graphic := 1;
+PlayMovingEffectXYZ( newtarg.x, newtarg.y,(newtarg.z + 80), newtarg.x, newtarg.y, newtarg.z, 0x36d4, 0x18, 0x10, 0);
+i := i - 1;
+DestroyItem(newtarg);
+sleepms(50);
+endwhile
+PlaySoundEffect( who, SFX_SPELL_EXPLOSION );
+PlayStationaryEffect( who.x,who.y,who.z, FX_EXPLODE_3, 7, 0x10 );
+PlayObjectCenteredEffect(who, 0x3709, 0x0a, 0x1e );
+PlaySoundEffect( who, SFX_SPELL_FLAME_STRIKE );
+PlayObjectCenteredEffect(who, 0x3740, 0x0a, 0x1e );
+endprogram

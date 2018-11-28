@@ -1,0 +1,919 @@
+use os;
+use uo;
+use cfgfile;
+use util;
+use basic;
+use file;
+
+include "../pkg/foundations/gumps/gumps";
+include "../pkg/items/guildstone/guildData";
+
+
+
+var guildmanager := GetProcess(GetGlobalProperty("#GuildManager"));
+program gss()
+
+Broadcast( "Atualizando Ranks..." ,0,46 );
+var guilda1;
+var guilda2;
+var guilda3;
+var guilda4;
+var guilda5;
+var guilda1wp;
+var guilda2wp;
+var guilda3wp;
+var guilda4wp;
+var guilda5wp;
+
+var gstop;
+var wpgs:=0;
+
+gstop:="";
+var wpp;
+foreach guilda in ListGuilds()
+wpp:=guilda.getprop("warpoints");
+if(wpp > wpgs)
+wpgs:=wpp;
+gstop:=guilda.getprop("guildname");
+endif
+///sleepms(50);
+endforeach
+if(gstop)
+ guilda1:=gstop;
+ guilda1wp:=wpgs;
+else
+ guilda1:="-";
+ guilda1wp:="-";
+endif
+
+
+gstop:="";  
+wpgs:=0;
+foreach guilda in ListGuilds()
+wpp:=guilda.getprop("warpoints");
+if((wpp > wpgs) && (guilda.getprop("guildname") != guilda1))
+wpgs:=wpp;
+gstop:=guilda.getprop("guildname");
+endif
+///sleepms(50);
+endforeach
+if(gstop)
+ guilda2:=gstop;
+ guilda2wp:=wpgs;
+else
+ guilda2:="-";
+ guilda2wp:="-";
+endif
+
+
+gstop:="";
+wpgs:=0;
+foreach guilda in ListGuilds()
+wpp:=guilda.getprop("warpoints");
+if((wpp > wpgs) && (guilda.getprop("guildname") != guilda1) && (guilda.getprop("guildname") != guilda2))
+wpgs:=wpp;
+gstop:=guilda.getprop("guildname");
+endif
+///sleepms(50);
+endforeach
+if(gstop)
+ guilda3:=gstop;
+ guilda3wp:=wpgs;
+else
+ guilda3:="-";
+ guilda3wp:="-";
+endif
+
+
+
+gstop:="";
+wpgs:=0;
+foreach guilda in ListGuilds()
+wpp:=guilda.getprop("warpoints");
+if((wpp > wpgs) && (guilda.getprop("guildname") != guilda1) && (guilda.getprop("guildname") != guilda2) && (guilda.getprop("guildname") != guilda3))
+wpgs:=wpp;
+gstop:=guilda.getprop("guildname");
+endif
+///sleepms(50);
+endforeach
+if(gstop)
+ guilda4:=gstop;
+ guilda4wp:=wpgs;
+else
+ guilda4:="-";
+ guilda4wp:="-";
+endif
+
+
+
+gstop:="";
+wpgs:=0;
+foreach guilda in ListGuilds()
+wpp:=guilda.getprop("warpoints");
+if((wpp > wpgs) && (guilda.getprop("guildname") != guilda1) && (guilda.getprop("guildname") != guilda2) && (guilda.getprop("guildname") != guilda3) && (guilda.getprop("guildname") != guilda4))
+wpgs:=wpp;
+gstop:=guilda.getprop("guildname");
+endif
+///sleepms(50);
+endforeach
+if(gstop)
+ guilda5:=gstop;
+ guilda5wp:=wpgs;
+else
+ guilda5:="-";
+ guilda5wp:="-";
+endif
+
+var gs1:= { guilda1, guilda1wp };
+SetGlobalProperty("gstop1", gs1);
+
+var gs2:= { guilda2, guilda2wp };
+SetGlobalProperty("gstop2", gs2);
+
+var gs3:= { guilda3, guilda3wp };
+SetGlobalProperty("gstop3", gs3);
+
+var gs4:= { guilda4, guilda4wp };
+SetGlobalProperty("gstop4", gs4);
+
+var gs5:= { guilda5, guilda5wp };
+SetGlobalProperty("gstop5", gs5);
+
+
+var guildasfile:=array("[guildas]", "1Nome="+guilda1, "1WPs="+guilda1wp, "2Nome="+guilda2, "2WPs="+guilda2wp, "3Nome="+guilda3, "3WPs="+guilda3wp, "4Nome="+guilda4, "4WPs="+guilda4wp, "5Nome="+guilda5, "5WPs="+guilda5wp);
+
+if(WriteFile("db/guildas.ini", guildasfile) == error)
+Broadcast( "[ERRO] Ao atualizar rank de guildas." ,0,33 );
+endif
+
+
+atualizarwpplayer();
+atualizarkpplayer();
+atualizarpvppoints();
+
+
+Broadcast( "Ranks Atualizados...." ,0,46 );
+
+endprogram
+
+
+/////FUNCAO ATUALIZAR WP DOS PLAYERS////
+function atualizarwpplayer()
+////////TOP 1 WP///////////
+var topplayerwp1:=0;
+var topplayerwp1nome:="-";
+var topplayerwp1serial;
+var conta;
+
+foreach acc in ListAccounts( )
+conta:=FindAccount( acc );
+
+if((conta.GetCharacter(1)) && (GetObjProperty(conta.GetCharacter(1), "warpoints") > topplayerwp1 ) )
+topplayerwp1:=(GetObjProperty(conta.GetCharacter(1), "warpoints"));
+topplayerwp1nome:=conta.GetCharacter(1).name;
+topplayerwp1serial:=conta.GetCharacter(1).serial;
+endif
+
+if((conta.GetCharacter(2)) && (GetObjProperty(conta.GetCharacter(2), "warpoints") > topplayerwp1 ) )
+topplayerwp1:=(GetObjProperty(conta.GetCharacter(2), "warpoints"));
+topplayerwp1nome:=conta.GetCharacter(2).name;
+topplayerwp1serial:=conta.GetCharacter(2).serial;
+endif
+
+if((conta.GetCharacter(3)) && (GetObjProperty(conta.GetCharacter(3), "warpoints") > topplayerwp1 ) )
+topplayerwp1:=(GetObjProperty(conta.GetCharacter(3), "warpoints"));
+topplayerwp1nome:=conta.GetCharacter(3).name;
+topplayerwp1serial:=conta.GetCharacter(3).serial;
+endif
+
+if((conta.GetCharacter(4)) && (GetObjProperty(conta.GetCharacter(4), "warpoints") > topplayerwp1 ) )
+topplayerwp1:=(GetObjProperty(conta.GetCharacter(4), "warpoints"));
+topplayerwp1nome:=conta.GetCharacter(4).name;
+topplayerwp1serial:=conta.GetCharacter(4).serial;
+endif
+
+if((conta.GetCharacter(5)) && (GetObjProperty(conta.GetCharacter(5), "warpoints") > topplayerwp1 ) )
+topplayerwp1:=(GetObjProperty(conta.GetCharacter(5), "warpoints"));
+topplayerwp1nome:=conta.GetCharacter(5).name;
+topplayerwp1serial:=conta.GetCharacter(5).serial;
+endif
+
+endforeach
+
+if(topplayerwp1nome == "-")
+topplayerwp1:="-";
+endif
+
+var tp1:= { topplayerwp1, topplayerwp1nome };
+SetGlobalProperty("topplayerwp1", tp1);
+
+
+////////TOP 2 WP///////
+var topplayerwp2:=0;
+var topplayerwp2nome:="-";
+var topplayerwp2serial;
+
+foreach acc in ListAccounts()
+conta:=FindAccount( acc );
+
+if((conta.GetCharacter(1)) && (GetObjProperty(conta.GetCharacter(1), "warpoints") > topplayerwp2 ) && (conta.GetCharacter(1).serial != topplayerwp1serial ) )
+topplayerwp2:=(GetObjProperty(conta.GetCharacter(1), "warpoints"));
+topplayerwp2nome:=conta.GetCharacter(1).name;
+topplayerwp2serial:=conta.GetCharacter(1).serial;
+endif
+
+if((conta.GetCharacter(2)) && (GetObjProperty(conta.GetCharacter(2), "warpoints") > topplayerwp2 ) && (conta.GetCharacter(2).serial != topplayerwp1serial ) )
+topplayerwp2:=(GetObjProperty(conta.GetCharacter(2), "warpoints"));
+topplayerwp2nome:=conta.GetCharacter(2).name;
+topplayerwp2serial:=conta.GetCharacter(2).serial;
+endif
+
+if((conta.GetCharacter(3)) && (GetObjProperty(conta.GetCharacter(3), "warpoints") > topplayerwp2 ) && (conta.GetCharacter(3).serial != topplayerwp1serial ) )
+topplayerwp2:=(GetObjProperty(conta.GetCharacter(3), "warpoints"));
+topplayerwp2nome:=conta.GetCharacter(3).name;
+topplayerwp2serial:=conta.GetCharacter(3).serial;
+endif
+
+if((conta.GetCharacter(4)) && (GetObjProperty(conta.GetCharacter(4), "warpoints") > topplayerwp2 ) && (conta.GetCharacter(4).serial != topplayerwp1serial ) )
+topplayerwp2:=(GetObjProperty(conta.GetCharacter(4), "warpoints"));
+topplayerwp2nome:=conta.GetCharacter(4).name;
+topplayerwp2serial:=conta.GetCharacter(4).serial;
+endif
+
+if((conta.GetCharacter(5)) && (GetObjProperty(conta.GetCharacter(5), "warpoints") > topplayerwp2 ) && (conta.GetCharacter(5).serial != topplayerwp1serial ) )
+topplayerwp2:=(GetObjProperty(conta.GetCharacter(5), "warpoints"));
+topplayerwp2nome:=conta.GetCharacter(5).name;
+topplayerwp2serial:=conta.GetCharacter(5).serial;
+endif
+
+endforeach
+
+if(topplayerwp2nome == "-")
+topplayerwp2:="-";
+endif
+
+var tp2:= { topplayerwp2, topplayerwp2nome };
+SetGlobalProperty("topplayerwp2", tp2);
+
+
+////////TOP 3 WP///////
+var topplayerwp3:=0;
+var topplayerwp3nome:="-";
+var topplayerwp3serial;
+
+foreach acc in ListAccounts()
+conta:=FindAccount( acc );
+
+if((conta.GetCharacter(1)) && (GetObjProperty(conta.GetCharacter(1), "warpoints") > topplayerwp3 ) && (conta.GetCharacter(1).serial != topplayerwp1serial ) && (conta.GetCharacter(1).serial != topplayerwp2serial ) ) 
+topplayerwp3:=(GetObjProperty(conta.GetCharacter(1), "warpoints"));
+topplayerwp3nome:=conta.GetCharacter(1).name;
+topplayerwp3serial:=conta.GetCharacter(1).serial;
+endif
+
+if((conta.GetCharacter(2)) && (GetObjProperty(conta.GetCharacter(2), "warpoints") > topplayerwp3 ) && (conta.GetCharacter(2).serial != topplayerwp1serial ) && (conta.GetCharacter(2).serial != topplayerwp2serial ) ) 
+topplayerwp3:=(GetObjProperty(conta.GetCharacter(2), "warpoints"));
+topplayerwp3nome:=conta.GetCharacter(2).name;
+topplayerwp3serial:=conta.GetCharacter(2).serial;
+endif
+
+if((conta.GetCharacter(3)) && (GetObjProperty(conta.GetCharacter(3), "warpoints") > topplayerwp3 ) && (conta.GetCharacter(3).serial != topplayerwp1serial ) && (conta.GetCharacter(3).serial != topplayerwp2serial ) ) 
+topplayerwp3:=(GetObjProperty(conta.GetCharacter(3), "warpoints"));
+topplayerwp3nome:=conta.GetCharacter(3).name;
+topplayerwp3serial:=conta.GetCharacter(3).serial;
+endif
+
+if((conta.GetCharacter(4)) && (GetObjProperty(conta.GetCharacter(4), "warpoints") > topplayerwp3 ) && (conta.GetCharacter(4).serial != topplayerwp1serial ) && (conta.GetCharacter(4).serial != topplayerwp2serial ) ) 
+topplayerwp3:=(GetObjProperty(conta.GetCharacter(4), "warpoints"));
+topplayerwp3nome:=conta.GetCharacter(4).name;
+topplayerwp3serial:=conta.GetCharacter(4).serial;
+endif
+
+if((conta.GetCharacter(5)) && (GetObjProperty(conta.GetCharacter(5), "warpoints") > topplayerwp3 ) && (conta.GetCharacter(5).serial != topplayerwp1serial ) && (conta.GetCharacter(5).serial != topplayerwp2serial ) ) 
+topplayerwp3:=(GetObjProperty(conta.GetCharacter(5), "warpoints"));
+topplayerwp3nome:=conta.GetCharacter(5).name;
+topplayerwp3serial:=conta.GetCharacter(5).serial;
+endif
+
+endforeach
+
+if(topplayerwp3nome == "-")
+topplayerwp3:="-";
+endif
+
+var tp3:= { topplayerwp3, topplayerwp3nome };
+SetGlobalProperty("topplayerwp3", tp3);
+
+
+
+////////TOP 4 WP///////
+var topplayerwp4:=0;
+var topplayerwp4nome:="-";
+var topplayerwp4serial;
+
+foreach acc in ListAccounts()
+conta:=FindAccount( acc );
+
+if((conta.GetCharacter(1)) && (GetObjProperty(conta.GetCharacter(1), "warpoints") > topplayerwp4 ) && (conta.GetCharacter(1).serial != topplayerwp1serial ) && (conta.GetCharacter(1).serial != topplayerwp2serial ) && (conta.GetCharacter(1).serial != topplayerwp3serial ) )
+topplayerwp4:=(GetObjProperty(conta.GetCharacter(1), "warpoints"));
+topplayerwp4nome:=conta.GetCharacter(1).name;
+topplayerwp4serial:=conta.GetCharacter(1).serial;
+endif
+
+if((conta.GetCharacter(2)) && (GetObjProperty(conta.GetCharacter(2), "warpoints") > topplayerwp4 ) && (conta.GetCharacter(2).serial != topplayerwp1serial ) && (conta.GetCharacter(2).serial != topplayerwp2serial ) && (conta.GetCharacter(2).serial != topplayerwp3serial ) )
+topplayerwp4:=(GetObjProperty(conta.GetCharacter(2), "warpoints"));
+topplayerwp4nome:=conta.GetCharacter(2).name;
+topplayerwp4serial:=conta.GetCharacter(2).serial;
+endif
+
+if((conta.GetCharacter(3)) && (GetObjProperty(conta.GetCharacter(3), "warpoints") > topplayerwp4 ) && (conta.GetCharacter(3).serial != topplayerwp1serial ) && (conta.GetCharacter(3).serial != topplayerwp2serial ) && (conta.GetCharacter(3).serial != topplayerwp3serial ) )
+topplayerwp4:=(GetObjProperty(conta.GetCharacter(3), "warpoints"));
+topplayerwp4nome:=conta.GetCharacter(3).name;
+topplayerwp4serial:=conta.GetCharacter(3).serial;
+endif
+
+if((conta.GetCharacter(4)) && (GetObjProperty(conta.GetCharacter(4), "warpoints") > topplayerwp4 ) && (conta.GetCharacter(4).serial != topplayerwp1serial ) && (conta.GetCharacter(4).serial != topplayerwp2serial ) && (conta.GetCharacter(4).serial != topplayerwp3serial ) )
+topplayerwp4:=(GetObjProperty(conta.GetCharacter(4), "warpoints"));
+topplayerwp4nome:=conta.GetCharacter(4).name;
+topplayerwp4serial:=conta.GetCharacter(4).serial;
+endif
+
+if((conta.GetCharacter(5)) && (GetObjProperty(conta.GetCharacter(5), "warpoints") > topplayerwp4 ) && (conta.GetCharacter(5).serial != topplayerwp1serial ) && (conta.GetCharacter(5).serial != topplayerwp2serial ) && (conta.GetCharacter(5).serial != topplayerwp3serial ) )  
+topplayerwp4:=(GetObjProperty(conta.GetCharacter(5), "warpoints"));
+topplayerwp4nome:=conta.GetCharacter(5).name;
+topplayerwp4serial:=conta.GetCharacter(5).serial;
+endif
+
+endforeach
+
+if(topplayerwp4nome == "-")
+topplayerwp4:="-";
+endif
+
+var tp4:= { topplayerwp4, topplayerwp4nome };
+SetGlobalProperty("topplayerwp4", tp4);
+
+
+
+////////TOP 5 WP///////
+var topplayerwp5:=0;
+var topplayerwp5nome:="-";
+var topplayerwp5serial;
+
+foreach acc in ListAccounts()
+conta:=FindAccount( acc );
+
+if((conta.GetCharacter(1)) && (GetObjProperty(conta.GetCharacter(1), "warpoints") > topplayerwp5 ) && (conta.GetCharacter(1).serial != topplayerwp1serial ) && (conta.GetCharacter(1).serial != topplayerwp2serial ) && (conta.GetCharacter(1).serial != topplayerwp3serial ) && (conta.GetCharacter(1).serial != topplayerwp4serial ) )
+topplayerwp5:=(GetObjProperty(conta.GetCharacter(1), "warpoints"));
+topplayerwp5nome:=conta.GetCharacter(1).name;
+topplayerwp5serial:=conta.GetCharacter(1).serial;
+endif
+
+if((conta.GetCharacter(2)) && (GetObjProperty(conta.GetCharacter(2), "warpoints") > topplayerwp5 ) && (conta.GetCharacter(2).serial != topplayerwp1serial ) && (conta.GetCharacter(2).serial != topplayerwp2serial ) && (conta.GetCharacter(2).serial != topplayerwp3serial ) && (conta.GetCharacter(2).serial != topplayerwp4serial ) )
+topplayerwp5:=(GetObjProperty(conta.GetCharacter(2), "warpoints"));
+topplayerwp5nome:=conta.GetCharacter(2).name;
+topplayerwp5serial:=conta.GetCharacter(2).serial;
+endif
+
+if((conta.GetCharacter(3)) && (GetObjProperty(conta.GetCharacter(3), "warpoints") > topplayerwp5 ) && (conta.GetCharacter(3).serial != topplayerwp1serial ) && (conta.GetCharacter(3).serial != topplayerwp2serial ) && (conta.GetCharacter(3).serial != topplayerwp3serial ) && (conta.GetCharacter(3).serial != topplayerwp4serial ) )
+topplayerwp5:=(GetObjProperty(conta.GetCharacter(3), "warpoints"));
+topplayerwp5nome:=conta.GetCharacter(3).name;
+topplayerwp5serial:=conta.GetCharacter(3).serial;
+endif
+
+if((conta.GetCharacter(4)) && (GetObjProperty(conta.GetCharacter(4), "warpoints") > topplayerwp5 ) && (conta.GetCharacter(4).serial != topplayerwp1serial ) && (conta.GetCharacter(4).serial != topplayerwp2serial ) && (conta.GetCharacter(4).serial != topplayerwp3serial ) && (conta.GetCharacter(4).serial != topplayerwp4serial ) )
+topplayerwp5:=(GetObjProperty(conta.GetCharacter(4), "warpoints"));
+topplayerwp5nome:=conta.GetCharacter(4).name;
+topplayerwp5serial:=conta.GetCharacter(4).serial;
+endif
+
+if((conta.GetCharacter(5)) && (GetObjProperty(conta.GetCharacter(5), "warpoints") > topplayerwp5 ) && (conta.GetCharacter(5).serial != topplayerwp1serial ) && (conta.GetCharacter(5).serial != topplayerwp2serial ) && (conta.GetCharacter(5).serial != topplayerwp3serial ) && (conta.GetCharacter(5).serial != topplayerwp4serial ) )  
+topplayerwp5:=(GetObjProperty(conta.GetCharacter(5), "warpoints"));
+topplayerwp5nome:=conta.GetCharacter(5).name;
+topplayerwp5serial:=conta.GetCharacter(5).serial;
+endif
+
+endforeach
+
+if(topplayerwp5nome == "-")
+topplayerwp5:="-";
+endif
+
+var tp5:= { topplayerwp5, topplayerwp5nome };
+SetGlobalProperty("topplayerwp5", tp5);
+
+var guildasfile:=array("[playerswp]", "1Nome="+topplayerwp1nome, "1WPs="+topplayerwp1, "2Nome="+topplayerwp2nome, "2WPs="+topplayerwp2, "3Nome="+topplayerwp3nome, "3WPs="+topplayerwp3, "4Nome="+topplayerwp4nome, "4WPs="+topplayerwp4, "5Nome="+topplayerwp5nome, "5WPs="+topplayerwp5);
+
+if(WriteFile("db/playerswp.ini", guildasfile) == error)
+Broadcast( "[ERRO] Ao atualizar rank de players wp." ,0,33 );
+endif
+
+endfunction
+
+
+
+///////ATUALIZAR KP///////
+function atualizarkpplayer()
+
+////////TOP 1 WP///////////
+var topplayerwp1:=0;
+var topplayerwp1nome:="-";
+var topplayerwp1serial;
+var conta;
+
+foreach acc in ListAccounts( )
+conta:=FindAccount( acc );
+
+if((conta.GetCharacter(1)) && (GetObjProperty(conta.GetCharacter(1), "kp") > topplayerwp1 ) )
+topplayerwp1:=(GetObjProperty(conta.GetCharacter(1), "kp"));
+topplayerwp1nome:=conta.GetCharacter(1).name;
+topplayerwp1serial:=conta.GetCharacter(1).serial;
+endif
+
+if((conta.GetCharacter(2)) && (GetObjProperty(conta.GetCharacter(2), "kp") > topplayerwp1 ) )
+topplayerwp1:=(GetObjProperty(conta.GetCharacter(2), "kp"));
+topplayerwp1nome:=conta.GetCharacter(2).name;
+topplayerwp1serial:=conta.GetCharacter(2).serial;
+endif
+
+if((conta.GetCharacter(3)) && (GetObjProperty(conta.GetCharacter(3), "kp") > topplayerwp1 ) )
+topplayerwp1:=(GetObjProperty(conta.GetCharacter(3), "kp"));
+topplayerwp1nome:=conta.GetCharacter(3).name;
+topplayerwp1serial:=conta.GetCharacter(3).serial;
+endif
+
+if((conta.GetCharacter(4)) && (GetObjProperty(conta.GetCharacter(4), "kp") > topplayerwp1 ) )
+topplayerwp1:=(GetObjProperty(conta.GetCharacter(4), "kp"));
+topplayerwp1nome:=conta.GetCharacter(4).name;
+topplayerwp1serial:=conta.GetCharacter(4).serial;
+endif
+
+if((conta.GetCharacter(5)) && (GetObjProperty(conta.GetCharacter(5), "kp") > topplayerwp1 ) )
+topplayerwp1:=(GetObjProperty(conta.GetCharacter(5), "kp"));
+topplayerwp1nome:=conta.GetCharacter(5).name;
+topplayerwp1serial:=conta.GetCharacter(5).serial;
+endif
+
+endforeach
+
+if(topplayerwp1nome == "-")
+topplayerwp1:="-";
+endif
+
+var tp1:= { topplayerwp1, topplayerwp1nome };
+SetGlobalProperty("topplayerkp1", tp1);
+
+
+////////TOP 2 WP///////
+var topplayerwp2:=0;
+var topplayerwp2nome:="-";
+var topplayerwp2serial;
+
+foreach acc in ListAccounts()
+conta:=FindAccount( acc );
+
+if((conta.GetCharacter(1)) && (GetObjProperty(conta.GetCharacter(1), "kp") > topplayerwp2 ) && (conta.GetCharacter(1).serial != topplayerwp1serial ) )
+topplayerwp2:=(GetObjProperty(conta.GetCharacter(1), "kp"));
+topplayerwp2nome:=conta.GetCharacter(1).name;
+topplayerwp2serial:=conta.GetCharacter(1).serial;
+endif
+
+if((conta.GetCharacter(2)) && (GetObjProperty(conta.GetCharacter(2), "kp") > topplayerwp2 ) && (conta.GetCharacter(2).serial != topplayerwp1serial ) )
+topplayerwp2:=(GetObjProperty(conta.GetCharacter(2), "kp"));
+topplayerwp2nome:=conta.GetCharacter(2).name;
+topplayerwp2serial:=conta.GetCharacter(2).serial;
+endif
+
+if((conta.GetCharacter(3)) && (GetObjProperty(conta.GetCharacter(3), "kp") > topplayerwp2 ) && (conta.GetCharacter(3).serial != topplayerwp1serial ) )
+topplayerwp2:=(GetObjProperty(conta.GetCharacter(3), "kp"));
+topplayerwp2nome:=conta.GetCharacter(3).name;
+topplayerwp2serial:=conta.GetCharacter(3).serial;
+endif
+
+if((conta.GetCharacter(4)) && (GetObjProperty(conta.GetCharacter(4), "kp") > topplayerwp2 ) && (conta.GetCharacter(4).serial != topplayerwp1serial ) )
+topplayerwp2:=(GetObjProperty(conta.GetCharacter(4), "kp"));
+topplayerwp2nome:=conta.GetCharacter(4).name;
+topplayerwp2serial:=conta.GetCharacter(4).serial;
+endif
+
+if((conta.GetCharacter(5)) && (GetObjProperty(conta.GetCharacter(5), "kp") > topplayerwp2 ) && (conta.GetCharacter(5).serial != topplayerwp1serial ) )
+topplayerwp2:=(GetObjProperty(conta.GetCharacter(5), "kp"));
+topplayerwp2nome:=conta.GetCharacter(5).name;
+topplayerwp2serial:=conta.GetCharacter(5).serial;
+endif
+
+endforeach
+
+if(topplayerwp2nome == "-")
+topplayerwp2:="-";
+endif
+
+var tp2:= { topplayerwp2, topplayerwp2nome };
+SetGlobalProperty("topplayerkp2", tp2);
+
+
+////////TOP 3 WP///////
+var topplayerwp3:=0;
+var topplayerwp3nome:="-";
+var topplayerwp3serial;
+
+foreach acc in ListAccounts()
+conta:=FindAccount( acc );
+
+if((conta.GetCharacter(1)) && (GetObjProperty(conta.GetCharacter(1), "kp") > topplayerwp3 ) && (conta.GetCharacter(1).serial != topplayerwp1serial ) && (conta.GetCharacter(1).serial != topplayerwp2serial ) ) 
+topplayerwp3:=(GetObjProperty(conta.GetCharacter(1), "kp"));
+topplayerwp3nome:=conta.GetCharacter(1).name;
+topplayerwp3serial:=conta.GetCharacter(1).serial;
+endif
+
+if((conta.GetCharacter(2)) && (GetObjProperty(conta.GetCharacter(2), "kp") > topplayerwp3 ) && (conta.GetCharacter(2).serial != topplayerwp1serial ) && (conta.GetCharacter(2).serial != topplayerwp2serial ) ) 
+topplayerwp3:=(GetObjProperty(conta.GetCharacter(2), "kp"));
+topplayerwp3nome:=conta.GetCharacter(2).name;
+topplayerwp3serial:=conta.GetCharacter(2).serial;
+endif
+
+if((conta.GetCharacter(3)) && (GetObjProperty(conta.GetCharacter(3), "kp") > topplayerwp3 ) && (conta.GetCharacter(3).serial != topplayerwp1serial ) && (conta.GetCharacter(3).serial != topplayerwp2serial ) ) 
+topplayerwp3:=(GetObjProperty(conta.GetCharacter(3), "kp"));
+topplayerwp3nome:=conta.GetCharacter(3).name;
+topplayerwp3serial:=conta.GetCharacter(3).serial;
+endif
+
+if((conta.GetCharacter(4)) && (GetObjProperty(conta.GetCharacter(4), "kp") > topplayerwp3 ) && (conta.GetCharacter(4).serial != topplayerwp1serial ) && (conta.GetCharacter(4).serial != topplayerwp2serial ) ) 
+topplayerwp3:=(GetObjProperty(conta.GetCharacter(4), "kp"));
+topplayerwp3nome:=conta.GetCharacter(4).name;
+topplayerwp3serial:=conta.GetCharacter(4).serial;
+endif
+
+if((conta.GetCharacter(5)) && (GetObjProperty(conta.GetCharacter(5), "kp") > topplayerwp3 ) && (conta.GetCharacter(5).serial != topplayerwp1serial ) && (conta.GetCharacter(5).serial != topplayerwp2serial ) ) 
+topplayerwp3:=(GetObjProperty(conta.GetCharacter(5), "kp"));
+topplayerwp3nome:=conta.GetCharacter(5).name;
+topplayerwp3serial:=conta.GetCharacter(5).serial;
+endif
+
+endforeach
+
+if(topplayerwp3nome == "-")
+topplayerwp3:="-";
+endif
+
+var tp3:= { topplayerwp3, topplayerwp3nome };
+SetGlobalProperty("topplayerkp3", tp3);
+
+
+
+////////TOP 4 WP///////
+var topplayerwp4:=0;
+var topplayerwp4nome:="-";
+var topplayerwp4serial;
+
+foreach acc in ListAccounts()
+conta:=FindAccount( acc );
+
+if((conta.GetCharacter(1)) && (GetObjProperty(conta.GetCharacter(1), "kp") > topplayerwp4 ) && (conta.GetCharacter(1).serial != topplayerwp1serial ) && (conta.GetCharacter(1).serial != topplayerwp2serial ) && (conta.GetCharacter(1).serial != topplayerwp3serial ) )
+topplayerwp4:=(GetObjProperty(conta.GetCharacter(1), "kp"));
+topplayerwp4nome:=conta.GetCharacter(1).name;
+topplayerwp4serial:=conta.GetCharacter(1).serial;
+endif
+
+if((conta.GetCharacter(2)) && (GetObjProperty(conta.GetCharacter(2), "kp") > topplayerwp4 ) && (conta.GetCharacter(2).serial != topplayerwp1serial ) && (conta.GetCharacter(2).serial != topplayerwp2serial ) && (conta.GetCharacter(2).serial != topplayerwp3serial ) )
+topplayerwp4:=(GetObjProperty(conta.GetCharacter(2), "kp"));
+topplayerwp4nome:=conta.GetCharacter(2).name;
+topplayerwp4serial:=conta.GetCharacter(2).serial;
+endif
+
+if((conta.GetCharacter(3)) && (GetObjProperty(conta.GetCharacter(3), "kp") > topplayerwp4 ) && (conta.GetCharacter(3).serial != topplayerwp1serial ) && (conta.GetCharacter(3).serial != topplayerwp2serial ) && (conta.GetCharacter(3).serial != topplayerwp3serial ) )
+topplayerwp4:=(GetObjProperty(conta.GetCharacter(3), "kp"));
+topplayerwp4nome:=conta.GetCharacter(3).name;
+topplayerwp4serial:=conta.GetCharacter(3).serial;
+endif
+
+if((conta.GetCharacter(4)) && (GetObjProperty(conta.GetCharacter(4), "kp") > topplayerwp4 ) && (conta.GetCharacter(4).serial != topplayerwp1serial ) && (conta.GetCharacter(4).serial != topplayerwp2serial ) && (conta.GetCharacter(4).serial != topplayerwp3serial ) )
+topplayerwp4:=(GetObjProperty(conta.GetCharacter(4), "kp"));
+topplayerwp4nome:=conta.GetCharacter(4).name;
+topplayerwp4serial:=conta.GetCharacter(4).serial;
+endif
+
+if((conta.GetCharacter(5)) && (GetObjProperty(conta.GetCharacter(5), "kp") > topplayerwp4 ) && (conta.GetCharacter(5).serial != topplayerwp1serial ) && (conta.GetCharacter(5).serial != topplayerwp2serial ) && (conta.GetCharacter(5).serial != topplayerwp3serial ) )  
+topplayerwp4:=(GetObjProperty(conta.GetCharacter(5), "kp"));
+topplayerwp4nome:=conta.GetCharacter(5).name;
+topplayerwp4serial:=conta.GetCharacter(5).serial;
+endif
+
+endforeach
+
+if(topplayerwp4nome == "-")
+topplayerwp4:="-";
+endif
+
+var tp4:= { topplayerwp4, topplayerwp4nome };
+SetGlobalProperty("topplayerkp4", tp4);
+
+
+
+////////TOP 5 WP///////
+var topplayerwp5:=0;
+var topplayerwp5nome:="-";
+var topplayerwp5serial;
+
+foreach acc in ListAccounts()
+conta:=FindAccount( acc );
+
+if((conta.GetCharacter(1)) && (GetObjProperty(conta.GetCharacter(1), "kp") > topplayerwp5 ) && (conta.GetCharacter(1).serial != topplayerwp1serial ) && (conta.GetCharacter(1).serial != topplayerwp2serial ) && (conta.GetCharacter(1).serial != topplayerwp3serial ) && (conta.GetCharacter(1).serial != topplayerwp4serial ) )
+topplayerwp5:=(GetObjProperty(conta.GetCharacter(1), "kp"));
+topplayerwp5nome:=conta.GetCharacter(1).name;
+topplayerwp5serial:=conta.GetCharacter(1).serial;
+endif
+
+if((conta.GetCharacter(2)) && (GetObjProperty(conta.GetCharacter(2), "kp") > topplayerwp5 ) && (conta.GetCharacter(2).serial != topplayerwp1serial ) && (conta.GetCharacter(2).serial != topplayerwp2serial ) && (conta.GetCharacter(2).serial != topplayerwp3serial ) && (conta.GetCharacter(2).serial != topplayerwp4serial ) )
+topplayerwp5:=(GetObjProperty(conta.GetCharacter(2), "kp"));
+topplayerwp5nome:=conta.GetCharacter(2).name;
+topplayerwp5serial:=conta.GetCharacter(2).serial;
+endif
+
+if((conta.GetCharacter(3)) && (GetObjProperty(conta.GetCharacter(3), "kp") > topplayerwp5 ) && (conta.GetCharacter(3).serial != topplayerwp1serial ) && (conta.GetCharacter(3).serial != topplayerwp2serial ) && (conta.GetCharacter(3).serial != topplayerwp3serial ) && (conta.GetCharacter(3).serial != topplayerwp4serial ) )
+topplayerwp5:=(GetObjProperty(conta.GetCharacter(3), "kp"));
+topplayerwp5nome:=conta.GetCharacter(3).name;
+topplayerwp5serial:=conta.GetCharacter(3).serial;
+endif
+
+if((conta.GetCharacter(4)) && (GetObjProperty(conta.GetCharacter(4), "kp") > topplayerwp5 ) && (conta.GetCharacter(4).serial != topplayerwp1serial ) && (conta.GetCharacter(4).serial != topplayerwp2serial ) && (conta.GetCharacter(4).serial != topplayerwp3serial ) && (conta.GetCharacter(4).serial != topplayerwp4serial ) )
+topplayerwp5:=(GetObjProperty(conta.GetCharacter(4), "kp"));
+topplayerwp5nome:=conta.GetCharacter(4).name;
+topplayerwp5serial:=conta.GetCharacter(4).serial;
+endif
+
+if((conta.GetCharacter(5)) && (GetObjProperty(conta.GetCharacter(5), "kp") > topplayerwp5 ) && (conta.GetCharacter(5).serial != topplayerwp1serial ) && (conta.GetCharacter(5).serial != topplayerwp2serial ) && (conta.GetCharacter(5).serial != topplayerwp3serial ) && (conta.GetCharacter(5).serial != topplayerwp4serial ) )  
+topplayerwp5:=(GetObjProperty(conta.GetCharacter(5), "kp"));
+topplayerwp5nome:=conta.GetCharacter(5).name;
+topplayerwp5serial:=conta.GetCharacter(5).serial;
+endif
+
+endforeach
+
+if(topplayerwp5nome == "-")
+topplayerwp5:="-";
+endif
+
+var tp5:= { topplayerwp5, topplayerwp5nome };
+SetGlobalProperty("topplayerkp5", tp5);
+
+var guildasfile:=array("[playerskp]", "1Nome="+topplayerwp1nome, "1KPs="+topplayerwp1, "2Nome="+topplayerwp2nome, "2KPs="+topplayerwp2, "3Nome="+topplayerwp3nome, "3KPs="+topplayerwp3, "4Nome="+topplayerwp4nome, "4KPs="+topplayerwp4, "5Nome="+topplayerwp5nome, "5KPs="+topplayerwp5);
+
+if(WriteFile("db/playerskp.ini", guildasfile) == error)
+Broadcast( "[ERRO] Ao atualizar rank de players kp." ,0,33 );
+endif
+
+endfunction
+
+
+////ATUALIZAR PVP POINTS
+function atualizarpvppoints();
+
+////////TOP 1 WP///////////
+var topplayerwp1:=0;
+var topplayerwp1nome:="-";
+var topplayerwp1serial;
+var conta;
+
+foreach acc in ListAccounts( )
+conta:=FindAccount( acc );
+
+if((conta.GetCharacter(1)) && (GetObjProperty(conta.GetCharacter(1), "pvppoint") > topplayerwp1 ) )
+topplayerwp1:=(GetObjProperty(conta.GetCharacter(1), "pvppoint"));
+topplayerwp1nome:=conta.GetCharacter(1).name;
+topplayerwp1serial:=conta.GetCharacter(1).serial;
+endif
+
+if((conta.GetCharacter(2)) && (GetObjProperty(conta.GetCharacter(2), "pvppoint") > topplayerwp1 ) )
+topplayerwp1:=(GetObjProperty(conta.GetCharacter(2), "pvppoint"));
+topplayerwp1nome:=conta.GetCharacter(2).name;
+topplayerwp1serial:=conta.GetCharacter(2).serial;
+endif
+
+if((conta.GetCharacter(3)) && (GetObjProperty(conta.GetCharacter(3), "pvppoint") > topplayerwp1 ) )
+topplayerwp1:=(GetObjProperty(conta.GetCharacter(3), "pvppoint"));
+topplayerwp1nome:=conta.GetCharacter(3).name;
+topplayerwp1serial:=conta.GetCharacter(3).serial;
+endif
+
+if((conta.GetCharacter(4)) && (GetObjProperty(conta.GetCharacter(4), "pvppoint") > topplayerwp1 ) )
+topplayerwp1:=(GetObjProperty(conta.GetCharacter(4), "pvppoint"));
+topplayerwp1nome:=conta.GetCharacter(4).name;
+topplayerwp1serial:=conta.GetCharacter(4).serial;
+endif
+
+if((conta.GetCharacter(5)) && (GetObjProperty(conta.GetCharacter(5), "pvppoint") > topplayerwp1 ) )
+topplayerwp1:=(GetObjProperty(conta.GetCharacter(5), "pvppoint"));
+topplayerwp1nome:=conta.GetCharacter(5).name;
+topplayerwp1serial:=conta.GetCharacter(5).serial;
+endif
+
+endforeach
+
+if(topplayerwp1nome == "-")
+topplayerwp1:="-";
+endif
+
+var tp1:= { topplayerwp1, topplayerwp1nome };
+SetGlobalProperty("topplayerpvp1", tp1);
+
+
+////////TOP 2 WP///////
+var topplayerwp2:=0;
+var topplayerwp2nome:="-";
+var topplayerwp2serial;
+
+foreach acc in ListAccounts()
+conta:=FindAccount( acc );
+
+if((conta.GetCharacter(1)) && (GetObjProperty(conta.GetCharacter(1), "pvppoint") > topplayerwp2 ) && (conta.GetCharacter(1).serial != topplayerwp1serial ) )
+topplayerwp2:=(GetObjProperty(conta.GetCharacter(1), "pvppoint"));
+topplayerwp2nome:=conta.GetCharacter(1).name;
+topplayerwp2serial:=conta.GetCharacter(1).serial;
+endif
+
+if((conta.GetCharacter(2)) && (GetObjProperty(conta.GetCharacter(2), "pvppoint") > topplayerwp2 ) && (conta.GetCharacter(2).serial != topplayerwp1serial ) )
+topplayerwp2:=(GetObjProperty(conta.GetCharacter(2), "pvppoint"));
+topplayerwp2nome:=conta.GetCharacter(2).name;
+topplayerwp2serial:=conta.GetCharacter(2).serial;
+endif
+
+if((conta.GetCharacter(3)) && (GetObjProperty(conta.GetCharacter(3), "pvppoint") > topplayerwp2 ) && (conta.GetCharacter(3).serial != topplayerwp1serial ) )
+topplayerwp2:=(GetObjProperty(conta.GetCharacter(3), "pvppoint"));
+topplayerwp2nome:=conta.GetCharacter(3).name;
+topplayerwp2serial:=conta.GetCharacter(3).serial;
+endif
+
+if((conta.GetCharacter(4)) && (GetObjProperty(conta.GetCharacter(4), "pvppoint") > topplayerwp2 ) && (conta.GetCharacter(4).serial != topplayerwp1serial ) )
+topplayerwp2:=(GetObjProperty(conta.GetCharacter(4), "pvppoint"));
+topplayerwp2nome:=conta.GetCharacter(4).name;
+topplayerwp2serial:=conta.GetCharacter(4).serial;
+endif
+
+if((conta.GetCharacter(5)) && (GetObjProperty(conta.GetCharacter(5), "pvppoint") > topplayerwp2 ) && (conta.GetCharacter(5).serial != topplayerwp1serial ) )
+topplayerwp2:=(GetObjProperty(conta.GetCharacter(5), "pvppoint"));
+topplayerwp2nome:=conta.GetCharacter(5).name;
+topplayerwp2serial:=conta.GetCharacter(5).serial;
+endif
+
+endforeach
+
+if(topplayerwp2nome == "-")
+topplayerwp2:="-";
+endif
+
+var tp2:= { topplayerwp2, topplayerwp2nome };
+SetGlobalProperty("topplayerpvp2", tp2);
+
+
+////////TOP 3 WP///////
+var topplayerwp3:=0;
+var topplayerwp3nome:="-";
+var topplayerwp3serial;
+
+foreach acc in ListAccounts()
+conta:=FindAccount( acc );
+
+if((conta.GetCharacter(1)) && (GetObjProperty(conta.GetCharacter(1), "pvppoint") > topplayerwp3 ) && (conta.GetCharacter(1).serial != topplayerwp1serial ) && (conta.GetCharacter(1).serial != topplayerwp2serial ) ) 
+topplayerwp3:=(GetObjProperty(conta.GetCharacter(1), "pvppoint"));
+topplayerwp3nome:=conta.GetCharacter(1).name;
+topplayerwp3serial:=conta.GetCharacter(1).serial;
+endif
+
+if((conta.GetCharacter(2)) && (GetObjProperty(conta.GetCharacter(2), "pvppoint") > topplayerwp3 ) && (conta.GetCharacter(2).serial != topplayerwp1serial ) && (conta.GetCharacter(2).serial != topplayerwp2serial ) ) 
+topplayerwp3:=(GetObjProperty(conta.GetCharacter(2), "pvppoint"));
+topplayerwp3nome:=conta.GetCharacter(2).name;
+topplayerwp3serial:=conta.GetCharacter(2).serial;
+endif
+
+if((conta.GetCharacter(3)) && (GetObjProperty(conta.GetCharacter(3), "pvppoint") > topplayerwp3 ) && (conta.GetCharacter(3).serial != topplayerwp1serial ) && (conta.GetCharacter(3).serial != topplayerwp2serial ) ) 
+topplayerwp3:=(GetObjProperty(conta.GetCharacter(3), "pvppoint"));
+topplayerwp3nome:=conta.GetCharacter(3).name;
+topplayerwp3serial:=conta.GetCharacter(3).serial;
+endif
+
+if((conta.GetCharacter(4)) && (GetObjProperty(conta.GetCharacter(4), "pvppoint") > topplayerwp3 ) && (conta.GetCharacter(4).serial != topplayerwp1serial ) && (conta.GetCharacter(4).serial != topplayerwp2serial ) ) 
+topplayerwp3:=(GetObjProperty(conta.GetCharacter(4), "pvppoint"));
+topplayerwp3nome:=conta.GetCharacter(4).name;
+topplayerwp3serial:=conta.GetCharacter(4).serial;
+endif
+
+if((conta.GetCharacter(5)) && (GetObjProperty(conta.GetCharacter(5), "pvppoint") > topplayerwp3 ) && (conta.GetCharacter(5).serial != topplayerwp1serial ) && (conta.GetCharacter(5).serial != topplayerwp2serial ) ) 
+topplayerwp3:=(GetObjProperty(conta.GetCharacter(5), "pvppoint"));
+topplayerwp3nome:=conta.GetCharacter(5).name;
+topplayerwp3serial:=conta.GetCharacter(5).serial;
+endif
+
+endforeach
+
+if(topplayerwp3nome == "-")
+topplayerwp3:="-";
+endif
+
+var tp3:= { topplayerwp3, topplayerwp3nome };
+SetGlobalProperty("topplayerpvp3", tp3);
+
+
+
+////////TOP 4 WP///////
+var topplayerwp4:=0;
+var topplayerwp4nome:="-";
+var topplayerwp4serial;
+
+foreach acc in ListAccounts()
+conta:=FindAccount( acc );
+
+if((conta.GetCharacter(1)) && (GetObjProperty(conta.GetCharacter(1), "pvppoint") > topplayerwp4 ) && (conta.GetCharacter(1).serial != topplayerwp1serial ) && (conta.GetCharacter(1).serial != topplayerwp2serial ) && (conta.GetCharacter(1).serial != topplayerwp3serial ) )
+topplayerwp4:=(GetObjProperty(conta.GetCharacter(1), "pvppoint"));
+topplayerwp4nome:=conta.GetCharacter(1).name;
+topplayerwp4serial:=conta.GetCharacter(1).serial;
+endif
+
+if((conta.GetCharacter(2)) && (GetObjProperty(conta.GetCharacter(2), "pvppoint") > topplayerwp4 ) && (conta.GetCharacter(2).serial != topplayerwp1serial ) && (conta.GetCharacter(2).serial != topplayerwp2serial ) && (conta.GetCharacter(2).serial != topplayerwp3serial ) )
+topplayerwp4:=(GetObjProperty(conta.GetCharacter(2), "pvppoint"));
+topplayerwp4nome:=conta.GetCharacter(2).name;
+topplayerwp4serial:=conta.GetCharacter(2).serial;
+endif
+
+if((conta.GetCharacter(3)) && (GetObjProperty(conta.GetCharacter(3), "pvppoint") > topplayerwp4 ) && (conta.GetCharacter(3).serial != topplayerwp1serial ) && (conta.GetCharacter(3).serial != topplayerwp2serial ) && (conta.GetCharacter(3).serial != topplayerwp3serial ) )
+topplayerwp4:=(GetObjProperty(conta.GetCharacter(3), "pvppoint"));
+topplayerwp4nome:=conta.GetCharacter(3).name;
+topplayerwp4serial:=conta.GetCharacter(3).serial;
+endif
+
+if((conta.GetCharacter(4)) && (GetObjProperty(conta.GetCharacter(4), "pvppoint") > topplayerwp4 ) && (conta.GetCharacter(4).serial != topplayerwp1serial ) && (conta.GetCharacter(4).serial != topplayerwp2serial ) && (conta.GetCharacter(4).serial != topplayerwp3serial ) )
+topplayerwp4:=(GetObjProperty(conta.GetCharacter(4), "pvppoint"));
+topplayerwp4nome:=conta.GetCharacter(4).name;
+topplayerwp4serial:=conta.GetCharacter(4).serial;
+endif
+
+if((conta.GetCharacter(5)) && (GetObjProperty(conta.GetCharacter(5), "pvppoint") > topplayerwp4 ) && (conta.GetCharacter(5).serial != topplayerwp1serial ) && (conta.GetCharacter(5).serial != topplayerwp2serial ) && (conta.GetCharacter(5).serial != topplayerwp3serial ) )  
+topplayerwp4:=(GetObjProperty(conta.GetCharacter(5), "pvppoint"));
+topplayerwp4nome:=conta.GetCharacter(5).name;
+topplayerwp4serial:=conta.GetCharacter(5).serial;
+endif
+
+endforeach
+
+if(topplayerwp4nome == "-")
+topplayerwp4:="-";
+endif
+
+var tp4:= { topplayerwp4, topplayerwp4nome };
+SetGlobalProperty("topplayerpvp4", tp4);
+
+
+
+////////TOP 5 WP///////
+var topplayerwp5:=0;
+var topplayerwp5nome:="-";
+var topplayerwp5serial;
+
+foreach acc in ListAccounts()
+conta:=FindAccount( acc );
+
+if((conta.GetCharacter(1)) && (GetObjProperty(conta.GetCharacter(1), "pvppoint") > topplayerwp5 ) && (conta.GetCharacter(1).serial != topplayerwp1serial ) && (conta.GetCharacter(1).serial != topplayerwp2serial ) && (conta.GetCharacter(1).serial != topplayerwp3serial ) && (conta.GetCharacter(1).serial != topplayerwp4serial ) )
+topplayerwp5:=(GetObjProperty(conta.GetCharacter(1), "pvppoint"));
+topplayerwp5nome:=conta.GetCharacter(1).name;
+topplayerwp5serial:=conta.GetCharacter(1).serial;
+endif
+
+if((conta.GetCharacter(2)) && (GetObjProperty(conta.GetCharacter(2), "pvppoint") > topplayerwp5 ) && (conta.GetCharacter(2).serial != topplayerwp1serial ) && (conta.GetCharacter(2).serial != topplayerwp2serial ) && (conta.GetCharacter(2).serial != topplayerwp3serial ) && (conta.GetCharacter(2).serial != topplayerwp4serial ) )
+topplayerwp5:=(GetObjProperty(conta.GetCharacter(2), "pvppoint"));
+topplayerwp5nome:=conta.GetCharacter(2).name;
+topplayerwp5serial:=conta.GetCharacter(2).serial;
+endif
+
+if((conta.GetCharacter(3)) && (GetObjProperty(conta.GetCharacter(3), "pvppoint") > topplayerwp5 ) && (conta.GetCharacter(3).serial != topplayerwp1serial ) && (conta.GetCharacter(3).serial != topplayerwp2serial ) && (conta.GetCharacter(3).serial != topplayerwp3serial ) && (conta.GetCharacter(3).serial != topplayerwp4serial ) )
+topplayerwp5:=(GetObjProperty(conta.GetCharacter(3), "pvppoint"));
+topplayerwp5nome:=conta.GetCharacter(3).name;
+topplayerwp5serial:=conta.GetCharacter(3).serial;
+endif
+
+if((conta.GetCharacter(4)) && (GetObjProperty(conta.GetCharacter(4), "pvppoint") > topplayerwp5 ) && (conta.GetCharacter(4).serial != topplayerwp1serial ) && (conta.GetCharacter(4).serial != topplayerwp2serial ) && (conta.GetCharacter(4).serial != topplayerwp3serial ) && (conta.GetCharacter(4).serial != topplayerwp4serial ) )
+topplayerwp5:=(GetObjProperty(conta.GetCharacter(4), "pvppoint"));
+topplayerwp5nome:=conta.GetCharacter(4).name;
+topplayerwp5serial:=conta.GetCharacter(4).serial;
+endif
+
+if((conta.GetCharacter(5)) && (GetObjProperty(conta.GetCharacter(5), "pvppoint") > topplayerwp5 ) && (conta.GetCharacter(5).serial != topplayerwp1serial ) && (conta.GetCharacter(5).serial != topplayerwp2serial ) && (conta.GetCharacter(5).serial != topplayerwp3serial ) && (conta.GetCharacter(5).serial != topplayerwp4serial ) )  
+topplayerwp5:=(GetObjProperty(conta.GetCharacter(5), "pvppoint"));
+topplayerwp5nome:=conta.GetCharacter(5).name;
+topplayerwp5serial:=conta.GetCharacter(5).serial;
+endif
+
+endforeach
+
+if(topplayerwp5nome == "-")
+topplayerwp5:="-";
+endif
+
+var tp5:= { topplayerwp5, topplayerwp5nome };
+SetGlobalProperty("topplayerpvp5", tp5);
+
+var guildasfile:=array("[playerspvp]", "1Nome="+topplayerwp1nome, "1PVPs="+topplayerwp1, "2Nome="+topplayerwp2nome, "2PVPs="+topplayerwp2, "3Nome="+topplayerwp3nome, "3PVPs="+topplayerwp3, "4Nome="+topplayerwp4nome, "4PVPs="+topplayerwp4, "5Nome="+topplayerwp5nome, "5PVPs="+topplayerwp5);
+
+if(WriteFile("db/playerspvp.ini", guildasfile) == error)
+Broadcast( "[ERRO] Ao atualizar rank de players pvp." ,0,33 );
+endif
+
+endfunction

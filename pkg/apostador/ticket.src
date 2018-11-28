@@ -1,0 +1,13 @@
+//-----------------------------
+// Autor: Ragen@lineone.net
+// Distribuicao: Open Source
+//-----------------------------
+// Descricao: Ticket de Apostas
+//-----------------------------
+
+
+use uo;
+
+program textcmd_ticket(who)
+   SendSysmessage (who, "Clique no cofre das apostas e espere por 10 segundos para que o npc lhe tire da arena e entregue seu dinheiro!",9,89);
+endprogram

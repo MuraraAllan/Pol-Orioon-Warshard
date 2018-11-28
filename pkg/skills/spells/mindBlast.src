@@ -1,0 +1,125 @@
+use os;
+use uo;
+
+include "include/spellRestrictions";
+include "include/attributes";
+
+program cast_mind_blast( parms )
+var prevtime;
+prevtime := ReadGameClock() + 8;
+var loss := RandomDiceroll("1d4"); 
+var circle := 5;
+  var delivery := "direct";
+  var noto := "harmful";
+  var result := maincast(parms, delivery, circle, noto, 37);
+  if(result == 0)
+    return;
+  endif
+var dmg ;
+  var caster := result[1];
+  var cast_on := result[2];
+  var my_int := CInt(GetIntelligence(caster));
+  var his_int := CInt(GetIntelligence(cast_on));
+ var mr := CInt(GetObjProperty(cast_on, "mr"));
+ var mrr := CInt(GetObjProperty(caster, "mr"));
+//se o mr for maior que o tanto que remove e o mrr for = ou - que 20;
+var  mana := GetMana(caster);
+ 
+if(Readgameclock() >=  prevtime)
+    SendSysMessage(caster, "Voce demorou demais e perdeu o focuss",9,90);
+PlayStationaryEffect( caster.x, caster.y, caster.z, FX_SMOKE, 0xa, 0xa );     
+ playSoundEffect(caster,0x005d);
+SetMana(caster, mana + 14);
+    return;
+  endif
+if((mr >= 10) && (mrr <= 0))
+PlayMovingEffect(caster, cast_on, FX_CURSE_EFFECT, 5, 1);
+PlaySoundEffect(cast_on, SFX_SPELL_MAGIC_REFLECTION);
+    PlayObjectCenteredEffect(cast_on, FX_CURSE_EFFECT, 10,10);
+    SendSysMessage(cast_on, "Sua Aura Anti Magia Lhe Protege",9,89);
+SetobjProperty(cast_on,"mr", GetobjProperty(cast_on,"mr")-160);
+sleepms(1500);
+PlayMovingEffect(cast_on, caster, FX_CURSE_EFFECT, 5, 1);
+SetobjProperty(cast_on,"delayreflect", Readgameclock() + 120);
+cast_on := caster;
+
+//se o caster tiver de reflect maior que o cast_on;
+elseif((mr >= 10) && (mrr >= mr))
+//cast_on
+PlaySoundEffect(cast_on, SFX_SPELL_MAGIC_REFLECTION);
+    PlayObjectCenteredEffect(cast_on, FX_CURSE_EFFECT, 10,10);
+       SendSysMessage(cast_on, "Sua Aura Anti Magia Lhe Protege",9,89);
+SetobjProperty(cast_on,"mr", GetobjProperty(cast_on,"mr")-160);
+PlayMovingEffect(caster, cast_on, FX_CURSE_EFFECT, 5, 1);
+SetobjProperty(cast_on,"delayreflect", Readgameclock() + 120);
+sleepms(1500);
+//caster
+PlayMovingEffect(cast_on, caster, FX_CURSE_EFFECT, 5, 1);
+    SendSysMessage(caster, "Sua Aura Anti Magia Lhe Protege",9,89);
+SetobjProperty(caster,"mr", GetobjProperty(caster,"mr")-160);
+sleepms(1500);
+PlayMovingEffect(caster, cast_on, FX_CURSE_EFFECT, 5, 1);
+SetobjProperty(caster,"delayreflect", Readgameclock() + 120);
+
+//se o cast_on tiver de reflect maior que o caster;
+elseif((mr >= 10) && (mr >= mrr) && (mrr >= 1))
+//cast_on
+PlaySoundEffect(cast_on, SFX_SPELL_MAGIC_REFLECTION);
+    PlayObjectCenteredEffect(cast_on, FX_CURSE_EFFECT, 10,10);
+    SendSysMessage(cast_on, "Sua Aura Anti Magia Lhe Protege",9,89);
+PlayMovingEffect(caster, cast_on, FX_CURSE_EFFECT, 5, 1);
+SetobjProperty(cast_on,"mr", GetobjProperty(cast_on,"mr")-160);
+SetobjProperty(cast_on,"delayreflect", Readgameclock() + 120);
+
+sleep(1);
+//caster
+PlaySoundEffect(caster, SFX_SPELL_MAGIC_REFLECTION);
+    PlayObjectCenteredEffect(caster, FX_CURSE_EFFECT, 10,10);
+    SendSysMessage(cast_on, "Sua Aura Anti Magia Lhe Protege",9,89);
+SetobjProperty(caster,"mr", GetobjProperty(caster,"mr")-160);
+SetobjProperty(caster,"delayreflect", Readgameclock() + 120);
+PlayMovingEffect(cast_on, caster, FX_CURSE_EFFECT, 5, 1);
+sleep(2);
+
+//caster
+PlaySoundEffect(cast_on, SFX_SPELL_MAGIC_REFLECTION);
+    PlayObjectCenteredEffect(cast_on, FX_CURSE_EFFECT, 10,10);
+    SendSysMessage(cast_on, "Sua Aura Anti Magia Lhe Protege",9,89);
+SetobjProperty(cast_on,"delayreflect", Readgameclock() + 120);
+
+PlayMovingEffect(caster, cast_on, FX_CURSE_EFFECT, 5, 1);
+cast_on := caster;
+
+//se forem iguais(0)
+elseif((mr <= 0) && (mrr <= 0))
+cast_on := cast_on;
+endif
+  
+   PlaySoundEffect(cast_on, SFX_SPELL_MIND_BLAST);
+ PlayMovingEffect(caster, cast_on, FX_CURSE_EFFECT, 5, 1);
+
+var  a := CInt(GetIntelligence(cast_on)/3) - CInt(GetIntelligence(caster)/3) + loss;
+var  intigual := CInt(GetIntelligence(cast_on)/3) - CInt(GetIntelligence(caster)/3) ;
+   dmg := CInt(GetIntelligence(caster)/3) - CInt(GetIntelligence(cast_on)/3) + loss;
+ PlaySoundEffect(cast_on, SFX_SPELL_MIND_BLAST);
+PlayMovingEffect(caster, cast_on, FX_CURSE_EFFECT, 5, 1);
+if(my_int < his_int)
+ ApplyRawDamage(caster, a);
+sendsysmessage(caster, "Sua Inteligencia eh inferior a do seu alvo e voce perdeu " + a + " ponto(s) de vida "  ,9,89);
+PrintTextAbove(caster, " " + a + " ", FONT_SMALL_LIGHT, 38);
+SetObjProperty(caster, "Lastataque", Readgameclock() + 5);
+elseif(my_int == his_int)
+ApplyRawDamage(caster, "0");
+ApplyRawDamage(cast_on, "0");
+PrintTextAbove(cast_on, " " + "0" + " ", FONT_SMALL_LIGHT, 38);
+PrintTextAbove(caster, " " + "0" + " ", FONT_SMALL_LIGHT, 38);
+ PlaySoundEffect(cast_on, SFX_SPELL_MIND_BLAST);
+  PlayMovingEffect(caster, cast_on, FX_CURSE_EFFECT, 5, 1);
+else
+ PlaySoundEffect(cast_on, SFX_SPELL_MIND_BLAST);
+PlayMovingEffect(caster, cast_on, FX_CURSE_EFFECT, 5, 1);
+SetObjProperty(cast_on, "Lastataque", Readgameclock() + 5);
+  ApplyRawDamage(cast_on, dmg);
+PrintTextAbove(cast_on, " " + dmg + " ", FONT_SMALL_LIGHT, 38);
+endif
+endprogram

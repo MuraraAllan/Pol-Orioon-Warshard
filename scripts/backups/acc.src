@@ -1,0 +1,28 @@
+use os;
+use uo;
+use util;
+use http;
+
+include "include/clock";
+include "include/accounts";
+
+program display_server_status ()
+
+WriteHTML ("<title>Criador de Contas. #Sysco WS</title>");
+WriteHTML ("<form method=POST action=--WEBBOT-SELF-- onSubmit=www.sysco.cjb.net webbot-onSubmit>");
+WriteHTML ("<font size=5 color=#CC0000><b>Criador de Contas Sysco WS...</font></b>");
+WriteHTML ("<br>");
+WriteHTML ("<br>");
+WriteHTML ("<br>");
+WriteHTML ("<br>");
+var login:=WriteHTML ("<p><font size=4><b>Login: </font></b><input type=text maxlength=20 name=login size=23></p>&nbsp;
+");
+WriteHTML ("<br>");
+WriteHTML ("<br>");
+var senha:=WriteHTML ("<p><font size=4><b>Senha: </font></b><input type=password maxlength=20 name='senha' size=23></p>");
+var repitsenha:=WriteHTML ("<p><font size=4><b>Senha: </font></b><input type=password maxlength=20 name=senharepit size=23> (redigite a senha)</p>");
+
+writehtml ("<br><br><input type=submit value=Enviar name=login >");
+writehtml ("<br><input type=reset value=Resetar>");
+
+endprogram

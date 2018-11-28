@@ -1,0 +1,78 @@
+use uo;
+use os;
+use math;
+
+include "include/attributes";
+
+program jailar(who)
+Sendsysmessage(who, "Use '.gmtools'",9,33);
+return;
+var segundos:=0;
+ var gump := SendTextEntryGump(who, "Qual a quantia de horas?", 1, 1, 26, "Use '0' para Desjailar.");
+
+  if(!gump)
+  Sendsysmessage(who, "Cancelado.",2,33);
+  return;
+  endif
+  
+
+if(gump == "0")
+var desjail := SendTextEntryGump(who, "Qual o Login da Conta?", 1, 1, 26, "Desjailar:");
+if(!desjail)
+Sendsysmessage(who, "Cancelado",2,33);
+return;
+endif
+
+var acc:=FindAccount( desjail );
+if(!acc)
+Sendsysmessage(who, "Login inexistente.",2,33);
+return;
+endif
+acc.eraseprop("tempojail");
+acc.enable();
+Sendsysmessage(who, "Conta " +acc.name+ " desjailada.",2,33);
+return;
+endif
+
+  segundos:=(Cint(gump)*3600);
+
+  Sendsysmessage(who, "Selecione o Player a ser Jailado.",3,95);
+  Sendsysmessage(who, "Caso queira especificar um LOGIN aperte ESC.",9,66);
+  var alvo :=  Target( who );
+  var conta := alvo.acct;
+
+  if(!alvo)
+   var noalvo := SendTextEntryGump(who, "Qual o login da conta que deve ser Jailada?", 1, 1, 26, "Login a ser Jailado:");
+   var cc:=FindAccount( noalvo );
+
+	if(!cc)
+	Sendsysmessage(who, "Login inexistente.",2,33);
+	return;
+	endif
+
+	syslog("[JAIL]: Conta " + cc.name + " foi jailada por " + gump + " horas. Pelo Login Staff " +who.acct.name);
+	cc.setprop("tempojail", Cint(ReadGameClock() + segundos ) );
+	cc.disable();
+	Sendsysmessage(who, "Conta " +cc.name+ " JAILADA por " +gump+ " horas.",2,33);
+
+  return;
+  endif
+
+  if(!conta)
+  Sendsysmessage(who, "O alvo deve ser humano.",2,33);
+  return;
+  endif
+  
+
+
+
+
+syslog("[JAIL]: Conta " + conta.name + " foi jailada por " + gump + " horas. Pelo Login Staff " +who.acct.name);
+conta.setprop("tempojail", Cint(ReadGameClock() + segundos ) );
+conta.disable();
+DisconnectClient(alvo);
+Sendsysmessage(who, "Conta " +conta.name+ " JAILADA por " +gump+ " horas.",2,33);
+
+
+
+endprogram

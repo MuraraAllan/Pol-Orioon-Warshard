@@ -1,0 +1,194 @@
+use cfgfile;
+use util;
+use uo;
+use os;
+
+include "include/spellRestrictions";
+include "include/eventID";
+include "include/attributes";
+include "include/client";
+include "include/yesno";
+include "include/skills";
+
+program tame(who)
+   EraseObjProperty(who, "IsMeditating");
+  EraseObjProperty(who, "HealTimer");
+  var conf := ReadConfigFile("::npcdesc");
+  var elem;
+  var points := 0;
+  SendSysMessage( who, "Que animal voce gostaria de domesticar?" );
+  var thecreature := Target(who);
+   if(!thecreature)
+    SendSysMessage(who, "Cancelado.");
+    return;
+  endif
+  if(!CheckLineOfSight(who, thecreature))
+    SendSysMessage(who, "voce nao encherga isto");
+    return;
+  endif
+  if(Distance(who,thecreature) > 6)
+     SendSysMessage(who, "A Criatura esta muito longe para ouvir seus apelos!");
+    return;
+  endif
+  elem := FindConfigElem(conf, thecreature.npctemplate);
+  if(!elem)
+    SendSysMessage(who, "Voce nao pode tamar isto!");
+    return;
+  endif
+  var difficulty := CInt(GetConfigInt(elem, "tameskill"));
+var dificuldade := difficulty;
+  points := (difficulty*2);
+  if(!difficulty)
+    SendSysMessage(who, "Voce nao pode tamar isto!");
+    return;
+  endif
+  if (thecreature.script == "tamed")
+    SendSysMessage(who, "O Alvo ja tem um dono.");
+    return;
+  endif
+    if(GetObjProperty(thecreature, "prevtamed"));
+	if(difficulty > 20)
+	  difficulty := difficulty - 20;
+	else
+	  difficulty := 0;
+	endif
+	if(points > 20)
+	  points := points - 20;
+	else
+	  points := 0;
+	endif
+  endif
+  var ownerarray := GetObjProperty(thecreature, "LastOwners");
+  if(!ownerarray)
+    ownerarray := {};
+  endif
+  if(who.serial in ownerarray)
+    points := 0;
+  endif
+  var amt := len(ownerarray);
+  var holder := {};
+  foreach thing in ownerarray
+    if((thing != who.serial) and (amt < 10))
+      holder.append(thing);
+    else
+      amt := amt - 1;
+    endif
+  endforeach
+  ownerarray := holder;
+  ownerarray.append(who.serial);
+  SetObjProperty(thecreature, "LastOwners", ownerarray);
+  if(points != 0)
+    points := points * 10;
+  endif
+  var thename := get_name(thecreature.name);
+  var critterhp := GetHp(thecreature);
+  var count;
+  var counter := 0;
+  sleep(1);
+var calculo123 := randomint(3) + 2;
+  while(counter < calculo123)
+    if(who.dead)
+      break;
+    else
+      critterhp := GetHp(thecreature);
+if(Distance(who,thecreature) > 10)
+     SendSysMessage(who, "A Criatura foge da sua linha de visao!");
+    return;
+  endif
+
+      case(randomdiceroll("1d4"))
+        0: PrintTextAbove(who, "O gostosura de " + thename + ".");
+        1: PrintTextAbove(who, "Te amo " + thename + ".");
+        2: PrintTextAbove(who,  thename + ", quer fazer sexo?");
+        3: PrintTextAbove(who,  thename + " Vamo logo porra.");
+        4: PrintTextAbove(who, thename + " vamo mata ums newba por ai vamo ?");
+         endcase
+
+      counter := counter + 1;
+var calculodelay := randomint(3) + 2;
+
+    sleep(calculodelay);
+
+if(counter >= calculo123)
+ PrintTextAbove(thecreature, "pera ae ja te do uma resposta ");
+sleep(calculodelay);
+
+
+  if(who.dead)
+    SendSysMessage(who, "Estou morto e nao posso fzer isso");
+    return;
+  endif
+  if(thecreature.script == "tamed")
+    SendSysMessage(who, "O Alvo ja tem um dono.");
+    return;
+  endif
+
+var chk := getobjproperty(thecreature,"irritado");
+if(chk >= Readgameclock())
+Printtextabove(thecreature, "* Irritado *");
+return;
+endif
+
+
+var taylor := GetEffectiveSkill(who, SKILLID_TAMING);
+var calculoa := dificuldade + randomdiceroll ("1d7") + randomdiceroll ("1d3") - randomdiceroll("1d3"); 
+var calculob := taylor + randomdiceroll("1d5") + randomdiceroll("1d3") - randomdiceroll("1d4");
+
+if(calculoa > calculob )
+sleepms(1000);
+Sendsysmessage(who,"Voce falha em domesticar a criatura.",3,98);
+endif
+
+
+if(calculoa > calculob + 5)
+sleepms(1000);
+Sendsysmessage(who,"Voce irritou a criatura.",3,98);
+setobjproperty(thecreature, "irritado", Readgameclock() + 180);
+endif
+
+if(calculoa < calculob )
+sleepms(1000);
+
+     SendSysMessage(who, "Voce conseguiu um novo amigo!");
+ uppart(who,difficulty * 10, "animaltaming","TAMING");
+
+    Run_Script_To_Completion(":spawnregion:death", thecreature);
+    thecreature.script := "tamed";
+    SetObjProperty(thecreature, "master", who.serial);
+    SetObjProperty(thecreature,"script",thecreature.script);
+    SetObjProperty(thecreature,"prevtamed",1);
+    SetObjProperty(thecreature,"happiness", 30);
+    RestartScript(thecreature);
+  
+       var npccfgfile := ReadConfigFile("::npcdesc");
+    var orneriness := npccfgfile[thecreature.npctemplate].orneriness;
+    if(!orneriness)
+      orneriness := 0;
+    endif
+    orneriness := orneriness * 3;
+      
+    endif 
+   endif
+endif
+  endwhile
+
+   
+
+
+endprogram
+
+function get_name(thename)
+  if (find(thename, "an ",1) == 1)
+    return thename[4,len(thename)];
+  elseif (find(thename, "a ",1) == 1)
+    return thename[3,len(thename)];
+  else
+    return thename;
+  endif
+endfunction
+
+
+
+
+
+

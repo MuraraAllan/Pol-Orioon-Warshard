@@ -1,0 +1,19 @@
+use uo;
+use os;
+use util;
+
+program sanguecontrol(sangue)
+case(randomdiceroll("1d5"))
+1:sangue.graphic:=4650;
+2:sangue.graphic:=4651;
+3:sangue.graphic:=4653;
+4:sangue.graphic:=4654;
+5:sangue.graphic:=4655;
+endcase
+ sangue.decayAt := ReadGameClock() + 6;
+  sleep(6);
+  if(!sangue)
+    return;
+  endif
+  DestroyItem(sangue);
+endprogram

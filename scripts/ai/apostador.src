@@ -1,0 +1,121 @@
+//--------------------------------------------------------------------
+//   Autor: Ragen@lineone.net
+//   Distribuicao: Open Source
+//
+//---------[AI/apostador v0.2.2]--------------------------------------
+// Mudancas: agora tem delay de 'const TEMPO_APOSTA' segundos para 
+// apostar
+// E a duracao maxima que o npc irá proibir apostas é de 'const
+// DURACAO_COMBATES' minutos 
+// Correcao do bug de alguem digitar "apostar" e clicar na gump de // confirmacao apos o termino do tempo limite de apostas
+//--------------------------------------------------------------------
+
+
+use npc;
+use os;
+use uo; 
+
+include "include/eventID";
+include "include/sysEvent";
+include "include/utility";
+include "include/speech";
+include "include/client";
+include "include/vetement";
+include "include/dist";
+include "include/yesNo";
+include "include/NPCBackpacks";
+include "include/objtype";
+include "include/dinheiro";       // Atente para o dinheiro.inc
+
+const REACT_THRESHOLD  := 3;      // Distancia que o npc irá ouvir
+const DEED_APOSTA      := 0x9035; // Gfx do ticket
+const PRECO_APOSTA     := 10000;   // duh! :D
+const TEMPO_APOSTA     := 20;     // Delay que o npc espera por apostadores
+const DEED_TRUE_COLOR  := 1328;   // Cor do ticket (Para contar vitorias/players em PvP)
+const DURACAO_COMBATES := 5;      // Tempo em mins
+const RAIO_ARENA       := 30;     // Atente para o tamanho da arena
+
+set_priority(50);
+
+var me := Self();
+
+
+start_script("NPCKeeper", me);
+EnableEvents(SYSEVENT_SPEECH, REACT_THRESHOLD );
+while (1)
+  var ev := os::wait_for_event(120);
+  if (ev)
+      case (ev.type)
+         SYSEVENT_SPEECH:   if((ev.text["apostar"])) 
+                              TurnToward(ev.source);
+                              var emuso := 0;
+                              var gps := CheckMoney(ev.source);
+			      foreach thing in ListMobilesInLineOfSight(me, RAIO_ARENA) 
+                               	if (CheckLosAt (me, thing.x, thing.y, thing.z))
+				    var backpack := EnumerateItemsInContainer (thing.backpack);
+                                    foreach item in backpack
+		                        if((item.objtype == DEED_APOSTA) && (item.color == DEED_TRUE_COLOR))
+                          		   emuso := emuso+1;
+					endif
+                                    endforeach 
+                                endif
+                              endforeach
+			      var tempo := CInt(GetObjProperty(me, "#tempo"));
+                              var tempo_restante;
+                              if (tempo) 
+                                 tempo_restante := (DURACAO_COMBATES*60) - (ReadGameClock()+TEMPO_APOSTA - tempo) ; 
+                              endif 
+                              if (tempo_restante <= 1)
+                                  EraseObjProperty(me, "#apostas");
+                                  EraseObjProperty(me, "#tempo");
+                              endif
+
+			      if ((ReadGameClock() > tempo) && (tempo))
+                                      if ((emuso) && (CInt(tempo_restante) >= 1))
+                                         say ("Apostas encerradas! Novas apostas so' poderao ser feitas em: "+tempo_restante+" segundos, ou quando os participantes desocuparem a arena.");
+                                     
+                                      else
+				         say ("A arena foi liberada novamente!");
+				         EraseObjProperty(me, "#apostas");
+			                 EraseObjProperty(me, "#tempo");
+				      endif
+			      elseif((ReadGameClock() <= tempo) || (!tempo))
+                                   say ("Voce ira gastar "+PRECO_APOSTA+" moedas de ouro na aposta. Quer continuar?");
+			           if(YesNo(ev.source, "Confirma?"))
+				        var apostas := GetObjProperty(me, "#apostas" );
+
+					if (gps < PRECO_APOSTA)
+				           say ("Voce nao tem dinheiro! Saia daqui seu vagabundo!"); 
+					else 			 
+				           if (!apostas) 
+                                               say ("Eu darei um prazo de "+TEMPO_APOSTA+" segundos para encerrar as apostas");
+					       apostas := 0; 
+					       SetObjProperty(me, "#tempo", ReadGameClock() + TEMPO_APOSTA);
+					   endif
+
+					   apostas := apostas + 1;
+				           say (""+apostas+" apostas confirmadas");
+ 				           SetObjProperty(me, "#apostas", apostas);
+					   tempo := GetObjProperty(me, "#tempo" );
+					endif
+
+					if (gps >= PRECO_APOSTA)
+                                             if ((ReadGameClock() > tempo) && (tempo))
+                                                  say ("Apostas encerradas! Novas apostas so' poderao ser feitas em: "+tempo_restante+" segundos, ou quando os participantes desocuparem a arena.");
+                                              
+                                     
+                                             else
+                                               say ("Tome seu ticket de aposta. E que venca o melhor!");
+				               MoveCharacterToLocation(ev.source, me.x + 5, me.y, me.z, MOVECHAR_FORCELOCATION);
+			       	               PlaySoundEffect(ev.source, SFX_SPELL_MANA_VAMPIRE );
+				               PlayStationaryEffect(ev.source.x, ev.source.y, ev.source.z, FX_SMOKE, 0xA, 0xA );
+                                               CreateItemInBackpack(ev.source, DEED_APOSTA, 1);
+                                               takecash (ev.source, PRECO_APOSTA);
+                                             endif
+                                        endif // Se tem dinheiro					
+			           endif // gump de confirmacao			        
+                              endif // Uso da arena
+			  endif // caso alguem APOSTAR
+      endcase
+   endif
+endwhile

@@ -1,0 +1,18 @@
+use uo;
+use os;
+
+include "include/attributes";
+include ":poisonwatcher:poisons";
+
+program voltar(who) 
+var lugar:=randomdiceroll("1d2");
+sendsysmessage(who,"Quem voce deseja mandar pro Hall?",0x9,90);
+var player :=  Target( who );
+ if(lugar == 1)
+  MoveCharacterToLocation( player, 3691,2522,0 );
+ else
+  MoveCharacterToLocation( player, 3692,2522,0 );
+ endif
+sendsysmessage(player,"Voce foi mandado para o Hall",9,89);
+CurePoison(who, 1, "defaultPoison", 4);
+endprogram 

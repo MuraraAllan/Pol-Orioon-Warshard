@@ -1,0 +1,15 @@
+/////////////////////////////////////////////////////////////////////////////
+//
+//  START.SRC for 'saver' package
+//
+//     saver saves game state periodically
+//     saverchk checks that saver is working
+//
+/////////////////////////////////////////////////////////////////////////////
+
+use os;
+
+print("Iniciando Sistema de Save");
+///start_script( "saver");
+///start_script( "saverChk" );
+start_script( "save");

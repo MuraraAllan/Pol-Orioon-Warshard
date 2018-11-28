@@ -1,0 +1,1082 @@
+C:\pol2\pkg\tools\gmtools\infernoTrap.src, Line 4
+program infernotrap(who, item)
+use os;
+0: get arg 'who'
+1: get arg 'item'
+Detach();
+2: Func(2,0): Detach
+3: #
+if (who.dead || who.cmdlevel >0)
+4: local #0
+5: get member 'dead'
+6: local #0
+7: get member 'cmdlevel'
+8: 0L
+9: >
+10: ||
+11: if false goto 14
+return;
+12: ""
+13: progend
+if(GetObjProperty(item,"#isrunning") == 1)
+14: local #1
+15: "#isrunning"
+16: Func(2,1): GetObjProperty
+17: 1L
+18: ==
+19: if false goto 28
+PrintTextAbove(item,"you step on a trigger, but nothing seems to happen!");
+20: local #1
+21: "you step on a trigger, but nothing seems to happen!"
+22: 3L
+23: 1000L
+24: Func(2,2): PrintTextAbove
+25: #
+return;
+26: ""
+27: progend
+var charges := GetObjProperty(item,"charges");
+28: decl local #2
+29: local #1
+30: "charges"
+31: Func(2,1): GetObjProperty
+32: :=
+33: #
+if (!charges)
+34: local #2
+35: if true goto 43
+SetObjProperty(item,"charges", 10);
+36: local #1
+37: "charges"
+38: 10L
+39: Func(2,3): SetObjProperty
+40: #
+charges := 10;
+41: 10L
+42: local2 := 
+if (charges > 0)
+43: local #2
+44: 0L
+45: >
+46: if false goto 57
+charges := charges - 1;
+47: local #2
+48: 1L
+49: -
+50: local2 := 
+SetObjProperty(item,"charges", charges);
+51: local #1
+52: "charges"
+53: local #2
+54: Func(2,3): SetObjProperty
+55: #
+56: goto69
+elseif (charges == 0)
+57: local #2
+58: 0L
+59: ==
+60: if false goto 69
+PrintTextAbove(item,"you step on a trigger, but nothing seems to happen!");
+61: local #1
+62: "you step on a trigger, but nothing seems to happen!"
+63: 3L
+64: 1000L
+65: Func(2,2): PrintTextAbove
+66: #
+return;
+67: ""
+68: progend
+SetObjProperty(item,"#isrunning", 1);
+69: local #1
+70: "#isrunning"
+71: 1L
+72: Func(2,3): SetObjProperty
+73: #
+PrintTextAbove(item,"you step on a trigger and set off a trap!");
+74: local #1
+75: "you step on a trigger and set off a trap!"
+76: 3L
+77: 1000L
+78: Func(2,2): PrintTextAbove
+79: #
+summoninferno(item);
+80: local #1
+81: makelocal
+82: jmp userfunc @93
+83: #
+sleep(40);
+84: 40L
+85: Func(3,0): sleep
+86: #
+EraseObjProperty(item,"#isrunning");
+87: local #1
+88: "#isrunning"
+89: Func(2,4): EraseObjProperty
+90: #
+91: leave block(3)
+92: progend
+C:\pol2\pkg\tools\gmtools\infernoTrap.src, Line 33
+function summoninferno(me)
+93: pop param 'me'
+var groundzero := me;
+94: decl local #1
+95: local #0
+96: :=
+97: #
+PlaySoundEffect(me, 0x1f4);
+98: local #0
+99: 500L
+100: Func(2,5): PlaySoundEffect
+101: #
+CreateItemAtLocation(groundzero.x-3, groundzero.y-3, groundzero.z, 0x398c, 1);
+102: local #1
+103: get member 'x'
+104: 3L
+105: -
+106: local #1
+107: get member 'y'
+108: 3L
+109: -
+110: local #1
+111: get member 'z'
+112: 14732L
+113: 1L
+114: Func(2,6): CreateItemAtLocation
+115: #
+CreateItemAtLocation(groundzero.x-3, groundzero.y-3, groundzero.z, 0x3996, 1);
+116: local #1
+117: get member 'x'
+118: 3L
+119: -
+120: local #1
+121: get member 'y'
+122: 3L
+123: -
+124: local #1
+125: get member 'z'
+126: 14742L
+127: 1L
+128: Func(2,6): CreateItemAtLocation
+129: #
+CreateItemAtLocation(groundzero.x-3, groundzero.y-2, groundzero.z, 0x3996, 1);
+130: local #1
+131: get member 'x'
+132: 3L
+133: -
+134: local #1
+135: get member 'y'
+136: 2L
+137: -
+138: local #1
+139: get member 'z'
+140: 14742L
+141: 1L
+142: Func(2,6): CreateItemAtLocation
+143: #
+CreateItemAtLocation(groundzero.x-3, groundzero.y-2, groundzero.z, 0x398c, 1);
+144: local #1
+145: get member 'x'
+146: 3L
+147: -
+148: local #1
+149: get member 'y'
+150: 2L
+151: -
+152: local #1
+153: get member 'z'
+154: 14732L
+155: 1L
+156: Func(2,6): CreateItemAtLocation
+157: #
+CreateItemAtLocation(groundzero.x-3, groundzero.y-1, groundzero.z, 0x3996, 1);
+158: local #1
+159: get member 'x'
+160: 3L
+161: -
+162: local #1
+163: get member 'y'
+164: 1L
+165: -
+166: local #1
+167: get member 'z'
+168: 14742L
+169: 1L
+170: Func(2,6): CreateItemAtLocation
+171: #
+CreateItemAtLocation(groundzero.x-3, groundzero.y, groundzero.z, 0x3996, 1);
+172: local #1
+173: get member 'x'
+174: 3L
+175: -
+176: local #1
+177: get member 'y'
+178: local #1
+179: get member 'z'
+180: 14742L
+181: 1L
+182: Func(2,6): CreateItemAtLocation
+183: #
+CreateItemAtLocation(groundzero.x-3, groundzero.y+1, groundzero.z, 0x3996, 1);
+184: local #1
+185: get member 'x'
+186: 3L
+187: -
+188: local #1
+189: get member 'y'
+190: 1L
+191: +
+192: local #1
+193: get member 'z'
+194: 14742L
+195: 1L
+196: Func(2,6): CreateItemAtLocation
+197: #
+CreateItemAtLocation(groundzero.x-3, groundzero.y+2, groundzero.z, 0x3996, 1);
+198: local #1
+199: get member 'x'
+200: 3L
+201: -
+202: local #1
+203: get member 'y'
+204: 2L
+205: +
+206: local #1
+207: get member 'z'
+208: 14742L
+209: 1L
+210: Func(2,6): CreateItemAtLocation
+211: #
+CreateItemAtLocation(groundzero.x-3, groundzero.y+3, groundzero.z, 0x3996, 1);
+212: local #1
+213: get member 'x'
+214: 3L
+215: -
+216: local #1
+217: get member 'y'
+218: 3L
+219: +
+220: local #1
+221: get member 'z'
+222: 14742L
+223: 1L
+224: Func(2,6): CreateItemAtLocation
+225: #
+CreateItemAtLocation(groundzero.x-3, groundzero.y+4, groundzero.z, 0x398c, 1);
+226: local #1
+227: get member 'x'
+228: 3L
+229: -
+230: local #1
+231: get member 'y'
+232: 4L
+233: +
+234: local #1
+235: get member 'z'
+236: 14732L
+237: 1L
+238: Func(2,6): CreateItemAtLocation
+239: #
+CreateItemAtLocation(groundzero.x-2, groundzero.y-3, groundzero.z, 0x398c, 1);
+240: local #1
+241: get member 'x'
+242: 2L
+243: -
+244: local #1
+245: get member 'y'
+246: 3L
+247: -
+248: local #1
+249: get member 'z'
+250: 14732L
+251: 1L
+252: Func(2,6): CreateItemAtLocation
+253: #
+CreateItemAtLocation(groundzero.x-2, groundzero.y-2, groundzero.z, 0x3996, 1);
+254: local #1
+255: get member 'x'
+256: 2L
+257: -
+258: local #1
+259: get member 'y'
+260: 2L
+261: -
+262: local #1
+263: get member 'z'
+264: 14742L
+265: 1L
+266: Func(2,6): CreateItemAtLocation
+267: #
+CreateItemAtLocation(groundzero.x-2, groundzero.y-2, groundzero.z, 0x398c, 1);
+268: local #1
+269: get member 'x'
+270: 2L
+271: -
+272: local #1
+273: get member 'y'
+274: 2L
+275: -
+276: local #1
+277: get member 'z'
+278: 14732L
+279: 1L
+280: Func(2,6): CreateItemAtLocation
+281: #
+CreateItemAtLocation(groundzero.x-2, groundzero.y-2, groundzero.z, 0x398c, 1);
+282: local #1
+283: get member 'x'
+284: 2L
+285: -
+286: local #1
+287: get member 'y'
+288: 2L
+289: -
+290: local #1
+291: get member 'z'
+292: 14732L
+293: 1L
+294: Func(2,6): CreateItemAtLocation
+295: #
+CreateItemAtLocation(groundzero.x-2, groundzero.y-1, groundzero.z, 0x3996, 1);
+296: local #1
+297: get member 'x'
+298: 2L
+299: -
+300: local #1
+301: get member 'y'
+302: 1L
+303: -
+304: local #1
+305: get member 'z'
+306: 14742L
+307: 1L
+308: Func(2,6): CreateItemAtLocation
+309: #
+CreateItemAtLocation(groundzero.x-2, groundzero.y, groundzero.z, 0x3996, 1);
+310: local #1
+311: get member 'x'
+312: 2L
+313: -
+314: local #1
+315: get member 'y'
+316: local #1
+317: get member 'z'
+318: 14742L
+319: 1L
+320: Func(2,6): CreateItemAtLocation
+321: #
+CreateItemAtLocation(groundzero.x-2, groundzero.y+1, groundzero.z, 0x3996, 1);
+322: local #1
+323: get member 'x'
+324: 2L
+325: -
+326: local #1
+327: get member 'y'
+328: 1L
+329: +
+330: local #1
+331: get member 'z'
+332: 14742L
+333: 1L
+334: Func(2,6): CreateItemAtLocation
+335: #
+CreateItemAtLocation(groundzero.x-2, groundzero.y+2, groundzero.z, 0x3996, 1);
+336: local #1
+337: get member 'x'
+338: 2L
+339: -
+340: local #1
+341: get member 'y'
+342: 2L
+343: +
+344: local #1
+345: get member 'z'
+346: 14742L
+347: 1L
+348: Func(2,6): CreateItemAtLocation
+349: #
+CreateItemAtLocation(groundzero.x-2, groundzero.y+3, groundzero.z, 0x398c, 1);
+350: local #1
+351: get member 'x'
+352: 2L
+353: -
+354: local #1
+355: get member 'y'
+356: 3L
+357: +
+358: local #1
+359: get member 'z'
+360: 14732L
+361: 1L
+362: Func(2,6): CreateItemAtLocation
+363: #
+CreateItemAtLocation(groundzero.x-2, groundzero.y+4, groundzero.z, 0x398c, 1);
+364: local #1
+365: get member 'x'
+366: 2L
+367: -
+368: local #1
+369: get member 'y'
+370: 4L
+371: +
+372: local #1
+373: get member 'z'
+374: 14732L
+375: 1L
+376: Func(2,6): CreateItemAtLocation
+377: #
+CreateItemAtLocation(groundzero.x-1, groundzero.y-3, groundzero.z, 0x398c, 1);
+378: local #1
+379: get member 'x'
+380: 1L
+381: -
+382: local #1
+383: get member 'y'
+384: 3L
+385: -
+386: local #1
+387: get member 'z'
+388: 14732L
+389: 1L
+390: Func(2,6): CreateItemAtLocation
+391: #
+CreateItemAtLocation(groundzero.x-1, groundzero.y-2, groundzero.z, 0x398c, 1);
+392: local #1
+393: get member 'x'
+394: 1L
+395: -
+396: local #1
+397: get member 'y'
+398: 2L
+399: -
+400: local #1
+401: get member 'z'
+402: 14732L
+403: 1L
+404: Func(2,6): CreateItemAtLocation
+405: #
+CreateItemAtLocation(groundzero.x-1, groundzero.y-1, groundzero.z, 0x3996, 1);
+406: local #1
+407: get member 'x'
+408: 1L
+409: -
+410: local #1
+411: get member 'y'
+412: 1L
+413: -
+414: local #1
+415: get member 'z'
+416: 14742L
+417: 1L
+418: Func(2,6): CreateItemAtLocation
+419: #
+CreateItemAtLocation(groundzero.x-1, groundzero.y-1, groundzero.z, 0x398c, 1);
+420: local #1
+421: get member 'x'
+422: 1L
+423: -
+424: local #1
+425: get member 'y'
+426: 1L
+427: -
+428: local #1
+429: get member 'z'
+430: 14732L
+431: 1L
+432: Func(2,6): CreateItemAtLocation
+433: #
+CreateItemAtLocation(groundzero.x-1, groundzero.y, groundzero.z, 0x3996, 1);
+434: local #1
+435: get member 'x'
+436: 1L
+437: -
+438: local #1
+439: get member 'y'
+440: local #1
+441: get member 'z'
+442: 14742L
+443: 1L
+444: Func(2,6): CreateItemAtLocation
+445: #
+CreateItemAtLocation(groundzero.x-1, groundzero.y+1, groundzero.z, 0x3996, 1);
+446: local #1
+447: get member 'x'
+448: 1L
+449: -
+450: local #1
+451: get member 'y'
+452: 1L
+453: +
+454: local #1
+455: get member 'z'
+456: 14742L
+457: 1L
+458: Func(2,6): CreateItemAtLocation
+459: #
+CreateItemAtLocation(groundzero.x-1, groundzero.y+1, groundzero.z, 0x398c, 1);
+460: local #1
+461: get member 'x'
+462: 1L
+463: -
+464: local #1
+465: get member 'y'
+466: 1L
+467: +
+468: local #1
+469: get member 'z'
+470: 14732L
+471: 1L
+472: Func(2,6): CreateItemAtLocation
+473: #
+CreateItemAtLocation(groundzero.x-1, groundzero.y+2, groundzero.z, 0x398c, 1);
+474: local #1
+475: get member 'x'
+476: 1L
+477: -
+478: local #1
+479: get member 'y'
+480: 2L
+481: +
+482: local #1
+483: get member 'z'
+484: 14732L
+485: 1L
+486: Func(2,6): CreateItemAtLocation
+487: #
+CreateItemAtLocation(groundzero.x-1, groundzero.y+3, groundzero.z, 0x398c, 1);
+488: local #1
+489: get member 'x'
+490: 1L
+491: -
+492: local #1
+493: get member 'y'
+494: 3L
+495: +
+496: local #1
+497: get member 'z'
+498: 14732L
+499: 1L
+500: Func(2,6): CreateItemAtLocation
+501: #
+CreateItemAtLocation(groundzero.x-1, groundzero.y+4, groundzero.z, 0x398c, 1);
+502: local #1
+503: get member 'x'
+504: 1L
+505: -
+506: local #1
+507: get member 'y'
+508: 4L
+509: +
+510: local #1
+511: get member 'z'
+512: 14732L
+513: 1L
+514: Func(2,6): CreateItemAtLocation
+515: #
+CreateItemAtLocation(groundzero.x, groundzero.y-3, groundzero.z, 0x398c, 1);
+516: local #1
+517: get member 'x'
+518: local #1
+519: get member 'y'
+520: 3L
+521: -
+522: local #1
+523: get member 'z'
+524: 14732L
+525: 1L
+526: Func(2,6): CreateItemAtLocation
+527: #
+CreateItemAtLocation(groundzero.x, groundzero.y-2, groundzero.z, 0x398c, 1);
+528: local #1
+529: get member 'x'
+530: local #1
+531: get member 'y'
+532: 2L
+533: -
+534: local #1
+535: get member 'z'
+536: 14732L
+537: 1L
+538: Func(2,6): CreateItemAtLocation
+539: #
+CreateItemAtLocation(groundzero.x, groundzero.y-1, groundzero.z, 0x398c, 1);
+540: local #1
+541: get member 'x'
+542: local #1
+543: get member 'y'
+544: 1L
+545: -
+546: local #1
+547: get member 'z'
+548: 14732L
+549: 1L
+550: Func(2,6): CreateItemAtLocation
+551: #
+CreateItemAtLocation(groundzero.x, groundzero.y, groundzero.z, 0x398c, 1);
+552: local #1
+553: get member 'x'
+554: local #1
+555: get member 'y'
+556: local #1
+557: get member 'z'
+558: 14732L
+559: 1L
+560: Func(2,6): CreateItemAtLocation
+561: #
+CreateItemAtLocation(groundzero.x, groundzero.y, groundzero.z, 0x3996, 1);
+562: local #1
+563: get member 'x'
+564: local #1
+565: get member 'y'
+566: local #1
+567: get member 'z'
+568: 14742L
+569: 1L
+570: Func(2,6): CreateItemAtLocation
+571: #
+CreateItemAtLocation(groundzero.x, groundzero.y+1, groundzero.z, 0x398c, 1);
+572: local #1
+573: get member 'x'
+574: local #1
+575: get member 'y'
+576: 1L
+577: +
+578: local #1
+579: get member 'z'
+580: 14732L
+581: 1L
+582: Func(2,6): CreateItemAtLocation
+583: #
+CreateItemAtLocation(groundzero.x, groundzero.y+2, groundzero.z, 0x398c, 1);
+584: local #1
+585: get member 'x'
+586: local #1
+587: get member 'y'
+588: 2L
+589: +
+590: local #1
+591: get member 'z'
+592: 14732L
+593: 1L
+594: Func(2,6): CreateItemAtLocation
+595: #
+CreateItemAtLocation(groundzero.x, groundzero.y+3, groundzero.z, 0x398c, 1);
+596: local #1
+597: get member 'x'
+598: local #1
+599: get member 'y'
+600: 3L
+601: +
+602: local #1
+603: get member 'z'
+604: 14732L
+605: 1L
+606: Func(2,6): CreateItemAtLocation
+607: #
+CreateItemAtLocation(groundzero.x, groundzero.y+4, groundzero.z, 0x398c, 1);
+608: local #1
+609: get member 'x'
+610: local #1
+611: get member 'y'
+612: 4L
+613: +
+614: local #1
+615: get member 'z'
+616: 14732L
+617: 1L
+618: Func(2,6): CreateItemAtLocation
+619: #
+CreateItemAtLocation(groundzero.x+1, groundzero.y-3, groundzero.z, 0x398c, 1);
+620: local #1
+621: get member 'x'
+622: 1L
+623: +
+624: local #1
+625: get member 'y'
+626: 3L
+627: -
+628: local #1
+629: get member 'z'
+630: 14732L
+631: 1L
+632: Func(2,6): CreateItemAtLocation
+633: #
+CreateItemAtLocation(groundzero.x+1, groundzero.y-2, groundzero.z, 0x398c, 1);
+634: local #1
+635: get member 'x'
+636: 1L
+637: +
+638: local #1
+639: get member 'y'
+640: 2L
+641: -
+642: local #1
+643: get member 'z'
+644: 14732L
+645: 1L
+646: Func(2,6): CreateItemAtLocation
+647: #
+CreateItemAtLocation(groundzero.x+1, groundzero.y-1, groundzero.z, 0x3996, 1);
+648: local #1
+649: get member 'x'
+650: 1L
+651: +
+652: local #1
+653: get member 'y'
+654: 1L
+655: -
+656: local #1
+657: get member 'z'
+658: 14742L
+659: 1L
+660: Func(2,6): CreateItemAtLocation
+661: #
+CreateItemAtLocation(groundzero.x+1, groundzero.y, groundzero.z, 0x3996, 1);
+662: local #1
+663: get member 'x'
+664: 1L
+665: +
+666: local #1
+667: get member 'y'
+668: local #1
+669: get member 'z'
+670: 14742L
+671: 1L
+672: Func(2,6): CreateItemAtLocation
+673: #
+CreateItemAtLocation(groundzero.x+1, groundzero.y+1, groundzero.z, 0x3996, 1);
+674: local #1
+675: get member 'x'
+676: 1L
+677: +
+678: local #1
+679: get member 'y'
+680: 1L
+681: +
+682: local #1
+683: get member 'z'
+684: 14742L
+685: 1L
+686: Func(2,6): CreateItemAtLocation
+687: #
+CreateItemAtLocation(groundzero.x+1, groundzero.y+2, groundzero.z, 0x398c, 1);
+688: local #1
+689: get member 'x'
+690: 1L
+691: +
+692: local #1
+693: get member 'y'
+694: 2L
+695: +
+696: local #1
+697: get member 'z'
+698: 14732L
+699: 1L
+700: Func(2,6): CreateItemAtLocation
+701: #
+CreateItemAtLocation(groundzero.x+1, groundzero.y+3, groundzero.z, 0x398c, 1);
+702: local #1
+703: get member 'x'
+704: 1L
+705: +
+706: local #1
+707: get member 'y'
+708: 3L
+709: +
+710: local #1
+711: get member 'z'
+712: 14732L
+713: 1L
+714: Func(2,6): CreateItemAtLocation
+715: #
+CreateItemAtLocation(groundzero.x+1, groundzero.y+4, groundzero.z, 0x398c, 1);
+716: local #1
+717: get member 'x'
+718: 1L
+719: +
+720: local #1
+721: get member 'y'
+722: 4L
+723: +
+724: local #1
+725: get member 'z'
+726: 14732L
+727: 1L
+728: Func(2,6): CreateItemAtLocation
+729: #
+CreateItemAtLocation(groundzero.x+2, groundzero.y-3, groundzero.z, 0x398c, 1);
+730: local #1
+731: get member 'x'
+732: 2L
+733: +
+734: local #1
+735: get member 'y'
+736: 3L
+737: -
+738: local #1
+739: get member 'z'
+740: 14732L
+741: 1L
+742: Func(2,6): CreateItemAtLocation
+743: #
+CreateItemAtLocation(groundzero.x+2, groundzero.y-2, groundzero.z, 0x3996, 1);
+744: local #1
+745: get member 'x'
+746: 2L
+747: +
+748: local #1
+749: get member 'y'
+750: 2L
+751: -
+752: local #1
+753: get member 'z'
+754: 14742L
+755: 1L
+756: Func(2,6): CreateItemAtLocation
+757: #
+CreateItemAtLocation(groundzero.x+2, groundzero.y-1, groundzero.z, 0x3996, 1);
+758: local #1
+759: get member 'x'
+760: 2L
+761: +
+762: local #1
+763: get member 'y'
+764: 1L
+765: -
+766: local #1
+767: get member 'z'
+768: 14742L
+769: 1L
+770: Func(2,6): CreateItemAtLocation
+771: #
+CreateItemAtLocation(groundzero.x+2, groundzero.y, groundzero.z, 0x3996, 1);
+772: local #1
+773: get member 'x'
+774: 2L
+775: +
+776: local #1
+777: get member 'y'
+778: local #1
+779: get member 'z'
+780: 14742L
+781: 1L
+782: Func(2,6): CreateItemAtLocation
+783: #
+CreateItemAtLocation(groundzero.x+2, groundzero.y+1, groundzero.z, 0x3996, 1);
+784: local #1
+785: get member 'x'
+786: 2L
+787: +
+788: local #1
+789: get member 'y'
+790: 1L
+791: +
+792: local #1
+793: get member 'z'
+794: 14742L
+795: 1L
+796: Func(2,6): CreateItemAtLocation
+797: #
+CreateItemAtLocation(groundzero.x+2, groundzero.y+2, groundzero.z, 0x3996, 1);
+798: local #1
+799: get member 'x'
+800: 2L
+801: +
+802: local #1
+803: get member 'y'
+804: 2L
+805: +
+806: local #1
+807: get member 'z'
+808: 14742L
+809: 1L
+810: Func(2,6): CreateItemAtLocation
+811: #
+CreateItemAtLocation(groundzero.x+2, groundzero.y+3, groundzero.z, 0x398c, 1);
+812: local #1
+813: get member 'x'
+814: 2L
+815: +
+816: local #1
+817: get member 'y'
+818: 3L
+819: +
+820: local #1
+821: get member 'z'
+822: 14732L
+823: 1L
+824: Func(2,6): CreateItemAtLocation
+825: #
+CreateItemAtLocation(groundzero.x+2, groundzero.y+4, groundzero.z, 0x398c, 1);
+826: local #1
+827: get member 'x'
+828: 2L
+829: +
+830: local #1
+831: get member 'y'
+832: 4L
+833: +
+834: local #1
+835: get member 'z'
+836: 14732L
+837: 1L
+838: Func(2,6): CreateItemAtLocation
+839: #
+CreateItemAtLocation(groundzero.x+3, groundzero.y-3, groundzero.z, 0x3996, 1);
+840: local #1
+841: get member 'x'
+842: 3L
+843: +
+844: local #1
+845: get member 'y'
+846: 3L
+847: -
+848: local #1
+849: get member 'z'
+850: 14742L
+851: 1L
+852: Func(2,6): CreateItemAtLocation
+853: #
+CreateItemAtLocation(groundzero.x+3, groundzero.y-2, groundzero.z, 0x3996, 1);
+854: local #1
+855: get member 'x'
+856: 3L
+857: +
+858: local #1
+859: get member 'y'
+860: 2L
+861: -
+862: local #1
+863: get member 'z'
+864: 14742L
+865: 1L
+866: Func(2,6): CreateItemAtLocation
+867: #
+CreateItemAtLocation(groundzero.x+3, groundzero.y-1, groundzero.z, 0x3996, 1);
+868: local #1
+869: get member 'x'
+870: 3L
+871: +
+872: local #1
+873: get member 'y'
+874: 1L
+875: -
+876: local #1
+877: get member 'z'
+878: 14742L
+879: 1L
+880: Func(2,6): CreateItemAtLocation
+881: #
+CreateItemAtLocation(groundzero.x+3, groundzero.y, groundzero.z, 0x3996, 1);
+882: local #1
+883: get member 'x'
+884: 3L
+885: +
+886: local #1
+887: get member 'y'
+888: local #1
+889: get member 'z'
+890: 14742L
+891: 1L
+892: Func(2,6): CreateItemAtLocation
+893: #
+CreateItemAtLocation(groundzero.x+3, groundzero.y+1, groundzero.z, 0x3996, 1);
+894: local #1
+895: get member 'x'
+896: 3L
+897: +
+898: local #1
+899: get member 'y'
+900: 1L
+901: +
+902: local #1
+903: get member 'z'
+904: 14742L
+905: 1L
+906: Func(2,6): CreateItemAtLocation
+907: #
+CreateItemAtLocation(groundzero.x+3, groundzero.y+2, groundzero.z, 0x3996, 1);
+908: local #1
+909: get member 'x'
+910: 3L
+911: +
+912: local #1
+913: get member 'y'
+914: 2L
+915: +
+916: local #1
+917: get member 'z'
+918: 14742L
+919: 1L
+920: Func(2,6): CreateItemAtLocation
+921: #
+CreateItemAtLocation(groundzero.x+3, groundzero.y+3, groundzero.z, 0x3996, 1);
+922: local #1
+923: get member 'x'
+924: 3L
+925: +
+926: local #1
+927: get member 'y'
+928: 3L
+929: +
+930: local #1
+931: get member 'z'
+932: 14742L
+933: 1L
+934: Func(2,6): CreateItemAtLocation
+935: #
+CreateItemAtLocation(groundzero.x+3, groundzero.y+3, groundzero.z, 0x3996, 1);
+936: local #1
+937: get member 'x'
+938: 3L
+939: +
+940: local #1
+941: get member 'y'
+942: 3L
+943: +
+944: local #1
+945: get member 'z'
+946: 14742L
+947: 1L
+948: Func(2,6): CreateItemAtLocation
+949: #
+var tgt := ListItemsNearLocation(groundzero.x, groundzero.y, groundzero.z, 4 );
+950: decl local #2
+951: local #1
+952: get member 'x'
+953: local #1
+954: get member 'y'
+955: local #1
+956: get member 'z'
+957: 4L
+958: Func(2,7): ListItemsNearLocation
+959: :=
+960: #
+Detach();
+961: Func(2,0): Detach
+962: #
+sleep(20);
+963: 20L
+964: Func(3,0): sleep
+965: #
+foreach x in tgt
+966: local #2
+967: initforeach @981
+if ((x.objtype == 0x3996) || (x.objtype == 0x398c))
+968: local #3
+969: get member 'objtype'
+970: 14742L
+971: ==
+972: local #3
+973: get member 'objtype'
+974: 14732L
+975: ==
+976: ||
+977: if false goto 981
+DestroyItem( x );
+978: local #3
+979: Func(2,8): DestroyItem
+980: #
+981: stepforeach @968
+982: leave block(3)
+983: 0L
+984: return

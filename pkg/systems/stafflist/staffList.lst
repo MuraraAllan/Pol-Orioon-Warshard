@@ -1,0 +1,730 @@
+C:\pol2\pkg\systems\stafflist\staffList.src, Line 8
+var stff := {};
+0: decl global #0
+1: array
+2: :=
+3: #
+var players := {};
+4: decl global #1
+5: array
+6: :=
+7: #
+var coun := {};
+8: decl global #2
+9: array
+10: :=
+11: #
+var gm := {};
+12: decl global #3
+13: array
+14: :=
+15: #
+C:\pol2\pkg\systems\stafflist\staffList.src, Line 14
+program online_server()
+stff := {};
+16: array
+17: global0 := 
+while(1)
+18: 1L
+19: if false goto 66
+var ev := wait_for_event(3600);
+20: decl local #0
+21: 3600L
+22: Func(3,0): wait_for_event
+23: :=
+24: #
+if(ev)
+25: local #0
+26: if false goto 64
+case(ev.type)
+27: local #0
+28: get member 'type'
+29: casejmp
+	17: @30
+	18: @35
+	19: @40
+	20: @45
+	21: @50
+	22: @55
+	"gmbcast": @60
+	default: @64
+staff(ev);
+30: local #0
+31: makelocal
+32: jmp userfunc @450
+33: #
+34: goto64
+login(ev);
+35: local #0
+36: makelocal
+37: jmp userfunc @155
+38: #
+39: goto64
+logoff(ev);
+40: local #0
+41: makelocal
+42: jmp userfunc @191
+43: #
+44: goto64
+delay(ev);
+45: local #0
+46: makelocal
+47: jmp userfunc @67
+48: #
+49: goto64
+Reportcounselors(ev);
+50: local #0
+51: makelocal
+52: jmp userfunc @396
+53: #
+54: goto64
+Reportgamemasters(ev);
+55: local #0
+56: makelocal
+57: jmp userfunc @423
+58: #
+59: goto64
+GMBcast(ev);
+60: local #0
+61: makelocal
+62: jmp userfunc @110
+63: #
+64: leave block(1)
+65: goto18
+66: progend
+C:\pol2\pkg\systems\stafflist\staffList.src, Line 158
+function delay(ev)
+67: pop param 'ev'
+var who := ev.player;
+68: decl local #1
+69: local #0
+70: get member 'player'
+71: :=
+72: #
+if(GetObjProperty(who, "StealthLogin"))
+73: local #1
+74: "StealthLogin"
+75: Func(2,2): GetObjProperty
+76: if false goto 80
+return;
+77: ""
+78: return
+79: goto108
+foreach person in stff
+80: global #0
+81: initforeach @106
+if(CInt(GetObjProperty(person, "LogNotify")) == 1)
+82: local #2
+83: "LogNotify"
+84: Func(2,2): GetObjProperty
+85: Func(0,0): CInt
+86: 1L
+87: ==
+88: if false goto 106
+SendSysMessage(person, who.name + " (Account name: " + who.acctname + ") has be
+89: local #2
+90: local #1
+91: get member 'name'
+92: " (Account name: "
+93: +
+94: local #1
+95: get member 'acctname'
+96: +
+97: ") has been set to delayed log out.  IP: "
+98: +
+99: local #1
+100: get member 'ip'
+101: +
+102: 3L
+103: 1000L
+104: Func(2,0): SendSysMessage
+105: #
+106: stepforeach @82
+107: leave block(3)
+108: 0L
+109: return
+C:\pol2\pkg\systems\stafflist\staffList.src, Line 31
+function GMBcast(ev)
+110: pop param 'ev'
+var msg := ev.msg;
+111: decl local #1
+112: local #0
+113: get member 'msg'
+114: :=
+115: #
+if(ev.src == "ScriptManager")
+116: local #0
+117: get member 'src'
+118: "ScriptManager"
+119: ==
+120: if false goto 132
+foreach x in gm
+121: global #3
+122: initforeach @129
+SendSysMessage(x, msg, 0, 52);
+123: local #2
+124: local #1
+125: 0L
+126: 52L
+127: Func(2,0): SendSysMessage
+128: #
+129: stepforeach @123
+130: leave block(3)
+131: goto153
+var source := ev.source;
+132: decl local #0
+133: local #0
+134: get member 'source'
+135: :=
+136: #
+foreach x in gm
+137: global #3
+138: initforeach @150
+SendSysMessage(x, source.name + ": " + msg, 0, 87);
+139: local #3
+140: local #2
+141: get member 'name'
+142: ": "
+143: +
+144: local #1
+145: +
+146: 0L
+147: 87L
+148: Func(2,0): SendSysMessage
+149: #
+150: stepforeach @139
+151: leave block(3)
+152: leave block(1)
+153: 0L
+154: return
+C:\pol2\pkg\systems\stafflist\staffList.src, Line 61
+function login(ev)
+155: pop param 'ev'
+var who := ev.player;
+156: decl local #1
+157: local #0
+158: get member 'player'
+159: :=
+160: #
+foreach person in stff
+161: global #0
+162: initforeach @187
+if(CInt(GetObjProperty(person, "LogNotify")) == 1)
+163: local #2
+164: "LogNotify"
+165: Func(2,2): GetObjProperty
+166: Func(0,0): CInt
+167: 1L
+168: ==
+169: if false goto 187
+SendSysMessage(person, who.name + " (Account name: " + who.acctname + ") has lo
+170: local #2
+171: local #1
+172: get member 'name'
+173: " (Account name: "
+174: +
+175: local #1
+176: get member 'acctname'
+177: +
+178: ") has logged on.  IP: "
+179: +
+180: local #1
+181: get member 'ip'
+182: +
+183: 3L
+184: 1000L
+185: Func(2,0): SendSysMessage
+186: #
+187: stepforeach @163
+188: leave block(3)
+189: 0L
+190: return
+C:\pol2\pkg\systems\stafflist\staffList.src, Line 70
+function logoff(ev)
+191: pop param 'ev'
+var who := ev.player;
+192: decl local #1
+193: local #0
+194: get member 'player'
+195: :=
+196: #
+var lastlogon := CInt(ReadGameClock()) - CInt(GetObjProperty(who, "LastLog"));
+197: decl local #2
+198: Func(2,3): ReadGameClock
+199: Func(0,0): CInt
+200: local #1
+201: "LastLog"
+202: Func(2,2): GetObjProperty
+203: Func(0,0): CInt
+204: -
+205: :=
+206: #
+if(!lastlogon)
+207: local #2
+208: if true goto 212
+lastlogon := "unknown";
+209: "unknown"
+210: local2 := 
+211: goto270
+var s := Mod(lastlogon, 60);
+212: decl local #0
+213: local #2
+214: 60L
+215: makelocal
+216: jmp userfunc @381
+217: :=
+218: #
+var m := CInt(lastlogon/60);
+219: decl local #1
+220: local #2
+221: 60L
+222: /
+223: Func(0,0): CInt
+224: :=
+225: #
+m := Mod(m, 60);
+226: local #4
+227: 60L
+228: makelocal
+229: jmp userfunc @381
+230: local4 := 
+var h := CInt(m / 60);
+231: decl local #2
+232: local #4
+233: 60L
+234: /
+235: Func(0,0): CInt
+236: :=
+237: #
+if (s < 10)
+238: local #3
+239: 10L
+240: <
+241: if false goto 247
+s := "0" + CStr(s);
+242: "0"
+243: local #3
+244: Func(0,3): CStr
+245: +
+246: local3 := 
+if (m < 10)
+247: local #4
+248: 10L
+249: <
+250: if false goto 256
+m := "0" + CStr(m);
+251: "0"
+252: local #4
+253: Func(0,3): CStr
+254: +
+255: local4 := 
+lastlogon := CStr(h) + ":" + CStr(m) + ":" + CStr(s);
+256: local #5
+257: Func(0,3): CStr
+258: ":"
+259: +
+260: local #4
+261: Func(0,3): CStr
+262: +
+263: ":"
+264: +
+265: local #3
+266: Func(0,3): CStr
+267: +
+268: local2 := 
+269: leave block(3)
+SetObjProperty(who, "LastLog", ReadGameClock());
+270: local #1
+271: "LastLog"
+272: Func(2,3): ReadGameClock
+273: Func(2,4): SetObjProperty
+274: #
+if(who.cmdlevel >= 1)
+275: local #1
+276: get member 'cmdlevel'
+277: 1L
+278: >=
+279: if false goto 340
+var holder := {};
+280: decl local #0
+281: array
+282: :=
+283: #
+foreach thing in stff
+284: global #0
+285: initforeach @294
+if(thing != who)
+286: local #4
+287: local #1
+288: <>
+289: if false goto 294
+holder.append(thing);
+290: local #3
+291: local #4
+292: Call Method append (1 params)
+293: #
+294: stepforeach @286
+295: leave block(3)
+stff := holder;
+296: local #3
+297: global0 := 
+holder := {};
+298: array
+299: local3 := 
+if(who.cmdlevel == 1)
+300: local #1
+301: get member 'cmdlevel'
+302: 1L
+303: ==
+304: if false goto 320
+foreach thing in coun
+305: global #2
+306: initforeach @315
+if(thing != who)
+307: local #4
+308: local #1
+309: <>
+310: if false goto 315
+holder.append(thing);
+311: local #3
+312: local #4
+313: Call Method append (1 params)
+314: #
+315: stepforeach @307
+316: leave block(3)
+coun := holder;
+317: local #3
+318: global2 := 
+319: goto339
+elseif(who.cmdlevel > 1)
+320: local #1
+321: get member 'cmdlevel'
+322: 1L
+323: >
+324: if false goto 339
+foreach thing in gm
+325: global #3
+326: initforeach @335
+if(thing != who)
+327: local #4
+328: local #1
+329: <>
+330: if false goto 335
+holder.append(thing);
+331: local #3
+332: local #4
+333: Call Method append (1 params)
+334: #
+335: stepforeach @327
+336: leave block(3)
+gm := holder;
+337: local #3
+338: global3 := 
+339: leave block(1)
+if(GetObjProperty(who, "StealthLogin"))
+340: local #1
+341: "StealthLogin"
+342: Func(2,2): GetObjProperty
+343: if false goto 347
+return;
+344: ""
+345: return
+346: goto379
+foreach person in stff
+347: global #0
+348: initforeach @377
+if(CInt(GetObjProperty(person, "LogNotify")) == 1)
+349: local #3
+350: "LogNotify"
+351: Func(2,2): GetObjProperty
+352: Func(0,0): CInt
+353: 1L
+354: ==
+355: if false goto 377
+SendSysMessage(person, who.name + " (Account name: " + who.acctname + ") has lo
+356: local #3
+357: local #1
+358: get member 'name'
+359: " (Account name: "
+360: +
+361: local #1
+362: get member 'acctname'
+363: +
+364: ") has logged off.  IP: "
+365: +
+366: local #1
+367: get member 'ip'
+368: +
+369: "   Time on- "
+370: +
+371: local #2
+372: +
+373: 3L
+374: 1000L
+375: Func(2,0): SendSysMessage
+376: #
+377: stepforeach @349
+378: leave block(3)
+379: 0L
+380: return
+C:/pol2/scripts/include/math.inc, Line 73
+function Mod(Numerator, Denominator)
+381: pop param 'Denominator'
+382: pop param 'Numerator'
+var dividend := Numerator - ( CInt(Numerator/Denominator) * Denominator );
+383: decl local #2
+384: local #1
+385: local #1
+386: local #0
+387: /
+388: Func(0,0): CInt
+389: local #0
+390: *
+391: -
+392: :=
+393: #
+return dividend;
+394: local #2
+395: return
+C:\pol2\pkg\systems\stafflist\staffList.src, Line 45
+function Reportcounselors(ev)
+396: pop param 'ev'
+var sender := GetProcess(ev.pid);
+397: decl local #1
+398: local #0
+399: get member 'pid'
+400: Func(3,1): getprocess
+401: :=
+402: #
+var k := struct;
+403: decl local #2
+404: struct
+405: :=
+406: #
+k.+type  := EVID_FIND_COUN;
+407: local #2
+408: "type"
+409: .+
+410: 21L
+411: := #
+k.+data := coun;
+412: local #2
+413: "data"
+414: .+
+415: global #2
+416: := #
+sender.sendevent(k);
+417: local #1
+418: local #2
+419: Call Method sendevent (1 params)
+420: #
+421: 0L
+422: return
+C:\pol2\pkg\systems\stafflist\staffList.src, Line 53
+function Reportgamemasters(ev)
+423: pop param 'ev'
+var sender := GetProcess(ev.pid);
+424: decl local #1
+425: local #0
+426: get member 'pid'
+427: Func(3,1): getprocess
+428: :=
+429: #
+var k := struct;
+430: decl local #2
+431: struct
+432: :=
+433: #
+k.+type  := EVID_FIND_GM;
+434: local #2
+435: "type"
+436: .+
+437: 22L
+438: := #
+k.+data  := gm;
+439: local #2
+440: "data"
+441: .+
+442: global #3
+443: := #
+sender.sendevent(k);
+444: local #1
+445: local #2
+446: Call Method sendevent (1 params)
+447: #
+448: 0L
+449: return
+C:\pol2\pkg\systems\stafflist\staffList.src, Line 125
+function staff(ev)
+450: pop param 'ev'
+var who := ev.player;
+451: decl local #1
+452: local #0
+453: get member 'player'
+454: :=
+455: #
+stff.append(who);
+456: global #0
+457: local #1
+458: Call Method append (1 params)
+459: #
+if((who.cmdlevel >= 1) and (who.cmdlevel < 3))
+460: local #1
+461: get member 'cmdlevel'
+462: 1L
+463: >=
+464: local #1
+465: get member 'cmdlevel'
+466: 3L
+467: <
+468: &&
+469: if false goto 475
+coun.append(who);
+470: global #2
+471: local #1
+472: Call Method append (1 params)
+473: #
+474: goto484
+elseif(who.cmdlevel >= 3)
+475: local #1
+476: get member 'cmdlevel'
+477: 3L
+478: >=
+479: if false goto 484
+gm.append(who);
+480: global #3
+481: local #1
+482: Call Method append (1 params)
+483: #
+SendSysMessage(Who, "Welcome, there are currently " + len(stff) + " staff onlin
+484: local #1
+485: "Welcome, there are currently "
+486: global #0
+487: Func(0,2): len
+488: +
+489: " staff online"
+490: +
+491: 3L
+492: 1000L
+493: Func(2,0): SendSysMessage
+494: #
+foreach thing in stff
+495: global #0
+496: initforeach @588
+if(thing != who)
+497: local #2
+498: local #1
+499: <>
+500: if false goto 561
+var msg := "Staff Member";
+501: decl local #0
+502: "Staff Member"
+503: :=
+504: #
+case(thing.cmdlevel)
+505: local #2
+506: get member 'cmdlevel'
+507: casejmp
+	0: @508
+	1: @511
+	2: @514
+	3: @517
+	4: @520
+	5: @523
+	default: @525
+msg := "Player";
+508: "Player"
+509: local5 := 
+510: goto525
+msg := "Counselor";
+511: "Counselor"
+512: local5 := 
+513: goto525
+msg := "Seer";
+514: "Seer"
+515: local5 := 
+516: goto525
+msg := "GM";
+517: "GM"
+518: local5 := 
+519: goto525
+msg := "Admin";
+520: "Admin"
+521: local5 := 
+522: goto525
+msg := "Developer";
+523: "Developer"
+524: local5 := 
+SendSysMessage(who, msg + " " + thing.name + " is online");
+525: local #1
+526: local #5
+527: " "
+528: +
+529: local #2
+530: get member 'name'
+531: +
+532: " is online"
+533: +
+534: 3L
+535: 1000L
+536: Func(2,0): SendSysMessage
+537: #
+if(!GetObjProperty(who, "StealthLogin"))
+538: local #1
+539: "StealthLogin"
+540: Func(2,2): GetObjProperty
+541: if true goto 559
+SendSysMessage(thing, who.name + " (Account name: " + who.acctname + ") has log
+542: local #2
+543: local #1
+544: get member 'name'
+545: " (Account name: "
+546: +
+547: local #1
+548: get member 'acctname'
+549: +
+550: ") has logged on.  IP: "
+551: +
+552: local #1
+553: get member 'ip'
+554: +
+555: 3L
+556: 1000L
+557: Func(2,0): SendSysMessage
+558: #
+559: leave block(1)
+560: goto585
+if(CInt(GetObjProperty(thing, "LogNotify")) == 1)
+561: local #2
+562: "LogNotify"
+563: Func(2,2): GetObjProperty
+564: Func(0,0): CInt
+565: 1L
+566: ==
+567: if false goto 585
+SendSysMessage(thing, who.name + " (Account name: " + who.acctname + ") has log
+568: local #2
+569: local #1
+570: get member 'name'
+571: " (Account name: "
+572: +
+573: local #1
+574: get member 'acctname'
+575: +
+576: ") has logged on.  IP: "
+577: +
+578: local #1
+579: get member 'ip'
+580: +
+581: 3L
+582: 1000L
+583: Func(2,0): SendSysMessage
+584: #
+sleep(1);
+585: 1L
+586: Func(3,2): sleep
+587: #
+588: stepforeach @497
+589: leave block(3)
+590: 0L
+591: return

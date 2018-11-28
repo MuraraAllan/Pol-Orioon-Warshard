@@ -1,0 +1,10 @@
+use os;
+use uo;
+
+include "include/save";
+
+while (1)
+  sleep( 3600 );
+  salvar();
+endwhile
+

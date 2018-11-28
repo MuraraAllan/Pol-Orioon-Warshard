@@ -1,0 +1,46 @@
+use http;
+use util;
+use uo;
+use os;
+use basic;
+use datafile;
+
+var player := QueryParam("acctName");
+var password := QueryParam("passwd");
+var IP := QueryParam("IP");
+
+if (len(player) < 4)
+   WriteHtml("ERR");
+   WriteHtml("Conta Invalida: login muito pequeno.");
+   return 0;
+endif
+
+if (len(player) > 12)
+   WriteHtml("ERR");
+   WriteHtml("Conta Invalida: login muito grande.");
+   return 0;
+endif
+
+var success := FindAccount(player);
+if (success)
+   WriteHtml("ERR");
+   WriteHtml("Erro: Este Login ja esta em uso.");
+   return 0;
+endif
+
+var dsAccountReference := OpenDataFile("accountReference");
+if (!dsAccountReference)
+   dsAccountReference := CreateDataFile("accountReference", DF_KEYTYPE_STRING);
+endif
+
+success := CreateAccount(player, password, 1);
+if (!success)
+   WriteHtml("ERR");
+   WriteHtml("Erro: Nao foi possivel criar a conta '" + player + "'.");
+   return 0;
+endif
+
+WriteHtml("OK!");
+WriteHtml("Conta '" + player + "' criada.  Senha '" + password + "'.");
+
+return 1; 

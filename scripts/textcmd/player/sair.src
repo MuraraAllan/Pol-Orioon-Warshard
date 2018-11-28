@@ -1,0 +1,28 @@
+
+Use uo;
+use os; 
+
+include "include/objtype";
+include "include/client";
+include "include/casas";
+
+
+program sair(quem) 
+var casa := quem.multi; 
+if(!casa)
+SendSysMessage(quem,"Voce nao esta em uma casa.");
+return;
+endif
+
+var placa := AcharPlaca(casa);
+if(!placa) 
+SendSysMessage(quem, "Esta casa nao tem placa? Contate um Staff!",3,33); 
+return;
+endif
+
+quem.frozen :=1;
+sleep(6);
+quem.frozen :=0;
+MoveCharacterToLocation(quem, placa.x, placa.y, placa.z, MOVECHAR_FORCELOCATION);
+SendSysMessage(quem, "Voce saiu da casa."); 
+endprogram 

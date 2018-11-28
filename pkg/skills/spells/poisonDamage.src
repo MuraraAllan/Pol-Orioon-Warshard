@@ -1,0 +1,58 @@
+use uo;
+use os;
+use util;
+
+include "include/client";
+include "include/attributes";
+include ":poisonwatcher:poisons";
+
+
+program poisondamage (passparms,item)
+var who      := passparms[1];
+var attacker := passparms[2];
+ var weapon   := passparms[3];
+ var level    := Randomdiceroll("1d3") + 1;
+  var pfield   := passparms[5];
+  var npccfg := ReadConfigFile("::npcdesc");
+
+if ((ListPoisonsByType(who, "defaultPoison").size() > 0))
+return;
+endif
+var b := ListItemsAtLocation( who.x, who.y, who.z );
+foreach a in b
+ 
+var teste := "";
+
+if(a.graphic == 14613)
+
+teste := getobjproperty(a,"caster");
+
+ attacker := SystemFindObjectBySerial(teste, sysfind_flags := 0 );
+
+if(attacker == who)
+return;
+endif
+sleepms(150);
+
+if ((ListPoisonsByType(who, "defaultPoison").size() > 0))
+return;
+endif
+
+if(who.criminal == 0)
+attacker.SetCriminal(1);
+endif
+
+    PrintTextAbove(who, "Voce foi envenenado!",3,70);
+
+if ((ListPoisonsByType(who, "defaultPoison").size() > 0))
+return;
+endif
+
+setobjproperty(who,"LEVEL:",level);
+AddPoison(who, "defaultpoison", 1500, attacker, level);
+endif
+
+
+endforeach
+endprogram
+

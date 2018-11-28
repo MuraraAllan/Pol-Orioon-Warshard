@@ -1,0 +1,34 @@
+use uo;
+use os;
+
+program textcmd_tele( who, text )
+var texto:=text;
+if(texto == "stop")
+SendSysMessage( who, "Parando!",3,66 );
+EraseObjProperty(who, "seguindo");
+return;
+endif
+
+  SendSysMessage( who, "Seguir quem?",0x9,90 );
+
+  var where := Target( who );
+  if(!where)
+  sendsysmessage(who,"Cancelado",0x9,90);
+  return;
+  endif
+
+  if(!where.acct)
+  sendsysmessage(who,"Voce deve selecionar um player!",0x9,90);
+  return;
+  endif
+sendsysmessage(who,"Seguindo " +where.name+ "." ,3,66);
+SetObjProperty(who, "seguindo", 1);
+
+While(GetObjProperty(who, "seguindo"))
+MoveCharacterToLocation( who, where.x, where.y, where.z, MOVECHAR_FORCELOCATION);
+sleepms(250);
+endwhile
+
+EraseObjProperty(who, "seguindo");
+sendsysmessage(who,"Terminado.",3,66);
+endprogram

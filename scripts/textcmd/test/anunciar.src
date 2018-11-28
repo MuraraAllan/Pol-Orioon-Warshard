@@ -1,0 +1,21 @@
+use uo;
+use os;
+
+include "include/attributes";
+
+program Anunciar(who)
+  Sendsysmessage(who,"Quem voce deseja que fale?",0x9,90);
+  var alvo :=  Target( who );
+  if(!alvo)
+  Sendsysmessage(who, "Cancelado",9,90);
+  endif
+  Printtextabove(alvo,"Bem vindo(a)");
+  sleep(4);
+  Printtextabove(alvo,"Duvidas contate um de nossos conselheiros");
+  sleep(4);
+  Printtextabove(alvo,"Bug's, CS, entre outros, contate GM");
+  sleep(5);
+  Printtextabove(alvo,"AJUDA: .ajuda");
+  sleep(2);
+  Printtextabove(alvo,"Bom Jogo e Ate Mais");
+endprogram

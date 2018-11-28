@@ -1,0 +1,90 @@
+use uo;
+use os;
+use util;
+
+include "include/attributes";
+include "../pkg/foundations/gumps/gumps";
+
+program respalarminerio(who,item)
+
+GFInitGump( 50, 20 );
+GFNoMove();
+///GFNoClose();
+GFResizePic(50, 20, 2600, 200, 310);
+
+  GFTextLine( 95 , 45, 1153 , "Tipo do Minerio" );
+  var bt2 := GFButtonID( 80, 81,  0x138a, 0x138b, 1);
+  var bt3 := GFButtonID( 80, 101, 0x138a, 0x138b, 1);
+  var bt4 := GFButtonID( 80, 121, 0x138a, 0x138b, 1);
+  var bt5 := GFButtonID( 80, 141, 0x138a, 0x138b, 1);
+  var bt6 := GFButtonID( 80, 161, 0x138a, 0x138b, 1);
+  var bt7 := GFButtonID( 80, 181, 0x138a, 0x138b, 1);
+  var bt8 := GFButtonID( 80, 201, 0x138a, 0x138b, 1);
+  var bt9 := GFButtonID( 80, 221, 0x138a, 0x138b, 1);
+  var bt10 := GFButtonID( 80, 241, 0x138a, 0x138b, 1);
+  var bt11 := GFButtonID( 80, 261, 0x138a, 0x138b, 1);
+
+  GFTextLine(110, 80,  95, "Cobalto"); 
+  GFTextLine(110, 100, 33, "Quartzo"); 
+  GFTextLine(110, 120, 95, "Esmeralda"); 
+  GFTextLine(110, 140, 33, "Criptonita"); 
+  GFTextLine(110, 160, 95, "Manganes"); 
+  GFTextLine(110, 180, 33, "Bauxita"); 
+  GFTextLine(110, 200, 95, "Silicio"); 
+  GFTextLine(110, 220, 33, "Verite"); 
+  GFTextLine(110, 240, 95, "Onyx"); 
+  GFTextLine(110, 260, 33, "Cobre"); 
+
+  ///GFTextLine( 123 , 265, 167, "#Sysco" );
+
+  var res := GFSendGump(who);
+
+var pressionou := res[0];
+
+var nome;
+case(pressionou)
+1025: setobjproperty(item,"tipominerio","cobalto");	nome:="Cobalto";
+1026: setobjproperty(item,"tipominerio","quartzo");	nome:="Quartzo";
+1027: setobjproperty(item,"tipominerio","esmeralda");	nome:="Esmeralda";
+1028: setobjproperty(item,"tipominerio","criptonita");	nome:="Criptonita";
+1029: setobjproperty(item,"tipominerio","manganes");	nome:="Manganes";
+1030: setobjproperty(item,"tipominerio","bauxita");	nome:="Bauxita";
+1031: setobjproperty(item,"tipominerio","silicio");	nome:="Silicio";
+1032: setobjproperty(item,"tipominerio","verite");	nome:="Verite";
+1033: setobjproperty(item,"tipominerio","onyx");	nome:="Onyx";
+1034: setobjproperty(item,"tipominerio","cobre");	nome:="Cobre";
+default: sendsysmessage(who, "Cancelado",9,89); return;
+endcase
+
+
+
+var aa := SendTextEntryGump( who, "Qual a quantia de Minerios? (10 max) ",  TE_STYLE_NORMAL);;
+if((!aa) || (Cint(aa) <=0))
+sendsysmessage(who, "Cancelado",9,89);
+Eraseobjproperty(item,"tipominerio");
+return;
+endif
+
+if(Cint(aa) > 10)
+aa:=10;
+endif
+setobjproperty(item,"quantiaminerio", Cint(aa));
+
+var tempo := SendTextEntryGump( who, "Qual o Tempo de Respawn? (Minutos)(Minimo:15, Maximo:250) ",  TE_STYLE_NORMAL);;
+if((!tempo) || (Cint(tempo) <=0))
+sendsysmessage(who, "Cancelado",9,89);
+Eraseobjproperty(item,"tipominerio");
+return;
+endif
+
+if((Cint(tempo) > 250) || (Cint(tempo) < 15))
+tempo:=RandomInt(150)+30;
+endif
+
+setobjproperty(item,"temporespawn", Cint(tempo));
+
+item.name:="Respawn de " +nome+ "(Quantia:" +Cint(aa)+ ") (Tempo:" +Cint(tempo)+ ")";
+item.invisible := 1;
+item.movable := 0;
+item.color:=1174;
+endprogram

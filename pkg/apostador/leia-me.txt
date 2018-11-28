@@ -1,0 +1,22 @@
+//----------------------------------------
+//        Autor:  ragen@lineone.net
+// Distribuicao:  open source
+//----------------------------------------
+
+Como instalar: 
+1 - Coloque cada arquivo em seu respectivo diretorio...
+2 - Faca um npc qualquer e use um setscript 'apostador' :D 
+
+Esse pkg é um sistema de apostas que utiliza de arenas normais, a uninca diferenca das conven
+cionais é que elas não tem portas, ou seja, os jogados só poderão entrar nela mediante o
+ pagamento ao npc que cuida das apostas...
+
+Entao apos o pvp quem sobreviver pega os tickets dos outros clicam no bau e saem (para evitar que alguem fuja da batalha clicando no baú existe um delay de 10 segundos que a pessoa tem que ficar parada para poder sair da arena) e cada ticket conseguido é trocado pelo valor que ele pagou pra entrar na arena...
+
+OBS: Coloquei também limite de tempo em cada batalha de 5mins para evitar que alguem entre na arena e fique fazendo gracinhas como "Daqui não saio, daqui ninguém me tira"... E além disso tem um limite de 20 segundos para todos fazerem suas apostas antes que o npc tranque a arena pelos 5 minutos
+
+E é isso pessoal...
+
+[]`s Ragen
+
+PS: Dê uma olhada nos screen shots

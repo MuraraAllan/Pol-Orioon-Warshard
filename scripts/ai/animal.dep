@@ -1,0 +1,16 @@
+C:\pol\scripts\ai\animal.src
+C:/pol/scripts/include/eventID.inc
+C:/pol/scripts/include/sysEvent.inc
+C:/pol/scripts/include/randName.inc
+C:/pol/scripts/include/randNameUtil.inc
+C:/pol/scripts/include/NPCUtil.inc
+C:/pol/scripts/include/objtype.inc
+C:/pol/scripts/include/dist.inc
+C:/pol/scripts/include/anchors.inc
+C:/pol/scripts/ai/main/mainLoopAnimal.inc
+C:/pol/scripts/ai/combat/fight.inc
+C:/pol/scripts/ai/combat/defaultCombatEvent.inc
+C:/pol/scripts/include/attributes.inc
+C:/pol/scripts/include/client.inc
+C:/pol/scripts/ai/setup/animalSetup.inc
+C:/pol/scripts/ai/main/sleepMode.inc

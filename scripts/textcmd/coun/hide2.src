@@ -1,0 +1,35 @@
+use os;
+use util;
+
+include "include/client";
+include "include/spellattack";
+include "include/spellrestrictions";
+
+program hide( who, place )
+
+if ( who.concealed == 1 )
+  PlayStationaryEffect(who.x ,who.y,who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlaySoundEffect(who, SFX_SPELL_FLAME_STRIKE );
+  sleepms(800);
+  PlayStationaryEffect(who.x ,who.y,who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlaySoundEffect(who, SFX_SPELL_FLAME_STRIKE );
+  sleepms(800);
+  PlayStationaryEffect(who.x ,who.y,who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlaySoundEffect(who, SFX_SPELL_FLAME_STRIKE );
+  sleepms(500);
+  who.concealed := 0;
+else
+  PlayStationaryEffect(who.x ,who.y,who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlaySoundEffect(who, SFX_SPELL_FLAME_STRIKE );
+  sleepms(800);
+  PlayStationaryEffect(who.x ,who.y,who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlaySoundEffect(who, SFX_SPELL_FLAME_STRIKE );
+  sleepms(800);
+  PlayStationaryEffect(who.x ,who.y,who.z, FX_FLAMESTRIKE, 7, 0x10 );
+  PlaySoundEffect(who, SFX_SPELL_FLAME_STRIKE );
+  sleepms(500);
+  who.concealed := 1;
+endif
+
+endprogram
+

@@ -1,0 +1,52 @@
+use os;
+use uo;
+use util;
+
+include "include/spellRestrictions";
+include "include/attributes";
+include "include/client";
+
+
+program stonewall( parms, who )
+ var circle := 3;
+  var delivery := "indirect";
+  var noto := "neutral";
+  var result := maincast(parms, delivery, circle, noto, 24);
+  if(result == 0)
+    return;
+  endif
+  var caster := result[1];
+  var cast_on := result[2];
+  var fields := {};
+  var duration;
+  var listeners := {};
+  var sufferers := {};
+  var x := cast_on.x;
+  var y := cast_on.y;
+  var z := cast_on.z;
+
+SendSysMessage(caster, "DESATIVADO PARA AJUSTES!",3,33);   
+return;
+   
+case(get_direction(caster))
+	"NS" : fields:= CreateNorthSouthField(caster, 95, x, y, z, 5);
+	"EW" : fields:= CreateEastWestField(caster, 96, x, y, z, 5);
+        endcase
+  Detach();
+  duration := CInt(GetEffectiveSkill( caster, SKILLID_MAGERY ) )/4;
+  if (duration < 30)
+    duration := 30;
+  endif
+foreach fieldpart in fields
+
+var i;
+for (i := 1; i <= 10; i := i + 1)
+PlaySoundEffect(fields[i], SFX_SPELL_WALL_OF_STONE);
+  endfor
+
+endforeach
+sleep(duration);
+foreach fieldpart in fields
+    DestroyItem(fieldpart);
+  endforeach
+endprogram

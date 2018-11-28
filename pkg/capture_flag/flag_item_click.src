@@ -1,0 +1,6 @@
+use uo;
+use os;
+
+program flag_click(who, flag)
+
+endprogram

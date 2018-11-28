@@ -1,0 +1,77 @@
+use uo;
+use os;
+include "include/attributes";
+include "../pkg/foundations/gumps/gumps";
+
+
+program stats(who)
+status(who); 
+endprogram
+
+
+function status(who)
+
+
+  who.paralyzed := 1; 
+
+
+
+ GFInitGump( 250 , 100 );
+  GFNoMove();
+  GFResizePic(50, 5, 5120, 120, 100);
+  GFTextLine( 90 , 12, 33 , "Status " );
+GFTextLine(65,  40, 1153, "Str:"); 
+GFTextLine(65, 60, 1153, "Dex:"); 
+GFTextLine(65, 80, 1153, "Int:"); 
+
+var str := GFTextEntry(100, 40,  35, 25, 1, 0); 
+var dex := GFTextEntry(100, 60, 35, 25, 1, 0); 
+var int := GFTextEntry(100, 80, 35, 25, 1, 0); 
+var ok := GFButtonID(130, 45, 0x482, 0x483, 1);
+ var bt1 := GFButtonID(130, 75, 0x47f, 0x480, 1); 
+who.paralyzed := 1; 
+var res := GFsendgump(who); 
+
+
+if(res[ok.keyid]) 
+var amtstr := Cint(SplitWords(res[str.keyid])[2]); 
+var amtdex := Cint(SplitWords(res[dex.keyid])[2]); 
+var amtint := Cint(SplitWords(res[int.keyid])[2]); 
+var soma := amtstr+amtdex+amtint; 
+
+if(soma > 225) 
+printtextaboveprivate(who, "StatsCap de 225!", who); 
+who.paralyzed := 0; 
+return; 
+endif 
+
+if((amtstr > 100) || (amtdex > 100) || (amtint > 100)) 
+printtextaboveprivate(who, "Limite de cada atributo e 100!", who); 
+who.paralyzed := 0; 
+return; 
+endif 
+
+if(soma < 225) 
+printtextaboveprivate(who, "Voce so esta usando "+soma+" dos 225! ", who); 
+who.paralyzed := 0; 
+endif 
+
+SetBaseSTRENGTH(Who, amtstr); 
+SetBaseDEXTERITY(who, amtdex); 
+SetBaseINTELLIGENCE(who, amtint); 
+SetHp(who, GetMaxHp(who));
+SetMana(who, GetMaxMana(who));
+SetStamina(who, GetMaxStamina(who));
+who.paralyzed := 0; 
+printtextaboveprivate(who, "Status setado!", who); 
+endif 
+
+who.paralyzed := 0; 
+
+
+if(res[bt1.keyid])
+sendsysmessage(who,"Cancelado!",9,89);
+return;
+endif
+
+endfunction

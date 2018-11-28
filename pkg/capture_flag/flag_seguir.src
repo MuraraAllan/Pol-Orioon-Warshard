@@ -1,0 +1,47 @@
+use uo;
+use os;
+
+const FLAG_OBJ := 0x666001; 
+
+program flag_seguir(flag)
+
+var pessoa:=GetObjProperty(flag, "serial_pessoa");
+pessoa:=SystemFindObjectBySerial(pessoa);
+
+while(1)
+ 
+ if(!flag)
+ break;
+ endif
+
+ if(pessoa.dead)
+  if((pessoa.x >= 5900) && (pessoa.x <= 5944) && (pessoa.y >= 1203) && (pessoa.y <= 1243))
+  var deadxyz:={ pessoa.x, pessoa.y, pessoa.z };
+  var x,y,z;
+  var time:=GetObjProperty(pessoa, "#FlagTime");
+  case(time)
+  "azul":   	x:=5902; y:=1204; z:=0;
+  "vermelho":	x:=5902; y:=1242; z:=0;
+  "verde":	x:=5942; y:=1204; z:=0;
+  "amarelo":	x:=5942; y:=1242; z:=0;
+  default:	x:=5932; y:=1194; z:=0; SendSysMessage(pessoa, "Voce nao possui um Time.",3,95);
+  endcase   
+  MoveCharacterToLocation(pessoa, x, y, z, MOVECHAR_FORCELOCATION);
+ SendSysMessage(pessoa, "Voce perdeu o Flag.",3,95);
+ DestroyItem(flag);
+ start_script("flag_novo", deadxyz);
+ 
+ else
+  DestroyItem(flag);
+  SendSysMessage(pessoa, "Voce nao estava dentro da arena.",3,95);
+ endif
+ SetObjProperty(pessoa, "#Flag", 0);
+ break;
+ endif
+ 
+ flag.movable:=1;
+ MoveItemToLocation(flag, pessoa.x, pessoa.y, pessoa.z+2 , MOVEITEM_FORCELOCATION);
+ flag.movable:=0;
+ sleepms(50);
+endwhile
+endprogram

@@ -1,0 +1,46 @@
+C:\pol2\pkg\tools\gmtools\makeHidden.src, Line 4
+program makhidden(who)
+use uo;
+0: get arg 'who'
+if (who.cmdlevel < 2)
+1: local #0
+2: get member 'cmdlevel'
+3: 2L
+4: <
+5: if false goto 8
+return;
+6: ""
+7: progend
+SendSysMessage( who, "Select an item to make hidden." );
+8: local #0
+9: "Select an item to make hidden."
+10: 3L
+11: 1000L
+12: Func(3,0): SendSysMessage
+13: #
+var item := Target( who, TGTOPT_NOCHECK_LOS );
+14: decl local #1
+15: local #0
+16: 0L
+17: Func(3,1): Target
+18: :=
+19: #
+if (!item)
+20: local #1
+21: if true goto 30
+SendSysMessage(who, "Targetting cancelled.");
+22: local #0
+23: "Targetting cancelled."
+24: 3L
+25: 1000L
+26: Func(3,0): SendSysMessage
+27: #
+return;
+28: ""
+29: progend
+item.invisible := 1;
+30: local #1
+31: 1L
+32: set member 'invisible' #
+33: leave block(2)
+34: progend

@@ -1,0 +1,15 @@
+use uo;
+use os;
+use util;
+
+program setar_kill(who)
+var alvo := Target(who);
+if(!alvo)
+SendSysMessage(who, "Cancelado!",9,90);
+return 0;
+endif
+var kp := GetObjProperty(alvo, "kp");
+var killpoints := kp + 999;
+SetObjProperty(alvo, "kp", killpoints);
+endprogram
+

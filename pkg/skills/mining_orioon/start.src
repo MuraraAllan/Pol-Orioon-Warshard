@@ -1,0 +1,5 @@
+use os;
+program Start_OreCore()
+  print("Iniciando o Respawn de Minerios...");
+  start_script("oreCore");
+endprogram

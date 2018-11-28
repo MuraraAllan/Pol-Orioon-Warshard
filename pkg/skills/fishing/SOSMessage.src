@@ -1,0 +1,51 @@
+use uo;
+use cfgfile;
+use os;
+use util;
+
+include "include/coords";
+include "include/canAccess";
+
+program use_message( who, message )
+  EraseObjProperty(who, "IsMeditating");
+  EraseObjProperty(who, "HealTimer");
+  if(!can_access(who, message))
+    return;
+  endif
+  if(message.movable == 0)
+    SendSysMessage(who, "You cannot use that.");
+    return;
+  endif
+  var tox := GetObjProperty(message, "tileX");
+  var toy := GetObjProperty(message, "tileY");
+  var msgindex := GetObjProperty(message, "msgnum");
+  if( tox.errortext || toy.errortext)
+	syslog("bad message "+tox+" "+toy);
+	DestroyItem(message);
+	SendSysMessage(who, "A menssagem e de codigos que escapam da sua capacidade de leitura!");
+	return;
+  endif
+  var layout := array(  "page 0",
+    	                    "resizepic 0 0 3500 300 200",
+        	                "button 110 140 1148 1149 1 0 1",
+            	            "text 20 30 0 0",
+                	        "text 20 50 0 1",
+                    	    "text 20 70 0 2");
+  var data := array();
+  var coords := ToSextant(tox, toy);
+  case (msgindex)
+	0: 	data[1] := "Socoro! Meu barco esta afundando";
+		data[2] := "as coordenadas " + coords + "!  Por Favor";
+		data[3] := "nois estamos esperando!";
+	1: 	data[1] := "Nois estamos sendo atacados por";
+		data[2] := "serpentes marinhas!  Tome as coodenadas";
+		data[3] :=  + coords + "!  Favor salve-me!";
+	2: 	data[1] := "O barco esta preso numa tempestade.";
+		data[2] := "favor venha ate " + coords + "!";
+		data[3] := "Nois estamos perdidos no mar.";
+	3: 	data[1] := "Nois estamos num territorio estranho";
+		data[2] := "coordenadas " + coords + "!";
+		data[3] := "O casco do barco quebrou ajude-me!";
+  endcase
+  var res := SendDialogGump( who, layout, data );
+endprogram

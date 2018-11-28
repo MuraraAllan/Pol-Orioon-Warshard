@@ -1,0 +1,61 @@
+use uo;
+use os;
+use cfgfile;
+use util;
+
+include "include/client";
+include "../pkg/guardas/locais";
+
+program guardas(who)
+if (who.dead)
+SendSysMessage(who, "Os Guardas nao atendem aos mortos.",9,89);
+return;
+elseif (who.criminal)
+SendSysMessage(who, "Criminosos nao podem chamar guardas",9,89);
+return;
+endif
+var prote;
+vercidade(who,prote);
+
+if(prote == 1)
+SendSysMessage(who, "Com Prote",9,89);
+else
+SendSysMessage(who, "Sem Prote",9,89);
+endif
+
+if((who.x >= 1436) && (who.y >= 1647) && (who.x <= 1507) && (who.y <= 1743))
+var msgguarda:= (randomInt(4) + 1);
+case(msgguarda)
+1:PrintTextAbove(who,"Socorro Um Santista GUARDASSSSSSSSSSS!",3,1000);
+2:PrintTextAbove(who,"Socorro Um Corintiano GUARDASSSSSSSSSSSSSSS",3,1000);
+3:PrintTextAbove(who,"Socorro Um Sao Paulino GUARDASSSSSSSSSSSSSS",3,1000);
+4:PrintTextAbove(who,"SOCORROOOOOOOOOOOOOO!! ALGUEM ME ACUDA!",3,1000);
+5:PrintTextAbove(who,"Guardas, Prendam Este Melhiante!",3,1000);
+endcase
+else
+sendsysmessage(who,"Esta Regiao Nao Eh Protegida Por Guardas",9,89);
+return;
+endif
+
+
+    var props array;
+    props.+facing := who.facing;
+var pessoas := ListMobilesNearLocationEx(who.x, who.y, who.z, 10, LISTEX_FLAG_HIDDEN+LISTEX_FLAG_NORMAL);
+foreach pessoa in pessoas
+if(pessoa.criminal)
+pessoa.hidden := 0;
+var result := CreateNpcFromTemplate( "guarda", who.x, who.y, who.z, props );
+endif
+
+endforeach
+endprogram
+
+
+function vercidade(who,prote);
+
+if((who.x >= 1436) && (who.y >= 1647) && (who.x <= 1507) && (who.y <= 1743))
+prote:=1;
+else
+prote:=0;
+endif
+endfunction

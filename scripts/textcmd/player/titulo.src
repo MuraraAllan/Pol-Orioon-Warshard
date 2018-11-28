@@ -1,0 +1,252 @@
+use uo;
+use os;
+
+include "include/attributes";
+include "../pkg/foundations/gumps/gumps";
+
+program titulo(who)
+var skills:= array();
+
+var i;
+for (i := 0; i <= SKILLID__HIGHEST; i := i + 1)
+var res := GetEffectiveSkill(who,i);
+ if (res != error)
+  skills.append({ GetAttributeIdBySkillId(i),GetEffectiveSkill(who,i) });
+ endif
+endfor
+skills:=SortMultiArrayByIndex(skills, 2);
+
+///Montando Gump
+GFInitGump( 50, 20 );
+GFNoMove();
+GFResizePic(50, 20, 2600, 280, 360);
+GFTextLine(128,  37, 64, "Escolha um Titulo");
+var bt1,bt2,bt3,bt4,bt5,bt6,bt7,bt8,btR,btG;
+var t1,t2,t3,t4,t5,t6,t7,t8;
+btR:=83;
+
+if(skills[skills.size(),2] >= 1) 
+btR:=btR+25;
+bt1:=GFButtonID(80, 83, 0x939, 0x93A, 1);
+GFTextLine(95,  80, 1153, ""+PegarTitulo(skills[skills.size(),2])+" " +PegarSkill(skills[skills.size(),1])+ "");
+t1:=(""+PegarTitulo(skills[skills.size(),2])+" " +PegarSkill(skills[skills.size(),1])+ "");
+endif
+
+if(skills[skills.size()-1,2] >= 1) 
+btR:=btR+25;
+bt2:=GFButtonID(80, 108, 0x939, 0x93A, 1);
+GFTextLine(95,  105, 1153, ""+PegarTitulo(skills[skills.size()-1,2])+" " +PegarSkill(skills[skills.size()-1,1])+ "");
+t2:=(""+PegarTitulo(skills[skills.size()-1,2])+" " +PegarSkill(skills[skills.size()-1,1])+ "");
+endif
+
+if(skills[skills.size()-2,2] >= 1)
+btR:=btR+25;
+bt3:=GFButtonID(80, 133, 0x939, 0x93A, 1); 
+GFTextLine(95,  130, 1153, ""+PegarTitulo(skills[skills.size()-2,2])+" " +PegarSkill(skills[skills.size()-2,1])+ "");
+t3:=(""+PegarTitulo(skills[skills.size()-2,2])+" " +PegarSkill(skills[skills.size()-2,1])+ "");
+endif
+
+if(skills[skills.size()-3,2] >= 1) 
+btR:=btR+25;
+bt4:=GFButtonID(80, 158, 0x939, 0x93A, 1);
+GFTextLine(95,  155, 1153, ""+PegarTitulo(skills[skills.size()-3,2])+" " +PegarSkill(skills[skills.size()-3,1])+ "");
+t4:=(""+PegarTitulo(skills[skills.size()-3,2])+" " +PegarSkill(skills[skills.size()-3,1])+ "");
+endif
+
+if(skills[skills.size()-4,2] >= 1) 
+btR:=btR+25;
+bt5:=GFButtonID(80, 183, 0x939, 0x93A, 1);
+GFTextLine(95,  180, 1153, ""+PegarTitulo(skills[skills.size()-4,2])+" " +PegarSkill(skills[skills.size()-4,1])+ "");
+t5:=(""+PegarTitulo(skills[skills.size()-4,2])+" " +PegarSkill(skills[skills.size()-4,1])+ "");
+endif
+
+if(skills[skills.size()-5,2] >= 1) 
+btR:=btR+25;
+bt6:=GFButtonID(80, 208, 0x939, 0x93A, 1);
+GFTextLine(95,  205, 1153, ""+PegarTitulo(skills[skills.size()-5,2])+" " +PegarSkill(skills[skills.size()-5,1])+ "");
+t6:=(""+PegarTitulo(skills[skills.size()-5,2])+" " +PegarSkill(skills[skills.size()-5,1])+ "");
+endif
+
+if(skills[skills.size()-6,2] >= 1) 
+btR:=btR+25;
+bt7:=GFButtonID(80, 233, 0x939, 0x93A, 1);
+GFTextLine(95,  230, 1153, ""+PegarTitulo(skills[skills.size()-6,2])+" " +PegarSkill(skills[skills.size()-6,1])+ "");
+t7:=(""+PegarTitulo(skills[skills.size()-6,2])+" " +PegarSkill(skills[skills.size()-6,1])+ "");
+endif
+
+if(skills[skills.size()-7,2] >= 1) 
+btR:=btR+25;
+bt8:=GFButtonID(80, 258, 0x939, 0x93A, 1);
+GFTextLine(95,  255, 1153, ""+PegarTitulo(skills[skills.size()-7,2])+" " +PegarSkill(skills[skills.size()-7,1])+ "");
+t8:=(""+PegarTitulo(skills[skills.size()-7,2])+" " +PegarSkill(skills[skills.size()-7,1])+ "");
+endif
+
+if(FindGuild(who.guildid))
+GFTextLine(95,  btR-3, 1153, "Usar Titulo de Guilda");
+btG:=GFButtonID(80, btR, 0x93A, 0x938, 1);
+btR:=btR+25;
+endif
+
+GFTextLine(95,  btR-3, 1153, "Retirar Titulo");
+btR:=GFButtonID(80, btR, 0x938, 0x93A, 1);
+
+var res := GFsendgump(who);
+
+if(res[bt1.keyid])
+SetarTitulo(who,t1);
+elseif(res[bt2.keyid])
+SetarTitulo(who,t2);
+elseif(res[bt3.keyid])
+SetarTitulo(who,t3);
+elseif(res[bt4.keyid])
+SetarTitulo(who,t4);
+elseif(res[bt5.keyid])
+SetarTitulo(who,t5);
+elseif(res[bt6.keyid])
+SetarTitulo(who,t6);
+elseif(res[bt7.keyid])
+SetarTitulo(who,t7);
+elseif(res[bt8.keyid])
+SetarTitulo(who,t8);
+elseif(res[btG.keyid])
+TituloGS(who);
+elseif(res[btR.keyid])
+who.title_suffix := "";
+SetObjProperty( who, "titullo", "" );
+SendSysMessage( who, "Titulo Retirado!");
+else
+SendSysMessage( who, "Cancelado!");
+endif
+endprogram
+
+function SetarTitulo(who,titulo)
+who.title_suffix := ", "+titulo;
+SetObjProperty( who, "titullo", titulo );
+SendSysMessage( who, "Titulo Setado!");
+endfunction
+
+function TituloGS(who)
+if((!GetObjProperty(who, "titulogs")) || (GetObjProperty(who, "titulogs") == error))
+SendSysMessage( who, "Voce nao possui um titulo de guilda setado!");
+return;
+endif
+who.title_suffix := ", "+GetObjProperty(who, "titulogs");
+SetObjProperty( who, "titullo", GetObjProperty(who, "titulogs"));
+SendSysMessage( who, "Titulo Setado!");
+endfunction
+
+function PegarTitulo(valor)
+var titulo;
+if((valor >= 1) && (valor < 50))
+titulo:="Neofito";
+elseif((valor >= 50) && (valor < 60))
+titulo:="Aprendiz";
+elseif((valor >= 60) && (valor < 70))
+titulo:="Amador";
+elseif((valor >= 70) && (valor < 80))
+titulo:="Profissional";
+elseif((valor >= 80) && (valor < 90))
+titulo:="Perito";
+elseif((valor >= 90) && (valor < 100))
+titulo:="Mestre";
+elseif(valor >= 100)
+titulo:="Grande Mestre";
+endif
+return titulo;
+endfunction
+
+function PegarSkill(id)
+var st;
+case(id)
+"alchemy": st:="Alquimista";
+"anatomy": st:="Anatomista";
+"animallore": st:="Zoologo";
+"archery": st:="Arqueiro";
+"armslore": st:="Avaliador";
+"begging": st:="Mendigo";
+"blacksmithy": st:="Ferreiro";
+"bowcraft": st:="Bowcraft";
+"camping": st:="";
+"carpentry": st:="Carpinteiro";
+"cartography": st:="";
+"cooking": st:="Cozinheiro";
+"detectinghidden": st:="Descobridor";
+"detecthidden": st:="Descobridor";
+"enticement": st:="";
+"evaluatingintelligence": st:="Filosofo";
+"evaluatingint": st:="Filosofo";
+"evalint": st:="Filosofo";
+"fencing": st:="Esgrimista";
+"fishing": st:="Pescador";
+"foresnsicevaluation": st:="";
+"forensciceval": st:="";
+"forensics": st:="";
+"healing": st:="Curandeiro";
+"herding": st:="Plantador";
+"hiding": st:="Encobridor";
+"inscription": st:="Escriba";
+"itemid": st:="";
+"lockpicking": st:="Arrombador";
+"lumberjacking": st:="Lenhador";
+"macefighting": st:="Macador";
+"mace": st:="Macador";
+"magery": st:="Mago";
+"magicresistance": st:="Resistente";
+"magicresist": st:="Resistente";
+"resistingspells": st:="Resistente";
+"resist": st:="Resistente";
+"meditation": st:="Meditador";
+"mining": st:="Minerador";
+"musicianship": st:="Musico";
+"parry": st:="Defensor";
+"peacemaking": st:="";
+"poisoning": st:="Assassino";
+"provocation": st:="Provocador";
+"removetrap": st:="";
+"snooping": st:="Ladrao";
+"spiritspeak": st:="";
+"stealing": st:="Ladrao";
+"stealth": st:="Ladino";
+"swordsmanship": st:="Espadachim";
+"swords": st:="Espadachim";
+"tactics": st:="Guerreiro";
+"tailoring": st:="Costureiro";
+"animaltaming": st:="Domador";
+"tasteidentification": st:="Provador";
+"tinkering": st:="Funileiro";
+"tracking": st:="Rastreador";
+"veterinary": st:="Veterinario";
+"wrestling": st:="Lutador";
+default: st:="";
+endcase
+return st;
+endfunction
+
+////Função Pra arrumar a array em ordem ;]
+function SortMultiArrayByIndex(MultiArray, SubIndex)
+
+	var ArrayLen := Len(MultiArray);
+	if ( ArrayLen < 2 )
+		return MultiArray;
+	endif
+
+	if ( SubIndex > len(MultiArray[1]) )
+		return 0;
+	endif
+
+	var i, k, f, s;
+	for(i := 1; i < ArrayLen; i := i + 1)
+		for( k := i+1; k <= ArrayLen; k := k + 1)
+			f := MultiArray[i];
+			s := MultiArray[k];
+			if ( s[SubIndex] < f[SubIndex] )
+				MultiArray[i] := s;
+				MultiArray[k] := f;
+			endif
+		endfor
+		sleepms(1);
+	endfor
+
+	return MultiArray;
+
+endfunction

@@ -1,0 +1,630 @@
+C:\pol2\pkg\systems\boat\plankWalk.src, Line 25
+var searchoffset := {
+0: decl global #0
+1: array
+2: array
+3: -2L
+4: +=
+5: 0L
+6: +=
+7: +=
+8: array
+9: -2L
+10: +=
+11: -1L
+12: +=
+13: +=
+14: array
+15: -2L
+16: +=
+17: 1L
+18: +=
+19: +=
+20: array
+21: -2L
+22: +=
+23: -2L
+24: +=
+25: +=
+26: array
+27: -3L
+28: +=
+29: -2L
+30: +=
+31: +=
+32: array
+33: -3L
+34: +=
+35: -1L
+36: +=
+37: +=
+38: array
+39: -3L
+40: +=
+41: 0L
+42: +=
+43: +=
+44: array
+45: -3L
+46: +=
+47: 1L
+48: +=
+49: +=
+50: array
+51: -3L
+52: +=
+53: 2L
+54: +=
+55: +=
+56: array
+57: -2L
+58: +=
+59: 2L
+60: +=
+61: +=
+62: array
+63: -2L
+64: +=
+65: -3L
+66: +=
+67: +=
+68: array
+69: -3L
+70: +=
+71: -3L
+72: +=
+73: +=
+74: array
+75: -4L
+76: +=
+77: -3L
+78: +=
+79: +=
+80: array
+81: -4L
+82: +=
+83: -2L
+84: +=
+85: +=
+86: array
+87: -4L
+88: +=
+89: -1L
+90: +=
+91: +=
+92: array
+93: -4L
+94: +=
+95: 0L
+96: +=
+97: +=
+98: array
+99: -4L
+100: +=
+101: 1L
+102: +=
+103: +=
+104: array
+105: -4L
+106: +=
+107: 2L
+108: +=
+109: +=
+110: array
+111: -4L
+112: +=
+113: 3L
+114: +=
+115: +=
+116: array
+117: -3L
+118: +=
+119: 3L
+120: +=
+121: +=
+122: array
+123: -2L
+124: +=
+125: 3L
+126: +=
+127: +=
+128: array
+129: -5L
+130: +=
+131: 0L
+132: +=
+133: +=
+134: array
+135: -5L
+136: +=
+137: 2L
+138: +=
+139: +=
+140: array
+141: -5L
+142: +=
+143: 3L
+144: +=
+145: +=
+146: array
+147: -5L
+148: +=
+149: 4L
+150: +=
+151: +=
+152: array
+153: -4L
+154: +=
+155: 4L
+156: +=
+157: +=
+158: array
+159: -3L
+160: +=
+161: 4L
+162: +=
+163: +=
+164: array
+165: -6L
+166: +=
+167: 0L
+168: +=
+169: +=
+170: array
+171: -6L
+172: +=
+173: 3L
+174: +=
+175: +=
+176: array
+177: -6L
+178: +=
+179: 4L
+180: +=
+181: +=
+182: array
+183: -6L
+184: +=
+185: 5L
+186: +=
+187: +=
+188: array
+189: -5L
+190: +=
+191: 5L
+192: +=
+193: +=
+194: array
+195: -4L
+196: +=
+197: 5L
+198: +=
+199: +=
+200: :=
+201: #
+C:\pol2\pkg\systems\boat\plankWalk.src, Line 61
+program plankwalk( who, plank, lastx, lasty, lastz )
+202: get arg 'who'
+203: get arg 'plank'
+204: get arg 'lastx'
+205: get arg 'lasty'
+206: get arg 'lastz'
+if (!FindKey( who, plank ))
+207: local #0
+208: local #1
+209: makelocal
+210: jmp userfunc @449
+211: if true goto 247
+if (plank.locked)
+212: local #1
+213: get member 'locked'
+214: if false goto 247
+var sh := GetStandingHeight( lastx, lasty, lastz );
+215: decl local #0
+216: local #2
+217: local #3
+218: local #4
+219: Func(3,9): GetStandingHeight
+220: :=
+221: #
+if (!sh || !sh.multi || sh.multi.serial != plank.multi.serial)
+222: local #5
+223: !
+224: local #5
+225: get member 'multi'
+226: !
+227: ||
+228: local #5
+229: get member 'multi'
+230: get member 'serial'
+231: local #1
+232: get member 'multi'
+233: get member 'serial'
+234: <>
+235: ||
+236: if false goto 246
+MoveCharacterToLocation( who, lastx, lasty, lastz, MOVECHAR_FORCELOCATION );
+237: local #0
+238: local #2
+239: local #3
+240: local #4
+241: 1073741824L
+242: Func(3,10): MoveCharacterToLocation
+243: #
+return;
+244: ""
+245: progend
+246: leave block(1)
+if (ListMobilesNearLocation( plank.x, plank.y, plank.z, 0 ).size() > 1)
+247: local #1
+248: get member 'x'
+249: local #1
+250: get member 'y'
+251: local #1
+252: get member 'z'
+253: 0L
+254: Func(3,4): ListMobilesNearLocation
+255: Call Method size (0 params)
+256: 1L
+257: >
+258: if false goto 268
+MoveCharacterToLocation( who, lastx, lasty, lastz, MOVECHAR_FORCELOCATION );
+259: local #0
+260: local #2
+261: local #3
+262: local #4
+263: 1073741824L
+264: Func(3,10): MoveCharacterToLocation
+265: #
+return;
+266: ""
+267: progend
+var xidx, yidx, xmul, ymul;
+268: decl local #5
+269: #
+270: decl local #6
+271: #
+272: decl local #7
+273: #
+274: decl local #8
+275: #
+case (plank.graphic)
+276: local #1
+277: get member 'graphic'
+278: casejmp
+	16085: @279
+	16084: @301
+	16009: @323
+	16004: @345
+	default: @367
+if (! (who.facing in { DIR_W, DIR_NW, DIR_SW }))
+279: local #0
+280: get member 'facing'
+281: array
+282: 6L
+283: +=
+284: 7L
+285: +=
+286: 5L
+287: +=
+288: in
+289: if true goto 292
+return;
+290: ""
+291: progend
+xidx := 1;
+292: 1L
+293: local5 := 
+yidx := 2;
+294: 2L
+295: local6 := 
+xmul := 1;
+296: 1L
+297: local7 := 
+ymul := 1;
+298: 1L
+299: local8 := 
+300: goto369
+if (! (who.facing in { DIR_E, DIR_NE, DIR_SE }))
+301: local #0
+302: get member 'facing'
+303: array
+304: 2L
+305: +=
+306: 1L
+307: +=
+308: 3L
+309: +=
+310: in
+311: if true goto 314
+return;
+312: ""
+313: progend
+xidx := 1;
+314: 1L
+315: local5 := 
+yidx := 2;
+316: 2L
+317: local6 := 
+xmul := -1; // flip across x-axis
+318: -1L
+319: local7 := 
+ymul := 1;
+320: 1L
+321: local8 := 
+322: goto369
+if (! (who.facing in { DIR_N, DIR_NE, DIR_NW }))
+323: local #0
+324: get member 'facing'
+325: array
+326: 0L
+327: +=
+328: 1L
+329: +=
+330: 7L
+331: +=
+332: in
+333: if true goto 336
+return;
+334: ""
+335: progend
+xidx := 2;
+336: 2L
+337: local5 := 
+yidx := 1;
+338: 1L
+339: local6 := 
+xmul := 1;
+340: 1L
+341: local7 := 
+ymul := +1;
+342: 1L
+343: local8 := 
+344: goto369
+if (! (who.facing in { DIR_S, DIR_SE, DIR_SW }))
+345: local #0
+346: get member 'facing'
+347: array
+348: 4L
+349: +=
+350: 3L
+351: +=
+352: 5L
+353: +=
+354: in
+355: if true goto 358
+return;
+356: ""
+357: progend
+xidx := 2;
+358: 2L
+359: local5 := 
+yidx := 1;
+360: 1L
+361: local6 := 
+xmul := 1;
+362: 1L
+363: local7 := 
+ymul := -1; // flip across y-axis
+364: -1L
+365: local8 := 
+366: goto369
+return;
+367: ""
+368: progend
+if (CanMove( who,
+369: local #0
+370: global #0
+371: 1L
+372: [] 1
+373: local #5
+374: [] 1
+375: local #7
+376: *
+377: 2L
+378: /
+379: global #0
+380: 1L
+381: [] 1
+382: local #6
+383: [] 1
+384: local #8
+385: *
+386: 2L
+387: /
+388: makelocal
+389: jmp userfunc @415
+390: if false goto 393
+return;                     // doesn't need our help!
+391: ""
+392: progend
+foreach offset in searchoffset
+393: global #0
+394: initforeach @411
+if (TryMove( who, offset[xidx] * xmul, offset[yidx] * ymul ))
+395: local #0
+396: local #9
+397: local #5
+398: [] 1
+399: local #7
+400: *
+401: local #9
+402: local #6
+403: [] 1
+404: local #8
+405: *
+406: makelocal
+407: jmp userfunc @496
+408: if false goto 411
+return;
+409: ""
+410: progend
+411: stepforeach @395
+412: leave block(3)
+413: leave block(9)
+414: progend
+C:\pol2\pkg\systems\boat\plankWalk.src, Line 149
+function CanMove( who, dx, dy )
+415: pop param 'dy'
+416: pop param 'dx'
+417: pop param 'who'
+var tryx := who.x + dx;
+418: decl local #3
+419: local #2
+420: get member 'x'
+421: local #1
+422: +
+423: :=
+424: #
+var tryy := who.y + dy;
+425: decl local #4
+426: local #2
+427: get member 'y'
+428: local #0
+429: +
+430: :=
+431: #
+var h := GetStandingHeight( tryx, tryy, who.z );
+432: decl local #5
+433: local #3
+434: local #4
+435: local #2
+436: get member 'z'
+437: Func(3,9): GetStandingHeight
+438: :=
+439: #
+if (h)
+440: local #5
+441: if false goto 445
+return 1;
+442: 1L
+443: return
+444: goto447
+return 0;
+445: 0L
+446: return
+447: 0L
+448: return
+C:/pol2/scripts/util/key.inc, Line 13
+function FindKey(who, what)
+449: pop param 'what'
+450: pop param 'who'
+var lockid := GetObjProperty( what, "lockid" );
+451: decl local #2
+452: local #0
+453: "lockid"
+454: Func(3,2): GetObjProperty
+455: :=
+456: #
+if(!lockid)
+457: local #2
+458: if true goto 461
+return 1;
+459: 1L
+460: return
+var keytypes := { UOBJ_COPPER_KEY, UOBJ_GOLD_KEY, UOBJ_IRON_KEY, UOBJ_MAGIC_KEY
+461: decl local #3
+462: array
+463: 4110L
+464: +=
+465: 4111L
+466: +=
+467: 4112L
+468: +=
+469: 4114L
+470: +=
+471: 4115L
+472: +=
+473: :=
+474: #
+foreach item in EnumerateItemsInContainer( who.backpack )
+475: local #1
+476: get member 'backpack'
+477: Func(3,3): EnumerateItemsInContainer
+478: initforeach @492
+if(item.graphic in keytypes)
+479: local #4
+480: get member 'graphic'
+481: local #3
+482: in
+483: if false goto 492
+if(GetObjProperty( item, "lockid" ) == lockid)
+484: local #4
+485: "lockid"
+486: Func(3,2): GetObjProperty
+487: local #2
+488: ==
+489: if false goto 492
+return item;
+490: local #4
+491: return
+492: stepforeach @479
+493: leave block(3)
+return 0;
+494: 0L
+495: return
+C:\pol2\pkg\systems\boat\plankWalk.src, Line 133
+function TryMove( who, dx, dy )
+496: pop param 'dy'
+497: pop param 'dx'
+498: pop param 'who'
+var res := 0;
+499: decl local #3
+500: 0L
+501: :=
+502: #
+set_critical( 1 );
+503: 1L
+504: Func(2,1): set_critical
+505: #
+var tryx := who.x + dx;
+506: decl local #4
+507: local #2
+508: get member 'x'
+509: local #1
+510: +
+511: :=
+512: #
+var tryy := who.y + dy;
+513: decl local #5
+514: local #2
+515: get member 'y'
+516: local #0
+517: +
+518: :=
+519: #
+var h := GetStandingHeight( tryx, tryy, who.z );
+520: decl local #6
+521: local #4
+522: local #5
+523: local #2
+524: get member 'z'
+525: Func(3,9): GetStandingHeight
+526: :=
+527: #
+if (h && (not h.multi)) // CHECKME should check line of sight?
+528: local #6
+529: local #6
+530: get member 'multi'
+531: !
+532: &&
+533: if false goto 544
+MoveCharacterToLocation( who, tryx, tryy, h.z );
+534: local #2
+535: local #4
+536: local #5
+537: local #6
+538: get member 'z'
+539: 0L
+540: Func(3,10): MoveCharacterToLocation
+541: #
+res := 1;
+542: 1L
+543: local3 := 
+set_critical(0);
+544: 0L
+545: Func(2,1): set_critical
+546: #
+return res;
+547: local #3
+548: return

@@ -1,0 +1,117 @@
+use uo;
+use os;
+
+program organizar(who)
+
+var potheal:=0;
+var x:=42;
+var y:=65;
+var mochila:=who.backpack;
+	foreach item in enumerateitemsincontainer(who.backpack)
+		
+		if (item.graphic == 3852)
+		 potheal:=Cint(potheal+1);
+		 x:=Cint(x+5);
+		 MoveItemToContainer(item, mochila, x, y );
+
+			if(potheal == 17)
+			y:=Cint(y+18);
+			x:=42;
+			endif
+			
+			if(potheal == 34)
+			y:=Cint(y-18);
+			x:=42;
+			endif
+
+
+			if(potheal == 51)
+			y:=Cint(y+18);
+			x:=42;
+			endif
+		endif
+	
+
+	endforeach
+
+if(potheal > 17)
+y:=101;
+else
+y:=83;
+endif
+x:=42;
+var potmana:=0;
+
+	foreach item in enumerateitemsincontainer(who.backpack)
+		if (item.graphic == 3625)
+		 potmana:=Cint(potmana+1);
+		 x:=Cint(x+5);
+		 MoveItemToContainer(item, mochila, x, y );
+
+			if(potmana == 17)
+			y:=Cint(y+18);
+			x:=42;
+			endif
+			
+			if(potmana == 34)
+			y:=Cint(y-18);
+			x:=42;
+			endif
+
+
+			if(potmana == 51)
+			y:=Cint(y+18);
+			x:=42;
+			endif
+		endif
+	endforeach
+
+
+///var flechas:=0; 
+	foreach item in enumerateitemsincontainer(who.backpack)
+		if (item.graphic == 3903)
+		///flechas:=Cint(flechas+1);
+		MoveItemToContainer(item, mochila, 44, 120 );
+		endif
+	endforeach
+
+
+///var bands:=0; 
+	foreach item in enumerateitemsincontainer(who.backpack)
+		if (item.graphic == 3617)
+		///bands:=Cint(bands+1);
+		MoveItemToContainer(item, mochila, 65, 120 );
+		endif
+	endforeach
+
+///var milhos:=0; 
+	foreach item in enumerateitemsincontainer(who.backpack)
+		if (item.graphic == 3202)
+		///milhos:=Cint(milhos+1);
+		MoveItemToContainer(item, mochila, 83, 128 );
+		endif
+	endforeach
+
+///var garrafas:=0; 
+	foreach item in enumerateitemsincontainer(who.backpack)
+		if (item.graphic == 3854)
+		///garrafas:=Cint(garrafas+1);
+		MoveItemToContainer(item, mochila, 137, 127 );
+		endif
+	endforeach
+
+
+///var book:=0; 
+	foreach item in enumerateitemsincontainer(who.backpack)
+		if (item.graphic == 3834)
+		///book:=Cint(book+1);
+		MoveItemToContainer(item, mochila, 137, 120 );
+		endif
+	endforeach
+
+
+SendSysMessage(who, "Pots Heal: " +potheal,3,46);
+SendSysMessage(who, "Pots Mana: " +potmana,3,66);
+
+
+endprogram

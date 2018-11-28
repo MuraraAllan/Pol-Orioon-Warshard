@@ -1,0 +1,35 @@
+/////////////////////////////////
+/////////////////////////////////
+///                           ///
+/// .trocarsenha <login>      ///
+///                           ///
+///         por din0 ;]       ///
+/////////////////////////////////
+/////////////////////////////////
+
+use uo; 
+
+program trocarsenha( who, acc )
+
+var procurando:= CStr(acc);
+
+if(!procurando)
+Sendsysmessage( who, "Utilize '.trocarsenha <login>' .");
+return;
+endif
+var conta:=FindAccount(procurando);
+
+if (!conta)
+Sendsysmessage( who, "A conta " +procurando+ " nao existe." );
+return;
+endif
+var novasenha := SendTextEntryGump( who, "Digite a nova senha: ",  TE_STYLE_NORMAL);
+
+if(!novasenha)
+Sendsysmessage( who, "Cancelado.");
+return;
+endif
+
+conta.SetPassword(novasenha);
+Sendsysmessage( who, "Senha da Conta: " +procurando+ ", Alterada Para: " +novasenha+ ".");
+endprogram

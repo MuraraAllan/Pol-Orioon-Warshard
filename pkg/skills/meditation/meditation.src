@@ -1,0 +1,130 @@
+use uo;
+use os;
+use util;
+use cfgfile;
+const sfx_meditation := 0xfa;
+
+include "include/client";
+include "include/attributes";
+
+function maxmana(who)
+
+   var manafull := getmaxmana(who);
+   
+   return manafull;
+
+endfunction
+
+
+
+program meditation(who,armor)
+if(getobjproperty(who,"SCRIPTMEDITABERTO") + 10 < readgameclock())
+ start_script(":meditation:medCheck", who);
+endif
+  var movx := who.x;
+  var movy := who.y;
+  var charhp := GetHp(who);
+EraseObjProperty(who, "IsMeditating");
+  EraseObjProperty(who, "HealTimer");
+  var chk := CInt(GetObjProperty(who, "delaymedit"));
+        if(chk >= ReadGameClock())
+      SendSysMessage(who, "Voce precisa esperar para fazer esta acao novamente",9,89);
+      return;
+    endif
+    
+var armalayer1:=GetEquipmentByLayer(who, 1);
+var armalayer2:=GetEquipmentByLayer(who, 2);
+////                   ////book////               ///cajado torcido///               ///cajado negro///                       ///bastao///
+if((armalayer1) || (armalayer2))
+if((armalayer1.graphic != 0x0EFA) && (armalayer2.graphic != 0x13F9) && (armalayer2.graphic != 0x0DF0) && (armalayer2.graphic != 0x0E8A))
+SendSysMessage(who, "Voce nao pode meditar com armas na mao.");
+SetObjProperty(who, "delaymedit", ReadGameClock() + 8);
+return;
+endif
+endif
+
+
+if(GetMana(who) >= GetMaxMana(who))
+        PrintTextAbovePrivate(who, "Voce esta em paz.", who);
+SetObjProperty(who, "delaymedit", ReadGameClock() + 8);
+   return;
+endif
+
+if(who.warmode)
+        SendSysMessage(who, "Voce nao pode meditar em warmode.");
+        return;
+endif
+
+
+
+  printtextabove(who, "Voce comeca a meditar.");
+    PlaySoundEffect(who, sfx_meditation);
+sleepms(350);
+    PrintTextAbove(who, "*Meditando*");;
+    SetObjProperty(who, "IsMeditating", 1);
+armor.movable := 0;
+   
+   
+
+    SetObjProperty(who, "IsMeditating", 1);
+SetObjProperty(who, "delaymedit", ReadGameClock() + 8);
+
+
+while((GetObjProperty(who,"IsMeditating")) && (movx==who.x) && (movy==who.y) && (!who.warmode) && (!IsThingOnHand(who)) && (!who.hidden)&& (GetHp(who)>=charhp))
+  var medit := GetEffectiveSkill(who,SKILLID_MEDITATION);
+var mana := GetMana(who);       
+      if(mana < maxmana(who))
+           sleep(1);
+     
+      else
+      if(mana >= GetMaxMana(who))
+      PrintTextAbovePrivate(who, "Voce esta em paz.", who);
+    SetObjProperty(who, "delaymedit", ReadGameClock() + 8);
+      EraseObjProperty(who, "IsMeditating");
+      return;
+      endif
+          if(who.warmode)  
+       SetMana(who, mana );      
+      endif
+
+endif
+
+var armalayer1:=GetEquipmentByLayer(who, 1);
+var armalayer2:=GetEquipmentByLayer(who, 2);
+////                   ////book////               ///cajado torcido///               ///cajado negro///                       ///bastao///
+if((armalayer1) || (armalayer2))
+if((armalayer1.graphic != 0x0EFA) && (armalayer2.graphic != 0x13F9) && (armalayer2.graphic != 0x0DF0) && (armalayer2.graphic != 0x0E8A))
+SendSysMessage(who, "Voce nao pode meditar com armas na mao.");
+PrintTextAbovePrivate(who, "Voce perde a concentracao", who);
+EraseObjProperty(who, "IsMeditating");
+return;
+endif
+endif
+
+endwhile
+
+   
+PrintTextAbovePrivate(who, "Voce perde a concentracao", who);
+EraseObjProperty(who, "IsMeditating");
+return;
+
+endprogram
+
+
+function IsThingOnHand(who)
+  var armalayer1:=GetEquipmentByLayer(who, 1);
+var armalayer2:=GetEquipmentByLayer(who, 2);
+
+////                   ////book////               ///cajado torcido///               ///cajado negro///                       ///bastao///
+if((armalayer1) || (armalayer2))
+if((armalayer1.graphic != 0x0EFA) && (armalayer2.graphic != 0x13F9) && (armalayer2.graphic != 0x0DF0) && (armalayer2.graphic != 0x0E8A))
+SendSysMessage(who, "Voce nao pode meditar com armas na mao.");
+SetObjProperty(who, "delaymedit", ReadGameClock() + 8);
+return;
+endif
+endif
+
+
+
+
+endfunction

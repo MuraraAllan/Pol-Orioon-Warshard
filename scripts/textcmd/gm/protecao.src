@@ -1,0 +1,109 @@
+use os;
+use uo;
+use cfgfile;
+use util;
+use basic;
+include "../pkg/foundations/gumps/gumps";
+
+
+
+
+program mandarpara(who)
+
+ 
+
+
+
+  GFInitGump( 250 , 100 );
+  GFNoMove();
+  GFResizePic(50, 5, 5120, 300, 440);
+  GFTextLine( 130 , 15, 1153 , "Protecao de Guardas" );
+  
+  GFTextLine(65, 40,  62, "X=Ativa");
+
+  GFTextLine(125, 60,  55, "Pessoas");
+  GFTextLine(195, 60,  55, "Animais");
+ 
+  GFTextLine(65, 80,  2, "Brit: ");
+  var brit := GFCheckBox(135, 80, 210, 211, GetGlobalProperty("Brit"), 5);
+  var brit1 := GFCheckBox(210, 80, 210, 211, GetGlobalProperty("Britanimalred"), 6);
+
+
+  GFTextLine(65, 110,  33, "Skara: "); 
+  var skara := GFCheckBox(135, 110, 210, 211, GetGlobalProperty("Skara"), 10);
+  var skara1 := GFCheckBox(210, 110, 210, 211, GetGlobalProperty("Skaraanimalred"), 11);
+
+  GFTextLine(65, 140, 2, "Gullan: ");
+  var gullan := GFCheckBox(135, 140, 210, 211, GetGlobalProperty("Gullan"), 15);
+  var gullan1 := GFCheckBox(210, 140, 210, 211, GetGlobalProperty("Gullananimalred"), 16);
+
+
+  GFTextLine(65, 170, 33, "Minoc: "); 
+  var minoc := GFCheckBox(135, 170, 210, 211, GetGlobalProperty("Minoc"),20);
+  var minoc1 := GFCheckBox(210, 170, 210, 211, GetGlobalProperty("Minocanimalred"),21);
+
+  GFTextLine(65, 380, 53, "Antes de retirar a prot AVISE!");
+var ok := GFButtonID(150, 410, 0xf9, 0xf8, 1);
+
+var res :=  GFSendGump(who);
+
+
+if(res[ok.keyid]) 
+
+ if (res[5] == 1)
+ SetGlobalProperty("Brit", 1);   
+ else
+ SetGlobalProperty("Brit", 0);   
+ endif
+
+ if (res[6] == 1)
+ SetGlobalProperty("Britanimalred", 1);   
+ else
+ SetGlobalProperty("Britanimalred", 0);   
+ endif
+
+
+ if (res[10] == 1)
+ SetGlobalProperty("Skara", 1);   
+ else
+ SetGlobalProperty("Skara", 0);   
+ endif
+
+ if (res[11] == 1)
+ SetGlobalProperty("Skaraanimalred", 1);   
+ else
+ SetGlobalProperty("Skaraanimalred", 0);   
+ endif
+
+
+ if (res[15] == 1)
+ SetGlobalProperty("Gullan", 1);   
+ else
+ SetGlobalProperty("Gullan", 0);   
+ endif
+
+ if (res[16] == 1)
+ SetGlobalProperty("Gullananimalred", 1);   
+ else
+ SetGlobalProperty("Gullananimalred", 0);   
+ endif
+
+
+ if (res[20] == 1)
+ SetGlobalProperty("Minoc", 1);   
+ else
+ SetGlobalProperty("Minoc", 0);   
+ endif
+
+ if (res[21] == 1)
+ SetGlobalProperty("Minocanimalred", 1);   
+ else
+ SetGlobalProperty("Minocanimalred", 0);   
+ endif
+
+
+
+
+endif
+
+endprogram

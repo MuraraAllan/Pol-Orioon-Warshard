@@ -1,0 +1,117 @@
+use os;
+use uo;
+use util;
+
+include "include/spellRestrictions";
+include "include/attributes";
+
+program cast_WEAKEN( parms )
+  var circle := 1;
+  var delivery := "direct";
+  var noto := "harmful";
+  var result := maincast(parms, delivery, circle, noto, 8);
+  if(result == 0)
+    return;
+  endif
+  var caster := result[1];
+  var cast_on := result[2];
+  SetObjProperty(cast_on, "LastHit", {caster.name,caster.serial, "weaken" });
+   var mr := CInt(GetObjProperty(cast_on, "mr"));
+ var mrr := CInt(GetObjProperty(caster, "mr"));
+if((mr >= 10) && (mrr <= 0))
+PlayMovingEffect(caster, cast_on, FX_CURSE_EFFECT, 5, 1);
+PlaySoundEffect(cast_on, SFX_SPELL_MAGIC_REFLECTION);
+    PlayObjectCenteredEffect(cast_on, FX_CURSE_EFFECT, 10,10);
+    SendSysMessage(cast_on, "Sua Aura Anti Magia Lhe Protege",9,89);
+SetobjProperty(cast_on,"mr", GetobjProperty(cast_on,"mr")-60);
+sleepms(1500);
+PlayMovingEffect(cast_on, caster, FX_CURSE_EFFECT, 5, 1);
+SetobjProperty(cast_on,"delayreflect", Readgameclock() + 120);
+cast_on := caster;
+
+//se o caster tiver de reflect maior que o cast_on;
+elseif((mr >= 10) && (mrr >= mr))
+//cast_on
+PlaySoundEffect(cast_on, SFX_SPELL_MAGIC_REFLECTION);
+    PlayObjectCenteredEffect(cast_on, FX_CURSE_EFFECT, 10,10);
+       SendSysMessage(cast_on, "Sua Aura Anti Magia Lhe Protege",9,89);
+SetobjProperty(cast_on,"mr", GetobjProperty(cast_on,"mr")-160);
+PlayMovingEffect(caster, cast_on, FX_CURSE_EFFECT, 5, 1);
+SetobjProperty(cast_on,"delayreflect", Readgameclock() + 120);
+sleepms(1500);
+//caster
+PlayMovingEffect(cast_on, caster, FX_CURSE_EFFECT, 5, 1);
+    SendSysMessage(caster, "Sua Aura Anti Magia Lhe Protege",9,89);
+SetobjProperty(caster,"mr", GetobjProperty(caster,"mr")-160);
+sleepms(1500);
+PlayMovingEffect(caster, cast_on, FX_CURSE_EFFECT, 5, 1);
+SetobjProperty(caster,"delayreflect", Readgameclock() + 120);
+
+//se o cast_on tiver de reflect maior que o caster;
+elseif((mr >= 10) && (mr >= mrr) && (mrr >= 1))
+//cast_on
+PlaySoundEffect(cast_on, SFX_SPELL_MAGIC_REFLECTION);
+    PlayObjectCenteredEffect(cast_on, FX_CURSE_EFFECT, 10,10);
+    SendSysMessage(cast_on, "Sua Aura Anti Magia Lhe Protege",9,89);
+PlayMovingEffect(caster, cast_on, FX_CURSE_EFFECT, 5, 1);
+SetobjProperty(cast_on,"mr", GetobjProperty(cast_on,"mr")-160);
+SetobjProperty(cast_on,"delayreflect", Readgameclock() + 120);
+
+sleep(1);
+//caster
+PlaySoundEffect(caster, SFX_SPELL_MAGIC_REFLECTION);
+    PlayObjectCenteredEffect(caster, FX_CURSE_EFFECT, 10,10);
+    SendSysMessage(cast_on, "Sua Aura Anti Magia Lhe Protege",9,89);
+SetobjProperty(caster,"mr", GetobjProperty(caster,"mr")-160);
+SetobjProperty(caster,"delayreflect", Readgameclock() + 120);
+PlayMovingEffect(cast_on, caster, FX_CURSE_EFFECT, 5, 1);
+sleep(2);
+
+//caster
+PlaySoundEffect(cast_on, SFX_SPELL_MAGIC_REFLECTION);
+    PlayObjectCenteredEffect(cast_on, FX_CURSE_EFFECT, 10,10);
+    SendSysMessage(cast_on, "Sua Aura Anti Magia Lhe Protege",9,89);
+SetobjProperty(cast_on,"delayreflect", Readgameclock() + 120);
+
+PlayMovingEffect(caster, cast_on, FX_CURSE_EFFECT, 5, 1);
+cast_on := caster;
+
+//se forem iguais(0)
+elseif((mr <= 0) && (mrr <= 0))
+cast_on := cast_on;
+endif
+
+    PlaySoundEffect(cast_on, SFX_SPELL_CURSE);
+ PlayMovingEffect(caster, cast_on, FX_CURSE_EFFECT, 5, 1);
+
+    var magery := GetEffectiveSkill(caster, SKILLID_MAGERY);
+  var insc   := GetEffectiveSkill(caster, SKILLID_EVALINT);
+  var strr := GetModDuration(magery) / 60 + GetModDuration(insc) / 50 + RandomDiceRoll("1d3");;
+ var duration := randomdiceroll("1d2") * 60;
+
+  var evalint := insc;
+  var resist := CInt(GetEffectiveSkill(cast_on, SKILLID_MAGICRESISTANCE));
+var chk := resist + randomdiceroll(resist) + 15 - (((magery - 40 + evalint - 60 - cint(randomdiceroll(magery) + 10)) / 30) + (circle * 4)  - randomdiceroll("1d8"));
+
+   var  diff := chk;
+if(((getobjproperty(cast_on, "#ss"))))
+sendsysmessage(caster,"Devido a efeitos que falham a sua compreensao mortal, a magia falhou!",3,98);
+return;
+endif
+
+  if(cast_on.dead)
+    return 0;
+  endif
+if(caster == cast_on)
+diff := 1;
+endif
+  if((RandomInt(99) + 22) <= diff)
+SetObjProperty(cast_on, "resist", 1);    
+SendSysMessage(cast_on, "Voce sente seu corpo resistindo a magia!",9,89);
+
+    PlaySoundEffect(cast_on, SFX_SPELL_WEAKEN);
+    PlayObjectCenteredEffect(cast_on, FX_CURSE_EFFECT, 5,5);
+  return;
+endif
+  DoTempMod(cast_on, "dex", 0 - strr, duration);
+endprogram

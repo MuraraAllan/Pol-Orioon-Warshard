@@ -1,0 +1,116 @@
+use uo;
+use os;
+use cfgfile;
+use util;
+
+include "include/client";
+ include "include/attributes";
+include ":poisonwatcher:poisons";
+include "include/skillPoints";
+var ct;
+var next_counter := 0;
+
+program medcheck(who)
+  var charhp := GetHp(who);
+  var skill,waittime,loss;
+  var nextmusic := ReadGameClock() + 80;
+  var gmm, mana;
+  while(1);
+setobjproperty(who,"SCRIPTMEDITABERTO",readgameclock());
+    gmm := GetMaxMana(who);
+var life:= Gethp(who);
+var maxlife := GetMaxHp(who);
+var chk := Getobjproperty(who, "Lastataque");
+ sleepms(250);
+
+skill := GetEffectiveSkill(who,SKILLID_MEDITATION);
+if(GetObjProperty(who, "IsMeditating"))
+sleepms(200);
+var tempo;
+
+
+
+if((skill > 99))
+
+tempo := 1150; 
+
+  mana := GetMana(who);
+      SetMana(who, mana + Randomdiceroll("1d2")+ 3); 
+
+endif
+
+if((skill >= 90) &&  (skill <= 99))
+tempo := 1450 ; 
+
+  mana := GetMana(who);
+      SetMana(who, mana + Randomdiceroll("1d3")+ 1);
+
+endif
+   if((skill >= 70) &&  (skill <= 89))
+tempo := 1550 ; 
+
+  mana := GetMana(who);
+      SetMana(who, mana + Randomdiceroll("1d2") + 1);
+
+     endif
+ if((skill >= 0) &&  (skill <= 69))
+tempo := 1850 ; 
+
+  mana := GetMana(who);
+      SetMana(who, mana + Randomdiceroll("1d2")+1);
+     endif
+
+ sleepms(tempo); 
+endif
+var tempo;
+if ((ListPoisonsByType(who, "defaultPoison").size() > 0))
+tempo := 1750;  
+
+  mana := GetMana(who);    
+Setmana(who, mana +2); 
+endif
+
+  var chkk := CInt(GetObjProperty(who, "uppar"));
+
+if((chkk <= ReadGameClock())  && (chk <= readgameclock()) && (!GetObjProperty(who, "IsMeditating"))  && (ListPoisonsByType(who, "defaultPoison").size() <= 0))
+
+     
+if((skill == 100))
+
+tempo := 6; 
+
+  mana := GetMana(who);
+      SetMana(who, mana + Randomdiceroll("1d3")+ 2); 
+
+endif
+
+if((skill >= 90) &&  (skill <= 99))
+tempo := 7 ; 
+
+  mana := GetMana(who);
+      SetMana(who, mana + Randomdiceroll("1d2")+ 2);
+
+endif
+   if((skill >= 70) &&  (skill <= 90))
+tempo := 8 ; 
+
+  mana := GetMana(who);
+      SetMana(who, mana + Randomdiceroll("1d2") + 1);
+
+     endif
+ if((skill >= 0) &&  (skill <= 70))
+tempo := 9 ; 
+
+  mana := GetMana(who);
+      SetMana(who, mana + Randomdiceroll("1d1")+1);
+     endif
+setobjproperty(who,"uppar",readgameclock() + tempo);
+endif
+
+sleepms(500);
+
+
+endwhile
+endprogram
+
+

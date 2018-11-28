@@ -1,0 +1,61 @@
+//----------------------------
+// Autor: Ragen@lineone.net
+// Distribuicao: Open Source
+//----------------------------
+// Descricao: Cofre de apostas
+//----------------------------
+
+use uo;
+use os;
+use npc;
+
+include "include/NPCBackpacks";
+include "include/objtype";
+include "include/client";
+
+const DEED_APOSTA      := 0x9035;
+const DEED_TRUE_COLOR  := 1328;
+const PRECO_APOSTA     := 10000;
+const MONEY            := 0xeed;
+
+program open_cofre(who, bau)
+        var backpack := EnumerateItemsInContainer (who.backpack);
+	var deeds := 0;
+	foreach item in backpack
+		if((item.objtype == DEED_APOSTA) && (item.color == DEED_TRUE_COLOR))
+item.movable:=0;				
+deeds := deeds + item.amount;
+		endif
+endforeach
+who.frozen := 1;
+	if (!deeds) 
+		SendSysmessage (who, "Voce nao venceu nenhuma batalha. Espere 10 segundos para sair da arena!",9,89);
+
+	elseif (deeds == 1) 
+		SendSysmessage (who, "Voce nao venceu nenhuma batalha. Espere 10 segundos para sair da arena!",9,89);
+	elseif (deeds == 2) 
+		SendSysmessage (who, "Voce venceu uma batalha. Espere 10 segundos para sair da arena!",9,89);
+	elseif (deeds > 2) 
+		SendSysmessage (who, "Voce venceu "+(deeds - 1)+" batalhas. Espere 10 segundos para sair da arena!",9,89);
+	endif
+        
+	var XXX := who.x, YYY := who.y, ZZZ := who.z;
+
+	sleep(10);
+who.frozen := 0;
+	if ((who.x == XXX) && (who.y == YYY) && (who.z == ZZZ))
+	    foreach item in backpack
+		if((item.objtype == DEED_APOSTA) && (item.color == DEED_TRUE_COLOR))
+item.movable:=0;			
+DestroyItem(item);
+			CreateItemInBackpack(who, MONEY, PRECO_APOSTA);
+		endif
+             endforeach
+	     MoveCharacterToLocation(who, bau.x -2, bau.y, bau.z, MOVECHAR_FORCELOCATION);
+             PlaySoundEffect(who, SFX_SPELL_MANA_VAMPIRE );
+	     PlayStationaryEffect(who.x, who.y, who.z, FX_SMOKE, 0xA, 0xA );
+	else
+	endif
+       
+	
+endprogram

@@ -1,0 +1,499 @@
+C:\pol2\pkg\tools\gmtools\itemGo.src, Line 19
+var who;
+0: decl global #0
+1: #
+var locationscount := 0;  // The number of locations found for this user
+2: decl global #1
+3: 0L
+4: :=
+5: #
+var pagecount := 1;       // The current developing page
+6: decl global #2
+7: 1L
+8: :=
+9: #
+var layout := array(      // The layout of the gump with text notes to be added
+10: decl global #3
+11: array
+12: "page 0"
+13: +=
+14: "nodispose"
+15: +=
+16: "gumppic 0 50 2620"
+17: +=
+18: "gumppic 20 50 2621"
+19: +=
+20: "gumppic 290 50 2622"
+21: +=
+22: "gumppic 0 68 2623"
+23: +=
+24: "gumppic 22 68 2624"
+25: +=
+26: "gumppic 288 68 2625"
+27: +=
+28: "gumppic 0 272 2623"
+29: +=
+30: "gumppic 22 272 2624"
+31: +=
+32: "gumppic 288 272 2625"
+33: +=
+34: "gumppic 0 476 2626"
+35: +=
+36: "gumppic 20 476 2627"
+37: +=
+38: "gumppic 290 476 2628"
+39: +=
+40: "gumppic 20 80 2621"
+41: +=
+42: "text 20 59 40 0"
+43: +=
+44: "text 200 59 40 1"
+45: +=
+46: "text 260 59 40 2"
+47: +=
+48: :=
+49: #
+var data := array(      // The data array that holds all the text to be display
+50: decl global #4
+51: array
+52: "Location"
+53: +=
+54: "Goto"
+55: +=
+56: "Send"
+57: +=
+58: :=
+59: #
+C:\pol2\pkg\tools\gmtools\itemGo.src, Line 55
+program go(who)
+60: get arg 'who'
+if (who.cmdlevel < 2)
+61: local #0
+62: get member 'cmdlevel'
+63: 2L
+64: <
+65: if false goto 68
+return;
+66: ""
+67: progend
+UnloadConfigFile("::golocs");
+68: "::golocs"
+69: Func(4,2): UnloadConfigFile
+70: #
+var tname := lower(who.name);
+71: decl local #1
+72: local #0
+73: get member 'name'
+74: Func(0,4): lower
+75: :=
+76: #
+FillInArrays( tname );
+77: local #1
+78: makelocal
+79: jmp userfunc @175
+80: #
+var result := SendDialogGump( who, layout, data );
+81: decl local #2
+82: local #0
+83: global #3
+84: global #4
+85: Func(3,15): SendDialogGump
+86: :=
+87: #
+if (result[0] == 0)
+88: local #2
+89: 0L
+90: [] 1
+91: 0L
+92: ==
+93: if false goto 96
+return;
+94: ""
+95: progend
+var locs    := ReadConfigFile("::golocs");
+96: decl local #3
+97: "::golocs"
+98: Func(4,0): ReadConfigFile
+99: :=
+100: #
+var MaxLocs := GetConfigMaxIntKey(locs)+1;
+101: decl local #4
+102: local #3
+103: Func(4,3): GetConfigMaxIntKey
+104: 1L
+105: +
+106: :=
+107: #
+var dest    := locs[mod(result[0], MaxLocs)];
+108: decl local #5
+109: local #3
+110: local #2
+111: 0L
+112: [] 1
+113: local #4
+114: makelocal
+115: jmp userfunc @406
+116: [] 1
+117: :=
+118: #
+var traveler;
+119: decl local #6
+120: #
+if ( result[0] > MaxLocs )
+121: local #2
+122: 0L
+123: [] 1
+124: local #4
+125: >
+126: if false goto 154
+SendSysMessage( who, "Select a MOBILE." );
+127: local #0
+128: "Select a MOBILE."
+129: 3L
+130: 1000L
+131: Func(3,16): SendSysMessage
+132: #
+traveler :=  Target( who, TGTOPT_NOCHECK_LOS );
+133: local #0
+134: 0L
+135: Func(3,17): Target
+136: local6 := 
+if(!traveler || !GetStrength(traveler))
+137: local #6
+138: !
+139: local #6
+140: makelocal
+141: jmp userfunc @401
+142: !
+143: ||
+144: if false goto 153
+SendSysMessage( who, "Invalid selection." );
+145: local #0
+146: "Invalid selection."
+147: 3L
+148: 1000L
+149: Func(3,16): SendSysMessage
+150: #
+return;
+151: ""
+152: progend
+153: goto156
+traveler := who;
+154: local #0
+155: local6 := 
+MoveCharacterToLocation(traveler, dest.X, dest.Y, GetMapInfo(dest.X, dest.Y).z)
+156: local #6
+157: local #5
+158: get member 'X'
+159: local #5
+160: get member 'Y'
+161: local #5
+162: get member 'X'
+163: local #5
+164: get member 'Y'
+165: Func(3,19): GetMapInfo
+166: get member 'z'
+167: 0L
+168: Func(3,18): MoveCharacterToLocation
+169: #
+UnloadConfigFile("::golocs");
+170: "::golocs"
+171: Func(4,2): UnloadConfigFile
+172: #
+173: leave block(7)
+174: progend
+C:\pol2\pkg\tools\gmtools\itemGo.src, Line 84
+function FillInArrays( tname )
+175: pop param 'tname'
+var telelocations := ReadConfigFile("::golocs");
+176: decl local #1
+177: "::golocs"
+178: Func(4,0): ReadConfigFile
+179: :=
+180: #
+if (!telelocations)
+181: local #1
+182: if true goto 189
+SendSysMessage(who,"no telelocations");
+183: global #0
+184: "no telelocations"
+185: 3L
+186: 1000L
+187: Func(3,16): SendSysMessage
+188: #
+var datalen;
+189: decl local #2
+190: #
+var layoutlen;
+191: decl local #3
+192: #
+var prev_y := CInt(TEXTSTARTLOCY);
+193: decl local #4
+194: 70L
+195: Func(0,0): CInt
+196: :=
+197: #
+var datindx := 2;
+198: decl local #5
+199: 2L
+200: :=
+201: #
+var buttonret := 1;
+202: decl local #6
+203: 1L
+204: :=
+205: #
+var i;
+206: decl local #7
+207: #
+var numlocations := GetConfigMaxIntKey(telelocations);
+208: decl local #8
+209: local #1
+210: Func(4,3): GetConfigMaxIntKey
+211: :=
+212: #
+SendSysMessage(who,"numlocations is: " + numlocations);
+213: global #0
+214: "numlocations is: "
+215: local #8
+216: +
+217: 3L
+218: 1000L
+219: Func(3,16): SendSysMessage
+220: #
+var currloc;
+221: decl local #9
+222: #
+for( i := 1; i <= numlocations; i := i + 1  )
+223: local #7
+224: 1L
+225: :=
+226: #
+227: local #7
+228: local #8
+229: <=
+230: if false goto 393
+currloc := telelocations[i];
+231: local #1
+232: local #7
+233: [] 1
+234: local9 := 
+if ((currloc.TYPE == "all") || (currloc.TYPE == tname))
+235: local #9
+236: get member 'TYPE'
+237: "all"
+238: ==
+239: local #9
+240: get member 'TYPE'
+241: local #0
+242: ==
+243: ||
+244: if false goto 382
+locationscount := locationscount + 1;
+245: global #1
+246: 1L
+247: +
+248: global1 := 
+datalen := GetDataLength();
+249: makelocal
+250: jmp userfunc @395
+251: local2 := 
+layoutlen := GetLayoutLength();
+252: makelocal
+253: jmp userfunc @398
+254: local3 := 
+datindx := datalen+1;
+255: local #2
+256: 1L
+257: +
+258: local5 := 
+data[datindx] := currloc.Name;
+259: global #4
+260: local #5
+261: local #9
+262: get member 'Name'
+263: [] := (1) #
+if (mod(locationscount, 19) == 1)
+264: global #1
+265: 19L
+266: makelocal
+267: jmp userfunc @406
+268: 1L
+269: ==
+270: if false goto 318
+if (locationscount >= 19)
+271: global #1
+272: 19L
+273: >=
+274: if false goto 284
+layout[GetLayoutLength()+1] := "button 285 465 2648 2647 0 " + (pagecount);
+275: global #3
+276: makelocal
+277: jmp userfunc @398
+278: 1L
+279: +
+280: "button 285 465 2648 2647 0 "
+281: global #2
+282: +
+283: [] := (1) #
+layout[GetLayoutLength()+1] := "page " + pagecount;
+284: global #3
+285: makelocal
+286: jmp userfunc @398
+287: 1L
+288: +
+289: "page "
+290: global #2
+291: +
+292: [] := (1) #
+pagecount := pagecount + 1;
+293: global #2
+294: 1L
+295: +
+296: global2 := 
+prev_y := TEXTSTARTLOCY;
+297: 70L
+298: local4 := 
+if (locationscount > 19)
+299: global #1
+300: 19L
+301: >
+302: if false goto 318
+if( i > 19)
+303: local #7
+304: 19L
+305: >
+306: if false goto 318
+layout[GetLayoutLength()+1] := "button 285 85 2650 2651 0 " + (pagecount - 2);
+307: global #3
+308: makelocal
+309: jmp userfunc @398
+310: 1L
+311: +
+312: "button 285 85 2650 2651 0 "
+313: global #2
+314: 2L
+315: -
+316: +
+317: [] := (1) #
+layout[GetLayoutLength()+1] := ("text 20 " + CStr(prev_y + 20) + " 40 " + datal
+318: global #3
+319: makelocal
+320: jmp userfunc @398
+321: 1L
+322: +
+323: "text 20 "
+324: local #4
+325: 20L
+326: +
+327: Func(0,5): CStr
+328: +
+329: " 40 "
+330: +
+331: local #2
+332: +
+333: [] := (1) #
+layout[GetLayoutLength()+1] := ("button 200 " + CStr(prev_y + 20) + " 2640 2641
+334: global #3
+335: makelocal
+336: jmp userfunc @398
+337: 1L
+338: +
+339: "button 200 "
+340: local #4
+341: 20L
+342: +
+343: Func(0,5): CStr
+344: +
+345: " 2640 2641 1 0 "
+346: +
+347: local #6
+348: 1L
+349: +
+350: 2L
+351: /
+352: +
+353: [] := (1) #
+layout[GetLayoutLength()+1] := ("button 260 " + CStr(prev_y + 20) + " 2640 2641
+354: global #3
+355: makelocal
+356: jmp userfunc @398
+357: 1L
+358: +
+359: "button 260 "
+360: local #4
+361: 20L
+362: +
+363: Func(0,5): CStr
+364: +
+365: " 2640 2641 1 0 "
+366: +
+367: local #6
+368: 1L
+369: +
+370: 2L
+371: /
+372: local #8
+373: +
+374: 1L
+375: +
+376: +
+377: [] := (1) #
+prev_y := prev_y + 20;
+378: local #4
+379: 20L
+380: +
+381: local4 := 
+buttonret := buttonret + 2;
+382: local #6
+383: 2L
+384: +
+385: local6 := 
+386: local #7
+387: local #7
+388: 1L
+389: +
+390: :=
+391: #
+392: goto227
+393: 0L
+394: return
+C:\pol2\pkg\tools\gmtools\itemGo.src, Line 139
+function GetDataLength();
+return (len(data));
+395: global #4
+396: Func(0,2): len
+397: return
+C:\pol2\pkg\tools\gmtools\itemGo.src, Line 134
+function GetLayoutLength();
+return (len(layout));
+398: global #3
+399: Func(0,2): len
+400: return
+C:/pol2/scripts/include/attributes.inc, Line 700
+function GetStrength(who)
+401: pop param 'who'
+return GetAttribute(who, ATTRIBUTEID_STRENGTH);
+402: local #0
+403: "strength"
+404: Func(3,7): GetAttribute
+405: return
+C:/pol2/scripts/include/math.inc, Line 73
+function Mod(Numerator, Denominator)
+406: pop param 'Denominator'
+407: pop param 'Numerator'
+var dividend := Numerator - ( CInt(Numerator/Denominator) * Denominator );
+408: decl local #2
+409: local #1
+410: local #1
+411: local #0
+412: /
+413: Func(0,0): CInt
+414: local #0
+415: *
+416: -
+417: :=
+418: #
+return dividend;
+419: local #2
+420: return

@@ -1,0 +1,282 @@
+use uo;
+use os;
+use util;
+
+include "include/attributes";
+include "include/client";
+include "include/yesNo";
+include "include/spellRestrictions";
+
+
+program duelar(who, reags)
+reags.graphic := 4484;
+var restricao := GetObjProperty(reags, "restricao");
+if(restricao)
+SendSysMessage(who, "A Arena esta em uso tente novamente mais tarde!",9,90);
+return 0;
+endif
+SendSysMessage(who, "Selecione o oponente!",9,90);
+SetObjProperty(reags, "restricao", 1);
+var oponente := Target(who);
+if(!oponente)
+SendSysMessage(who, "Cancelado!",9,90);
+EraseObjProperty(reags, "restricao");
+return 0;
+endif
+if(oponente.name == who.name)
+SendSysMessage(who, "Voce nao pode se auto-escolher!",9,90);
+EraseObjProperty(reags, "restricao");
+return 0;
+endif
+var teste := GetObjProperty(who, "venci");
+var testa := GetObjProperty(oponente, "venci");
+if(!teste)
+teste := 0;
+endif
+if(!testa)
+testa := 0;
+endif
+var queda := GetObjProperty(who, "perdi");
+var quede := GetObjProperty(oponente, "perdi");
+if(!queda)
+queda := 0;
+endif
+if(!quede)
+quede := 0;
+endif
+var ganho := teste + 1;
+var ganhei := testa + 1;
+var perda := queda + 1;
+var perde := quede + 1;
+SendSysMessage(oponente, who.name + " quer um Duelo com voce! ",9,90);
+SendSysMessage(oponente, "Voce tem 10 segundos para responder!",9,90);
+var prevtime := ReadGameClock() + 10;
+var answer:=YesNo(oponente, "Duelar?");
+oponente.frozen := 1;
+if(!answer)
+SendSysMessage(who, "O oponente negou o duelo!",9,90);
+SendSysMessage(oponente, "Voce nao aceito o Duelo!",9,90);
+EraseObjProperty(reags, "restricao");
+oponente.frozen := 0;
+return;
+endif
+if(ReadGameClock() > prevtime)
+SendSysMessage(who, oponente.name + " demorou demais!",9,90);
+SendSysMessage(oponente, "Voce demorou demais!",3,70);
+EraseObjProperty(reags, "restricao");
+oponente.frozen := 0;
+return;
+endif
+MoveCharacterToLocation(oponente, 5951, 1097, 0, MOVECHAR_FORCELOCATION);
+oponente.frozen := 0;
+MoveCharacterToLocation(who, 5959, 1097, 0, MOVECHAR_FORCELOCATION);
+DoTempMod(who, "p", 1, 4);
+DoTempMod(oponente, "p", 1, 4);
+SetObjProperty(reags, "restricao", 1);
+PrintTextAbovePrivate(oponente, "Iniciando em 4 segundos!",oponente);
+PrintTextAbovePrivate(who, "Iniciando em 4 segundos!",who);
+sleep(1);
+PrintTextAbovePrivate(oponente, "Iniciando em 3 segundos!",oponente);
+PrintTextAbovePrivate(who, "Iniciando em 3 segundos!",who);
+sleep(1);
+PrintTextAbovePrivate(oponente, "Iniciando em 2 segundos!",oponente);
+PrintTextAbovePrivate(who, "Iniciando em 1 segundos!",who);
+sleep(1);
+PrintTextAbovePrivate(oponente, "Iniciando em 1 segundos!",oponente);
+PrintTextAbovePrivate(who, "Iniciando em 1 segundos!",who);
+sleep(1);
+PrintTextAbovePrivate(oponente, "VALENDOOOOO!",oponente);
+PrintTextAbovePrivate(who, "VALENDOOOOO!",who);
+Detach();
+sleep(60);
+if(oponente.dead)
+SendSysMessage(oponente, "A luta acabou para voce!",9,89);
+SendSysMessage(who, "Seu oponente esta morto!",9,89);
+SetObjProperty(oponente, "perdi", perde);
+SetObjProperty(who, "venci", ganho);
+Broadcast(oponente.name + " perdeu pvp para " + who.name,9,89);  
+MoveCharacterToLocation(who, 2835, 942, 0, flags := 0 );
+MoveCharacterToLocation(oponente, 2835, 942, 0, flags := 0 );
+EraseObjProperty(reags, "restricao");
+PrintTextAbove(reags, "Arena Liberada!",9,89);
+return 0;
+endif
+if(who.dead)
+SendSysMessage(oponente, "Seu oponente esta morto!",9,89);
+SendSysMessage(who, "A luta acabou para voce!",9,89);
+SetObjProperty(oponente, "venci", ganhei);
+SetObjProperty(who, "perdi", perda);
+Broadcast(who.name + " perdeu pvp para " + oponente.name,9,89);
+MoveCharacterToLocation(who, 2835, 942, 0, flags := 0 );
+MoveCharacterToLocation(oponente, 2835, 942, 0, flags := 0 );
+EraseObjProperty(reags, "restricao");
+PrintTextAbove(reags, "Arena Liberada!",3,95);
+return 0;
+endif
+SendSysMessage(who, "Acabando tempo em 4 minutos...",9,89);
+SendSysMessage(oponente, "Acabando tempo em 4 minutos...",9,89);
+Detach();
+sleep(60);
+if(oponente.dead)
+SendSysMessage(oponente, "A luta acabou para voce!",9,89);
+SendSysMessage(who, "Seu oponente esta morto!",9,89);
+SetObjProperty(oponente, "perdi", perde);
+SetObjProperty(who, "venci", ganho);
+Broadcast(oponente.name + " perdeu pvp para " + who.name,9,89);
+MoveCharacterToLocation(who, 2835, 942, 0, flags := 0 );
+MoveCharacterToLocation(oponente, 2835, 942, 0, flags := 0 );
+EraseObjProperty(reags, "restricao");
+PrintTextAbove(reags, "Arena Liberada!",3,95);
+return 0;
+endif
+if(who.dead)
+SendSysMessage(oponente, "Seu oponente esta morto!",9,89);
+SendSysMessage(who, "A luta acabou para voce!",9,89);
+SetObjProperty(oponente, "venci", ganhei);
+SetObjProperty(who, "perdi", perda);
+Broadcast(who.name + " perdeu pvp para " + oponente.name,9,89);
+MoveCharacterToLocation(who, 2835, 942, 0, flags := 0 );
+MoveCharacterToLocation(oponente, 2835, 942, 0, flags := 0 );
+EraseObjProperty(reags, "restricao");
+PrintTextAbove(reags, "Arena Liberada!",3,95);
+return 0;
+endif
+SendSysMessage(who, "Acabando tempo em 3 minutos...",9,89);
+SendSysMessage(oponente, "Acabando tempo em 3 minutos...",9,89);
+Detach();
+sleep(60);
+if(oponente.dead)
+SendSysMessage(oponente, "A luta acabou para voce!",9,89);
+SendSysMessage(who, "Seu oponente esta morto!",9,89);
+SetObjProperty(oponente, "perdi", perde);
+SetObjProperty(who, "venci", ganho);
+Broadcast(oponente.name + " perdeu pvp para " + who.name,9,89);
+MoveCharacterToLocation(who, 2835, 942, 0, flags := 0 );
+MoveCharacterToLocation(oponente, 2835, 942, 0, flags := 0 );
+EraseObjProperty(reags, "restricao");
+PrintTextAbove(reags, "Arena Liberada!",3,95);
+return 0;
+endif
+if(who.dead)
+SendSysMessage(oponente, "Seu oponente esta morto!",9,89);
+SendSysMessage(who, "A luta acabou para voce!",9,89);
+SetObjProperty(oponente, "venci", ganhei);
+SetObjProperty(who, "perdi", perda);
+Broadcast(who.name + " perdeu pvp para " + oponente.name,9,89);
+MoveCharacterToLocation(who, 2835, 942, 0, flags := 0 );
+MoveCharacterToLocation(oponente, 2835, 942, 0, flags := 0 );
+EraseObjProperty(reags, "restricao");
+PrintTextAbove(reags, "Arena Liberada!",3,95);
+return 0;
+endif
+SendSysMessage(who, "Acabando tempo em 2 minutos...",9,89);
+SendSysMessage(oponente, "Acabando tempo em 2 minutos...",9,89);
+Detach();
+sleep(60);
+if(oponente.dead)
+SendSysMessage(oponente, "A luta acabou para voce!",9,89);
+SendSysMessage(who, "Seu oponente esta morto!",9,89);
+SetObjProperty(oponente, "perdi", perde);
+SetObjProperty(who, "venci", ganho);
+Broadcast(oponente.name + " perdeu pvp para " + who.name,9,89);
+MoveCharacterToLocation(who, 2835, 942, 0, flags := 0 );
+MoveCharacterToLocation(oponente, 2835, 942, 0, flags := 0 );
+EraseObjProperty(reags, "restricao");
+PrintTextAbove(reags, "Arena Liberada!",3,95);
+return 0;
+endif
+if(who.dead)
+SendSysMessage(oponente, "Seu oponente esta morto!",9,89);
+SendSysMessage(who, "A luta acabou para voce!",9,89);
+SetObjProperty(oponente, "venci", ganhei);
+SetObjProperty(who, "perdi", perda);
+Broadcast(who.name + " perdeu pvp para " + oponente.name,9,89);
+MoveCharacterToLocation(who, 2835, 942, 0, flags := 0 );
+MoveCharacterToLocation(oponente, 2835, 942, 0, flags := 0 );
+EraseObjProperty(reags, "restricao");
+PrintTextAbove(reags, "Arena Liberada!",9,89);
+return 0;
+endif
+SendSysMessage(who, "Acabando tempo em 1 minuto...",9,89);
+SendSysMessage(oponente, "Acabando tempo em 1 minuto...",9,89);
+Detach();
+sleep(30);
+if(oponente.dead)
+SendSysMessage(oponente, "A luta acabou para voce!",9,89);
+SendSysMessage(who, "Seu oponente esta morto!",3,70);
+SetObjProperty(oponente, "perdi", perde);
+SetObjProperty(who, "venci", ganho);
+Broadcast(oponente.name + " perdeu pvp para " + who.name,9,89);
+MoveCharacterToLocation(who, 2835, 942, 0, flags := 0 );
+MoveCharacterToLocation(oponente, 2835, 942, 0, flags := 0 );
+EraseObjProperty(reags, "restricao");
+PrintTextAbove(reags, "Arena Liberada!",3,95);
+return 0;
+endif
+if(who.dead)
+SendSysMessage(oponente, "Seu oponente esta morto!",9,89);
+SendSysMessage(who, "A luta acabou para voce!",9,89);
+SetObjProperty(oponente, "venci", ganhei);
+SetObjProperty(who, "perdi", perda);
+Broadcast(who.name + " perdeu pvp para " + oponente.name,9,89);
+MoveCharacterToLocation(who, 2835, 942, 0, flags := 0 );
+MoveCharacterToLocation(oponente, 2835, 942, 0, flags := 0 );
+EraseObjProperty(reags, "restricao");
+PrintTextAbove(reags, "Arena Liberada!",3,95);
+return 0;
+endif
+SendSysMessage(who, "Acabando tempo em 30 segundos...",9,89);
+SendSysMessage(oponente, "Acabando tempo em 30 segundos...",9,89);
+sleep(20);
+if(oponente.dead)
+SendSysMessage(oponente, "A luta acabou para voce!",9,89);
+SendSysMessage(who, "Seu oponente esta morto!",9,89);
+SetObjProperty(oponente, "perdi", perde);
+SetObjProperty(who, "venci", ganho);
+Broadcast(oponente.name + " perdeu pvp para " + who.name,9,89);
+MoveCharacterToLocation(who, 2835, 942, 0, flags := 0 );
+MoveCharacterToLocation(oponente, 2835, 942, 0, flags := 0 );
+EraseObjProperty(reags, "restricao");
+PrintTextAbove(reags, "Arena Liberada!",3,95);
+return 0;
+endif
+if(who.dead)
+SendSysMessage(oponente, "Seu oponente esta morto!",9,89);
+SendSysMessage(who, "A luta acabou para voce!",9,89);
+SetObjProperty(oponente, "venci", ganhei);
+SetObjProperty(who, "perdi", perda);
+Broadcast(who.name + " perdeu pvp para " + oponente.name,9,89);
+MoveCharacterToLocation(who, 2835, 942, 0, flags := 0 );
+MoveCharacterToLocation(oponente, 2835, 942, 0, flags := 0 );
+EraseObjProperty(reags, "restricao");
+PrintTextAbove(reags, "Arena Liberada!",3,95);
+return 0;
+endif
+SendSysMessage(who, "Acabando tempo em 10 segundos...",9,89);
+SendSysMessage(oponente, "Acabando tempo em 10 segundos...",9,89);
+sleep(5);
+SendSysMessage(who, "Acabando tempo em 5 segundos...",9,89);
+SendSysMessage(oponente, "Acabando tempo em 5 segundos...",9,89);
+sleep(5);
+SendSysMessage(who, "Fim da LUTA!",9,89);
+SendSysMessage(oponente, "Fim da LUTA!",9,89);
+var tu := GetHp(oponente);
+var no := GetHp(who);
+MoveCharacterToLocation(who, 2835, 942, 0, flags := 0 );
+MoveCharacterToLocation(oponente, 2835, 942, 0, flags := 0 );
+if(tu > no)
+SetObjProperty(oponente, "venci", ganhei);
+SetObjProperty(who, "perdi", perda);
+Broadcast(who.name + " perdeu pvp para " + oponente.name + " por LIFE!",9,89);
+endif
+if(no > tu)
+SetObjProperty(oponente, "perdi", perde);
+SetObjProperty(who, "venci", ganho);
+Broadcast(oponente.name + " perdeu pvp para " + who.name + " por LIFE!",9,89);
+endif
+if(tu == no)
+Broadcast(oponente.name + " empatou pvp com " + who.name,9,89);
+endif
+EraseObjProperty(reags, "restricao");
+PrintTextAbove(reags, "Arena Liberada!",9,90);
+endprogram

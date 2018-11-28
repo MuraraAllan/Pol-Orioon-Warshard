@@ -1,0 +1,7 @@
+c:\pol\pkg\items\guildstone\start.src, Line 4
+start_script("guildManager");
+0: "guildManager"
+1: 0L
+2: Func(3,0): start_script
+3: #
+4: progend

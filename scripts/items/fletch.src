@@ -1,0 +1,66 @@
+use uo;
+
+include "include/client";
+include "include/attributes";
+include "include/objtype";
+include "include/utility";
+include "include/skillPoints";
+include "include/canAccess";
+
+program on_fletch(who, shafts)
+  EraseObjProperty(who, "IsMeditating");
+    EraseObjProperty(who, "HealTimer");
+  if(!can_access(who, shafts))
+    return;
+  endif
+  var thepoints := GetEffectiveSkill(who, SKILLID_BOWCRAFT) / 2;
+  if(thepoints < 10)
+    thepoints := 10;
+  endif
+  SendSysMessage(who, "Selecione o material.",9,89);
+  var feathers := Target(who);
+  if(!feathers)
+    SendSysMessage(who, "Cancelado.",9,89);
+    return;
+  endif
+  if(!can_access(who, feathers))
+    return;
+  endif
+  if(shafts.objtype == 0x1bd1)
+    if(GetObjType(feathers) != 0x1bd4)
+      SendSysMessage(who, "Voce so pode fazer flechas com penas e shafts.",9,89);
+      return;
+    endif
+  elseif(shafts.objtype == 0x1bd4)
+    if(GetObjType(feathers) != 0x1bd1)
+      SendSysMessage(who, "Voce so pode fazer flechas com penas e shafts.",9,89);
+      return;
+    endif
+  else
+    SendSysMessage(who, "Voce so pode fazer flechas com penas e shafts.",9,89);
+  endif
+  var choice := SelectMenuItem2(who, "fletching");
+  if(!Accessible(who, shafts))
+    SendSysMessage(who, "Voce nao pode usar estes shafts.",9,89);
+    return;
+  endif
+  if(!Accessible(who, feathers))
+    SendSysMessage(who, "Voce nao pode usar estas penas.",9,89);
+    return;
+  endif
+  if(choice == 0)
+    SendSysMessage(who, "Cancelled");
+    return;
+  endif
+  if(CheckSkill(who, SKILLID_BOWCRAFT, -1, thepoints))
+    var num_to_make := Min(GetAmount(shafts), GetAmount(feathers));
+    if((SubtractAmount(shafts, num_to_make)) && (SubtractAmount(feathers, num_to_make)))
+      var arrows := CreateItemInBackpack(who, choice.objtype, num_to_make);
+      SendSysMessage(who, "Voce criou flechas e pos em sua mochila.",9,89);
+    endif
+  else
+    SubtractAmount(shafts, 1);
+    SubtractAmount(feathers, 1);
+    SendSysMessage(who, "Voce destruiu materiais.",9,89);
+  endif
+endprogram

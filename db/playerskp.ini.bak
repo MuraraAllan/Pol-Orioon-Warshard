@@ -1,0 +1,11 @@
+[playerskp]
+1Nome=DinO
+1kPs=error{ errortext = "Property not found" }
+2Nome=error{ errortext = "Array index out of bounds" }
+2kPs=error{ errortext = "Array index out of bounds" }
+3Nome=error{ errortext = "Array index out of bounds" }
+3kPs=error{ errortext = "Array index out of bounds" }
+4Nome=error{ errortext = "Array index out of bounds" }
+4kPs=error{ errortext = "Array index out of bounds" }
+5Nome=error{ errortext = "Array index out of bounds" }
+5kPs=error{ errortext = "Array index out of bounds" }

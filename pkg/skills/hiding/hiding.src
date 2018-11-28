@@ -1,0 +1,55 @@
+use uo;
+
+include "include/client";
+include "include/attributes";
+include "include/skillPoints";
+
+program skill_hide(who)
+  EraseObjProperty(who, "IsMeditating");
+  EraseObjProperty(who, "HealTimer");
+  var thepoints := CInt(GetEffectiveSkill(who, SKILLID_HIDING) + 10);
+  if(thepoints < 20)
+    thepoints := 20;
+  endif
+  if(who.warmode)
+    Printtextaboveprivate(who, "Voce nao pode se esconder em modo de guerra.", who);
+    sendsysmessage(who,"Voce nao consegue se esconder em modo de guerra.",9,89);
+    return 0;
+  endif
+  var range := 13;
+  var bystanders := ListHostiles(who, range, LH_FLAG_LOS);
+  if(len(bystanders) > 0)
+    Printtextaboveprivate(who, "Voce nao pode se esconder na frente de individuos hostis!", who);
+    sendsysmessage(who,"Voce nao pode se esconder na frente de invididuos hosits.",9,89);
+    return 0;
+  endif
+  if(CheckSkill(who, SKILLID_HIDING, -1, thepoints))
+    who.hidden := 1;
+    PrintTextAbovePrivate(who, "Voce se escondeu bem",who);
+    sendsysmessage(who,"Voce se escondeu bem.",9,89);
+  else
+    PrintTextAbovePrivate(who, "Voce nao conseguiu se esconder aqui",who);
+    sendsysmessage(who,"Voce nao conseguiu se esconder aqui.",9,89);
+    who.hidden := 0;
+  endif
+endprogram
+
+function getwhoange( skill )
+  if( skill >= 100 )
+    return 4;
+  elseif( skill >= 90 )
+    return 5;
+  elseif( skill >= 80 )
+    return 6;
+  elseif( skill >= 70 )
+    return 7;
+  elseif( skill >= 60 )
+    return 8;
+  elseif( skill >= 50 )
+    return 9;
+  elseif( skill >= 30 )
+    return 10;
+  else
+    return 15;
+  endif
+endfunction

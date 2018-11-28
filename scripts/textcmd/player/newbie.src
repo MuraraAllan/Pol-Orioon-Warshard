@@ -1,0 +1,22 @@
+use uo;
+use os;
+
+include "include/attributes";
+
+
+program bandagens( who, item )
+      var what :=  TargetCoordinates(who);
+      var alvo := what.item;
+
+if(!alvo)
+SendSysMessage(who, "Cancelado.",9,89);
+return;
+endif
+
+///var alvo := Target(who, TGTOPT_NOCHECK_LOS);
+if(alvo.newbie == 1)
+SendSysMessage(who, "O item e newbie!",9,89);
+else
+SendSysMessage(who, "O item nao e newbie!",9,89);  
+endif
+endprogram

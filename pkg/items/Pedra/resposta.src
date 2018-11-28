@@ -1,0 +1,39 @@
+use uo;
+use os;
+use util;
+use basic;
+use cfgfile;
+
+include "include/attributes";
+include "include/client";
+include "include/yesNo";
+include "include/spellRestrictions";
+include "../pkg/foundations/gumps/gumps";
+
+var layout:=array("page 0",
+"nodispose",
+"text 18 20 77 0",
+"text 10 40 77 2",
+"text 10 70 77 2",
+"text 10 100 77 2",
+"button 20 50 2130 2129 1 0 1",
+"button 90 50 2119 2120 1 0 0"
+);
+var dado:={" Aceitar o Duelo?",
+"",
+"",
+""
+};
+
+program abc(oponente);
+EraseObjProperty(oponente, "aceitarpvp");
+
+var vcaceita:=SendDialogGump(oponente,layout, dado);
+
+if(vcaceita)
+SetObjProperty(oponente, "aceitarpvp", 1);
+else
+SetObjProperty(oponente, "aceitarpvp", 0);
+endif
+
+endprogram

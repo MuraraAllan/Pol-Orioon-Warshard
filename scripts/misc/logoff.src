@@ -1,0 +1,106 @@
+use uo;
+use util;
+use math;
+use os;
+
+include "include/math";
+include "include/eventID";
+include "include/attributes";
+
+const EVID_UNEQUIP   := 0x123456;
+const EVID_DISCHARGE := 0x123457;
+
+program onlogoff(who)
+
+SetObjProperty(who,"deslogouat", ReadGameClock());
+if(who.cmdlevel == 0)
+SetGlobalProperty("#Jogadores", GetGlobalProperty("#Jogadores")-1);
+endif
+
+EraseObjProperty(who, "guarda");
+  if((who.name == "") || (who.name == " ") || (who.name == "  ") || (who.name == "   ") || (who.name == "    ") || (who.name == "     ") || (who.name == "      ") || (who.name == "       ") || (who.name == "        ") || (who.name == "         ") || (who.name == "          ") || (who.name == "           ") || (who.name == "            ") || (who.name == "             ") || (who.name == "              ") || (who.name == "               ") || (who.name == "                ") || (who.name == "                 "))                                         
+  var account := who.acct;
+  who.name:="Char Sem Nome [DELETAR]";
+  SetObjProperty(who,"verf_nome", "deletar");
+  DisconnectClient(who);
+  endif
+
+  
+  var acct := FindAccount(who.acctname);
+  acct.setprop("LastLogin", readGameclock());
+  var sessiontime := ReadGameClock() - GetObjProperty(who,"logontime");
+  var timer := GetObjProperty(who,"onlinetimer");
+  if(!timer)
+    timer := 0;
+  endif
+  SetObjProperty(who,"onlinetimer",timer+sessiontime);
+  EraseObjProperty(who,"LoggedIn");
+  RemoveMods(who);
+  var mount := GetEquipmentByLayer(who, 25 );
+  if(mount)
+    if(GetObjProperty(mount, "summoned"))
+      var ser := Cint(GetObjProperty(mount, "serial"));
+      var critter := SystemFindObjectBySerial(ser);
+      if(critter)
+        ApplyRawDamage(critter, 2000);
+      endif
+      DestroyItem(mount);
+    else
+      var animal := SystemFindObjectBySerial(CInt(GetObjProperty(mount,"serial")));
+      SetObjProperty(animal,"onhold", 1);
+acct.eraseprop("LastIP");
+ var acct := who.acct;
+  var ipstring := acct.getprop("LastIP");
+  if(!ipstring)
+    ipstring := {};
+  endif
+  var holder := {};
+  var amt := len(ipstring);
+  foreach thing in ipstring
+    if((thing[1] != who.ip) and (amt < 20));
+      holder.append(thing);
+    else
+      amt := amt - 1;
+    endif
+  endforeach
+  ipstring := holder;
+  var newarray := {};
+  newarray.append(who.ip);
+  newarray.append(who.name);
+  ipstring.append(newarray);
+  acct.setprop("LastIP", ipstring);
+  acct.setprop("LastLogin", ReadGameClock());
+    endif
+  endif
+  staffnotify(who);
+endprogram
+
+function staffnotify(who)
+  var pid := 0;
+  while(!pid)
+    sleepms(50);
+    pid := GetGlobalProperty("#stafflist");
+  endwhile
+  pid := getprocess(pid);
+  if(!pid)
+    return;
+  endif
+  var k := struct;
+  k.+player := who;
+  k.+type  := EVID_PLAYER_LOGOFF;
+  pid.sendevent(k);
+endfunction
+
+function RemoveMods(who)
+  var mods := {};
+  foreach item in ListEquippedItems(who)
+    var proc := GetProcess(Cint(GetObjProperty(item, "Pid")));
+    if(proc)
+      var ev := {};
+      ev.+type := EVID_UNEQUIP;
+      proc.sendevent(ev);
+    endif
+  endforeach
+  EraseObjProperty(who, "EquipTimers");
+  return;
+endfunction

@@ -1,0 +1,770 @@
+C:\pol2\pkg\items\treasuremap\decodeMap.src, Line 10
+program decode_map( who, map )
+include "include/canAccess";
+0: get arg 'who'
+1: get arg 'map'
+EraseObjProperty(who, "IsMeditating");
+2: local #0
+3: "IsMeditating"
+4: Func(2,19): EraseObjProperty
+5: #
+EraseObjProperty(who, "HealTimer");
+6: local #0
+7: "HealTimer"
+8: Func(2,19): EraseObjProperty
+9: #
+if(!can_access(who, map))
+10: local #0
+11: local #1
+12: 0L
+13: makelocal
+14: jmp userfunc @91
+15: if true goto 18
+return;
+16: ""
+17: progend
+if(map.movable == 0)
+18: local #1
+19: get member 'movable'
+20: 0L
+21: ==
+22: if false goto 31
+SendSysMessage(who, "You cannot use that.");
+23: local #0
+24: "You cannot use that."
+25: 3L
+26: 1000L
+27: Func(2,15): SendSysMessage
+28: #
+return;
+29: ""
+30: progend
+var cfgfile := ReadConfigFile( "itemdesc" );
+31: decl local #2
+32: "itemdesc"
+33: Func(3,0): ReadConfigFile
+34: :=
+35: #
+var elem := FindConfigElem( cfgfile, map.objtype );
+36: decl local #3
+37: local #2
+38: local #1
+39: get member 'objtype'
+40: Func(3,1): FindConfigElem
+41: :=
+42: #
+var maplevel := GetConfigInt( elem, "Level" );
+43: decl local #4
+44: local #3
+45: "Level"
+46: Func(3,2): GetConfigInt
+47: :=
+48: #
+var maxlevel := GetMaxMapLevel( who );
+49: decl local #5
+50: local #0
+51: makelocal
+52: jmp userfunc @247
+53: :=
+54: #
+if( maplevel > maxlevel )
+55: local #4
+56: local #5
+57: >
+58: if false goto 66
+SendSysMessage( who, "You cannot comprehend the map." );
+59: local #0
+60: "You cannot comprehend the map."
+61: 3L
+62: 1000L
+63: Func(2,15): SendSysMessage
+64: #
+65: goto89
+if(CheckSkill( who, SKILLID_CARTOGRAPHY, (maplevel*20), (maplevel*100)))
+66: local #0
+67: 12L
+68: local #4
+69: 20L
+70: *
+71: local #4
+72: 100L
+73: *
+74: Func(2,20): CheckSkill
+75: if false goto 83
+CreateTreasureMap( who, map, maplevel );
+76: local #0
+77: local #1
+78: local #4
+79: makelocal
+80: jmp userfunc @198
+81: #
+82: goto89
+SendSysMessage( who, "You understand the map, but fail to decode it." );
+83: local #0
+84: "You understand the map, but fail to decode it."
+85: 3L
+86: 1000L
+87: Func(2,15): SendSysMessage
+88: #
+89: leave block(6)
+90: progend
+C:/pol2/scripts/include/canAccess.inc, Line 2
+function can_access(who, item, flags := 0)
+91: pop param 'flags'
+92: pop param 'item'
+93: pop param 'who'
+var owner := Cint(GetObjProperty(item, "Owner"));
+94: decl local #3
+95: local #1
+96: "Owner"
+97: Func(2,1): GetObjProperty
+98: Func(0,0): CInt
+99: :=
+100: #
+if((owner) and (owner != who.serial))
+101: local #3
+102: local #3
+103: local #2
+104: get member 'serial'
+105: <>
+106: &&
+107: if false goto 117
+SendSysMessage(who, "You cannot use that.");
+108: local #2
+109: "You cannot use that."
+110: 3L
+111: 1000L
+112: Func(2,15): SendSysMessage
+113: #
+return 0;
+114: 0L
+115: return
+116: goto196
+elseif(GetObjProperty(item, "Vendored"))
+117: local #1
+118: "Vendored"
+119: Func(2,1): GetObjProperty
+120: if false goto 130
+SendSysMessage(who, "You cannot use that.");
+121: local #2
+122: "You cannot use that."
+123: 3L
+124: 1000L
+125: Func(2,15): SendSysMessage
+126: #
+return 0;
+127: 0L
+128: return
+129: goto196
+elseif(!Accessible(who, item))
+130: local #2
+131: local #1
+132: Func(2,16): Accessible
+133: if true goto 143
+SendSysMessage(who, "You cannot use that.");
+134: local #2
+135: "You cannot use that."
+136: 3L
+137: 1000L
+138: Func(2,15): SendSysMessage
+139: #
+return 0;
+140: 0L
+141: return
+142: goto196
+elseif((!flags["distance"]) and ((Distance(who, item) > 2)))
+143: local #0
+144: "distance"
+145: [] 1
+146: !
+147: local #2
+148: local #1
+149: Func(2,17): Distance
+150: 2L
+151: >
+152: &&
+153: if false goto 163
+SendSysMessage(who, "That item is too far away.");
+154: local #2
+155: "That item is too far away."
+156: 3L
+157: 1000L
+158: Func(2,15): SendSysMessage
+159: #
+return 0;
+160: 0L
+161: return
+162: goto196
+elseif((!flags["unmovable"]) and (item.movable == 0))
+163: local #0
+164: "unmovable"
+165: [] 1
+166: !
+167: local #1
+168: get member 'movable'
+169: 0L
+170: ==
+171: &&
+172: if false goto 182
+SendSysMessage(who, "You cannot use that while locked down.");
+173: local #2
+174: "You cannot use that while locked down."
+175: 3L
+176: 1000L
+177: Func(2,15): SendSysMessage
+178: #
+return 0;
+179: 0L
+180: return
+181: goto196
+elseif(!ReserveItem(item))
+182: local #1
+183: Func(2,18): ReserveItem
+184: if true goto 194
+SendSysMessage(who, "That item is already in use.");
+185: local #2
+186: "That item is already in use."
+187: 3L
+188: 1000L
+189: Func(2,15): SendSysMessage
+190: #
+return 0;
+191: 0L
+192: return
+193: goto196
+return 1;
+194: 1L
+195: return
+196: 0L
+197: return
+C:\pol2\pkg\items\treasuremap\decodeMap.src, Line 52
+function CreateTreasureMap( who, oldmap, maplevel);
+198: pop param 'maplevel'
+199: pop param 'oldmap'
+200: pop param 'who'
+var map := CreateItemInBackpack( who, GetObjtypeByName("map_nonedit"), 1 );
+201: decl local #3
+202: local #2
+203: "map_nonedit"
+204: Func(2,22): GetObjtypeByName
+205: 1L
+206: Func(2,21): CreateItemInBackpack
+207: :=
+208: #
+SetObjProperty(map, "level", maplevel);
+209: local #3
+210: "level"
+211: local #0
+212: Func(2,3): SetObjProperty
+213: #
+SetObjProperty(map, "decoder", who.serial);
+214: local #3
+215: "decoder"
+216: local #2
+217: get member 'serial'
+218: Func(2,3): SetObjProperty
+219: #
+map.name := "a treasure map [lvl " + maplevel + "] [decoded by " + who.name + "
+220: local #3
+221: "a treasure map [lvl "
+222: local #0
+223: +
+224: "] [decoded by "
+225: +
+226: local #2
+227: get member 'name'
+228: +
+229: "]"
+230: +
+231: set member 'name' #
+SetTreasureCoords(map);
+232: local #3
+233: makelocal
+234: jmp userfunc @294
+235: #
+SendSysMessage( who, "You successfully decode the map!" );
+236: local #2
+237: "You successfully decode the map!"
+238: 3L
+239: 1000L
+240: Func(2,15): SendSysMessage
+241: #
+DestroyItem( oldmap );
+242: local #1
+243: Func(2,23): DestroyItem
+244: #
+245: 0L
+246: return
+C:\pol2\pkg\items\treasuremap\decodeMap.src, Line 35
+function GetMaxMapLevel( who );
+247: pop param 'who'
+var skill := GetEffectiveSkill( who, SKILLID_CARTOGRAPHY );
+248: decl local #1
+249: local #0
+250: 12L
+251: makelocal
+252: jmp userfunc @404
+253: :=
+254: #
+if( skill >= 100 )
+255: local #1
+256: 100L
+257: >=
+258: if false goto 262
+return 5;
+259: 5L
+260: return
+261: goto292
+elseif( skill >= 80 )
+262: local #1
+263: 80L
+264: >=
+265: if false goto 269
+return 4;
+266: 4L
+267: return
+268: goto292
+elseif( skill >= 60 )
+269: local #1
+270: 60L
+271: >=
+272: if false goto 276
+return 3;
+273: 3L
+274: return
+275: goto292
+elseif( skill >= 40 )
+276: local #1
+277: 40L
+278: >=
+279: if false goto 283
+return 2;
+280: 2L
+281: return
+282: goto292
+elseif( skill >= 20 )
+283: local #1
+284: 20L
+285: >=
+286: if false goto 290
+return 1;
+287: 1L
+288: return
+289: goto292
+return 0;
+290: 0L
+291: return
+292: 0L
+293: return
+C:\pol2\pkg\items\treasuremap\decodeMap.src, Line 62
+function SetTreasureCoords( map );
+294: pop param 'map'
+var cfgfile := ReadConfigFile( "treasure" );
+295: decl local #1
+296: "treasure"
+297: Func(3,0): ReadConfigFile
+298: :=
+299: #
+var num := GetConfigMaxIntKey( cfgfile );
+300: decl local #2
+301: local #1
+302: Func(3,3): GetConfigMaxIntKey
+303: :=
+304: #
+var pick := (RandomInt( num ) + 1);
+305: decl local #3
+306: local #2
+307: Func(4,0): RandomInt
+308: 1L
+309: +
+310: :=
+311: #
+var elem := FindConfigElem( cfgfile, pick );
+312: decl local #4
+313: local #1
+314: local #3
+315: Func(3,1): FindConfigElem
+316: :=
+317: #
+var x := GetConfigInt( elem, "X" );
+318: decl local #5
+319: local #4
+320: "X"
+321: Func(3,2): GetConfigInt
+322: :=
+323: #
+var y := GetConfigInt( elem, "Y" );
+324: decl local #6
+325: local #4
+326: "Y"
+327: Func(3,2): GetConfigInt
+328: :=
+329: #
+var z := GetConfigInt( elem, "Z" );
+330: decl local #7
+331: local #4
+332: "Z"
+333: Func(3,2): GetConfigInt
+334: :=
+335: #
+SetObjProperty( map, "chestx", x );
+336: local #0
+337: "chestx"
+338: local #5
+339: Func(2,3): SetObjProperty
+340: #
+SetObjProperty( map, "chesty", y );
+341: local #0
+342: "chesty"
+343: local #6
+344: Func(2,3): SetObjProperty
+345: #
+SetObjProperty( map, "chestz", z );
+346: local #0
+347: "chestz"
+348: local #7
+349: Func(2,3): SetObjProperty
+350: #
+SetName( map, "a treasure map" );
+351: local #0
+352: "a treasure map"
+353: Func(2,24): SetName
+354: #
+if( x < 265 )
+355: local #5
+356: 265L
+357: <
+358: if false goto 363
+map.xwest := 0;
+359: local #0
+360: 0L
+361: set member 'xwest' #
+362: goto368
+map.xwest := x-265;
+363: local #0
+364: local #5
+365: 265L
+366: -
+367: set member 'xwest' #
+if( y < 260 )
+368: local #6
+369: 260L
+370: <
+371: if false goto 376
+map.ynorth := 0;
+372: local #0
+373: 0L
+374: set member 'ynorth' #
+375: goto381
+map.ynorth := y-260;
+376: local #0
+377: local #6
+378: 260L
+379: -
+380: set member 'ynorth' #
+map.xeast := x+265;
+381: local #0
+382: local #5
+383: 265L
+384: +
+385: set member 'xeast' #
+map.ysouth := y+260;
+386: local #0
+387: local #6
+388: 260L
+389: +
+390: set member 'ysouth' #
+map.gumpwidth := 200;
+391: local #0
+392: 200L
+393: set member 'gumpwidth' #
+map.gumpheight := 200;
+394: local #0
+395: 200L
+396: set member 'gumpheight' #
+map.AppendPin(x,y);
+397: local #0
+398: local #5
+399: local #6
+400: Call Method appendpin (2 params)
+401: #
+402: 0L
+403: return
+C:/pol2/scripts/include/attributes.inc, Line 431
+function GetEffectiveSkill(who, skillid)
+404: pop param 'skillid'
+405: pop param 'who'
+return GetAttribute(who, GetAttributeIdBySkillId(skillid));
+406: local #1
+407: local #0
+408: makelocal
+409: jmp userfunc @412
+410: Func(2,7): GetAttribute
+411: return
+C:/pol2/scripts/include/attributes.inc, Line 250
+function GetAttributeIdBySkillId(skillid)
+412: pop param 'skillid'
+case(skillid)
+413: local #0
+414: casejmp
+	0: @415
+	1: @418
+	2: @421
+	3: @424
+	4: @427
+	5: @430
+	6: @433
+	7: @436
+	8: @439
+	9: @442
+	10: @445
+	11: @448
+	12: @451
+	13: @454
+	14: @457
+	15: @460
+	16: @463
+	17: @466
+	18: @469
+	19: @472
+	20: @475
+	21: @478
+	22: @481
+	23: @484
+	24: @487
+	25: @490
+	26: @493
+	27: @496
+	28: @499
+	29: @502
+	30: @505
+	31: @508
+	32: @511
+	33: @514
+	34: @517
+	35: @520
+	36: @523
+	37: @526
+	38: @529
+	39: @532
+	40: @535
+	41: @538
+	42: @541
+	43: @544
+	44: @547
+	45: @550
+	46: @553
+	47: @556
+	48: @559
+	default: @561
+return ATTRIBUTEID_ALCHEMY;
+415: "alchemy"
+416: return
+417: goto561
+return ATTRIBUTEID_ANATOMY;
+418: "anatomy"
+419: return
+420: goto561
+return ATTRIBUTEID_ANIMALLORE;
+421: "animallore"
+422: return
+423: goto561
+return ATTRIBUTEID_ITEMID;
+424: "itemid"
+425: return
+426: goto561
+return ATTRIBUTEID_ARMSLORE;
+427: "armslore"
+428: return
+429: goto561
+return ATTRIBUTEID_PARRY;
+430: "parry"
+431: return
+432: goto561
+return ATTRIBUTEID_BEGGING;
+433: "begging"
+434: return
+435: goto561
+return ATTRIBUTEID_BLACKSMITHY;
+436: "blacksmithy"
+437: return
+438: goto561
+return ATTRIBUTEID_BOWCRAFT;
+439: "bowcraft"
+440: return
+441: goto561
+return ATTRIBUTEID_PEACEMAKING;
+442: "peacemaking"
+443: return
+444: goto561
+return ATTRIBUTEID_CAMPING;
+445: "camping"
+446: return
+447: goto561
+return ATTRIBUTEID_CARPENTRY;
+448: "carpentry"
+449: return
+450: goto561
+return ATTRIBUTEID_CARTOGRAPHY;
+451: "cartography"
+452: return
+453: goto561
+return ATTRIBUTEID_COOKING;
+454: "cooking"
+455: return
+456: goto561
+return ATTRIBUTEID_DETECTINGHIDDEN;
+457: "detectinghidden"
+458: return
+459: goto561
+return ATTRIBUTEID_ENTICEMENT;
+460: "enticement"
+461: return
+462: goto561
+return ATTRIBUTEID_EVALINT;
+463: "evaluatingintelligence"
+464: return
+465: goto561
+return ATTRIBUTEID_HEALING;
+466: "healing"
+467: return
+468: goto561
+return ATTRIBUTEID_FISHING;
+469: "fishing"
+470: return
+471: goto561
+return ATTRIBUTEID_FORENSICS;
+472: "forensicevaluation"
+473: return
+474: goto561
+return ATTRIBUTEID_HERDING;
+475: "herding"
+476: return
+477: goto561
+return ATTRIBUTEID_HIDING;
+478: "hiding"
+479: return
+480: goto561
+return ATTRIBUTEID_PROVOCATION;
+481: "provocation"
+482: return
+483: goto561
+return ATTRIBUTEID_INSCRIPTION;
+484: "inscription"
+485: return
+486: goto561
+return ATTRIBUTEID_LOCKPICKING;
+487: "lockpicking"
+488: return
+489: goto561
+return ATTRIBUTEID_MAGERY;
+490: "magery"
+491: return
+492: goto561
+return ATTRIBUTEID_MAGICRESISTANCE;
+493: "magicresistance"
+494: return
+495: goto561
+return ATTRIBUTEID_TACTICS;
+496: "tactics"
+497: return
+498: goto561
+return ATTRIBUTEID_SNOOPING;
+499: "snooping"
+500: return
+501: goto561
+return ATTRIBUTEID_MUSICIANSHIP;
+502: "musicianship"
+503: return
+504: goto561
+return ATTRIBUTEID_POISONING;
+505: "poisoning"
+506: return
+507: goto561
+return ATTRIBUTEID_ARCHERY;
+508: "archery"
+509: return
+510: goto561
+return ATTRIBUTEID_SPIRITSPEAK;
+511: "spiritspeak"
+512: return
+513: goto561
+return ATTRIBUTEID_STEALING;
+514: "stealing"
+515: return
+516: goto561
+return ATTRIBUTEID_TAILORING;
+517: "tailoring"
+518: return
+519: goto561
+return ATTRIBUTEID_TAMING;
+520: "animaltaming"
+521: return
+522: goto561
+return ATTRIBUTEID_TASTEID;
+523: "tasteidentification"
+524: return
+525: goto561
+return ATTRIBUTEID_TINKERING;
+526: "tinkering"
+527: return
+528: goto561
+return ATTRIBUTEID_TRACKING;
+529: "tracking"
+530: return
+531: goto561
+return ATTRIBUTEID_VETERINARY;
+532: "veterinary"
+533: return
+534: goto561
+return ATTRIBUTEID_SWORDSMANSHIP;
+535: "swordsmanship"
+536: return
+537: goto561
+return ATTRIBUTEID_MACEFIGHTING;
+538: "macefighting"
+539: return
+540: goto561
+return ATTRIBUTEID_FENCING;
+541: "fencing"
+542: return
+543: goto561
+return ATTRIBUTEID_WRESTLING;
+544: "wrestling"
+545: return
+546: goto561
+return ATTRIBUTEID_LUMBERJACKING;
+547: "lumberjacking"
+548: return
+549: goto561
+return ATTRIBUTEID_MINING;
+550: "mining"
+551: return
+552: goto561
+return ATTRIBUTEID_MEDITATION;
+553: "meditation"
+554: return
+555: goto561
+return ATTRIBUTEID_STEALTH;
+556: "stealth"
+557: return
+558: goto561
+return ATTRIBUTEID_REMOVETRAP;
+559: "removetrap"
+560: return
+var ret        := error;
+561: decl local #1
+562: error
+563: :=
+564: #
+ret.+errortext := "No equivalent attributeid found for skillid " + skillid;
+565: local #1
+566: "errortext"
+567: .+
+568: "No equivalent attributeid found for skillid "
+569: local #0
+570: +
+571: := #
+return ret;
+572: local #1
+573: return

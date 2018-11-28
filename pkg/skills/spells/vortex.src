@@ -1,0 +1,43 @@
+use os;
+use uo;
+use util;
+
+include "include/client";
+include "include/attributes";
+include "include/spellRestrictions";
+
+program cast_summon( parms, who )
+  var circle := 8;
+  var delivery := "indirect";
+  var noto := "harmful";
+  var result := maincast(parms, delivery, circle, noto, 58);
+  if(result == 0)
+    return;
+  endif
+  var caster := result[1];
+  var cast_on := result[2];
+  var thecritter := CreateNpcFromTemplate("vortex", cast_on.x, cast_on.y,cast_on.z);
+  PlaySoundEffect(thecritter,SFX_SPELL_ENERGY_VORTEX);
+var aa := getobjproperty(caster, "seriall:");
+
+var a := SystemFindObjectBySerial( aa, sysfind_flags := 0 );
+if(a)
+      PlaySoundEffect( a, SFX_SPELL_MANA_VAMPIRE );
+  PlayStationaryEffect( a.x, a.y, a.z, FX_SMOKE, 0xa, 0xa );
+MoveCharacterToLocation(a,0,0,0,MOVECHAR_FORCELOCATION);
+  Damage(a, GetHp(a) + 3);
+ SetObjProperty(caster, "seriall:",thecritter.serial);
+ 
+endif
+  SetObjProperty(caster, "seriall:",thecritter.serial);
+  SetObjProperty(thecritter, "summoned",1);
+  SetObjProperty(thecritter, "master", caster.serial);
+  who.SetCriminal(1);
+  Detach();
+  sleep( (GetEffectiveSkill( caster, SKILLID_MAGERY ) ) );
+  PlaySoundEffect( thecritter, SFX_SPELL_MANA_VAMPIRE );
+  PlayStationaryEffect( thecritter.x, thecritter.y, thecritter.z, FX_SMOKE, 0xa, 0xa );
+  MoveCharacterToLocation(thecritter,0,0,0,MOVECHAR_FORCELOCATION);
+  ApplyRawDamage(thecritter, GetHp(thecritter) + 3);
+  SetObjProperty(caster, "seriall:",thecritter.serial);
+endprogram

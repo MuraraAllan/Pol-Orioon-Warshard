@@ -1,0 +1,314 @@
+C:\pol2\pkg\items\sysbook\shelfStock.src, Line 7
+program shelfstock();
+var globalshelves;
+0: decl local #0
+1: #
+var shelf;
+2: decl local #1
+3: #
+sleep(300);
+4: 300L
+5: Func(3,0): sleep
+6: #
+var newarray;
+7: decl local #2
+8: #
+while(1)
+9: 1L
+10: if false goto 61
+newarray := {};
+11: array
+12: local2 := 
+if(!GetGlobalProperty("BookSpawnPause"))
+13: "BookSpawnPause"
+14: Func(2,0): GetGlobalProperty
+15: if true goto 48
+globalshelves := GetGlobalProperty("shelves");
+16: "shelves"
+17: Func(2,0): GetGlobalProperty
+18: local0 := 
+foreach thing in globalshelves
+19: local #0
+20: initforeach @38
+shelf := SystemFindObjectBySerial(thing);
+21: local #3
+22: 0L
+23: Func(2,1): SystemFindObjectBySerial
+24: local1 := 
+if(shelf)
+25: local #1
+26: if false goto 35
+newarray.append(thing);
+27: local #2
+28: local #3
+29: Call Method append (1 params)
+30: #
+addbooks(shelf);
+31: local #1
+32: makelocal
+33: jmp userfunc @63
+34: #
+sleep(10);
+35: 10L
+36: Func(3,0): sleep
+37: #
+38: stepforeach @21
+39: leave block(3)
+SetGlobalProperty("shelves", newarray);
+40: "shelves"
+41: local #2
+42: Func(2,2): SetGlobalProperty
+43: #
+sleep(3600);
+44: 3600L
+45: Func(3,0): sleep
+46: #
+47: goto60
+print("Book Spawner is Paused.");
+48: "Book Spawner is Paused."
+49: Func(1,0): print
+50: #
+print("To unpause book spawner erase global property:");
+51: "To unpause book spawner erase global property:"
+52: Func(1,0): print
+53: #
+print("BookSpawnPause");
+54: "BookSpawnPause"
+55: Func(1,0): print
+56: #
+sleep(60);
+57: 60L
+58: Func(3,0): sleep
+59: #
+60: goto9
+61: leave block(3)
+62: progend
+C:\pol2\pkg\items\sysbook\shelfStock.src, Line 34
+function addbooks(bookcase)
+63: pop param 'bookcase'
+var count := 0;
+64: decl local #1
+65: 0L
+66: :=
+67: #
+var books := EnumerateItemsInContainer(bookcase);
+68: decl local #2
+69: local #0
+70: Func(2,3): EnumerateItemsInContainer
+71: :=
+72: #
+var max := GetObjProperty(bookcase, "MaxBooks");
+73: decl local #3
+74: local #0
+75: "MaxBooks"
+76: Func(2,4): GetObjProperty
+77: :=
+78: #
+if((!max) or (max > 7))
+79: local #3
+80: !
+81: local #3
+82: 7L
+83: >
+84: ||
+85: if false goto 94
+max := RandomDiceRoll("1d5+2");
+86: "1d5+2"
+87: Func(4,0): RandomDiceRoll
+88: local3 := 
+SetObjProperty(bookcase, "MaxBooks", max);
+89: local #0
+90: "MaxBooks"
+91: local #3
+92: Func(2,5): SetObjProperty
+93: #
+if(books.size()!= 0)
+94: local #2
+95: Call Method size (0 params)
+96: 0L
+97: <>
+98: if false goto 112
+foreach book in books
+99: local #2
+100: initforeach @110
+if(book.objtype == 0xfef)
+101: local #4
+102: get member 'objtype'
+103: 4079L
+104: ==
+105: if false goto 110
+count := count + 1;
+106: local #1
+107: 1L
+108: +
+109: local1 := 
+110: stepforeach @101
+111: leave block(3)
+while(count < max)
+112: local #1
+113: local #3
+114: <
+115: if false goto 138
+if((RandomInt(5) + 1) > 3)
+116: 5L
+117: Func(4,1): RandomInt
+118: 1L
+119: +
+120: 3L
+121: >
+122: if false goto 128
+SpecialBook(bookcase);
+123: local #0
+124: makelocal
+125: jmp userfunc @140
+126: #
+127: goto133
+CreateItemInContainer(bookcase, 0xfef, 1);
+128: local #0
+129: 4079L
+130: 1L
+131: Func(2,6): CreateItemInContainer
+132: #
+count := count + 1;
+133: local #1
+134: 1L
+135: +
+136: local1 := 
+137: goto112
+138: 0L
+139: return
+C:\pol2\pkg\items\sysbook\shelfStock.src, Line 59
+function SpecialBook(bookcase)
+140: pop param 'bookcase'
+var book := CreateItemInContainer(bookcase, 0xfef, 1);
+141: decl local #1
+142: local #0
+143: 4079L
+144: 1L
+145: Func(2,6): CreateItemInContainer
+146: :=
+147: #
+case(RandomInt(4)+1)
+148: 4L
+149: Func(4,1): RandomInt
+150: 1L
+151: +
+152: casejmp
+	1: @153
+	2: @157
+	3: @161
+	4: @165
+	default: @168
+book.graphic := 4079;
+153: local #1
+154: 4079L
+155: set member 'graphic' #
+156: goto168
+book.graphic := 4080;
+157: local #1
+158: 4080L
+159: set member 'graphic' #
+160: goto168
+book.graphic := 4081;
+161: local #1
+162: 4081L
+163: set member 'graphic' #
+164: goto168
+book.graphic := 4082;
+165: local #1
+166: 4082L
+167: set member 'graphic' #
+var rint := CInt(RandomInt(30) + 1);
+168: decl local #2
+169: 30L
+170: Func(4,1): RandomInt
+171: 1L
+172: +
+173: Func(0,0): CInt
+174: :=
+175: #
+var title := GetTitle(book, rint);
+176: decl local #3
+177: local #1
+178: local #2
+179: makelocal
+180: jmp userfunc @235
+181: :=
+182: #
+book.setprop("contents", GetContents(book, rint));
+183: local #1
+184: "contents"
+185: local #1
+186: local #2
+187: makelocal
+188: jmp userfunc @227
+189: Call Method setprop (2 params)
+190: #
+book.setprop("title",    title);
+191: local #1
+192: "title"
+193: local #3
+194: Call Method setprop (2 params)
+195: #
+book.setprop("author",   GetAuthor(book, rint));
+196: local #1
+197: "author"
+198: local #1
+199: local #2
+200: makelocal
+201: jmp userfunc @209
+202: Call Method setprop (2 params)
+203: #
+book.name := title;
+204: local #1
+205: local #3
+206: set member 'name' #
+207: 0L
+208: return
+C:\pol2\pkg\items\sysbook\shelfStock.src, Line 88
+function GetAuthor(book, rint)
+209: pop param 'rint'
+210: pop param 'book'
+return GetBookElem(rint).getprop("author");
+211: local #0
+212: makelocal
+213: jmp userfunc @217
+214: "author"
+215: Call Method getprop (1 params)
+216: return
+C:\pol2\pkg\items\sysbook\shelfStock.src, Line 75
+function GetBookElem(bookid)
+217: pop param 'bookid'
+var df := OpenDataFile("staticbooks");
+218: decl local #1
+219: "staticbooks"
+220: Func(5,0): OpenDataFile
+221: :=
+222: #
+return df.FindElement(bookid);
+223: local #1
+224: local #0
+225: Call Method findelement (1 params)
+226: return
+C:\pol2\pkg\items\sysbook\shelfStock.src, Line 80
+function GetContents(book, rint)
+227: pop param 'rint'
+228: pop param 'book'
+return GetBookElem(rint).getprop("contents");
+229: local #0
+230: makelocal
+231: jmp userfunc @217
+232: "contents"
+233: Call Method getprop (1 params)
+234: return
+C:\pol2\pkg\items\sysbook\shelfStock.src, Line 84
+function GetTitle(book, rint)
+235: pop param 'rint'
+236: pop param 'book'
+return GetBookElem(rint).getprop("title");
+237: local #0
+238: makelocal
+239: jmp userfunc @217
+240: "title"
+241: Call Method getprop (1 params)
+242: return

@@ -1,0 +1,1354 @@
+C:\pol2\pkg\systems\poisonwatcher\poisonwatcher.src, Line 8
+set_priority(5);
+0: 5L
+1: Func(3,4): set_priority
+2: #
+C:\pol2\pkg\systems\poisonwatcher\poisonwatcher.src, Line 10
+program PoisonWatcher(who)
+3: get arg 'who'
+if ( !who.IsA(POLCLASS_MOBILE) )
+4: local #0
+5: 3L
+6: Call Method isa (1 params)
+7: if true goto 12
+who := who[1];
+8: local #0
+9: 1L
+10: [] 1
+11: local0 := 
+SetObjProperty(who, "#PoisonPID", getpid()); // Keep making sure the mobile has
+12: local #0
+13: "#PoisonPID"
+14: Func(3,5): getpid
+15: Func(2,3): SetObjProperty
+16: #
+var num_poisons := 0;
+17: decl local #1
+18: 0L
+19: :=
+20: #
+var poisons := dictionary;
+21: decl local #2
+22: dictionary
+23: :=
+24: #
+StartUp(who, poisons, num_poisons);
+25: local #0
+26: local #2
+27: local #1
+28: makelocal
+29: jmp userfunc @972
+30: #
+while ( 1 )
+31: 1L
+32: if false goto 144
+SetObjProperty(who, "#PoisonPID", getpid()); // Keep making sure the mobile has
+33: local #0
+34: "#PoisonPID"
+35: Func(3,5): getpid
+36: Func(2,3): SetObjProperty
+37: #
+SetObjProperty(who, "Poisons", poisons); // Update Poisons
+38: local #0
+39: "Poisons"
+40: local #2
+41: Func(2,3): SetObjProperty
+42: #
+var event := wait_for_event(1);
+43: decl local #0
+44: 1L
+45: Func(3,6): wait_for_event
+46: :=
+47: #
+who.SetPoisoned(num_poisons);
+48: local #0
+49: local #1
+50: Call Method setpoisoned (1 params)
+51: #
+if( event.type == EVENT_ADD_POISON )
+52: local #3
+53: get member 'type'
+54: 1L
+55: ==
+56: if false goto 65
+Add_Poison(who, event, poisons, num_poisons);
+57: local #0
+58: local #3
+59: local #2
+60: local #1
+61: makelocal
+62: jmp userfunc @146
+63: #
+64: goto107
+elseif( event.type == EVENT_CURE_POISON )
+65: local #3
+66: get member 'type'
+67: 2L
+68: ==
+69: if false goto 78
+Cure_Poison(who, event, poisons, num_poisons);
+70: local #0
+71: local #3
+72: local #2
+73: local #1
+74: makelocal
+75: jmp userfunc @566
+76: #
+77: goto107
+elseif( event.type == EVENT_CURE_SPECIFIC_POISON )
+78: local #3
+79: get member 'type'
+80: 3L
+81: ==
+82: if false goto 92
+Cure_Specific(who, event, poisons, num_poisons, 1);
+83: local #0
+84: local #3
+85: local #2
+86: local #1
+87: 1L
+88: makelocal
+89: jmp userfunc @622
+90: #
+91: goto107
+elseif( event.type == EVENT_DEAD || who.dead )
+92: local #3
+93: get member 'type'
+94: 4L
+95: ==
+96: local #0
+97: get member 'dead'
+98: ||
+99: if false goto 107
+Cure_Death(who, event, poisons, num_poisons);
+100: local #0
+101: local #3
+102: local #2
+103: local #1
+104: makelocal
+105: jmp userfunc @518
+106: #
+CheckPids(who, poisons, num_poisons);
+107: local #0
+108: local #2
+109: local #1
+110: makelocal
+111: jmp userfunc @466
+112: #
+WearDown(who, poisons, num_poisons);
+113: local #0
+114: local #2
+115: local #1
+116: makelocal
+117: jmp userfunc @1037
+118: #
+Set_Critical(1);
+119: 1L
+120: Func(3,7): set_critical
+121: #
+if( !ShouldRun(who, poisons.keys()) )
+122: local #0
+123: local #2
+124: Call Method keys (0 params)
+125: makelocal
+126: jmp userfunc @947
+127: if true goto 139
+who.SetPoisoned(0);
+128: local #0
+129: 0L
+130: Call Method setpoisoned (1 params)
+131: #
+LogOff(who, poisons, num_poisons);
+132: local #0
+133: local #2
+134: local #1
+135: makelocal
+136: jmp userfunc @874
+137: #
+exit;
+138: exit
+Set_Critical(0);
+139: 0L
+140: Func(3,7): set_critical
+141: #
+142: leave block(1)
+143: goto31
+144: leave block(3)
+145: progend
+C:\pol2\pkg\systems\poisonwatcher\poisonwatcher.src, Line 153
+function Add_Poison(who, byref event, byref poisons, byref num_poisons)
+146: pop param byref 'num_poisons'
+147: pop param byref 'poisons'
+148: pop param byref 'event'
+149: pop param 'who'
+if( !CfgInfo(event.name) )
+150: local #2
+151: get member 'name'
+152: makelocal
+153: jmp userfunc @460
+154: if true goto 168
+SendSysMessage(who, "Debug: You were infected with a poison not in poisons.cfg 
+155: local #3
+156: "Debug: You were infected with a poison not in poisons.cfg Poison Name -> ["
+157: local #2
+158: get member 'name'
+159: +
+160: "] please page and report this."
+161: +
+162: 3L
+163: 1000L
+164: Func(2,6): SendSysMessage
+165: #
+return;
+166: ""
+167: return
+var cumulative := CfgInfo(event.name).Cumulative;
+168: decl local #4
+169: local #2
+170: get member 'name'
+171: makelocal
+172: jmp userfunc @460
+173: get member 'Cumulative'
+174: :=
+175: #
+if( !poisons.exists(event.name) )
+176: local #1
+177: local #2
+178: get member 'name'
+179: Call Method exists (1 params)
+180: if true goto 282
+var script := CfgInfo(event.name).Script;
+181: decl local #0
+182: local #2
+183: get member 'name'
+184: makelocal
+185: jmp userfunc @460
+186: get member 'Script'
+187: :=
+188: #
+script := start_script(script, {who, event.attacker, event.level});
+189: local #5
+190: array
+191: local #3
+192: +=
+193: local #2
+194: get member 'attacker'
+195: +=
+196: local #2
+197: get member 'level'
+198: +=
+199: Func(3,3): start_script
+200: local5 := 
+if( script.errortext )
+201: local #5
+202: get member 'errortext'
+203: if false goto 215
+SendSysMessage(who, "Debug - Poison Script Add_Poison(): " + script.errortext);
+204: local #3
+205: "Debug - Poison Script Add_Poison(): "
+206: local #5
+207: get member 'errortext'
+208: +
+209: 3L
+210: 1000L
+211: Func(2,6): SendSysMessage
+212: #
+return;
+213: ""
+214: return
+poisons[event.name] := struct;
+215: local #1
+216: local #2
+217: get member 'name'
+218: struct
+219: [] := (1) #
+poisons[event.name].+duration := event.amount;
+220: local #1
+221: local #2
+222: get member 'name'
+223: [] 1
+224: "duration"
+225: .+
+226: local #2
+227: get member 'amount'
+228: := #
+poisons[event.name].+pid := script.pid;
+229: local #1
+230: local #2
+231: get member 'name'
+232: [] 1
+233: "pid"
+234: .+
+235: local #5
+236: get member 'pid'
+237: := #
+poisons[event.name].+level := event.level;
+238: local #1
+239: local #2
+240: get member 'name'
+241: [] 1
+242: "level"
+243: .+
+244: local #2
+245: get member 'level'
+246: := #
+var maxdur := CInt(CfgInfo(event.name).MaxDuration);
+247: decl local #1
+248: local #2
+249: get member 'name'
+250: makelocal
+251: jmp userfunc @460
+252: get member 'MaxDuration'
+253: Func(0,1): CInt
+254: :=
+255: #
+if (maxdur < poisons[event.name].duration)
+256: local #6
+257: local #1
+258: local #2
+259: get member 'name'
+260: [] 1
+261: get member 'duration'
+262: <
+263: if false goto 270
+poisons[event.name].duration := maxdur;
+264: local #1
+265: local #2
+266: get member 'name'
+267: [] 1
+268: local #6
+269: set member 'duration' #
+if( CfgInfo(event.name).IndicatePoison)
+270: local #2
+271: get member 'name'
+272: makelocal
+273: jmp userfunc @460
+274: get member 'IndicatePoison'
+275: if false goto 280
+num_poisons := num_poisons+1;
+276: local #0
+277: 1L
+278: +
+279: local0 := 
+280: leave block(2)
+281: goto458
+var lvl := poisons[event.name].level;
+282: decl local #0
+283: local #1
+284: local #2
+285: get member 'name'
+286: [] 1
+287: get member 'level'
+288: :=
+289: #
+var amt := CInt(event.amount);
+290: decl local #1
+291: local #2
+292: get member 'amount'
+293: Func(0,1): CInt
+294: :=
+295: #
+if (cumulative)
+296: local #4
+297: if false goto 369
+if ((event.level) && lvl)
+298: local #2
+299: get member 'level'
+300: local #5
+301: &&
+302: if false goto 356
+amt := amt * ((event.level*1.0) / poisons[event.name].level);
+303: local #6
+304: local #2
+305: get member 'level'
+306: 1LF
+307: *
+308: local #1
+309: local #2
+310: get member 'name'
+311: [] 1
+312: get member 'level'
+313: /
+314: *
+315: local6 := 
+if (lvl >= event.level)
+316: local #5
+317: local #2
+318: get member 'level'
+319: >=
+320: if false goto 334
+poisons[event.name].duration := poisons[event.name].duration + amt;
+321: local #1
+322: local #2
+323: get member 'name'
+324: [] 1
+325: local #1
+326: local #2
+327: get member 'name'
+328: [] 1
+329: get member 'duration'
+330: local #6
+331: +
+332: set member 'duration' #
+333: goto355
+KillPoison(poisons[event.name].pid, poisons, event.name);
+334: local #1
+335: local #2
+336: get member 'name'
+337: [] 1
+338: get member 'pid'
+339: local #1
+340: local #2
+341: get member 'name'
+342: makelocal
+343: jmp userfunc @857
+344: #
+event.amt := amt;
+345: local #2
+346: local #6
+347: set member 'amt' #
+Add_Poison(who, event, poisons, num_poisons);
+348: local #3
+349: local #2
+350: local #1
+351: local #0
+352: makelocal
+353: jmp userfunc @146
+354: #
+355: goto368
+poisons[event.name].duration := poisons[event.name].duration + amt;
+356: local #1
+357: local #2
+358: get member 'name'
+359: [] 1
+360: local #1
+361: local #2
+362: get member 'name'
+363: [] 1
+364: get member 'duration'
+365: local #6
+366: +
+367: set member 'duration' #
+368: goto435
+if ((event.level) && lvl)
+369: local #2
+370: get member 'level'
+371: local #5
+372: &&
+373: if false goto 421
+if ((lvl == event.level) && (amt > poisons[event.name].duration))
+374: local #5
+375: local #2
+376: get member 'level'
+377: ==
+378: local #6
+379: local #1
+380: local #2
+381: get member 'name'
+382: [] 1
+383: get member 'duration'
+384: >
+385: &&
+386: if false goto 394
+poisons[event.name].duration := amt;
+387: local #1
+388: local #2
+389: get member 'name'
+390: [] 1
+391: local #6
+392: set member 'duration' #
+393: goto420
+elseif (event.level > lvl)
+394: local #2
+395: get member 'level'
+396: local #5
+397: >
+398: if false goto 420
+KillPoison(poisons[event.name].pid, poisons, event.name);
+399: local #1
+400: local #2
+401: get member 'name'
+402: [] 1
+403: get member 'pid'
+404: local #1
+405: local #2
+406: get member 'name'
+407: makelocal
+408: jmp userfunc @857
+409: #
+event.amt := amt;
+410: local #2
+411: local #6
+412: set member 'amt' #
+Add_Poison(who, event, poisons, num_poisons);
+413: local #3
+414: local #2
+415: local #1
+416: local #0
+417: makelocal
+418: jmp userfunc @146
+419: #
+420: goto435
+if (amt > poisons[event.name].duration)
+421: local #6
+422: local #1
+423: local #2
+424: get member 'name'
+425: [] 1
+426: get member 'duration'
+427: >
+428: if false goto 435
+poisons[event.name].duration := amt;
+429: local #1
+430: local #2
+431: get member 'name'
+432: [] 1
+433: local #6
+434: set member 'duration' #
+var maxdur := CfgInfo(event.name).MaxDuration;
+435: decl local #2
+436: local #2
+437: get member 'name'
+438: makelocal
+439: jmp userfunc @460
+440: get member 'MaxDuration'
+441: :=
+442: #
+if (maxdur < poisons[event.name].duration)
+443: local #7
+444: local #1
+445: local #2
+446: get member 'name'
+447: [] 1
+448: get member 'duration'
+449: <
+450: if false goto 457
+poisons[event.name].duration := maxdur;
+451: local #1
+452: local #2
+453: get member 'name'
+454: [] 1
+455: local #7
+456: set member 'duration' #
+457: leave block(3)
+458: 0L
+459: return
+C:/pol2/pkg/systems/poisonwatcher/poisons.inc, Line 147
+function CfgInfo(poison_name)
+460: pop param 'poison_name'
+return ReadConfigFile(":poisonwatcher:poisons")[poison_name];	
+461: ":poisonwatcher:poisons"
+462: Func(5,0): ReadConfigFile
+463: local #0
+464: [] 1
+465: return
+C:\pol2\pkg\systems\poisonwatcher\poisonwatcher.src, Line 117
+function CheckPids(who, byref poisons, byref num_poisons)
+466: pop param byref 'num_poisons'
+467: pop param byref 'poisons'
+468: pop param 'who'
+foreach poison_name in ( poisons.keys() )
+469: local #1
+470: Call Method keys (0 params)
+471: initforeach @514
+if( CfgInfo(poison_name).CureOnEnd )
+472: local #3
+473: makelocal
+474: jmp userfunc @460
+475: get member 'CureOnEnd'
+476: if false goto 511
+var script := GetProcess(poisons[poison_name].pid);
+477: decl local #0
+478: local #1
+479: local #3
+480: [] 1
+481: get member 'pid'
+482: Func(3,2): getprocess
+483: :=
+484: #
+if( !script )
+485: local #6
+486: if true goto 510
+var event := struct;
+487: decl local #0
+488: struct
+489: :=
+490: #
+event.+name := poison_name;
+491: local #7
+492: "name"
+493: .+
+494: local #3
+495: := #
+event.+amount := -1;
+496: local #7
+497: "amount"
+498: .+
+499: -1L
+500: := #
+Cure_Specific(who, event, poisons, num_poisons, 0);
+501: local #2
+502: local #7
+503: local #1
+504: local #0
+505: 0L
+506: makelocal
+507: jmp userfunc @622
+508: #
+509: leave block(1)
+510: leave block(1)
+sleepms(2);
+511: 2L
+512: Func(3,0): sleepms
+513: #
+514: stepforeach @472
+515: leave block(3)
+516: 0L
+517: return
+C:\pol2\pkg\systems\poisonwatcher\poisonwatcher.src, Line 101
+function Cure_Death(who, byref event, byref poisons, byref num_poisons)
+518: pop param byref 'num_poisons'
+519: pop param byref 'poisons'
+520: pop param byref 'event'
+521: pop param 'who'
+Set_Critical(1);
+522: 1L
+523: Func(3,7): set_critical
+524: #
+foreach poison_name in ( poisons.keys() )
+525: local #1
+526: Call Method keys (0 params)
+527: initforeach @559
+if( !CfgInfo(poison_name).ContinueOnDeath )
+528: local #4
+529: makelocal
+530: jmp userfunc @460
+531: get member 'ContinueOnDeath'
+532: if true goto 556
+var event := struct;
+533: decl local #0
+534: struct
+535: :=
+536: #
+event.+name := poison_name;
+537: local #7
+538: "name"
+539: .+
+540: local #4
+541: := #
+event.+amount := -1;
+542: local #7
+543: "amount"
+544: .+
+545: -1L
+546: := #
+Cure_Specific(who, event, poisons, num_poisons, 0);
+547: local #3
+548: local #7
+549: local #1
+550: local #0
+551: 0L
+552: makelocal
+553: jmp userfunc @622
+554: #
+555: leave block(1)
+sleepms(2);
+556: 2L
+557: Func(3,0): sleepms
+558: #
+559: stepforeach @528
+560: leave block(3)
+Set_Critical(0);
+561: 0L
+562: Func(3,7): set_critical
+563: #
+564: 0L
+565: return
+C:\pol2\pkg\systems\poisonwatcher\poisonwatcher.src, Line 223
+function Cure_Poison(who, byref event, byref poisons, byref num_poisons)
+566: pop param byref 'num_poisons'
+567: pop param byref 'poisons'
+568: pop param byref 'event'
+569: pop param 'who'
+foreach poison_name in ( poisons.keys() )
+570: local #1
+571: Call Method keys (0 params)
+572: initforeach @618
+var poisoncfg := CfgInfo(poison_name);
+573: decl local #0
+574: local #4
+575: makelocal
+576: jmp userfunc @460
+577: :=
+578: #
+if (!event.poisontype || (lower(event.poisontype) == lower(poisoncfg.Type)))
+579: local #2
+580: get member 'poisontype'
+581: !
+582: local #2
+583: get member 'poisontype'
+584: Func(0,0): lower
+585: local #7
+586: get member 'Type'
+587: Func(0,0): lower
+588: ==
+589: ||
+590: if false goto 617
+if( !CfgInfo(poison_name).NoCure ) //Its curable
+591: local #4
+592: makelocal
+593: jmp userfunc @460
+594: get member 'NoCure'
+595: if true goto 607
+event.name := poison_name;
+596: local #2
+597: local #4
+598: set member 'name' #
+Cure_Specific(who, event, poisons, num_poisons, 1);
+599: local #3
+600: local #2
+601: local #1
+602: local #0
+603: 1L
+604: makelocal
+605: jmp userfunc @622
+606: #
+if( event.amount <= 0 ) // All out of cure power
+607: local #2
+608: get member 'amount'
+609: 0L
+610: <=
+611: if false goto 614
+break;
+612: leave block(1)
+613: goto619
+sleepms(2);
+614: 2L
+615: Func(3,0): sleepms
+616: #
+617: leave block(1)
+618: stepforeach @573
+619: leave block(3)
+620: 0L
+621: return
+C:\pol2\pkg\systems\poisonwatcher\poisonwatcher.src, Line 243
+function Cure_Specific(who, byref event, byref poisons, byref num_poisons, chec
+622: pop param 'check_virulence'
+623: pop param byref 'num_poisons'
+624: pop param byref 'poisons'
+625: pop param byref 'event'
+626: pop param 'who'
+if( !CfgInfo(event.name) )
+627: local #3
+628: get member 'name'
+629: makelocal
+630: jmp userfunc @460
+631: if true goto 645
+SendSysMessage(who, "Debug: Something tried to cure a poison not in poisons.cfg
+632: local #4
+633: "Debug: Something tried to cure a poison not in poisons.cfg Poison Name -> ["
+634: local #3
+635: get member 'name'
+636: +
+637: "] please page and report this."
+638: +
+639: 3L
+640: 1000L
+641: Func(2,6): SendSysMessage
+642: #
+return;
+643: ""
+644: return
+var cure_amount := event.amount;
+645: decl local #5
+646: local #3
+647: get member 'amount'
+648: :=
+649: #
+var level := event.level;
+650: decl local #6
+651: local #3
+652: get member 'level'
+653: :=
+654: #
+if( poisons.exists(event.name) )
+655: local #2
+656: local #3
+657: get member 'name'
+658: Call Method exists (1 params)
+659: if false goto 855
+if( cure_amount == -1 )
+660: local #5
+661: -1L
+662: ==
+663: if false goto 677
+check_virulence:=0;
+664: 0L
+665: local0 := 
+cure_amount := poisons[event.name].duration + 1;
+666: local #2
+667: local #3
+668: get member 'name'
+669: [] 1
+670: get member 'duration'
+671: 1L
+672: +
+673: local5 := 
+level := 1;
+674: 1L
+675: local6 := 
+676: goto702
+elseif( check_virulence )
+677: local #0
+678: if false goto 702
+var virulence := CfgInfo(event.name).Virulence;
+679: decl local #0
+680: local #3
+681: get member 'name'
+682: makelocal
+683: jmp userfunc @460
+684: get member 'Virulence'
+685: :=
+686: #
+if( !virulence )
+687: local #7
+688: if true goto 691
+virulence := 1;
+689: 1L
+690: local7 := 
+cure_amount := CInt(event.amount / CfgInfo(event.name).Virulence);
+691: local #3
+692: get member 'amount'
+693: local #3
+694: get member 'name'
+695: makelocal
+696: jmp userfunc @460
+697: get member 'Virulence'
+698: /
+699: Func(0,1): CInt
+700: local5 := 
+701: leave block(1)
+var allornothing := CfgInfo(event.name).AllOrNothingCure;
+702: decl local #0
+703: local #3
+704: get member 'name'
+705: makelocal
+706: jmp userfunc @460
+707: get member 'AllOrNothingCure'
+708: :=
+709: #
+if (allornothing)
+710: local #7
+711: if false goto 779
+var chance := 0;
+712: decl local #0
+713: 0L
+714: :=
+715: #
+if (level >= poisons[event.name].level)
+716: local #6
+717: local #2
+718: local #3
+719: get member 'name'
+720: [] 1
+721: get member 'level'
+722: >=
+723: if false goto 727
+chance := 100;
+724: 100L
+725: local8 := 
+726: goto752
+elseif ((poisons[event.name].level - level) == 1)
+727: local #2
+728: local #3
+729: get member 'name'
+730: [] 1
+731: get member 'level'
+732: local #6
+733: -
+734: 1L
+735: ==
+736: if false goto 740
+chance := 50;
+737: 50L
+738: local8 := 
+739: goto752
+elseif ((poisons[event.name].level - level) == 2)
+740: local #2
+741: local #3
+742: get member 'name'
+743: [] 1
+744: get member 'level'
+745: local #6
+746: -
+747: 2L
+748: ==
+749: if false goto 752
+chance := 20;
+750: 20L
+751: local8 := 
+if ((RandomInt(100)+1) <= chance)
+752: 100L
+753: Func(4,0): RandomInt
+754: 1L
+755: +
+756: local #8
+757: <=
+758: if false goto 777
+KillPoison(poisons[event.name].pid, poisons, event.name);
+759: local #2
+760: local #3
+761: get member 'name'
+762: [] 1
+763: get member 'pid'
+764: local #2
+765: local #3
+766: get member 'name'
+767: makelocal
+768: jmp userfunc @857
+769: #
+CleanupPoison(who, event.name, num_poisons);
+770: local #4
+771: local #3
+772: get member 'name'
+773: local #1
+774: makelocal
+775: jmp userfunc @1088
+776: #
+777: leave block(1)
+778: goto854
+var multiply := (level*1.0)/(poisons[event.name].level);
+779: decl local #0
+780: local #6
+781: 1LF
+782: *
+783: local #2
+784: local #3
+785: get member 'name'
+786: [] 1
+787: get member 'level'
+788: /
+789: :=
+790: #
+if (!multiply)
+791: local #8
+792: if true goto 795
+multiply := 1;
+793: 1L
+794: local8 := 
+if( (multiply*cure_amount) >= poisons[event.name].duration )
+795: local #8
+796: local #5
+797: *
+798: local #2
+799: local #3
+800: get member 'name'
+801: [] 1
+802: get member 'duration'
+803: >=
+804: if false goto 836
+event.amount := event.amount - (poisons[event.name].duration / multiply);
+805: local #3
+806: local #3
+807: get member 'amount'
+808: local #2
+809: local #3
+810: get member 'name'
+811: [] 1
+812: get member 'duration'
+813: local #8
+814: /
+815: -
+816: set member 'amount' #
+KillPoison(poisons[event.name].pid, poisons, event.name);
+817: local #2
+818: local #3
+819: get member 'name'
+820: [] 1
+821: get member 'pid'
+822: local #2
+823: local #3
+824: get member 'name'
+825: makelocal
+826: jmp userfunc @857
+827: #
+CleanupPoison(who, event.name, num_poisons);
+828: local #4
+829: local #3
+830: get member 'name'
+831: local #1
+832: makelocal
+833: jmp userfunc @1088
+834: #
+835: goto853
+poisons[event.name].duration := poisons[event.name].duration - cure_amount*mult
+836: local #2
+837: local #3
+838: get member 'name'
+839: [] 1
+840: local #2
+841: local #3
+842: get member 'name'
+843: [] 1
+844: get member 'duration'
+845: local #5
+846: local #8
+847: *
+848: -
+849: set member 'duration' #
+event.amount := 0;
+850: local #3
+851: 0L
+852: set member 'amount' #
+853: leave block(1)
+854: leave block(1)
+855: 0L
+856: return
+C:\pol2\pkg\systems\poisonwatcher\poisonwatcher.src, Line 331
+function KillPoison(pid, byref poisons, event_name)
+857: pop param 'event_name'
+858: pop param byref 'poisons'
+859: pop param 'pid'
+var script := GetProcess(pid);
+860: decl local #3
+861: local #2
+862: Func(3,2): getprocess
+863: :=
+864: #
+script.kill();
+865: local #3
+866: Call Method kill (0 params)
+867: #
+poisons.erase(event_name);
+868: local #1
+869: local #0
+870: Call Method erase (1 params)
+871: #
+872: 0L
+873: return
+C:\pol2\pkg\systems\poisonwatcher\poisonwatcher.src, Line 80
+function LogOff(who, byref poisons, byref num_poisons)
+874: pop param byref 'num_poisons'
+875: pop param byref 'poisons'
+876: pop param 'who'
+Set_Critical(1);
+877: 1L
+878: Func(3,7): set_critical
+879: #
+SetObjProperty(who, "Poisons", poisons);
+880: local #2
+881: "Poisons"
+882: local #1
+883: Func(2,3): SetObjProperty
+884: #
+foreach poison_name in ( poisons.keys() )
+885: local #1
+886: Call Method keys (0 params)
+887: initforeach @936
+KillPoison(poisons[poison_name].pid, poisons, poison_name);
+888: local #1
+889: local #3
+890: [] 1
+891: get member 'pid'
+892: local #1
+893: local #3
+894: makelocal
+895: jmp userfunc @857
+896: #
+if( CfgInfo(poison_name).LogOutScript )
+897: local #3
+898: makelocal
+899: jmp userfunc @460
+900: get member 'LogOutScript'
+901: if false goto 933
+who := SystemFindObjectBySerial(who.serial, SYSFIND_SEARCH_OFFLINE_MOBILES);
+902: local #2
+903: get member 'serial'
+904: 1L
+905: Func(2,5): SystemFindObjectBySerial
+906: local2 := 
+var LogOutScript := start_script(CfgInfo(poison_name).LogOutScript, {who});
+907: decl local #0
+908: local #3
+909: makelocal
+910: jmp userfunc @460
+911: get member 'LogOutScript'
+912: array
+913: local #2
+914: +=
+915: Func(3,3): start_script
+916: :=
+917: #
+if( LogOutScript.errortext )
+918: local #6
+919: get member 'errortext'
+920: if false goto 932
+Print("PoisonWatcher LogoffScript: (" +  who.name + ") " + LogOutScript.errorte
+921: "PoisonWatcher LogoffScript: ("
+922: local #2
+923: get member 'name'
+924: +
+925: ") "
+926: +
+927: local #6
+928: get member 'errortext'
+929: +
+930: Func(1,0): print
+931: #
+932: leave block(1)
+sleepms(2);
+933: 2L
+934: Func(3,0): sleepms
+935: #
+936: stepforeach @888
+937: leave block(3)
+EraseObjProperty(who, "#PoisonPID");
+938: local #2
+939: "#PoisonPID"
+940: Func(2,4): EraseObjProperty
+941: #
+Set_Critical(0);
+942: 0L
+943: Func(3,7): set_critical
+944: #
+945: 0L
+946: return
+C:\pol2\pkg\systems\poisonwatcher\poisonwatcher.src, Line 319
+function ShouldRun( who, byref poison_keys )
+947: pop param byref 'poison_keys'
+948: pop param 'who'
+if ( Events_Waiting() >= 1 )
+949: Func(3,8): events_waiting
+950: 1L
+951: >=
+952: if false goto 956
+return 1;
+953: 1L
+954: return
+955: goto970
+elseif( (who.npctemplate) || (GetObjProperty(who, "#Online")) )
+956: local #1
+957: get member 'npctemplate'
+958: local #1
+959: "#Online"
+960: Func(2,0): GetObjProperty
+961: ||
+962: if false goto 970
+if( poison_keys.size() > 0 )
+963: local #0
+964: Call Method size (0 params)
+965: 0L
+966: >
+967: if false goto 970
+return 1;
+968: 1L
+969: return
+return 0;
+970: 0L
+971: return
+C:\pol2\pkg\systems\poisonwatcher\poisonwatcher.src, Line 59
+function StartUp(who, byref poisons, byref num_poisons)
+972: pop param byref 'num_poisons'
+973: pop param byref 'poisons'
+974: pop param 'who'
+var templist := GetObjProperty(who, "Poisons");
+975: decl local #3
+976: local #2
+977: "Poisons"
+978: Func(2,0): GetObjProperty
+979: :=
+980: #
+EraseObjProperty(who, "Poisons");
+981: local #2
+982: "Poisons"
+983: Func(2,4): EraseObjProperty
+984: #
+if( !templist )
+985: local #3
+986: if true goto 994
+templist := dictionary;
+987: dictionary
+988: local3 := 
+SetObjProperty(who, "Poisons", templist);
+989: local #2
+990: "Poisons"
+991: local #3
+992: Func(2,3): SetObjProperty
+993: #
+foreach poison_name in (templist.keys())
+994: local #3
+995: Call Method keys (0 params)
+996: initforeach @1033
+var event := struct;
+997: decl local #0
+998: struct
+999: :=
+1000: #
+event.+name := poison_name;
+1001: local #7
+1002: "name"
+1003: .+
+1004: local #4
+1005: := #
+event.+amount := templist[poison_name].duration;
+1006: local #7
+1007: "amount"
+1008: .+
+1009: local #3
+1010: local #4
+1011: [] 1
+1012: get member 'duration'
+1013: := #
+event.+level := templist[poison_name].level;
+1014: local #7
+1015: "level"
+1016: .+
+1017: local #3
+1018: local #4
+1019: [] 1
+1020: get member 'level'
+1021: := #
+Add_Poison(who, event, poisons, num_poisons);
+1022: local #2
+1023: local #7
+1024: local #1
+1025: local #0
+1026: makelocal
+1027: jmp userfunc @146
+1028: #
+sleepms(2);
+1029: 2L
+1030: Func(3,0): sleepms
+1031: #
+1032: leave block(1)
+1033: stepforeach @997
+1034: leave block(3)
+1035: 0L
+1036: return
+C:\pol2\pkg\systems\poisonwatcher\poisonwatcher.src, Line 138
+function WearDown(who, byref poisons, byref num_poisons)
+1037: pop param byref 'num_poisons'
+1038: pop param byref 'poisons'
+1039: pop param 'who'
+foreach poison_name in ( poisons.keys() )
+1040: local #1
+1041: Call Method keys (0 params)
+1042: initforeach @1084
+if( !CfgInfo(poison_name).NoEnd ) //It does wear off
+1043: local #3
+1044: makelocal
+1045: jmp userfunc @460
+1046: get member 'NoEnd'
+1047: if true goto 1081
+if (poisons[poison_name].duration <= 1)
+1048: local #1
+1049: local #3
+1050: [] 1
+1051: get member 'duration'
+1052: 1L
+1053: <=
+1054: if false goto 1071
+KillPoison(poisons[poison_name].pid, poisons, poison_name);
+1055: local #1
+1056: local #3
+1057: [] 1
+1058: get member 'pid'
+1059: local #1
+1060: local #3
+1061: makelocal
+1062: jmp userfunc @857
+1063: #
+CleanupPoison(who, poison_name, num_poisons);
+1064: local #2
+1065: local #3
+1066: local #0
+1067: makelocal
+1068: jmp userfunc @1088
+1069: #
+1070: goto1081
+poisons[poison_name].duration := poisons[poison_name].duration-1;
+1071: local #1
+1072: local #3
+1073: [] 1
+1074: local #1
+1075: local #3
+1076: [] 1
+1077: get member 'duration'
+1078: 1L
+1079: -
+1080: set member 'duration' #
+sleepms(2);
+1081: 2L
+1082: Func(3,0): sleepms
+1083: #
+1084: stepforeach @1043
+1085: leave block(3)
+1086: 0L
+1087: return
+C:\pol2\pkg\systems\poisonwatcher\poisonwatcher.src, Line 337
+function CleanupPoison(who, poison_name, byref num_poisons)
+1088: pop param byref 'num_poisons'
+1089: pop param 'poison_name'
+1090: pop param 'who'
+if( CfgInfo(poison_name).IndicatePoison )
+1091: local #1
+1092: makelocal
+1093: jmp userfunc @460
+1094: get member 'IndicatePoison'
+1095: if false goto 1100
+num_poisons := num_poisons-1;
+1096: local #0
+1097: 1L
+1098: -
+1099: local0 := 
+if( CfgInfo(poison_name).CureMessage )
+1100: local #1
+1101: makelocal
+1102: jmp userfunc @460
+1103: get member 'CureMessage'
+1104: if false goto 1114
+SendSysMessage(who, CfgInfo(poison_name).CureMessage);
+1105: local #2
+1106: local #1
+1107: makelocal
+1108: jmp userfunc @460
+1109: get member 'CureMessage'
+1110: 3L
+1111: 1000L
+1112: Func(2,6): SendSysMessage
+1113: #
+if( CfgInfo(poison_name).CureScript )
+1114: local #1
+1115: makelocal
+1116: jmp userfunc @460
+1117: get member 'CureScript'
+1118: if false goto 1143
+var script := start_script(CfgInfo(poison_name).CureScript, {who});
+1119: decl local #0
+1120: local #1
+1121: makelocal
+1122: jmp userfunc @460
+1123: get member 'CureScript'
+1124: array
+1125: local #2
+1126: +=
+1127: Func(3,3): start_script
+1128: :=
+1129: #
+if( script.errortext )
+1130: local #3
+1131: get member 'errortext'
+1132: if false goto 1142
+SendSysMessage(who, "Debug - Cure Script CureSpecific(): " + script.errortext);
+1133: local #2
+1134: "Debug - Cure Script CureSpecific(): "
+1135: local #3
+1136: get member 'errortext'
+1137: +
+1138: 3L
+1139: 1000L
+1140: Func(2,6): SendSysMessage
+1141: #
+1142: leave block(1)
+1143: 0L
+1144: return

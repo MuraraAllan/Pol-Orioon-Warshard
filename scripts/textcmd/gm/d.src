@@ -1,0 +1,63 @@
+use os;
+use util;
+
+include "include/client";
+include "include/spellattack";
+include "include/spellrestrictions";
+
+program hide( who, place )
+
+if ( who.concealed = 1 )
+  PlayStationaryEffect(who.x -3,who.y,who.z, 105, 7, 0x10 );
+  PlayStationaryEffect(who.x,who.y -3,who.z, 105, 7, 0x10 );
+  PlayStationaryEffect(who.x +3,who.y,who.z, 105, 7, 0x10 );
+  PlayStationaryEffect(who.x,who.y +3,who.z, 105, 7, 0x10 );
+  PlaySoundEffect(who, SFX_SPELL_FLAME_STRIKE );
+  sleepms(350);
+  PlayStationaryEffect(who.x -2,who.y,who.z, 105, 7, 0x10 );
+  PlayStationaryEffect(who.x,who.y -2,who.z, 105, 7, 0x10 );
+  PlayStationaryEffect(who.x +2,who.y,who.z, 105, 7, 0x10 );
+  PlayStationaryEffect(who.x,who.y +2,who.z, 105, 7, 0x10 );
+  PlaySoundEffect(who, SFX_SPELL_FLAME_STRIKE );
+  sleepms(350);
+  PlayStationaryEffect(who.x -1,who.y,who.z, 105, 7, 0x10 );
+  PlayStationaryEffect(who.x,who.y -1,who.z, 105, 7, 0x10 );
+  PlayStationaryEffect(who.x +1,who.y,who.z, 105, 7, 0x10 );
+  PlayStationaryEffect(who.x,who.y +1,who.z, 105, 7, 0x10 );
+  PlaySoundEffect(who, SFX_SPELL_RECALL );
+  sleep(1);
+  PlayStationaryEffect(who.x,who.y,who.z, 105, 7, 0x10 );
+  PlayLightningBoltEffect( who );
+  PlaySoundEffect( who, SFX_SPELL_EXPLOSION );
+  PlayStationaryEffect( who.x, who.y, who.z, 105, 7, 0x10 );
+  who.concealed := 0;
+  PlaySoundEffect(who, 0x19D);
+else
+  PlayStationaryEffect(who.x -3,who.y,who.z, 105, 7, 0x10 );
+  PlayStationaryEffect(who.x,who.y -3,who.z, 105, 7, 0x10 );
+  PlayStationaryEffect(who.x +3,who.y,who.z, 105, 7, 0x10 );
+  PlayStationaryEffect(who.x,who.y +3,who.z, 105, 7, 0x10 );
+  PlaySoundEffect(who, SFX_SPELL_FLAME_STRIKE );
+  sleepms(350);
+  PlayStationaryEffect(who.x -2,who.y,who.z, 105, 7, 0x10 );
+  PlayStationaryEffect(who.x,who.y -2,who.z, 105, 7, 0x10 );
+  PlayStationaryEffect(who.x +2,who.y,who.z, 105, 7, 0x10 );
+  PlayStationaryEffect(who.x,who.y +2,who.z, 105, 7, 0x10 );
+  PlaySoundEffect(who, SFX_SPELL_FLAME_STRIKE );
+  sleepms(350);
+  PlayStationaryEffect(who.x -1,who.y,who.z, 105, 7, 0x10 );
+  PlayStationaryEffect(who.x,who.y -1,who.z, 105, 7, 0x10 );
+  PlayStationaryEffect(who.x +1,who.y,who.z, 105, 7, 0x10 );
+  PlayStationaryEffect(who.x,who.y +1,who.z, 105, 7, 0x10 );
+  PlaySoundEffect(who, SFX_SPELL_FLAME_STRIKE );
+  sleep(1);
+  PlayStationaryEffect(who.x,who.y,who.z, 105, 7, 0x10 );
+  PlayLightningBoltEffect( who );
+  PlaySoundEffect( who, SFX_SPELL_RECALL );
+  PlayStationaryEffect( who.x, who.y, who.z, 105, 7, 0x10 );
+  who.concealed := 1;
+  PlaySoundEffect(who, 0x19D);
+endif
+
+endprogram
+

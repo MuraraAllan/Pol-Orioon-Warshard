@@ -1,0 +1,32 @@
+use os;
+use uo;
+use boat;
+include "include/attributes";
+
+program textcmd_kill( who )
+    var tgt := TargetCoordinates( who );
+if(tgt.cmdlevel > 1)
+SendSysMessage(who, "Voce nao pode usar este comando em Staffs!",0x9,90);
+SendSysMessage(tgt, who.name + " tentou usar .kill em voce!",0x9,90);
+return 0;
+endif    
+
+if(!tgt.mobile)
+SendSysMessage(tgt, "Cancelado.",0x9,90);
+return;
+endif
+
+if (tgt.mobile)
+        var mob := tgt.mobile;
+
+        if (!mob.dead)
+            RevokePrivilege( mob, "invul" );
+            SetObjProperty(mob, "guardkill", 1);
+            Damage( mob, GetHp(mob) );
+           
+        else
+            SendSysMessage( who, "Alvo ja esta morto." );
+        endif
+
+    endif
+endprogram

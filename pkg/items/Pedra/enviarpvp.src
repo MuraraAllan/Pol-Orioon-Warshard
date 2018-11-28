@@ -1,0 +1,75 @@
+include "include/attributes";
+include "../pkg/foundations/gumps/gumps";
+
+program gumpcidades( parms )
+
+var who:=SystemFindObjectBySerial(parms[1]);
+var animal:=parms[2];
+var moveranimal;
+if(who.dead)
+moveranimal:=1;
+Resurrect( who ); //// Ressucita o char
+DestroyItem(GetEquipmentByLayer(who, 22)); /// Destroi o item com o Layer 22, aqui no caso o robe.
+endif
+
+SetHp(who, GetMaxHp(who));
+SetMana(who, GetMaxMana(who));
+SetStamina(who, GetMaxStamina(who));
+
+who.paralyzed:=1;
+who.hidden := 1;
+
+GFInitGump( 50, 20 );
+GFNoMove();
+GFNoClose();
+GFResizePic(50, 20, 2600, 200, 280);
+
+  GFTextLine( 127 , 45, 1153 , "Destino" );
+  var bt2 := GFButtonID( 80, 81,  0x138a, 0x138b, 1);
+  var bt3 := GFButtonID( 80, 106, 0x138a, 0x138b, 1);
+  var bt4 := GFButtonID( 80, 131, 0x138a, 0x138b, 1);
+  var bt5 := GFButtonID( 80, 156, 0x138a, 0x138b, 1);
+  var bt6 := GFButtonID( 80, 181, 0x138a, 0x138b, 1);
+  var bt7 := GFButtonID( 80, 206, 0x138a, 0x138b, 1);
+
+  GFTextLine(105, 80,  95, "Brit  (C/ Prot)"); 
+  GFTextLine(105, 105, 33, "Brit  (S/ Prot)"); 
+  GFTextLine(105, 130, 95, "Minoc (C/ Prot)"); 
+  GFTextLine(105, 155, 95, "Skara (C/ Prot)"); 
+  GFTextLine(105, 180, 33, "Bucs  (S/ Prot)"); 
+  GFTextLine(105, 205, 33, "Cove  (S/ Prot"); 
+
+  GFTextLine( 123 , 265, 167, "#ORIOON" );
+
+  var res := GFSendGump(who);
+
+if(res[bt2.keyid]) 
+MoveCharacterToLocation(who, 1427, 1688, 1, MOVECHAR_FORCELOCATION);
+endif
+
+if(res[bt3.keyid]) 
+MoveCharacterToLocation(who, 1418, 1555, 31, MOVECHAR_FORCELOCATION);
+endif
+
+if(res[bt4.keyid]) 
+MoveCharacterToLocation(who, 2498, 554, 1, MOVECHAR_FORCELOCATION);
+endif
+
+if(res[bt5.keyid]) 
+MoveCharacterToLocation(who, 618, 2139, 1, MOVECHAR_FORCELOCATION);
+endif
+
+if(res[bt6.keyid]) 
+MoveCharacterToLocation(who, 2730, 2186, 1, MOVECHAR_FORCELOCATION);
+endif
+
+if(res[bt7.keyid]) 
+MoveCharacterToLocation(who, 2242, 1204, 1, MOVECHAR_FORCELOCATION);
+endif
+
+who.paralyzed:=0;
+
+if(moveranimal)
+MoveCharacterToLocation(animal, who.x, who.y, who.z+1, MOVECHAR_FORCELOCATION);
+endif
+endprogram

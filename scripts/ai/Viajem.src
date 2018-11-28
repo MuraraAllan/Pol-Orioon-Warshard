@@ -1,0 +1,506 @@
+use npc;
+use basic;
+use os;
+use uo;
+
+include "include/eventID";
+include "include/attributes";
+include "include/sysEvent";
+include "include/randName";
+include "include/utility";
+include "include/mrcSpawn2";
+include "include/vetement";
+include "include/NPCBackpacks";
+include "include/client";
+include "include/findCity";
+include "include/skillLists";
+include "include/dist";
+include "include/begging";
+
+include "../pkg/foundations/gumps/gumps";
+
+
+
+const MAX_SKILLS      := 48;
+const RESPAWN_MINUTES := 3;    
+const UOBJ_METALCHEST := 0x0E7C; 
+
+var me := Self();
+var storage, inv_fs, inv_pb, inv_1c;
+
+var equipt        := GetObjProperty(me, "Equipt");
+var npccfg        := ReadConfigFile("npcdesc");
+
+set_priority( 50 );
+
+var merchant_type := GetObjProperty( Self(), "MerchantType" );
+
+if( !merchant_type )
+    SetObjProperty( Self(), "MerchantGroup", "Mage" );
+    merchant_type := "Mage";
+endif
+
+start_script("NPCKeeper", me);
+storage := FindStorageArea( "Merchant Storage" );
+if (!storage)
+    exit;
+endif
+
+inv_fs := find_or_create_item( storage, me.serial + " FS", UOBJ_METALCHEST );
+inv_pb := find_or_create_item( storage, me.serial + " PB", UOBJ_METALCHEST );
+inv_1c := find_or_create_item( storage, me.serial + " 1C", UOBJ_METALCHEST );
+
+if (!inv_fs or !inv_pb or !inv_1c)
+    exit;
+endif
+  
+  RestockInventory( merchant_type, inv_fs );
+  var next_restock := ReadGameClock() + RESPAWN_MINUTES*60;
+
+
+  EnableEvents( SYSEVENT_ITEM_GIVEN);
+  // 1 = Range, cada Range = 1 tile 
+  EnableEvents( SYSEVENT_SPEECH, 1);
+  EnableEvents(SYSEVENT_ENGAGED + SYSEVENT_DISENGAGED + SYSEVENT_DAMAGED);
+  EnableEvents(SYSEVENT_ENTEREDAREA, 3);
+
+  if (GetObjProperty(me, "frozen"))
+    me.frozen := 1;
+  endif
+
+
+while (1)
+    var ev;
+    ev := os::wait_for_event( 5 );
+      if(ev)
+      case (ev.type)
+      
+        SYSEVENT_SPEECH: var txt := lower(ev.text);
+                if((ev.source.cmdlevel > 2) && (txt["showinventory"]))
+                  SendOpenSpecialContainer(ev.source, inv_fs);
+                  else
+                if  (txt["arena"]);
+var chka := CInt(GetObjProperty(ev.source, "delayarenaa"));
+
+
+
+var time := chka - Readgameclock() ;
+  if(chka >= ReadGameClock())
+      SendSysMessage(ev.source, "Voce precisa esperar "+ time +" segundos para usar novamente a pedra da arena",9,89);
+     break;
+    endif
+
+
+ GFInitGump( 250 , 100 );
+  GFNoMove();
+  GFResizePic(50, 5, 5120, 200, 280);
+  GFTextLine( 110 , 20, 1153 , "Arenas" );
+  var bt2 := GFButtonID( 55, 55, 0x04b9, 0x04b9, 1);
+  var bt3 := GFButtonID( 55, 85, 0x04b9, 0x04b9, 1);
+  var bt4 := GFButtonID( 55, 115,0x04b9, 0x04b9, 1);
+  var bt5 := GFButtonID( 55, 145,0x04b9, 0x04b9, 1);
+ 
+  GFTextLine(80, 50, 1154, "Arena De Brit"); 
+  GFTextLine(80, 80, 1154, "Arena De Yew"); 
+  GFTextLine(80, 110, 1154, "Arena de Arydras"); 
+  GFTextLine(80, 140, 1154, "Arena de Skara"); 
+ 
+
+  var res := GFSendGump(ev.source);
+  
+           
+
+                    if(res[bt2.keyid]) 
+ if(chka >= ReadGameClock())
+      SendSysMessage(ev.source, "Voce precisa esperar "+ time +" segundos para usar novamente a pedra da arena",9,89);
+     break;
+    endif
+SetObjProperty(ev.source, "delayarenaa", ReadGameClock() + 25 );
+  PrintTextAbovePrivate( self(), "Ok vo lhe levar para a arena de brit", ev.source);
+                   TurnToward( ev.source );
+              
+                 Sendsysmessage( ev.source, "Bom duelo!");
+       MoveCharacterToLocation(ev.source, 1319,1815,0 );
+broadcast(ev.source.name + ", Entrou na Arena de Britain!",9,89);
+endif 
+               
+ 
+               if(res[bt3.keyid]) 
+ if(chka >= ReadGameClock())
+  SendSysMessage(ev.source, "Voce precisa esperar "+ time +" segundos para usar novamente a pedra da arena",9,89);
+     break;
+    endif
+SetObjProperty(ev.source, "delayarenaa", ReadGameClock() + 25 );
+              PrintTextAbovePrivate( self(), "Ok vo lhe levar para a arena de yew", ev.source);
+                   TurnToward( ev.source );
+              
+                 Sendsysmessage( ev.source, "Bom duelo!");
+sleep(1);
+MoveCharacterToLocation(ev.source,  635,836,40 );
+broadcast(ev.source.name + ", Entrou na Arena de Yew!",9,89);
+       endif
+              if(res[bt4.keyid]) 
+ if(chka >= ReadGameClock())
+     SendSysMessage(ev.source, "Voce precisa esperar "+ time +" segundos para usar novamente a pedra da arena",9,89);
+     break;
+    endif
+SetObjProperty(ev.source, "delayarenaa", ReadGameClock() + 25);
+                              PrintTextAbovePrivate( self(), "Ok vo lhe levar para a arena de arydras", ev.source);
+                   TurnToward( ev.source );
+              
+                 Sendsysmessage( ev.source, "Bom duelo!");
+sleep(1);
+MoveCharacterToLocation(ev.source,  2716,48,75 );
+broadcast(ev.source.name + ", Entrou na Arena de Arydras!",9,89);
+       endif
+
+              if(res[bt5.keyid]) 
+ if(chka >= ReadGameClock())
+    SendSysMessage(ev.source, "Voce precisa esperar "+ time +" segundos para usar novamente a pedra da arena",9,89);
+     break;
+    endif
+SetObjProperty(ev.source, "delayarenaa", ReadGameClock() + 25 );
+                Sendsysmessage( ev.source, "Movendo voce para a arena de Skara Brae", 9,89);
+                   TurnToward( ev.source );
+sleep(1);
+MoveCharacterToLocation(ev.source,  618,2127,5 );
+broadcast(ev.source.name + ", Entrou na Arena de Skara brae!",9,89);
+       endif
+endif
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+if  (txt["dungeon"]);
+var chka1 := CInt(GetObjProperty(ev.source, "delaydg"));
+var time1 := chka1 - Readgameclock() ;
+  if(chka1 >= ReadGameClock())
+      SendSysMessage(ev.source, "Voce precisa esperar "+ time1 +" segundos para ir para uma dungeon novamente!",9,89);
+     break;
+    endif
+
+
+  GFInitGump( 250 , 100 );
+  GFNoMove();
+  GFResizePic(50, 5, 5120, 200, 280);
+  GFTextLine( 110 , 20, 1153 , "Arenas" );
+  var bt2 := GFButtonID( 55, 55, 0x04b9, 0x04b9, 1);
+  var bt3 := GFButtonID( 55, 85, 0x04b9, 0x04b9, 1);
+  var bt4 := GFButtonID( 55, 115,0x04b9, 0x04b9, 1);
+  var bt5 := GFButtonID( 55, 145,0x04b9, 0x04b9, 1);
+ 
+  GFTextLine(80, 50, 55, "Dg de Wrong");
+  GFTextLine(195, 50, 33, "");
+ 
+  GFTextLine(80, 80, 55, "Dg de Destard"); 
+  GFTextLine(195, 80, 33, "(desenvolvimento)");
+
+  GFTextLine(80, 110, 55, "Dg de Hythloth");
+  GFTextLine(195, 110, 33, "(desenvolvimento)");
+ 
+  GFTextLine(80, 140, 55, "Cemita");
+  GFTextLine(195, 140, 33, "(desenvolvimento)");
+
+ 
+ 
+
+  var res := GFSendGump(ev.source);
+  
+           
+
+                    if(res[bt2.keyid]) 
+ if(chka1 >= ReadGameClock())
+      SendSysMessage(ev.source, "Voce precisa esperar "+ time1 +" segundos para ir para uma dungeon novamente!",9,89);
+     break;
+    endif
+SetObjProperty(ev.source, "delaydg", ReadGameClock() + 25 );
+  PrintTextAbovePrivate( self(), "Ok vo lhe levar para a dungeon de wrong", ev.source);
+                   TurnToward( ev.source );
+              
+                 Sendsysmessage( ev.source, "Boa Matanca!");
+       MoveCharacterToLocation(ev.source, 5825,624,0 );
+broadcast(ev.source.name + ", Entrou na dungeon de wrong",9,89);
+endif 
+               
+ 
+               if(res[bt3.keyid]) 
+ if(chka1 >= ReadGameClock())
+  SendSysMessage(ev.source, "Voce precisa esperar "+ time1 +" segundos para ir para uma dungeon novamente!",9,89);
+     break;
+    endif
+SetObjProperty(ev.source, "delaydg", ReadGameClock() + 25 );
+              PrintTextAbovePrivate( self(), "Ok vo lhe levar para a dungeon de destard", ev.source);
+                   TurnToward( ev.source );
+              
+                 Sendsysmessage( ev.source, "Boa Matanca!");
+sleep(1);
+//////    MoveCharacterToLocation(ev.source,  5243,1007,0 );
+broadcast(ev.source.name + ", Entrou na dungeon de destard",9,89);
+       endif
+              if(res[bt4.keyid]) 
+ if(chka1 >= ReadGameClock())
+     SendSysMessage(ev.source, "Voce precisa esperar "+ time1 +" segundos para ir para uma dungeon novamente!",9,89);
+     break;
+    endif
+SetObjProperty(ev.source, "delaydg", ReadGameClock() + 25);
+                              PrintTextAbovePrivate( self(), "Ok vo lhe levar para a dungeon de Hythloth", ev.source);
+                   TurnToward( ev.source );
+              
+                 Sendsysmessage( ev.source, "Boa Matanca!");
+sleep(1);
+//////    MoveCharacterToLocation(ev.source,  6083,148,-22 );
+broadcast(ev.source.name + ", Entrou na dungeon de Hythloth",9,89);
+       endif
+
+              if(res[bt5.keyid]) 
+ if(chka1 >= ReadGameClock())
+    SendSysMessage(ev.source, "Voce precisa esperar "+ time1 +" segundos para ir para uma dungeon novamente!",9,89);
+     break;
+    endif
+SetObjProperty(ev.source, "delaydg", ReadGameClock() + 25 );
+                PrintTextAbovePrivate( self(), "Ok vo lhe levar para o cemita", ev.source);
+                   TurnToward( ev.source );
+	          Sendsysmessage( ev.source, "Boa Matanca!");
+sleep(1);
+//////    MoveCharacterToLocation(ev.source,  2450,1081,8 );
+broadcast(ev.source.name + ", Entrou no cemiterio maldito",9,89);
+       endif
+endif
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+                if (txt["salve os admins!"])
+                    TurnToward( ev.source );
+                    ModifyPCSellList(merchant_type, (ev.source).backpack);
+                    local res := SendSellWindow( ev.source, self(), inv_fs, inv_pb, inv_1c );
+                    if (res)
+                        PrintTextAbovePrivate( self(), "No que posso ajuda-lo?", ev.source );
+                    else
+                        print( "SendSellWindow failed: " + res.errortext );
+                    endif
+
+                elseif (txt["treinar"])
+                                  TurnToward(ev.source);
+                                  MerchantTrain(me, ev.source, ev.text);
+                                  endif
+             
+            endif
+            SYSEVENT_MERCHANT_BOUGHT:
+                TurnToward( ev.source );
+                PrintTextAbovePrivate( self(), "Ok, aqui esta' suas " + ev.amount, ev.source );
+                foreach item in EnumerateItemsInContainer( inv_pb )
+                    DestroyItem( item );
+                endforeach
+
+            SYSEVENT_MERCHANT_SOLD:
+       
+                TurnToward( ev.source );
+                PrintTextAbovePrivate( self(), "O total de sua compra foi de " + ev.amount, ev.source );
+                PrintTextAbovePrivate( self(), "Volte sempre amigo", ev.source );
+
+   SYSEVENT_ITEM_GIVEN:      TrainSkill(me, ev.source, ev.item);
+SYSEVENT_ENGAGED: if((ev.source) && (!ev.source.dead));
+
+Say("Morra ser insignificante");
+PlaySoundEffect(ev.source, SFX_SPELL_LIGHTNING);
+PlayLightningBoltEffect( ev.source);
+ApplyRawDamage(ev.source,120 );
+else
+Say("Guardas!!!");
+
+var guard;
+var mobiles := ListMobilesNearLocationEx(ev.source.x, ev.source.y, ev.source.z, 15, LISTEX_FLAG_HIDDEN+LISTEX_FLAG_NORMAL);
+foreach npc in mobiles
+if(npc.isa(POLCLASS_NPC))
+if(GetWarNPC(npc))
+if(npc)
+set_critical(1);
+guard := CreateNpcFromTemplate( "guard1" , 5283,1184,0 );
+SetObjProperty(guard, "target", npc.serial);
+set_critical(0);
+endif
+endif
+else
+if (npc.criminal)
+set_critical(1);
+guard := CreateNpcFromTemplate( "guard1" , ev.source.x, ev.source.y, ev.source.z );
+SetObjProperty(guard, "target", npc.serial);
+set_critical(0);
+endif
+endif
+endforeach
+endif
+
+// Fim   
+      endcase
+    elseif (ReadGameClock() > next_restock)
+        RestockInventory( merchant_type, inv_fs );
+        next_restock := ReadGameClock() + RESPAWN_MINUTES*60;
+    endif
+
+    endwhile
+
+function Lookiehere(who, npc)
+  var ev;
+  ev := array;
+  ev.+ type;
+  ev.+ source;
+  ev.type := SYSEVENT_SPEECH;
+  ev.source := npc;
+PrintTextAbove(who, ev);
+endfunction
+
+function MerchantTrain(me, who, text)
+  var totaltrain := 0;
+  var words := SplitWords(text);
+  var skill := words[2];
+  if(words[4])
+    skill := skill + " " + words[3];
+  endif
+  if(!skill)
+    var trainable := "";
+    var holder := "";
+    foreach thing in getskilllist(me)
+      if(holder == "")
+        holder := thing;
+      else
+        holder := holder + ", " + thing;
+      endif
+      totaltrain := totaltrain + 1;
+    endforeach
+    trainable  := trainable + holder;
+    if(totaltrain > 0)
+      say("Eu posso treinar voce nas seguintes habilidades:");
+      say(trainable);
+    else
+      say("Eu nao posso treinar voce.");
+    endif
+  else
+    skill := lower(skill);
+    var npclevel := 33;
+    var pclevel;
+    var holder;
+    foreach thing in getskilllist(me)
+      if(lower(thing) == skill)
+        holder := FindSkillId(thing);
+        pclevel := GetEffectiveSkill(who, holder);
+        if(pclevel >= npclevel)
+          say("Voce ja sabe tudo que eu sei nesta habilidade.");
+          return;
+        else
+          var trainmaxcost := GoldForSkillGain(npclevel, pclevel, holder);
+          say("Eu posso treinar voce em " + thing + " por " + trainmaxcost + " moedas de ouro.");
+          SetObjProperty(who, "TrainMaxCost", trainmaxcost);
+          SetObjProperty(who, "TrainSkillID", holder);
+          return;
+        endif
+      endif
+    endforeach
+    say("Eu nao sei nada dessa habilidade.");
+  endif
+endfunction
+
+function TrainSkill(me, who, item)
+  var variance := 0;
+  var npc_level := 0;
+  var pc_level := 0;
+  var goldreceived := 0;
+  var new_level := 0;
+  var currentnpccost := 0;
+  if((item.objtype == 0xeed) && (item.amount != 0))
+    var trainmaxcost := GetObjProperty(who, "TrainMaxCost");
+    var trainskillid := GetObjProperty(who, "TrainSkillID");
+    if((!trainmaxcost || !trainskillid) && trainskillid != 0)
+      say("Eu nao sei o porque disto mas obrigado!");
+      DestroyItem(item);
+      return;
+    endif
+    npc_level    := 33;
+    pc_level     := GetEffectiveSkill(who, trainskillid);
+    goldreceived := item.amount;
+    variance     := npc_level - pc_level;
+    currentnpccost := GoldForSkillGain(npc_level, pc_level, trainskillid);
+    if(pc_level < npc_level)
+      if(currentnpccost != trainmaxcost)
+        if(currentnpccost > trainmaxcost)
+          npc_level := SkillGainForGold(npc_level, pc_level, trainskillid, trainmaxcost);
+          variance  := npc_level - pc_level;
+        else
+          if(goldreceived > currentnpccost)
+            say("Eu nao posso treinar voce naquele nivel.");
+            MoveItemToContainer(who.backpack, item);
+            return;
+          else
+            trainmaxcost := currentnpccost;
+          endif
+        endif
+      endif
+      if(trainmaxcost <= goldreceived)
+        new_level := (npc_level * 10);
+        EraseObjProperty( who, "TrainMaxCost" );
+        EraseObjProperty( who, "TrainSkillID" );
+      else
+        new_level := ((pc_level + CInt((CDbl(variance) * (CDbl(goldreceived) / CDbl(trainmaxcost))))) * 10);
+        SetObjProperty( who, "TrainMaxCost", trainmaxcost-goldreceived );
+      endif
+      say("Deixe-me mostrar como se faz...");
+      SetBaseSkillBaseValue(who, trainskillid, new_level);
+      DestroyItem(item);
+      SendSysMessage(who, "Suas habilidades aumentaram.");
+    else
+      say("Eu nao sou um bom treinador, procure outro.");
+      MoveItemToContainer(who.backpack, item);
+    endif
+  else
+    say("Bah, eu nao tenho uso para isto.");
+    MoveItemToContainer(who.backpack, item);
+  endif
+endfunction
+
+function GoldForSkillGain( npc_skill, pc_skill, skillid )
+  var maxskill := npc_skill - pc_skill;
+  return maxskill*10;
+endfunction
+
+function SkillGainForGold(npc_level, pc_level, trainskillid, goldreceived)
+  return (goldreceived/10) + pc_level;
+endfunction
+
+
+function GetwarNPC(byref npc)
+var elem := FindConfigElem(npccfg, npc.npctemplate);
+if(elem.alignment == "evil" or npc.master.criminal or elem.alignment == "neutral")
+return 1;
+endif
+return 0;
+endfunction
+

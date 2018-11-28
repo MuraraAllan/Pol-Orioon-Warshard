@@ -1,0 +1,118 @@
+use uo;
+use cfgfile;
+
+include "include/objtype";
+include "include/attributes";
+include "include/client";
+include "include/canAccess";
+include "include/toolWear";
+
+var scissors_cfg := ReadConfigFile("scissors");
+var cfg2 := ReadConfigFile("tailoring");
+var cfg3 := ReadConfigFile("leather");
+
+program tesoura( who, scissors )
+
+  if(scissors.container != who.backpack)
+  SendSysMessage(who, "O item precisa estar em sua mochila.",0x3,98);
+  return;
+  endif
+
+  EraseObjProperty(who, "IsMeditating");
+  if(!can_access(who, scissors))
+    return;
+  elseif(scissors.movable == 0)
+    SendSysMessage(who, "Voce nao consegue pegar o item.",0x3,98);
+    return;
+  endif
+  SendSysMessage(who, "Selecione o que voce deseja cortar!",0x3,98);
+  var cloth := Target(who);
+
+
+
+  if(cloth.container != who.backpack)
+  SendSysMessage(who, "O item precisa estar em sua mochila.",0x3,98);
+  return;
+  endif  
+
+
+  if(!cloth)
+    SendSysMessage(who, "Cancelado.",0x3,98);
+    return;
+  elseif(cloth.movable == 0)
+sendsysmessage(who, "Voce nao pode usar items trancados ao chao!",0x3,98);
+return;
+  elseif(cloth.graphic == 4199)
+sendsysmessage(who, "Estes pedacos de couro ja estao cortados!",0x3,98);
+return;
+  elseif(!Accessible(who, cloth))
+    SendSysMessage(who, "Voce nao consegue pegar o item.",0x3,98);
+    return;
+  elseif(!can_access(who, cloth))
+    return;
+  elseif(cloth.movable == 0)
+    SendSysMessage(who, "Voce nao consegue pegar o item.",0x3,98);
+    return;
+  endif
+
+
+
+
+
+var name;
+
+var cortavel;
+var cortar;
+var aaa := cloth.objtype;
+
+case(aaa)
+0xa128: cortar := 1; name := "Couro%s% de Demonio";
+0xa127: cortar := 1; name := "Couro%s% do Fogo";
+0xa126: cortar := 1; name := "Couro%s% Negro";
+0xa125: cortar := 1; name := "Couro%s% Barbed";
+0xa124: cortar := 1; name := "Couro%s% Horned";
+0xa123: cortar := 1; name := "Couro%s% Spinned";
+4216:   cortar := 1; name := "Couro%s% Normal";  
+endcase
+
+var quantidade;
+if(cortar != 1)
+sendsysmessage(who, "Voce apenas pode cortar couros!",0x3,98);
+return;
+endif
+
+var clr := cloth.color;
+var quantidadee;
+if((cortar == 1))
+quantidade := cloth.amount;
+var b :=  EnumerateItemsInContainer( who.backpack );
+foreach aaa in b
+var quantidade;
+
+
+
+if((aaa.graphic == 4199) && (aaa.color == 0))
+quantidadee := aaa.amount;
+
+destroyitem(aaa);
+
+endif
+endforeach
+
+
+if(aaa)
+var aa := createiteminbackpack(who, 0x1067,quantidade);
+MoveItemToContainer( aa, who.backpack, 129, 84 );
+aa.color := clr;
+
+var bb := createiteminbackpack(who, 0x1067,quantidadee);
+bb.color := aaa.color;
+MoveItemToContainer( bb, who.backpack, 44, 111);
+SubtractAmount(cloth, quantidade);
+
+aa.name := "Pedacos De "+ name;
+endif
+endif
+
+  
+endprogram

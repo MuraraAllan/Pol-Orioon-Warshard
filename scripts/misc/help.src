@@ -1,0 +1,317 @@
+///////////////////////////////////////
+// Desenvolvido por lobulo ;)       //
+//			           // 
+// msn : mrlobulo@gmail.com       //  
+//                               //         
+//                              //
+//                             //
+////////////////////////////////
+
+use uo;
+use os;
+
+include "include/help";
+include "include/eventID";
+include "../pkg/foundations/gumps/gumps";
+include "include/webPage";
+
+var gmpages := GetGlobalProperty("gmpages");
+var cnpages := GetGlobalProperty("counpages");
+
+program help(who)
+GumpPrincipal(who);
+endprogram
+
+
+Function GumpPrincipal(who)
+
+if(getobjproperty(who,"delayhelp") > readgameclock())
+sendsysmessage(who,"voce precisa esperar para abrir o gump novamente");
+return;
+endif
+GFInitGump( 124 , 20 );
+GFNoMove();
+setobjproperty(who,"delayhelp",readgameclock()+12);
+GFGumpPic(80, 50, 0x00c8);
+GFGumpPic(80, 65, 0x00c8);
+GFGumpPic(80, 80, 0x00c8);
+GFGumpPic(80, 95, 0x00c8);
+GFGumpPic(80, 110, 0x00c8);
+GFGumpPic(80, 125, 0x00c8);
+GFGumpPic(120, 50, 0x00c8);
+GFGumpPic(120, 65, 0x00c8);
+GFGumpPic(120, 80, 0x00c8);
+GFGumpPic(120, 95, 0x00c8);
+GFGumpPic(120, 110, 0x00c8);
+GFGumpPic(160, 50, 0x00c8);
+GFGumpPic(160, 65, 0x00c8);
+GFGumpPic(160, 80, 0x00c8);
+GFGumpPic(160, 95, 0x00c8);
+GFGumpPic(160, 110, 0x00c8);
+GFGumpPic(200, 50, 0x00c8);
+GFGumpPic(200, 65, 0x00c8);
+GFGumpPic(200, 80, 0x00c8);
+GFGumpPic(200, 95, 0x00c8);
+GFGumpPic(200, 110, 0x00c8);
+GFGumpPic(240, 50, 0x00c8);
+GFGumpPic(240, 65, 0x00c8);
+GFGumpPic(240, 80, 0x00c8);
+GFGumpPic(240, 95, 0x00c8);
+GFGumpPic(240, 110, 0x00c8);
+GFGumpPic(280, 50, 0x00c8);
+GFGumpPic(280, 65, 0x00c8);
+GFGumpPic(280, 80, 0x00c8);
+GFGumpPic(280, 95, 0x00c8);
+GFGumpPic(280, 110, 0x00c8);
+GFGumpPic(330, 50, 0x00c8);
+GFGumpPic(330, 65, 0x00c8);
+GFGumpPic(330, 80, 0x00c8);
+GFGumpPic(330, 95, 0x00c8);
+GFGumpPic(330, 110, 0x00c8);
+
+GFGumpPic(80, 140, 0x00c8);
+GFGumpPic(80, 155, 0x00c8);
+GFGumpPic(80, 170, 0x00c8);
+GFGumpPic(80, 185, 0x00c8);
+GFGumpPic(80, 200, 0x00c8);
+GFGumpPic(80, 215, 0x00c8);
+
+GFGumpPic(120, 140, 0x00c8);
+GFGumpPic(120, 155, 0x00c8);
+GFGumpPic(120, 170, 0x00c8);
+GFGumpPic(120, 185, 0x00c8);
+GFGumpPic(120, 200, 0x00c8);
+
+GFGumpPic(160, 140, 0x00c8);
+GFGumpPic(160, 155, 0x00c8);
+GFGumpPic(160, 170, 0x00c8);
+GFGumpPic(160, 185, 0x00c8);
+GFGumpPic(160, 200, 0x00c8);
+
+GFGumpPic(200, 140, 0x00c8);
+GFGumpPic(200, 155, 0x00c8);
+GFGumpPic(200, 170, 0x00c8);
+GFGumpPic(200, 185, 0x00c8);
+GFGumpPic(200, 200, 0x00c8);
+
+GFGumpPic(250, 140, 0x00c8);
+GFGumpPic(250, 155, 0x00c8);
+GFGumpPic(250, 170, 0x00c8);
+GFGumpPic(250, 185, 0x00c8);
+GFGumpPic(250, 200, 0x00c8);
+
+GFGumpPic(300, 140, 0x00c8);
+GFGumpPic(300, 155, 0x00c8);
+GFGumpPic(300, 170, 0x00c8);
+GFGumpPic(300, 185, 0x00c8);
+GFGumpPic(300, 200, 0x00c8);
+
+GFGumpPic(330, 140, 0x00c8);
+GFGumpPic(330, 155, 0x00c8);
+GFGumpPic(330, 170, 0x00c8);
+GFGumpPic(330, 185, 0x00c8);
+GFGumpPic(330, 200, 0x00c8);
+GFGumpPic(40, 25, 0x00ca);
+GFGumpPic(60, 15, 0x00c9);
+GFGumpPic(40, 15, 0x00ce);
+GFGumpPic(450, 15, 0x00cb);
+GFGumpPic(450, 15, 0x00cf);
+GFGumpPic(50, 300, 0x00e9);
+GFGumpPic(40, 300, 0x00cc);
+GFGumpPic(450, 300, 0x00cd);
+
+
+
+
+
+
+
+var btforum := GFButtonID( 4440, 163, 0x04b9, 0x04b9, 1);
+GFTextLine(120, 30, 2, "Systema de ajuda do Servidor.");
+
+GFTextLine(80, 70, 42, "Antes de mandar alguma page , consulte o site, ou tente");
+GFTextLine(70, 90, 42, "tirar suas duvidas com outro jogador!");
+
+
+GFTextLine(80, 120, 42, "Mensagens inuteis, serao apagadas caso torne a acontecer");
+GFTextLine(70, 140, 42, "resultara em punicoes ao jogador!");
+
+
+var btgmpage := GFButtonID( 140, 273, 0x00d2, 0x00d3, 1);
+var btcnpage := GFButtonID( 140, 203, 0x00d2, 0x00d3, 1);
+
+var btirc_help := GFButtonID( 140, 223, 0x00d2, 0x00d3, 1);
+
+GFTextLine(180,223, 42, "(page para helpers (IRC))");
+
+
+GFTextLine(100, 180, 42, "Tenho duvidas ou preciso de ajuda!");
+GFTextLine(180,203, 42, "(page para conselheiros)");
+
+
+GFTextLine(100, 250, 42, "Quero relatar bugs ou denunciar cheaters!");
+GFTextLine(180,273, 42, "(page para game master)");
+
+
+
+
+
+
+var res := GFSendGump( who );
+if(!res)
+sendsysmessage(who,"Cancelado.");
+return;
+endif
+
+if(res[btcnpage.keyid])
+SetObjProperty(who, "delayhelp" ,ReadGameClock() + 15);
+mainpagecoun(who);
+endif
+
+if(res[btgmpage.keyid])
+Setobjproperty(who, "delayhelp" ,ReadGameClock() + 15);
+mainpagegm(who);
+endif
+
+if(res[btirc_help.keyid])
+Irc_Help(who);
+endif
+
+if(res[btforum.keyid])
+var wp:="www.sysco.rg3.net";
+OpenWebSite(who, wp);
+endif
+
+
+
+endfunction
+
+
+function mainpagecoun(who)
+if(!Getglobalproperty("conon"))
+SendSysMessage( who, "Desculpe, No momento nao existem Conselheiros Online. Tente de novo mais tarde.");
+return;
+endif
+var thepage := CStr(SendTextEntryGump( who, "Descreva seu problema aqui ", TE_CANCEL_ENABLE, TE_STYLE_NORMAL));
+if((!thepage) || (thepage == "0") || (thepage == "o"))
+SendSysMessage(who, "Cancelado");
+return;
+endif
+
+
+var ss := who.serial;
+
+counpage(who, thepage);
+EraseObjProperty( who, "canpage" );
+SendSysMessage( who, "Os Conselheiros Receberam Sua Page e irao lhe atender o mais rapido possivel!");
+pagewarning(1, thepage, who,"conselheiro");
+endfunction
+
+
+function counpage(who, thepage)
+
+if(!cnpages)
+cnpages := {};
+endif
+while(1)
+if (!Icanpage(who))
+sleep(1);
+else
+break;
+endif
+endwhile
+var cserial := CInt(who.serial);
+foreach thing in cnpages
+if(thing[3] == who.serial)
+SendSysMessage(who, "Sua nova page subistitui a sua antiga!");
+cnpages := RemoveElement(cnpages, thing);
+break;
+endif
+endforeach
+var newarry := {};
+newarry.append(who.name);
+newarry.append(thepage);
+newarry.append(who.serial);
+cnpages.append(newarry);
+SetGlobalProperty("counpages", cnpages);
+endfunction
+
+function mainpagegm(who)
+if(!Getglobalproperty("gmon"))
+SendSysMessage( who, "Desculpe, No momento nao existem GM´s Online. Tente de novo mais tarde.");
+return;
+endif
+var thepage := CStr(SendTextEntryGump( who, "Descreva Seu Problema Aqui ", TE_CANCEL_ENABLE, TE_STYLE_NORMAL));
+if((!thepage) || (thepage == "0") || (thepage == "o"))
+SendSysMessage(who, "Cancelado");
+return;
+endif
+gmpage(who, thepage);
+EraseObjProperty( who, "canpage" );
+SendSysMessage( who, "Os GM´s Receberam Sua Page e o mais rapido possivel irao atende-lo.");
+pagewarning(1, thepage, who,"Game master");
+endfunction
+
+
+
+function gmpage(who, thepage)
+
+if(!gmpages)
+gmpages := {};
+endif
+while(1)
+if (!Icanpage(who))
+sleep(1);
+else
+break;
+endif
+endwhile
+var cserial := CInt(who.serial);
+foreach thing in gmpages
+if(thing[3] == who.serial)
+SendSysMessage(who, "Sua nova page subistitui a sua antiga!");
+gmpages := RemoveElement(gmpages, thing);
+break;
+endif
+endforeach
+var newarry := {};
+newarry.append(who.name);
+newarry.append(thepage);
+newarry.append(who.serial);
+gmpages.append(newarry);
+SendSysMessage(who, "Existem " +gmpages.size()+ " pages na sua frente");
+SetGlobalProperty("gmpages", gmpages);
+endfunction
+
+function RemoveElement(arry, position)
+var newarray := { };
+foreach thing in arry
+if(thing != position)
+newarray.append(thing);
+endif
+endforeach
+return newarray;
+endfunction
+
+function Irc_Help(who)
+
+if(getobjproperty(who,"delay_irc_help") > readgameclock())
+sendsysmessage(who,"Voce precisa esperar para pedir ajuda novamente!");
+return;
+endif
+
+var ev := struct;
+    ev.+type := "interno";
+    ev.+command := "help_irc_pedido";
+    ev.+serial := who.serial;
+var text:=CStr(SendTextEntryGump( who, "Descreva sua duvida sendo mais breve possivel.", TE_CANCEL_ENABLE, TE_STYLE_NORMAL));
+    
+if((!text) || (text == "0") || (text == "o"))
+SendSysMessage(who, "Cancelado");
+return;
+endif
+    ev.+texto:= text;
+    var auxconnection := GetProcess(GetGlobalProperty("#AuxConnection"));
+    auxconnection.SendEvent(ev);
+Setobjproperty(who, "delay_irc_help" ,ReadGameClock() + 60);
+endfunction

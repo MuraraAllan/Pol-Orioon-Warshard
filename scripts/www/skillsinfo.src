@@ -1,0 +1,157 @@
+use uo;
+use uo;
+use util;
+use http;
+use math;
+use basic;
+include "include/accounts";
+include "include/attributes";
+include "include/www";
+
+program skillsinfo()
+DesativarBotaoDireito();
+
+WriteHTML ("<body text=#999999 bgcolor=#000000>");
+var acctname := QueryParam ("acctname");
+var acctpass := QueryParam ("acctpass");
+var charid   := QueryParam ("charid");
+
+
+var acct := FindAccount (acctname);
+if (!acct)
+WriteHTML ("<html><head><title>Sysco - Erro Detectado!</title></head>");
+WriteHTML ("Erro! Contate um Administrador!");
+return;
+endif
+if (acct.checkpassword(acctpass) == 0)
+WriteHTML ("<html><head><title>Sysco - Erro Detectado!</title></head>");
+WriteHTML ("Erro! Contate um Administrador!");
+return;
+endif	
+var personagem:=SystemFindObjectBySerial(Cint(charid), SYSFIND_SEARCH_OFFLINE_MOBILES);
+if (personagem.acct.name != acctname)
+WriteHTML ("<html><head><title>Sysco - Erro Detectado!</title></head>");
+WriteHTML ("Erro! Contate um Administrador!");
+return;
+endif
+
+WriteHTML ("<html><head><title>Informações do personagem "+personagem.name+"</title></head>");
+
+WriteHTML ("<b>Nome:</b> "+personagem.name+"");
+
+var skills:= array();
+var i;
+for (i := 0; i <= SKILLID__HIGHEST; i := i + 1)
+var res := GetEffectiveSkill(personagem,i);
+ if (res != error)
+  skills.append({ GetAttributeIdBySkillId(i),GetEffectiveSkill(personagem,i) });
+ endif
+endfor
+skills:=SortMultiArrayByIndex(skills, 2);
+
+WriteHTML ("</br>");
+
+i:=0;
+while ( skills[skills.size()+(i),2] > 0)
+WriteHTML ("<br><b>"+PegarNomeSkill(skills[skills.size()+(i),1])+":</b> " +skills[skills.size()+(i),2]+"");
+i:=i-1;
+endwhile
+endprogram
+
+
+
+function PegarNomeSkill(id)
+var st;
+case(id)
+"alchemy": st:="Alchemy";
+"anatomy": st:="Anatomy";
+"animallore": st:="Animal Lore";
+"archery": st:="Archery";
+"armslore": st:="Arms Lore";
+"begging": st:="Begging";
+"blacksmithy": st:="Black Smith";
+"bowcraft": st:="Bowcraft";
+"camping": st:="Camping";
+"carpentry": st:="Carpentry";
+"cartography": st:="Cartography";
+"cooking": st:="Cooking";
+"detectinghidden": st:="Detect Hidden";
+"detecthidden": st:="Detect Hidden";
+"enticement": st:="Enticement";
+"evaluatingintelligence": st:="Eval Intelligence";
+"evaluatingint": st:="Eval Intelligence";
+"evalint": st:="Eval Intelligence";
+"fencing": st:="Fencing";
+"fishing": st:="Fishing";
+"foresnsicevaluation": st:="Forenscic Eval";
+"forensciceval": st:="Forenscic Eval";
+"forensics": st:="Forenscic Eval";
+"healing": st:="Healing";
+"herding": st:="Herding";
+"hiding": st:="Hiding";
+"inscription": st:="Inscription";
+"itemid": st:="Item Identification";
+"lockpicking": st:="Lockpicking";
+"lumberjacking": st:="Lumberjacking";
+"macefighting": st:="Mace Fighting";
+"mace": st:="Mace Fighting";
+"magery": st:="Magery";
+"magicresistance": st:="Resisting Spells";
+"magicresist": st:="Resisting Spells";
+"resistingspells": st:="Resisting Spells";
+"resist": st:="Resisting Spells";
+"meditation": st:="Meditation";
+"mining": st:="Mining";
+"musicianship": st:="Musician Ship";
+"parry": st:="Parry";
+"peacemaking": st:="Peacemaking";
+"poisoning": st:="Poisoning";
+"provocation": st:="Provocation";
+"removetrap": st:="Remove Trap";
+"snooping": st:="Snooping";
+"spiritspeak": st:="Spirit Speak";
+"stealing": st:="Stealing";
+"stealth": st:="Stealth";
+"swordsmanship": st:="Swordsmanship";
+"swords": st:="Swordsmanship";
+"tactics": st:="Tactics";
+"tailoring": st:="Tailoring";
+"animaltaming": st:="Animal Taming";
+"tasteidentification": st:="Tast ID";
+"tinkering": st:="Tinkering";
+"tracking": st:="Tracking";
+"veterinary": st:="Veterinary";
+"wrestling": st:="Wrestling";
+default: st:="Sem Nome";
+endcase
+return st;
+endfunction
+
+////Função Pra arrumar a array em ordem ;]
+function SortMultiArrayByIndex(MultiArray, SubIndex)
+
+	var ArrayLen := Len(MultiArray);
+	if ( ArrayLen < 2 )
+		return MultiArray;
+	endif
+
+	if ( SubIndex > len(MultiArray[1]) )
+		return 0;
+	endif
+
+	var i, k, f, s;
+	for(i := 1; i < ArrayLen; i := i + 1)
+		for( k := i+1; k <= ArrayLen; k := k + 1)
+			f := MultiArray[i];
+			s := MultiArray[k];
+			if ( s[SubIndex] < f[SubIndex] )
+				MultiArray[i] := s;
+				MultiArray[k] := f;
+			endif
+		endfor
+		sleepms(1);
+	endfor
+
+	return MultiArray;
+
+endfunction

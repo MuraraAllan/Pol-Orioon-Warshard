@@ -1,0 +1,49 @@
+use uo;
+use util;
+
+include "include/spellRestrictions";
+
+program cast_mark(parms)
+  var circle := 6;
+  var delivery := "notarget";
+  var noto := "neutral";
+  var result := maincast(parms, delivery, circle, noto, 45);
+  if(result == 0)
+    return;
+  endif
+  var caster := result[1];
+  var cast_on := Target(caster);
+  if (cast_on.objtype != UOBJ_RUNE)
+    SendSysMessage(caster, "Era bom marca a runa :O!");
+	return;
+  endif
+  if(caster.multi)
+    SendSysMessage(caster,"Local com aura anti magia",9,89);
+    PlaySoundEffect(caster,0x005d);
+    PlayObjectCenteredEffect(caster, 0x3735,0x0a, 0x1e);
+    return;
+  endif
+
+  if(((caster.x >= 120) && (caster.x <= 153) && (caster.y >= 1915) && (caster.y <= 1892)) or (caster.multi))
+    SendSysMessage(caster, "Nao Vai marca nao ;).",9,89);
+    return;
+  endif
+  if (!Accessible(caster, cast_on))
+	SendSysMessage(caster, "Voce nao enxerga isso!");
+   return;
+  endif
+  if (cast_on.objtype != UOBJ_RUNE)
+	SendSysMessage(caster, "Era bom marca uma runa :O!");
+	return;
+  endif
+  if(!ReserveItem(cast_on))
+    SendSysMessage(caster,"Newbie peido :p");
+    return;
+  endif
+  PlayObjectCenteredEffect(  caster, FX_MARK_EFFECT, 10, 10);
+  PlaySoundEffect( caster, SFX_SPELL_MARK );
+  SetObjProperty(cast_on, "x", caster.x);
+  SetObjProperty(cast_on, "y", caster.y);
+  SetObjProperty(cast_on, "z", caster.z);
+  SetName(cast_on, "Runa Marcada");
+endprogram

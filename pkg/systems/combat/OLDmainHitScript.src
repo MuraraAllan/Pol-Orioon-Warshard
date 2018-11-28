@@ -1,0 +1,315 @@
+use uo;
+use os;
+use cfgfile;
+
+include "include/attributes";
+include "hitScriptInc";
+
+var npccfgfile := ReadConfigFile("::npcdesc");
+
+program MainHitScript(attacker, defender, weapon, armor, basedamage, rawdamage, sangue)
+
+  
+if((defender.x >= 3553) && (defender.y >= 2451) && (defender.x <= 3733) && (defender.y <= 2707))
+///SetHP(attacker, (GetHP(attacker) - 5));
+///Printtextabove(attacker, "* Ouch *" ,FONT_SMALL_LIGHT, 60 );
+rawdamage := 0;
+return;
+endif 
+
+
+
+if(defender == attacker)
+    SendSysMessage(attacker, "Attack Self? Sem BUGS!",0,33);
+    ApplyRawDamage(attacker, 1000);
+    return;
+  endif
+  if(defender.isA(POLCLASS_NPC))
+    var damagedsound := CInt(npccfgfile[defender.npctemplate].damagedsound);
+    if(damagedsound)
+      PlaySoundEffect(defender, damagedsound);
+    endif
+    PerformAction(defender, 0xa);
+    basedamage := basedamage;
+    rawdamage := rawdamage;
+  else
+    if(attacker.acctname && defender.acctname)
+      basedamage := basedamage / 2;
+      rawdamage := rawdamage / 2;
+    endif
+  endif
+  if(attacker.npctemplate == "employee")
+    basedamage := basedamage / 2;
+    rawdamage := rawdamage / 2;
+  endif
+   var armass := GetEquipmentByLayer(attacker, 1);
+if((armass) && (basedamage > 60) && ( rawdamage > 60))
+  basedamage := basedamage - 25;
+   rawdamage := rawdamage  - 25;
+endif
+var katana := GetEquipmentByLayer(attacker, 1);
+if((katana)  && (basedamage > 40) && ( rawdamage > 40) && (weapon.objtype == 5118) )
+
+  basedamage := basedamage - 15;
+   rawdamage := rawdamage  - 15;
+
+endif
+var kopesh := GetEquipmentByLayer(attacker, 1);
+if((kopesh)  && (basedamage > 40) && ( rawdamage > 40) && (weapon.objtype == 5121))
+  basedamage := basedamage - 15;
+   rawdamage := rawdamage  - 15;
+
+endif
+
+var lanca := GetEquipmentByLayer(attacker, 2);
+if((lanca)  && (basedamage > 45) && ( rawdamage > 45) && (weapon.objtype == 3939))
+  basedamage := basedamage - randomdiceroll("1d10") - 3;
+   rawdamage := rawdamage  - randomdiceroll("1d10") - 3;
+
+endif
+
+var maxadoduplo := GetEquipmentByLayer(attacker, 2);
+if((maxadoduplo)  && (basedamage > 45) && ( rawdamage > 45) && (weapon.objtype == 3915))
+  basedamage := basedamage - 5 - randomdiceroll("1d9");
+   rawdamage := rawdamage  - 5 - randomdiceroll("1d9");
+
+endif
+
+var maxadobatalha := GetEquipmentByLayer(attacker, 2);
+if((maxadoduplo)  && (basedamage > 45) && ( rawdamage > 45) && (weapon.objtype == 5114))
+  basedamage := basedamage - 5 - randomdiceroll("1d12");
+   rawdamage := rawdamage  - 5 - randomdiceroll("1d12");
+endif
+
+
+/////////////////////////////
+///// Sangue Function  //////
+/////////////////////////////
+var chancedesangue:=randomdiceroll("1d10");
+if((chancedesangue >= 1) && (chancedesangue <=8))
+var tipo:=randomdiceroll("1d5");
+
+ if(tipo == 1)
+ var sangue:=CreateItemAtLocation(defender.x, defender.y, defender.z, 4650, 1);
+ sangue.movable:=0;
+ sangue.name:=("Sangue de " +defender.name);
+ ///sangue.decayAt := ReadGameClock() + 8;
+ start_script("sangueControl", sangue);
+ endif
+
+ if(tipo == 5)
+ var sangue:=CreateItemAtLocation(defender.x, defender.y, defender.z, 4651, 1);
+ sangue.movable:=0;
+ sangue.name:=("Sangue de " +defender.name);
+ ///sangue.decayAt := ReadGameClock() + 8;
+ start_script("sangueControl", sangue);
+ endif
+
+ if(tipo == 2)
+ var sangue:=CreateItemAtLocation(defender.x, defender.y, defender.z, 4653, 1);
+ sangue.movable:=0;
+ sangue.name:=("Sangue de " +defender.name);
+ ///sangue.decayAt := ReadGameClock() + 8;
+ start_script("sangueControl", sangue);
+ endif
+
+ if(tipo == 3)
+ var sangue:=CreateItemAtLocation(defender.x, defender.y, defender.z, 4654, 1);
+ sangue.movable:=0;
+ sangue.name:=("Sangue de " +defender.name);
+ ///sangue.decayAt := ReadGameClock() + 8;
+ start_script("sangueControl", sangue);
+ endif
+
+ if(tipo == 4)
+ var sangue:=CreateItemAtLocation(defender.x, defender.y, defender.z, 4655, 1);
+ sangue.movable:=0;
+ sangue.name:=("Sangue de " +defender.name);
+ ///sangue.decayAt := ReadGameClock() + 8;
+ start_script("sangueControl", sangue);
+ endif
+
+
+endif
+
+/////////////////////////////
+//// Power blow Function ////
+/////////////////////////////
+
+///var verwrest:=Cint(GetEffectiveSkill(defender, SKILLID_WRESTLING));
+var verfenc:=Cint(GetEffectiveSkill(attacker, SKILLID_FENCING));
+var versw:=Cint(GetEffectiveSkill(attacker, SKILLID_SWORDSMANSHIP));
+var vermace:=Cint(GetEffectiveSkill(attacker, SKILLID_MACEFIGHTING));
+var verarcher:=Cint(GetEffectiveSkill(attacker, SKILLID_ARCHERY));
+var verdex:=Cint(GetAttributeBaseValue(attacker, ATTRIBUTEID_DEXTERITY));
+var verdexdf:=Cint(GetAttributeBaseValue(defender, ATTRIBUTEID_DEXTERITY));
+var verarma:=GetEquipmentByLayer(attacker, 2);
+var chance := randomdiceroll("1d10");
+///var chanceB := randomdiceroll("1d10");
+
+////fencing////
+if((verfenc >= 100) && (verdex >= 900) && (chance >= 9))
+
+if((verarma.graphic == 0x0F63) || (verarma.graphic == 0x1402))
+Printtextabove(defender, "Voce Levou Um Power Blow De " + attacker.name + " E Ficou Frozen" ,FONT_SMALL_LIGHT, 38 );
+defender.frozen:=1;
+endif
+
+endif
+
+
+////sword////
+if((versw >= 100) && (verdex >= 900) && (chance >= 9))
+
+if((verarma.graphic == 0x143E) || (verarma.graphic == 0x0F4B) || (verarma.graphic == 0x0F4E) || (verarma.graphic == 0x0F45))
+Printtextabove(defender, "Voce Levou Um Power Blow De " + attacker.name + " E Perdeu Mana" ,FONT_SMALL_LIGHT, 38 );
+var retirarmana:=((GetMana(defender) * 30) / 100);
+SetMana(defender, (GetMana(defender) - retirarmana));
+SendSysMessage(defender, "[PB]: Retirado " +retirarmana+ " pontos de sua Mana.",1,33);
+endif
+
+endif
+
+
+////mace////
+if((vermace >= 100) && (verdex >= 900) && (chance >= 9))
+var verarma1:=GetEquipmentByLayer(attacker, 1);
+
+if((verarma.graphic == 0x13F9) || (verarma.graphic == 0x0DF0) || (verarma.graphic == 0x0E8A) || (verarma1.graphic== 0x1406) || (verarma1.graphic == 0x1438))
+Printtextabove(defender, "Voce Levou Um Power Blow De " + attacker.name + " E Perdeu Bastante Life" ,FONT_SMALL_LIGHT, 38 );
+var retirarlife:=((GetHp(Defender) * 20) / 100);
+SetHP(defender, (GetHP(defender) - retirarlife));
+SendSysMessage(defender, "[PB]: Retirado " +retirarlife+ " pontos de seu Life.",1,33);
+SendSysMessage(attacker, "[PB]: Retirado " +retirarlife+ " pontos do life de " +defender.name,1,33);
+endif
+
+endif
+
+
+////archery////
+if((verarcher >= 100) && (verdex >= 900) && (chance >= 9))
+var verarmaA:=GetEquipmentByLayer(attacker, 1);
+
+if((verarmaA.graphic == 0x13B2) || (verarmaA.graphic == 0x0F4F) || (verarmaA.graphic == 0x13FD))
+Printtextabove(defender, "Voce Levou Um Power Blow De " + attacker.name + " E Perdeu Stamina" ,FONT_SMALL_LIGHT, 38 );
+var retirarstam:=((GetStamina(defender) * 50) / 100);
+SendSysMessage(defender, "[PB]: Retirado " +retirarstam+ " pontos de sua Stamina.",1,33);
+SetStamina(defender, (GetStamina(defender) - retirarstam));
+endif
+
+endif
+
+////wrest////
+///if((verwrest >= 100) && (verdexdf >= 650) && (chanceB >= 9))
+///var verarmaA:=GetEquipmentByLayer(defender, 1);
+///var verarmaB:=GetEquipmentByLayer(defender, 2);
+///if((verarmaB.graphic == error) || (verarmaB.graphic == 0x1B76) || (verarmaB.graphic == 0x1B78) || (verarmaB.graphic == 0x1B72) || (verarmaB.graphic == 0x1B74) || (verarmaB.graphic == 0x1B7B) || (verarmaB.graphic == 0x1B73))
+///if((verarmaA.graphic == error) || (verarmaA.graphic == 0x0EFA))
+///Printtextabove(attacker, "Voce Levou Um Power Blow De " + defender.name + " E Perdeu Mana" ,FONT_SMALL_LIGHT, 38 );
+///var retirarmana:=((GetMana(attacker) * 20) / 100);
+///SetMana(attacker, (GetMana(attacker) - retirarmana));
+///SendSysMessage(attacker, "[PB]: Retirado " +retirarmana+ " pontos de sua Mana.",1,33);
+///SendSysMessage(defender, "[PB]: Sugado " +retirarmana+ " pontos de Mana para voce.",1,193);
+///SetMana(defender, (GetMana(defender) + retirarmana));
+///endif
+///endif
+///endif
+
+
+
+  SetObjProperty(defender, "LastHit", {attacker.name, attacker.serial, weapon }); 	
+  SetObjProperty(defender, "Lastataque", Readgameclock() + 5);
+  var shield := GetEquipmentByLayer(defender, 2);
+if(GetEffectiveSkill(defender, SKILLID_PARRY) > 99)
+var xanse := RandomInt(2);
+if(xanse > 1) 
+SendSysMessage(defender, "Voce defendeu o ataque!",3,95);
+SendSysMessage(attacker, "Seu ataque foi bloqueado!",3,95);
+basedamage := 0;
+rawdamage := 0;
+endif
+endif
+var weaponhit := GetObjProperty(weapon, "OnHit");
+  if(weapon.hp > weapon.maxhp)
+    DestroyItem(weapon);
+    rawdamage := 0;
+  endif
+  var armorhit;
+  if(armor == 0)
+    armorhit := GetObjProperty(defender, "ArmorHit");
+  else
+    armorhit := GetObjProperty(armor, "ArmorHit");
+  endif
+
+  var x;
+  if(!weaponhit)
+    if(!armorhit)
+       run_script_to_completion("reactiveArmorHit", { attacker, defender, weapon, armor, basedamage, rawdamage } );
+      rawdamage := GetObjProperty(defender, "TempDamage");
+
+      if(GetObjProperty(weapon, "SilverHit"))
+        run_script_to_completion("silverHit", { attacker, defender, weapon, armor, basedamage, rawdamage } );
+
+        rawdamage := GetObjProperty(defender, "TempDamage");
+
+      endif
+      rawdamage := Cint(rawdamage + Cint(GetEffectiveSkill(attacker, SKILLID_ANATOMY) / 20));
+       if(rawdamage < 1)
+        rawdamage := 1;
+      endif
+      DealDamage(defender, attacker, rawdamage);
+sleep(3);
+defender.frozen := 0;
+      return;
+    else
+        SetObjProperty(defender, "TempDamage", rawdamage);
+      foreach x in armorhit
+        Detach();
+        run_script_to_completion(x, { attacker, defender, weapon, armor, basedamage, rawdamage } );
+        rawdamage := CInt(GetObjProperty(defender, "TempDamage") );
+      endforeach
+      run_script_to_completion("reactiveArmorHit", { attacker, defender, weapon, armor, basedamage, rawdamage } );
+      rawdamage := GetObjProperty(defender, "TempDamage");
+      EraseObjProperty(defender, "TempDamage");
+        if(GetObjProperty(weapon, "SilverHit"))
+        run_script_to_completion("silverHit", { attacker, defender, weapon, armor, basedamage, rawdamage } );
+        rawdamage := GetObjProperty(defender, "TempDamage");
+      endif
+      rawdamage := Cint(rawdamage + Cint(GetEffectiveSkill(attacker, SKILLID_ANATOMY) / 20));
+       if(rawdamage < 1)
+        rawdamage := 1;
+      endif
+      DealDamage(defender, attacker, rawdamage);
+sleep(3);
+defender.frozen := 0;
+      return;
+    endif
+  else
+    SetObjProperty(defender, "TempDamage", rawdamage);
+    foreach x in weaponhit
+      Detach();
+      run_script_to_completion(CStr(x), { attacker, defender, weapon, armor, basedamage, rawdamage } );
+      rawdamage := GetObjProperty(defender, "TempDamage");
+    endforeach
+    EraseObjProperty(defender, "TempDamage");
+    run_script_to_completion("reactiveArmorHit", { attacker, defender, weapon, armor, basedamage, rawdamage } );
+    rawdamage := GetObjProperty(defender, "TempDamage");
+     if(GetObjProperty(weapon, "SilverHit"))
+        run_script_to_completion("silverHit", { attacker, defender, weapon, armor, basedamage, rawdamage } );
+      rawdamage := GetObjProperty(defender, "TempDamage");
+    endif
+     rawdamage := Cint(rawdamage + Cint(GetEffectiveSkill(attacker, SKILLID_ANATOMY) / 40) + Cint(GetEffectiveSkill(attacker, SKILLID_TACTICS) / 40));
+    if(rawdamage < 1)
+      rawdamage := 1;
+    endif
+    DealDamage(defender, attacker, rawdamage);
+sleep(3);
+defender.frozen := 0;
+if(GetObjProperty(defender, "frozenporpb") > Readgameclock())
+defender.frozen := 0;
+eraseobjproperty(defender, "frozenporpb");
+    return;
+
+endif
+endif
+endprogram

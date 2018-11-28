@@ -1,0 +1,353 @@
+C:\pol2\pkg\tools\gmtools\textcmd\gm\chestspawner.src, Line 5
+var layout := array(
+0: decl global #0
+1: array
+2: "page 0                            "
+3: +=
+4: "gumppic   0   0  206              "
+5: +=
+6: "gumppic  44   0  201              "
+7: +=
+8: "gumppic 444   0  207              "
+9: +=
+10: "gumppic   0  40  202              "
+11: +=
+12: "gumppic  44  40 2604              "
+13: +=
+14: "gumppic 444  40  203              "
+15: +=
+16: "gumppic   0 350  204              "
+17: +=
+18: "gumppic  44 350  233              "
+19: +=
+20: "gumppic 444 350  205              "
+21: +=
+22: "gumppic 251 160 2444              "
+23: +=
+24: "text    155  40  900    0         "
+25: +=
+26: "text     55  70  900    1         "
+27: +=
+28: "text     55 100  900    2         "
+29: +=
+30: "text     55 130  900    3         "
+31: +=
+32: "text     55 160  900    4         "
+33: +=
+34: "text     55 260  900    6         "
+35: +=
+36: "text     55 290  900    7         "
+37: +=
+38: "button  300 260  208  209  1  0 89"
+39: +=
+40: "button  300 290  208  209  1  0 79"
+41: +=
+42: "textentry 260 160   50 30 0  5  5   "
+43: +=
+44: "button  400 350 2450 2451  1  0 99"
+45: +=
+46: "group 2"
+47: +=
+48: "radio   200  70 208  2225  1 11   "
+49: +=
+50: "radio   225  70 208  2226  0 12   "
+51: +=
+52: "radio   250  70 208  2227  0 13   "
+53: +=
+54: "radio   275  70 208  2228  0 14   "
+55: +=
+56: "radio   300  70 208  2229  0 15   "
+57: +=
+58: "group 3"
+59: +=
+60: "radio   200 100 208  2226  1 22   "
+61: +=
+62: "radio   225 100 208  2227  0 23   "
+63: +=
+64: "radio   250 100 208  2228  0 24   "
+65: +=
+66: "radio   275 100 208  2229  0 25   "
+67: +=
+68: "radio   300 100 208  2230  0 26   "
+69: +=
+70: "radio   325 100 208  2231  0 27   "
+71: +=
+72: "radio   350 100 208  2232  0 28   "
+73: +=
+74: "group 4"
+75: +=
+76: "radio   200 130 208  2226  1 32   "
+77: +=
+78: "radio   225 130 208  2227  0 33   "
+79: +=
+80: "radio   250 130 208  2228  0 34   "
+81: +=
+82: "radio   275 130 208  2229  0 35   "
+83: +=
+84: "radio   300 130 208  2230  0 36   "
+85: +=
+86: "radio   325 130 208  2231  0 37   "
+87: +=
+88: "radio   350 130 208  2232  0 38   "
+89: +=
+90: :=
+91: #
+var data := array(
+92: decl global #1
+93: array
+94: "Chest Spawn Interface"
+95: +=
+96: "Chest Level"
+97: +=
+98: "Chest Amount"
+99: +=
+100: "Spawn Radius"
+101: +=
+102: "Rest Period [in minutes]"
+103: +=
+104: "1"
+105: +=
+106: "Show Chest Spawners [radius 5]"
+107: +=
+108: "Hide Chest Spawners [radius 5]"
+109: +=
+110: :=
+111: #
+C:\pol2\pkg\tools\gmtools\textcmd\gm\chestspawner.src, Line 65
+program chestspawner(who)
+112: get arg 'who'
+var res := SendDialogGump(who, layout, data);
+113: decl local #1
+114: local #0
+115: global #0
+116: global #1
+117: Func(2,0): SendDialogGump
+118: :=
+119: #
+print(res[5]);
+120: local #1
+121: 5L
+122: [] 1
+123: Func(1,0): print
+124: #
+if(res[0] == 99)
+125: local #1
+126: 0L
+127: [] 1
+128: 99L
+129: ==
+130: if false goto 274
+var duration := res[5];
+131: decl local #0
+132: local #1
+133: 5L
+134: [] 1
+135: :=
+136: #
+var amount;
+137: decl local #1
+138: #
+var level;
+139: decl local #2
+140: #
+var range;
+141: decl local #3
+142: #
+foreach thing in (res.keys)
+143: local #1
+144: get member 'keys'
+145: initforeach @184
+if((thing >= 10) && (thing < 20))
+146: local #6
+147: 10L
+148: >=
+149: local #6
+150: 20L
+151: <
+152: &&
+153: if false goto 159
+level := thing - 10;
+154: local #6
+155: 10L
+156: -
+157: local4 := 
+158: goto184
+elseif((thing >= 20) && (thing < 30))
+159: local #6
+160: 20L
+161: >=
+162: local #6
+163: 30L
+164: <
+165: &&
+166: if false goto 172
+amount := thing - 20;
+167: local #6
+168: 20L
+169: -
+170: local3 := 
+171: goto184
+elseif((thing >= 30) && (thing < 40))
+172: local #6
+173: 30L
+174: >=
+175: local #6
+176: 40L
+177: <
+178: &&
+179: if false goto 184
+range := thing - 30;
+180: local #6
+181: 30L
+182: -
+183: local5 := 
+184: stepforeach @146
+185: leave block(3)
+var targ := TargetCoordinates(who);
+186: decl local #4
+187: local #0
+188: Func(2,1): TargetCoordinates
+189: :=
+190: #
+if(!targ)
+191: local #6
+192: if true goto 195
+return;
+193: ""
+194: progend
+duration[1, find(duration, ": ", 1)+1]:="";
+195: local #2
+196: 1L
+197: local #2
+198: ": "
+199: 1L
+200: Func(0,0): find
+201: 1L
+202: +
+203: ""
+204: [,] :=
+205: #
+print("dur " +duration);
+206: "dur "
+207: local #2
+208: +
+209: Func(1,0): print
+210: #
+var newduration := (CInt(duration) * 60);
+211: decl local #5
+212: local #2
+213: Func(0,1): CInt
+214: 60L
+215: *
+216: :=
+217: #
+print("new " +newduration);
+218: "new "
+219: local #7
+220: +
+221: Func(1,0): print
+222: #
+if(newduration < 60)
+223: local #7
+224: 60L
+225: <
+226: if false goto 235
+SendSysMessage(who,"Duration Error: Aborting");
+227: local #0
+228: "Duration Error: Aborting"
+229: 3L
+230: 1000L
+231: Func(2,2): SendSysMessage
+232: #
+return;
+233: ""
+234: progend
+var item := CreateItemAtLocation(targ.x, targ.y, targ.z, 0x888b, 1);
+235: decl local #6
+236: local #6
+237: get member 'x'
+238: local #6
+239: get member 'y'
+240: local #6
+241: get member 'z'
+242: 34955L
+243: 1L
+244: Func(2,3): CreateItemAtLocation
+245: :=
+246: #
+SetObjProperty(item,"level", level);
+247: local #8
+248: "level"
+249: local #4
+250: Func(2,4): SetObjProperty
+251: #
+SetObjProperty(item,"range", range);
+252: local #8
+253: "range"
+254: local #5
+255: Func(2,4): SetObjProperty
+256: #
+SetObjProperty(item,"amount", amount);
+257: local #8
+258: "amount"
+259: local #3
+260: Func(2,4): SetObjProperty
+261: #
+SetObjProperty(item,"duration", CInt(newduration));
+262: local #8
+263: "duration"
+264: local #7
+265: Func(0,1): CInt
+266: Func(2,4): SetObjProperty
+267: #
+EraseObjProperty(item,"waiting");
+268: local #8
+269: "waiting"
+270: Func(2,5): EraseObjProperty
+271: #
+272: leave block(7)
+273: goto311
+elseif(res[0] == 89)
+274: local #1
+275: 0L
+276: [] 1
+277: 89L
+278: ==
+279: if false goto 296
+foreach item in ListItemsNearLocationOfType( who.x, who.y, who.z, 5, 0x888b);
+280: local #0
+281: get member 'x'
+282: local #0
+283: get member 'y'
+284: local #0
+285: get member 'z'
+286: 5L
+287: 34955L
+288: Func(2,6): ListItemsNearLocationOfType
+289: initforeach @293
+item.graphic := 4483;
+290: local #2
+291: 4483L
+292: set member 'graphic' #
+293: stepforeach @290
+294: leave block(3)
+295: goto311
+foreach item in ListItemsNearLocationOfType( who.x, who.y, who.z, 5, 0x888b);
+296: local #0
+297: get member 'x'
+298: local #0
+299: get member 'y'
+300: local #0
+301: get member 'z'
+302: 5L
+303: 34955L
+304: Func(2,6): ListItemsNearLocationOfType
+305: initforeach @309
+item.graphic := 1;
+306: local #2
+307: 1L
+308: set member 'graphic' #
+309: stepforeach @306
+310: leave block(3)
+311: leave block(2)
+312: progend

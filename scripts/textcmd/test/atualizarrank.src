@@ -1,0 +1,300 @@
+////Criação: Dino
+////Créditos a: Butt Head (Tercio)
+
+use os;
+use uo;
+use file;
+var ev;
+
+include "include/save";
+
+program rank(who)
+
+    ev := struct;
+    ev.+type := "interno";
+    ev.+command := "AtualizandoR";
+    var auxconnection := GetProcess(GetGlobalProperty("#AuxConnection"));
+    auxconnection.SendEvent(ev);
+
+Broadcast( "[System] Atualizando Ranking!" ,0,95 );
+atualizarwps();
+atualizarrankplayers();
+Broadcast( "[System] Ranking Atualizado!" ,0,95 );
+
+    ev := struct;
+    ev.+type := "interno";
+    ev.+command := "RAtualizado";
+    auxconnection := GetProcess(GetGlobalProperty("#AuxConnection"));
+    auxconnection.SendEvent(ev);
+
+sleepms(500);
+
+salvar();
+
+endprogram
+
+
+////Atualizar WPS das Guildas
+function atualizarwps()
+var num;
+var guildas:= array();
+
+foreach guilda in ListGuilds()
+guildas.append({ guilda.getprop("guildname"),guilda.getprop("warpoints") });
+endforeach
+
+var ordem:=SortMultiArrayByIndex(guildas, 2);
+
+////Setar as Props para usar no .rank
+num:=1;
+while(num <= 5)
+if(num != 1)
+ if(ordem[ordem.size()-(num-1),2] != error)
+ SetGlobalProperty("gstop"+Cstr(num), ordem[ordem.size()-(num-1)]);
+ else
+ SetGlobalProperty("gstop"+Cstr(num), {"    -", "  -"});
+ endif
+else
+ if(ordem[ordem.size(),2])
+ SetGlobalProperty("gstop"+Cstr(num), ordem[ordem.size()]);
+ else
+ SetGlobalProperty("gstop"+Cstr(num), {"    -", "  -"});
+ endif
+endif
+num:=num+1;
+endwhile
+
+////Gerar Arquivo .ini
+num:=1;
+var guildasfile:=array("[guildas]");
+while(num <= 5)
+if(num != 1)
+ if(ordem[ordem.size()-(num-1),2] != error)
+ guildasfile.append(Cstr(num)+"Nome="+ordem[ordem.size()-(num-1),1]);
+ guildasfile.append(Cstr(num)+"WPs="+ordem[ordem.size()-(num-1),2]);
+ else
+ guildasfile.append(Cstr(num)+"Nome=-");
+ guildasfile.append(Cstr(num)+"WPs=-");
+ endif
+else
+ if(ordem[ordem.size(),2])
+ guildasfile.append(Cstr(num)+"Nome="+ordem[ordem.size(),1]);
+ guildasfile.append(Cstr(num)+"WPs="+ordem[ordem.size(),2]);
+ else
+ guildasfile.append(Cstr(num)+"Nome=-");
+ guildasfile.append(Cstr(num)+"WPs=-");
+ endif
+endif
+num:=num+1;
+endwhile
+
+
+if(WriteFile("db/guildas.ini", guildasfile) == error)
+Broadcast( "[ERRO] Ao atualizar rank de guildas." ,0,33 );
+endif
+
+endfunction
+
+
+function atualizarrankplayers()
+var num;
+var conta;
+var playerswp:= array();
+var playerskp:= array();
+var playerspvp:= array();
+
+foreach acc in ListAccounts( )
+conta:=FindAccount( acc );
+num:=1;
+
+while(num <= 5)
+if(conta.GetCharacter(num))
+playerswp.append({ conta.GetCharacter(num).name,GetObjProperty(conta.GetCharacter(num), "warpoints") });
+playerskp.append({ conta.GetCharacter(num).name,GetObjProperty(conta.GetCharacter(num), "kp") });
+playerspvp.append({ conta.GetCharacter(num).name,GetObjProperty(conta.GetCharacter(num), "pvppoint") });
+endif
+num:=num+1;
+endwhile
+endforeach
+
+
+var ordemwp:=SortMultiArrayByIndex(playerswp, 2);
+////Setar as Props para usar no .rank
+num:=1;
+while(num <= 5)
+if(num != 1)
+ if(ordemwp[ordemwp.size()-(num-1),2] != error)
+ SetGlobalProperty("topplayerwp"+Cstr(num), ordemwp[ordemwp.size()-(num-1)]);
+ else
+ SetGlobalProperty("topplayerwp"+Cstr(num), {"    -", "  -"});
+ endif
+else
+ if(ordemwp[ordemwp.size(),2])
+ SetGlobalProperty("topplayerwp"+Cstr(num), ordemwp[ordemwp.size()]);
+ else
+ SetGlobalProperty("topplayerwp"+Cstr(num), {"    -", "  -"});
+ endif
+endif
+num:=num+1;
+endwhile
+
+////Gerar Arquivo .ini
+num:=1;
+var wpsfile:=array("[playerswp]");
+while(num <= 5)
+if(num != 1)
+ if(ordemwp[ordemwp.size()-(num-1),2] != error)
+ wpsfile.append(Cstr(num)+"Nome="+ordemwp[ordemwp.size()-(num-1),1]);
+ wpsfile.append(Cstr(num)+"WPs="+ordemwp[ordemwp.size()-(num-1),2]);
+ else
+ wpsfile.append(Cstr(num)+"Nome=-");
+ wpsfile.append(Cstr(num)+"WPs=-");
+ endif
+else
+ if(ordemwp[ordemwp.size(),2])
+ wpsfile.append(Cstr(num)+"Nome="+ordemwp[ordemwp.size(),1]);
+ wpsfile.append(Cstr(num)+"WPs="+ordemwp[ordemwp.size(),2]);
+ else
+ wpsfile.append(Cstr(num)+"Nome=-");
+ wpsfile.append(Cstr(num)+"WPs=-");
+ endif
+endif
+num:=num+1;
+endwhile
+
+if(WriteFile("db/playerswp.ini", wpsfile) == error)
+Broadcast( "[ERRO] Ao atualizar rank." ,0,33 );
+endif
+
+
+
+var ordemkp:=SortMultiArrayByIndex(playerskp, 2);
+
+num:=1;
+while(num <= 5)
+if(num != 1)
+ if(ordemkp[ordemkp.size()-(num-1),2] != error)
+ SetGlobalProperty("topplayerkp"+Cstr(num), ordemkp[ordemkp.size()-(num-1)]);
+ else
+ SetGlobalProperty("topplayerkp"+Cstr(num), {"    -", "  -"});
+ endif
+else
+ if(ordemkp[ordemkp.size(),2])
+ SetGlobalProperty("topplayerkp"+Cstr(num), ordemkp[ordemkp.size()]);
+ else
+ SetGlobalProperty("topplayerkp"+Cstr(num), {"    -", "  -"});
+ endif
+endif
+num:=num+1;
+endwhile
+
+////Gerar Arquivo .ini
+num:=1;
+var kpsfile:=array("[playerskp]");
+while(num <= 5)
+if(num != 1)
+ if(ordemkp[ordemkp.size()-(num-1),2] != error)
+ kpsfile.append(Cstr(num)+"Nome="+ordemkp[ordemkp.size()-(num-1),1]);
+ kpsfile.append(Cstr(num)+"kPs="+ordemkp[ordemkp.size()-(num-1),2]);
+ else
+ kpsfile.append(Cstr(num)+"Nome=-");
+ kpsfile.append(Cstr(num)+"kPs=-");
+ endif
+else
+ if(ordemkp[ordemkp.size(),2])
+ kpsfile.append(Cstr(num)+"Nome="+ordemkp[ordemkp.size(),1]);
+ kpsfile.append(Cstr(num)+"kPs="+ordemkp[ordemkp.size(),2]);
+ else
+ kpsfile.append(Cstr(num)+"Nome=-");
+ kpsfile.append(Cstr(num)+"kPs=-");
+ endif
+endif
+num:=num+1;
+endwhile
+
+if(WriteFile("db/playerskp.ini", kpsfile) == error)
+Broadcast( "[ERRO] Ao atualizar rank." ,0,33 );
+endif
+
+
+
+var ordempvp:=SortMultiArrayByIndex(playerspvp, 2);
+
+num:=1;
+while(num <= 5)
+if(num != 1)
+ if(ordempvp[ordempvp.size()-(num-1),2] != error)
+ SetGlobalProperty("topplayerpvp"+Cstr(num), ordempvp[ordempvp.size()-(num-1)]);
+ else
+ SetGlobalProperty("topplayerpvp"+Cstr(num), {"    -", "  -"});
+ endif
+else
+ if(ordempvp[ordempvp.size(),2])
+ SetGlobalProperty("topplayerpvp"+Cstr(num), ordempvp[ordempvp.size()]);
+ else
+ SetGlobalProperty("topplayerpvp"+Cstr(num), {"    -", "  -"});
+ endif
+endif
+num:=num+1;
+endwhile
+
+////Gerar Arquivo .ini
+num:=1;
+var pvpsfile:=array("[playerspvp]");
+while(num <= 5)
+if(num != 1)
+ if(ordempvp[ordempvp.size()-(num-1),2] != error)
+ pvpsfile.append(Cstr(num)+"Nome="+ordempvp[ordempvp.size()-(num-1),1]);
+ pvpsfile.append(Cstr(num)+"PVPs="+ordempvp[ordempvp.size()-(num-1),2]);
+ else
+ pvpsfile.append(Cstr(num)+"Nome=-");
+ pvpsfile.append(Cstr(num)+"PVPs=-");
+ endif
+else
+ if(ordempvp[ordempvp.size(),2])
+ pvpsfile.append(Cstr(num)+"Nome="+ordempvp[ordempvp.size(),1]);
+ pvpsfile.append(Cstr(num)+"PVPs="+ordempvp[ordempvp.size(),2]);
+ else
+ pvpsfile.append(Cstr(num)+"Nome=-");
+ pvpsfile.append(Cstr(num)+"PVPs=-");
+ endif
+endif
+num:=num+1;
+endwhile
+
+if(WriteFile("db/playerspvp.ini", pvpsfile) == error)
+Broadcast( "[ERRO] Ao atualizar rank." ,0,33 );
+endif
+
+endfunction
+
+
+
+////Função Pra arrumar a array em ordem ;]
+function SortMultiArrayByIndex(MultiArray, SubIndex)
+
+	var ArrayLen := Len(MultiArray);
+	if ( ArrayLen < 2 )
+		return MultiArray;
+	endif
+
+	if ( SubIndex > len(MultiArray[1]) )
+		return 0;
+	endif
+
+	var i, k, f, s;
+	for(i := 1; i < ArrayLen; i := i + 1)
+		for( k := i+1; k <= ArrayLen; k := k + 1)
+			f := MultiArray[i];
+			s := MultiArray[k];
+			if ( s[SubIndex] < f[SubIndex] )
+				MultiArray[i] := s;
+				MultiArray[k] := f;
+			endif
+		endfor
+		sleepms(1);
+	endfor
+
+	return MultiArray;
+
+endfunction

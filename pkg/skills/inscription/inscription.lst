@@ -1,0 +1,2214 @@
+C:/pol2/scripts/include/noto.inc, Line 6
+var nototitles :=
+0: decl global #0
+1: array
+2: array
+3: "Outcast"
+4: +=
+5: "Wretched"
+6: +=
+7: "Nefarious"
+8: +=
+9: "Dread"
+10: +=
+11: "Dread"
+12: +=
+13: +=
+14: array
+15: "Despicable"
+16: +=
+17: "Dastardly"
+18: +=
+19: "Wicked"
+20: +=
+21: "Evil"
+22: +=
+23: "Evil"
+24: +=
+25: +=
+26: array
+27: "Scoundrel"
+28: +=
+29: "Malicious"
+30: +=
+31: "Vile"
+32: +=
+33: "Villainous"
+34: +=
+35: "Dark"
+36: +=
+37: +=
+38: array
+39: "Unsavory"
+40: +=
+41: "Dishonorable"
+42: +=
+43: "Ignoble"
+44: +=
+45: "Sinister"
+46: +=
+47: "Sinister"
+48: +=
+49: +=
+50: array
+51: "Rude"
+52: +=
+53: "Disreputable"
+54: +=
+55: "Notorious"
+56: +=
+57: "Infamous"
+58: +=
+59: "Dishonored"
+60: +=
+61: +=
+62: array
+63: "None"
+64: +=
+65: "Notable"
+66: +=
+67: "Prominent"
+68: +=
+69: "Reknowned"
+70: +=
+71: ""
+72: +=
+73: +=
+74: array
+75: "Fair"
+76: +=
+77: "Upstanding"
+78: +=
+79: "Reputable"
+80: +=
+81: "Distinguished"
+82: +=
+83: "Distinguished"
+84: +=
+85: +=
+86: array
+87: "Kind"
+88: +=
+89: "Respectable"
+90: +=
+91: "Proper"
+92: +=
+93: "Eminent"
+94: +=
+95: "Eminent"
+96: +=
+97: +=
+98: array
+99: "Good"
+100: +=
+101: "Honorable"
+102: +=
+103: "Admirable"
+104: +=
+105: "Noble"
+106: +=
+107: "Noble"
+108: +=
+109: +=
+110: array
+111: "Honest"
+112: +=
+113: "Commendable"
+114: +=
+115: "Famed"
+116: +=
+117: "Illustrious"
+118: +=
+119: "Illustrious"
+120: +=
+121: +=
+122: array
+123: "Trustworthy"
+124: +=
+125: "Estimable"
+126: +=
+127: "Great"
+128: +=
+129: "Glorious"
+130: +=
+131: "Glorious"
+132: +=
+133: +=
+134: :=
+135: #
+C:\pol2\pkg\skills\inscription\inscription.src, Line 15
+var config_file;
+136: decl global #1
+137: #
+C:\pol2\pkg\skills\inscription\inscription.src, Line 17
+program do_inscription(who)
+138: get arg 'who'
+EraseObjProperty(who, "IsMeditating");
+139: local #0
+140: "IsMeditating"
+141: Func(2,20): EraseObjProperty
+142: #
+EraseObjProperty(who, "HealTimer");
+143: local #0
+144: "HealTimer"
+145: Func(2,20): EraseObjProperty
+146: #
+var themenu,value,the_item,the_book,skill,points;
+147: decl local #1
+148: #
+149: decl local #2
+150: #
+151: decl local #3
+152: #
+153: decl local #4
+154: #
+155: decl local #5
+156: #
+157: decl local #6
+158: #
+var elem,spell_name,selected_spell,product,spellnum;
+159: decl local #7
+160: #
+161: decl local #8
+162: #
+163: decl local #9
+164: #
+165: decl local #10
+166: #
+167: decl local #11
+168: #
+var circle,themana;
+169: decl local #12
+170: #
+171: decl local #13
+172: #
+var spells := { };
+173: decl local #14
+174: array
+175: :=
+176: #
+config_file := ReadConfigFile("inscription");
+177: "inscription"
+178: Func(3,0): ReadConfigFile
+179: global1 := 
+SendSysMessage(who, "Ondi Deseja escrever ??");
+180: local #0
+181: "Ondi Deseja escrever ??"
+182: 3L
+183: 1000L
+184: Func(2,15): SendSysMessage
+185: #
+the_item := Target(who, "");
+186: local #0
+187: ""
+188: Func(2,21): Target
+189: local3 := 
+if(!can_access(who, the_item))
+190: local #0
+191: local #3
+192: 0L
+193: makelocal
+194: jmp userfunc @478
+195: if true goto 198
+return;
+196: ""
+197: progend
+if(the_item.movable == 0)
+198: local #3
+199: get member 'movable'
+200: 0L
+201: ==
+202: if false goto 211
+SendSysMessage(who, "You cannot use that.");
+203: local #0
+204: "You cannot use that."
+205: 3L
+206: 1000L
+207: Func(2,15): SendSysMessage
+208: #
+return;
+209: ""
+210: progend
+if(!the_item)
+211: local #3
+212: if true goto 221
+SendSysMessage(who, "Targetting cancelled.");
+213: local #0
+214: "Targetting cancelled."
+215: 3L
+216: 1000L
+217: Func(2,15): SendSysMessage
+218: #
+return;
+219: ""
+220: progend
+if(!Accessible(who, the_item))
+221: local #0
+222: local #3
+223: Func(2,16): Accessible
+224: if true goto 233
+SendSysMessage(who, "You can't reach that!");
+225: local #0
+226: "You can't reach that!"
+227: 3L
+228: 1000L
+229: Func(2,15): SendSysMessage
+230: #
+return;
+231: ""
+232: progend
+if(!ReserveItem(the_item))
+233: local #3
+234: Func(2,18): ReserveItem
+235: if true goto 238
+return;
+236: ""
+237: progend
+if(the_item.objtype == UOBJ_BLANK_SCROLL)
+238: local #3
+239: get member 'objtype'
+240: 3636L
+241: ==
+242: if false goto 452
+foreach thing in ListRootItemsInContainer(who.backpack)
+243: local #0
+244: get member 'backpack'
+245: makelocal
+246: jmp userfunc @1308
+247: initforeach @256
+if(thing.objtype == 0x0efa)
+248: local #15
+249: get member 'objtype'
+250: 3834L
+251: ==
+252: if false goto 256
+the_book := thing;
+253: local #15
+254: local4 := 
+break;
+255: goto257
+256: stepforeach @248
+257: leave block(3)
+if(!the_book)
+258: local #4
+259: if true goto 268
+SendSysMessage(who, "You dont have a spellbook.");
+260: local #0
+261: "You dont have a spellbook."
+262: 3L
+263: 1000L
+264: Func(2,15): SendSysMessage
+265: #
+return;
+266: ""
+267: progend
+if(!Accessible(who, the_book))
+268: local #0
+269: local #4
+270: Func(2,16): Accessible
+271: if true goto 280
+SendSysMessage(who, "You can't reach that!");
+272: local #0
+273: "You can't reach that!"
+274: 3L
+275: 1000L
+276: Func(2,15): SendSysMessage
+277: #
+return;
+278: ""
+279: progend
+if(the_book.objtype != UOBJ_SPELLBOOK)
+280: local #4
+281: get member 'objtype'
+282: 3834L
+283: <>
+284: if false goto 293
+SendSysMessage(who, "You can't inscribe from that!");
+285: local #0
+286: "You can't inscribe from that!"
+287: 3L
+288: 1000L
+289: Func(2,15): SendSysMessage
+290: #
+return;
+291: ""
+292: progend
+selected_spell := MakeAndProcessMenu(who, the_book);
+293: local #0
+294: local #4
+295: makelocal
+296: jmp userfunc @1331
+297: local9 := 
+if(!selected_spell)
+298: local #9
+299: if true goto 302
+return;
+300: ""
+301: progend
+elem := FindConfigElem(config_file, selected_spell);
+302: global #1
+303: local #9
+304: Func(3,1): FindConfigElem
+305: local7 := 
+skill := GetConfigInt(elem, "skill");
+306: local #7
+307: "skill"
+308: Func(3,2): GetConfigInt
+309: local5 := 
+points := GetConfigInt(elem, "points");
+310: local #7
+311: "points"
+312: Func(3,2): GetConfigInt
+313: local6 := 
+circle := GetConfigInt(elem, "circle");
+314: local #7
+315: "circle"
+316: Func(3,2): GetConfigInt
+317: local12 := 
+themana := usemana(who, circle);
+318: local #0
+319: local #12
+320: makelocal
+321: jmp userfunc @1570
+322: local13 := 
+product := GetConfigInt(elem, "scroll");
+323: local #7
+324: "scroll"
+325: Func(3,2): GetConfigInt
+326: local10 := 
+spellnum := GetConfigInt(elem, "SpellId");
+327: local #7
+328: "SpellId"
+329: Func(3,2): GetConfigInt
+330: local11 := 
+if(themana == 0)
+331: local #13
+332: 0L
+333: ==
+334: if false goto 343
+SendSysMessage(who,"you do not have enough mana.");
+335: local #0
+336: "you do not have enough mana."
+337: 3L
+338: 1000L
+339: Func(2,15): SendSysMessage
+340: #
+return;
+341: ""
+342: progend
+if((ConsumeReagents(who, spellnum)) && (GetMana(who) >= themana))
+343: local #0
+344: local #11
+345: Func(2,22): ConsumeReagents
+346: local #0
+347: makelocal
+348: jmp userfunc @1301
+349: local #13
+350: >=
+351: &&
+352: if false goto 362
+SetMana(who, GetMana(who) - themana);
+353: local #0
+354: local #0
+355: makelocal
+356: jmp userfunc @1301
+357: local #13
+358: -
+359: makelocal
+360: jmp userfunc @1483
+361: #
+if(CheckSkill(who, SKILLID_INSCRIPTION, skill, points))
+362: local #0
+363: 23L
+364: local #5
+365: local #6
+366: Func(2,23): CheckSkill
+367: if false goto 443
+PlaySoundEffect(who, 0x24a);
+368: local #0
+369: 586L
+370: Func(2,24): PlaySoundEffect
+371: #
+if(SubtractAmount(the_item,1))
+372: local #3
+373: 1L
+374: Func(2,25): SubtractAmount
+375: if false goto 432
+var thescroll := CreateItemInBackpack(who, product);
+376: decl local #0
+377: local #0
+378: local #10
+379: 1L
+380: Func(2,26): CreateItemInBackpack
+381: :=
+382: #
+var myskill := CInt(GetEffectiveSkill(who, SKILLID_INSCRIPTION));
+383: decl local #1
+384: local #0
+385: 23L
+386: makelocal
+387: jmp userfunc @1117
+388: Func(0,0): CInt
+389: :=
+390: #
+var modpts := 0;
+391: decl local #2
+392: 0L
+393: :=
+394: #
+if(myskill >=  skill)
+395: local #16
+396: local #5
+397: >=
+398: if false goto 405
+modpts := (myskill - (skill - 10));
+399: local #16
+400: local #5
+401: 10L
+402: -
+403: -
+404: local17 := 
+var rint := RandomInt(100);
+405: decl local #3
+406: 100L
+407: Func(4,0): RandomInt
+408: :=
+409: #
+if(modpts >= rint)
+410: local #17
+411: local #18
+412: >=
+413: if false goto 424
+ExceptionalFameMod(who, myskill, skill, Cint(skill / 2));
+414: local #0
+415: local #16
+416: local #5
+417: local #5
+418: 2L
+419: /
+420: Func(0,0): CInt
+421: makelocal
+422: jmp userfunc @873
+423: #
+SendSysMessage(who, "You create the scroll and put it in your backpack");
+424: local #0
+425: "You create the scroll and put it in your backpack"
+426: 3L
+427: 1000L
+428: Func(2,15): SendSysMessage
+429: #
+430: leave block(4)
+431: goto442
+SendSysMessage(who, "You fail and destroy the scroll");
+432: local #0
+433: "You fail and destroy the scroll"
+434: 3L
+435: 1000L
+436: Func(2,15): SendSysMessage
+437: #
+SubtractAmount(the_item,1);
+438: local #3
+439: 1L
+440: Func(2,25): SubtractAmount
+441: #
+442: goto451
+SendSysMessage(who,"you do not have all of this spell's reagents.");
+443: local #0
+444: "you do not have all of this spell's reagents."
+445: 3L
+446: 1000L
+447: Func(2,15): SendSysMessage
+448: #
+return;
+449: ""
+450: progend
+451: goto476
+elseif((the_item.objtype == 0x1f14) || (the_item.objtype == 0x1f15))
+452: local #3
+453: get member 'objtype'
+454: 7956L
+455: ==
+456: local #3
+457: get member 'objtype'
+458: 7957L
+459: ==
+460: ||
+461: if false goto 470
+CreateRunebook(who, the_item);
+462: local #0
+463: local #3
+464: makelocal
+465: jmp userfunc @585
+466: #
+return;
+467: ""
+468: progend
+469: goto476
+SendSysMessage(who, "You can't inscribe that!");
+470: local #0
+471: "You can't inscribe that!"
+472: 3L
+473: 1000L
+474: Func(2,15): SendSysMessage
+475: #
+476: leave block(15)
+477: progend
+C:/pol2/scripts/include/canAccess.inc, Line 2
+function can_access(who, item, flags := 0)
+478: pop param 'flags'
+479: pop param 'item'
+480: pop param 'who'
+var owner := Cint(GetObjProperty(item, "Owner"));
+481: decl local #3
+482: local #1
+483: "Owner"
+484: Func(2,1): GetObjProperty
+485: Func(0,0): CInt
+486: :=
+487: #
+if((owner) and (owner != who.serial))
+488: local #3
+489: local #3
+490: local #2
+491: get member 'serial'
+492: <>
+493: &&
+494: if false goto 504
+SendSysMessage(who, "You cannot use that.");
+495: local #2
+496: "You cannot use that."
+497: 3L
+498: 1000L
+499: Func(2,15): SendSysMessage
+500: #
+return 0;
+501: 0L
+502: return
+503: goto583
+elseif(GetObjProperty(item, "Vendored"))
+504: local #1
+505: "Vendored"
+506: Func(2,1): GetObjProperty
+507: if false goto 517
+SendSysMessage(who, "You cannot use that.");
+508: local #2
+509: "You cannot use that."
+510: 3L
+511: 1000L
+512: Func(2,15): SendSysMessage
+513: #
+return 0;
+514: 0L
+515: return
+516: goto583
+elseif(!Accessible(who, item))
+517: local #2
+518: local #1
+519: Func(2,16): Accessible
+520: if true goto 530
+SendSysMessage(who, "You cannot use that.");
+521: local #2
+522: "You cannot use that."
+523: 3L
+524: 1000L
+525: Func(2,15): SendSysMessage
+526: #
+return 0;
+527: 0L
+528: return
+529: goto583
+elseif((!flags["distance"]) and ((Distance(who, item) > 2)))
+530: local #0
+531: "distance"
+532: [] 1
+533: !
+534: local #2
+535: local #1
+536: Func(2,17): Distance
+537: 2L
+538: >
+539: &&
+540: if false goto 550
+SendSysMessage(who, "That item is too far away.");
+541: local #2
+542: "That item is too far away."
+543: 3L
+544: 1000L
+545: Func(2,15): SendSysMessage
+546: #
+return 0;
+547: 0L
+548: return
+549: goto583
+elseif((!flags["unmovable"]) and (item.movable == 0))
+550: local #0
+551: "unmovable"
+552: [] 1
+553: !
+554: local #1
+555: get member 'movable'
+556: 0L
+557: ==
+558: &&
+559: if false goto 569
+SendSysMessage(who, "You cannot use that while locked down.");
+560: local #2
+561: "You cannot use that while locked down."
+562: 3L
+563: 1000L
+564: Func(2,15): SendSysMessage
+565: #
+return 0;
+566: 0L
+567: return
+568: goto583
+elseif(!ReserveItem(item))
+569: local #1
+570: Func(2,18): ReserveItem
+571: if true goto 581
+SendSysMessage(who, "That item is already in use.");
+572: local #2
+573: "That item is already in use."
+574: 3L
+575: 1000L
+576: Func(2,15): SendSysMessage
+577: #
+return 0;
+578: 0L
+579: return
+580: goto583
+return 1;
+581: 1L
+582: return
+583: 0L
+584: return
+C:\pol2\pkg\skills\inscription\inscription.src, Line 115
+function CreateRunebook(who, the_item)
+585: pop param 'the_item'
+586: pop param 'who'
+SendSysMessage(who,"target the scrolls you wish to make the book out of. [needs
+587: local #1
+588: "target the scrolls you wish to make the book out of. [needs 8]"
+589: 3L
+590: 1000L
+591: Func(2,15): SendSysMessage
+592: #
+var scrolls := Target(who);
+593: decl local #2
+594: local #1
+595: 1L
+596: Func(2,21): Target
+597: :=
+598: #
+if(!scrolls)
+599: local #2
+600: if true goto 609
+SendSysMessage(who,"cancelled.");
+601: local #1
+602: "cancelled."
+603: 3L
+604: 1000L
+605: Func(2,15): SendSysMessage
+606: #
+return;
+607: ""
+608: return
+if(!can_access(who, scrolls))
+609: local #1
+610: local #2
+611: 0L
+612: makelocal
+613: jmp userfunc @478
+614: if true goto 617
+return;
+615: ""
+616: return
+if(!ReserveItem(scrolls))
+617: local #2
+618: Func(2,18): ReserveItem
+619: if true goto 622
+return;
+620: ""
+621: return
+if(scrolls.objtype != 0xe34)
+622: local #2
+623: get member 'objtype'
+624: 3636L
+625: <>
+626: if false goto 635
+SendSysMessage(who,"those are not blank scrolls.");
+627: local #1
+628: "those are not blank scrolls."
+629: 3L
+630: 1000L
+631: Func(2,15): SendSysMessage
+632: #
+return;
+633: ""
+634: return
+if(scrolls.amount < 8)
+635: local #2
+636: get member 'amount'
+637: 8L
+638: <
+639: if false goto 648
+SendSysMessage(who,"there are not enough blank scrolls for that.");
+640: local #1
+641: "there are not enough blank scrolls for that."
+642: 3L
+643: 1000L
+644: Func(2,15): SendSysMessage
+645: #
+return;
+646: ""
+647: return
+SendSysMessage(who,"target a recall scroll. [needs 1]");
+648: local #1
+649: "target a recall scroll. [needs 1]"
+650: 3L
+651: 1000L
+652: Func(2,15): SendSysMessage
+653: #
+var recall := Target(who);
+654: decl local #3
+655: local #1
+656: 1L
+657: Func(2,21): Target
+658: :=
+659: #
+if(!recall)
+660: local #3
+661: if true goto 670
+SendSysMessage(who,"cancelled.");
+662: local #1
+663: "cancelled."
+664: 3L
+665: 1000L
+666: Func(2,15): SendSysMessage
+667: #
+return;
+668: ""
+669: return
+if(!can_access(who, recall))
+670: local #1
+671: local #3
+672: 0L
+673: makelocal
+674: jmp userfunc @478
+675: if true goto 678
+return;
+676: ""
+677: return
+if(!ReserveItem(recall))
+678: local #3
+679: Func(2,18): ReserveItem
+680: if true goto 683
+return;
+681: ""
+682: return
+if(recall.objtype != 0x1f4c)
+683: local #3
+684: get member 'objtype'
+685: 8012L
+686: <>
+687: if false goto 696
+SendSysMessage(who,"that is not a recall scroll.");
+688: local #1
+689: "that is not a recall scroll."
+690: 3L
+691: 1000L
+692: Func(2,15): SendSysMessage
+693: #
+return;
+694: ""
+695: return
+SendSysMessage(who,"target a gate scroll. [needs 1]");
+696: local #1
+697: "target a gate scroll. [needs 1]"
+698: 3L
+699: 1000L
+700: Func(2,15): SendSysMessage
+701: #
+var gate := Target(who);
+702: decl local #4
+703: local #1
+704: 1L
+705: Func(2,21): Target
+706: :=
+707: #
+if(!gate)
+708: local #4
+709: if true goto 718
+SendSysMessage(who,"cancelled.");
+710: local #1
+711: "cancelled."
+712: 3L
+713: 1000L
+714: Func(2,15): SendSysMessage
+715: #
+return;
+716: ""
+717: return
+if(!ReserveItem(gate))
+718: local #4
+719: Func(2,18): ReserveItem
+720: if true goto 723
+return;
+721: ""
+722: return
+if(!can_access(who, gate))
+723: local #1
+724: local #4
+725: 0L
+726: makelocal
+727: jmp userfunc @478
+728: if true goto 731
+return;
+729: ""
+730: return
+if(gate.objtype != 0x1f60)
+731: local #4
+732: get member 'objtype'
+733: 8032L
+734: <>
+735: if false goto 744
+SendSysMessage(who,"that is not a gate scroll.");
+736: local #1
+737: "that is not a gate scroll."
+738: 3L
+739: 1000L
+740: Func(2,15): SendSysMessage
+741: #
+return;
+742: ""
+743: return
+if(CheckSkill(who, SKILLID_INSCRIPTION, 70, 900))
+744: local #1
+745: 23L
+746: 70L
+747: 900L
+748: Func(2,23): CheckSkill
+749: if false goto 861
+if(SubtractAmount(the_item, 1) && SubtractAmount(scrolls, 8) && SubtractAmount(
+750: local #0
+751: 1L
+752: Func(2,25): SubtractAmount
+753: local #2
+754: 8L
+755: Func(2,25): SubtractAmount
+756: &&
+757: local #3
+758: 1L
+759: Func(2,25): SubtractAmount
+760: &&
+761: local #4
+762: 1L
+763: Func(2,25): SubtractAmount
+764: &&
+765: if false goto 860
+var myskill := CInt(GetEffectiveSkill(who, SKILLID_CARPENTRY));
+766: decl local #0
+767: local #1
+768: 11L
+769: makelocal
+770: jmp userfunc @1117
+771: Func(0,0): CInt
+772: :=
+773: #
+var modpts := 0;
+774: decl local #1
+775: 0L
+776: :=
+777: #
+if(myskill >=  90)
+778: local #5
+779: 90L
+780: >=
+781: if false goto 786
+modpts := (myskill - 80);
+782: local #5
+783: 80L
+784: -
+785: local6 := 
+var rint := RandomInt(100);
+786: decl local #2
+787: 100L
+788: Func(4,0): RandomInt
+789: :=
+790: #
+if(modpts >= rint)
+791: local #6
+792: local #7
+793: >=
+794: if false goto 831
+ExceptionalFameMod(who, myskill, 90, 45);
+795: local #1
+796: local #5
+797: 90L
+798: 45L
+799: makelocal
+800: jmp userfunc @873
+801: #
+PlaySoundEffect(who, 0x24a);
+802: local #1
+803: 586L
+804: Func(2,24): PlaySoundEffect
+805: #
+SendSysMessage(who, "You create an exceptional runebook.");
+806: local #1
+807: "You create an exceptional runebook."
+808: 3L
+809: 1000L
+810: Func(2,15): SendSysMessage
+811: #
+var book := CreateItemInBackpack(who, 0x6100);
+812: decl local #0
+813: local #1
+814: 24832L
+815: 1L
+816: Func(2,26): CreateItemInBackpack
+817: :=
+818: #
+SetObjProperty(book,"charges", 10);
+819: local #8
+820: "charges"
+821: 10L
+822: Func(2,3): SetObjProperty
+823: #
+SetObjProperty(book, "maxcharges", 10);
+824: local #8
+825: "maxcharges"
+826: 10L
+827: Func(2,3): SetObjProperty
+828: #
+829: leave block(1)
+830: goto859
+PlaySoundEffect(who, 0x24a);
+831: local #1
+832: 586L
+833: Func(2,24): PlaySoundEffect
+834: #
+SendSysMessage(who, "You create a runebook.");
+835: local #1
+836: "You create a runebook."
+837: 3L
+838: 1000L
+839: Func(2,15): SendSysMessage
+840: #
+var book := CreateItemInBackpack(who, 0x6100);
+841: decl local #0
+842: local #1
+843: 24832L
+844: 1L
+845: Func(2,26): CreateItemInBackpack
+846: :=
+847: #
+SetObjProperty(book,"charges", 5);
+848: local #8
+849: "charges"
+850: 5L
+851: Func(2,3): SetObjProperty
+852: #
+SetObjProperty(book, "maxcharges", 5);
+853: local #8
+854: "maxcharges"
+855: 5L
+856: Func(2,3): SetObjProperty
+857: #
+858: leave block(1)
+859: leave block(3)
+860: goto871
+SendSysMessage(who, "You fail, and destroy the rune");
+861: local #1
+862: "You fail, and destroy the rune"
+863: 3L
+864: 1000L
+865: Func(2,15): SendSysMessage
+866: #
+SubtractAmount(the_item,1);
+867: local #0
+868: 1L
+869: Func(2,25): SubtractAmount
+870: #
+871: 0L
+872: return
+C:\pol2\pkg\skills\inscription\inscription.src, Line 264
+function ExceptionalFameMod(who, skill, diff, points)
+873: pop param 'points'
+874: pop param 'diff'
+875: pop param 'skill'
+876: pop param 'who'
+if(skill > diff - 20)
+877: local #2
+878: local #1
+879: 20L
+880: -
+881: >
+882: if false goto 1115
+diff := diff + 20;
+883: local #1
+884: 20L
+885: +
+886: local1 := 
+if((skill - diff) <= 5)
+887: local #2
+888: local #1
+889: -
+890: 5L
+891: <=
+892: if false goto 896
+points := points;
+893: local #0
+894: local0 := 
+895: goto933
+elseif((skill - diff) <= 10)
+896: local #2
+897: local #1
+898: -
+899: 10L
+900: <=
+901: if false goto 909
+points := (points * 3) / 4;
+902: local #0
+903: 3L
+904: *
+905: 4L
+906: /
+907: local0 := 
+908: goto933
+elseif((skill - diff) <= 15)
+909: local #2
+910: local #1
+911: -
+912: 15L
+913: <=
+914: if false goto 920
+points := points / 2;
+915: local #0
+916: 2L
+917: /
+918: local0 := 
+919: goto933
+elseif((skill - diff) <= 20)
+920: local #2
+921: local #1
+922: -
+923: 20L
+924: <=
+925: if false goto 931
+points := points / 4;
+926: local #0
+927: 4L
+928: /
+929: local0 := 
+930: goto933
+points := 0;
+931: 0L
+932: local0 := 
+points := Cint(points);
+933: local #0
+934: Func(0,0): CInt
+935: local0 := 
+var fame := Cint(GetObjProperty(who, "Fame"));
+936: decl local #0
+937: local #3
+938: "Fame"
+939: Func(2,1): GetObjProperty
+940: Func(0,0): CInt
+941: :=
+942: #
+var famegain := fame + points;
+943: decl local #1
+944: local #4
+945: local #0
+946: +
+947: :=
+948: #
+SetObjProperty(who, "Fame", famegain);
+949: local #3
+950: "Fame"
+951: local #5
+952: Func(2,3): SetObjProperty
+953: #
+var msgtext := "You have ";
+954: decl local #2
+955: "You have "
+956: :=
+957: #
+if(points < 0)
+958: local #0
+959: 0L
+960: <
+961: if false goto 970
+msgtext := msgtext + "lost ";
+962: local #6
+963: "lost "
+964: +
+965: local6 := 
+points := Abs(points);
+966: local #0
+967: Func(6,2): Abs
+968: local0 := 
+969: goto974
+msgtext := msgtext + "gained ";
+970: local #6
+971: "gained "
+972: +
+973: local6 := 
+if(points > 150)
+974: local #0
+975: 150L
+976: >
+977: if false goto 983
+msgtext := msgtext + "a great amount of ";
+978: local #6
+979: "a great amount of "
+980: +
+981: local6 := 
+982: goto1021
+elseif(points > 125)
+983: local #0
+984: 125L
+985: >
+986: if false goto 992
+msgtext := msgtext + "alot of ";
+987: local #6
+988: "alot of "
+989: +
+990: local6 := 
+991: goto1021
+elseif(points > 75)
+992: local #0
+993: 75L
+994: >
+995: if false goto 1001
+msgtext := msgtext + "a good amount of ";
+996: local #6
+997: "a good amount of "
+998: +
+999: local6 := 
+1000: goto1021
+elseif(points > 30)
+1001: local #0
+1002: 30L
+1003: >
+1004: if false goto 1010
+msgtext := msgtext + "some ";
+1005: local #6
+1006: "some "
+1007: +
+1008: local6 := 
+1009: goto1021
+elseif(points > 0)
+1010: local #0
+1011: 0L
+1012: >
+1013: if false goto 1019
+msgtext := msgtext + "a little ";
+1014: local #6
+1015: "a little "
+1016: +
+1017: local6 := 
+1018: goto1021
+return 0;
+1019: 0L
+1020: return
+msgtext := msgtext + "Fame.";
+1021: local #6
+1022: "Fame."
+1023: +
+1024: local6 := 
+SendSysMessage(who, msgtext);
+1025: local #3
+1026: local #6
+1027: 3L
+1028: 1000L
+1029: Func(2,15): SendSysMessage
+1030: #
+var karma := Cint(GetObjProperty(who, "Karma"));
+1031: decl local #3
+1032: local #3
+1033: "Karma"
+1034: Func(2,1): GetObjProperty
+1035: Func(0,0): CInt
+1036: :=
+1037: #
+var kmod := GetKarmaLevel(karma);
+1038: decl local #4
+1039: local #7
+1040: makelocal
+1041: jmp userfunc @1182
+1042: :=
+1043: #
+var fmod := GetFameLevel(famegain);
+1044: decl local #5
+1045: local #5
+1046: makelocal
+1047: jmp userfunc @1125
+1048: :=
+1049: #
+var newtitle := nototitles[ (kmod) ];
+1050: decl local #6
+1051: global #0
+1052: local #8
+1053: [] 1
+1054: :=
+1055: #
+newtitle := "The " + CStr(newtitle[fmod]) + " ";
+1056: "The "
+1057: local #10
+1058: local #9
+1059: [] 1
+1060: Func(0,5): CStr
+1061: +
+1062: " "
+1063: +
+1064: local10 := 
+if(newtitle["None"])
+1065: local #10
+1066: "None"
+1067: [] 1
+1068: if false goto 1071
+newtitle := "";
+1069: ""
+1070: local10 := 
+if(fmod == 5)
+1071: local #9
+1072: 5L
+1073: ==
+1074: if false goto 1089
+if(who.gender == 1)
+1075: local #3
+1076: get member 'gender'
+1077: 1L
+1078: ==
+1079: if false goto 1085
+newtitle := newtitle + "Lady ";
+1080: local #10
+1081: "Lady "
+1082: +
+1083: local10 := 
+1084: goto1089
+newtitle := newtitle + "Lord ";
+1085: local #10
+1086: "Lord "
+1087: +
+1088: local10 := 
+if(newtitle != who.title_prefix)
+1089: local #10
+1090: local #3
+1091: get member 'title_prefix'
+1092: <>
+1093: if false goto 1108
+who.title_prefix := newtitle;
+1094: local #3
+1095: local #10
+1096: set member 'title_prefix' #
+SendSysMessage(who, "you are now known as " + newtitle + who.name);
+1097: local #3
+1098: "you are now known as "
+1099: local #10
+1100: +
+1101: local #3
+1102: get member 'name'
+1103: +
+1104: 3L
+1105: 1000L
+1106: Func(2,15): SendSysMessage
+1107: #
+SetNotoTitle(who, karma, fame);
+1108: local #3
+1109: local #7
+1110: local #4
+1111: makelocal
+1112: jmp userfunc @1495
+1113: #
+1114: leave block(7)
+1115: 0L
+1116: return
+C:/pol2/scripts/include/attributes.inc, Line 431
+function GetEffectiveSkill(who, skillid)
+1117: pop param 'skillid'
+1118: pop param 'who'
+return GetAttribute(who, GetAttributeIdBySkillId(skillid));
+1119: local #1
+1120: local #0
+1121: makelocal
+1122: jmp userfunc @1612
+1123: Func(2,7): GetAttribute
+1124: return
+C:/pol2/scripts/include/noto.inc, Line 120
+function GetFameLevel(fame)
+1125: pop param 'fame'
+var fmod := 0;
+1126: decl local #1
+1127: 0L
+1128: :=
+1129: #
+if((fame <= 1249) && (fame >= 0))
+1130: local #0
+1131: 1249L
+1132: <=
+1133: local #0
+1134: 0L
+1135: >=
+1136: &&
+1137: if false goto 1141
+fmod := 1;
+1138: 1L
+1139: local1 := 
+1140: goto1180
+elseif((fame <= 2499) && (fame >= 1250))
+1141: local #0
+1142: 2499L
+1143: <=
+1144: local #0
+1145: 1250L
+1146: >=
+1147: &&
+1148: if false goto 1152
+fmod := 2;
+1149: 2L
+1150: local1 := 
+1151: goto1180
+elseif((fame <= 4999) && (fame >= 2500))
+1152: local #0
+1153: 4999L
+1154: <=
+1155: local #0
+1156: 2500L
+1157: >=
+1158: &&
+1159: if false goto 1163
+fmod := 3;
+1160: 3L
+1161: local1 := 
+1162: goto1180
+elseif((fame <= 9999) && (fame >= 5000))
+1163: local #0
+1164: 9999L
+1165: <=
+1166: local #0
+1167: 5000L
+1168: >=
+1169: &&
+1170: if false goto 1174
+fmod := 4;
+1171: 4L
+1172: local1 := 
+1173: goto1180
+elseif(fame >= 10000)
+1174: local #0
+1175: 10000L
+1176: >=
+1177: if false goto 1180
+fmod := 5;
+1178: 5L
+1179: local1 := 
+return fmod;
+1180: local #1
+1181: return
+C:/pol2/scripts/include/noto.inc, Line 136
+function GetKarmaLevel(karma)
+1182: pop param 'karma'
+var kmod := 0;
+1183: decl local #1
+1184: 0L
+1185: :=
+1186: #
+if(karma <= -10000)
+1187: local #0
+1188: -10000L
+1189: <=
+1190: if false goto 1194
+kmod := 1;
+1191: 1L
+1192: local1 := 
+1193: goto1299
+elseif((karma <= -5000) && (karma >= -9999))
+1194: local #0
+1195: -5000L
+1196: <=
+1197: local #0
+1198: -9999L
+1199: >=
+1200: &&
+1201: if false goto 1205
+kmod := 2;
+1202: 2L
+1203: local1 := 
+1204: goto1299
+elseif((karma <= -2500) && (karma >= -4999))
+1205: local #0
+1206: -2500L
+1207: <=
+1208: local #0
+1209: -4999L
+1210: >=
+1211: &&
+1212: if false goto 1216
+kmod := 3;
+1213: 3L
+1214: local1 := 
+1215: goto1299
+elseif((karma <= -1250) && (karma >= -2499))
+1216: local #0
+1217: -1250L
+1218: <=
+1219: local #0
+1220: -2499L
+1221: >=
+1222: &&
+1223: if false goto 1227
+kmod := 4;
+1224: 4L
+1225: local1 := 
+1226: goto1299
+elseif((karma <=  -625) && (karma >= -1249))
+1227: local #0
+1228: -625L
+1229: <=
+1230: local #0
+1231: -1249L
+1232: >=
+1233: &&
+1234: if false goto 1238
+kmod := 5;
+1235: 5L
+1236: local1 := 
+1237: goto1299
+elseif((karma <=   624) && (karma >=  -624))
+1238: local #0
+1239: 624L
+1240: <=
+1241: local #0
+1242: -624L
+1243: >=
+1244: &&
+1245: if false goto 1249
+kmod := 6;
+1246: 6L
+1247: local1 := 
+1248: goto1299
+elseif((karma <=  1249) && (karma >=   625))
+1249: local #0
+1250: 1249L
+1251: <=
+1252: local #0
+1253: 625L
+1254: >=
+1255: &&
+1256: if false goto 1260
+kmod := 7;
+1257: 7L
+1258: local1 := 
+1259: goto1299
+elseif((karma <=  2499) && (karma >=  1250))
+1260: local #0
+1261: 2499L
+1262: <=
+1263: local #0
+1264: 1250L
+1265: >=
+1266: &&
+1267: if false goto 1271
+kmod := 8;
+1268: 8L
+1269: local1 := 
+1270: goto1299
+elseif((karma <=  4999) && (karma >=  2500))
+1271: local #0
+1272: 4999L
+1273: <=
+1274: local #0
+1275: 2500L
+1276: >=
+1277: &&
+1278: if false goto 1282
+kmod := 9;
+1279: 9L
+1280: local1 := 
+1281: goto1299
+elseif((karma <=  9999) && (karma >=  5000))
+1282: local #0
+1283: 9999L
+1284: <=
+1285: local #0
+1286: 5000L
+1287: >=
+1288: &&
+1289: if false goto 1293
+kmod := 10;
+1290: 10L
+1291: local1 := 
+1292: goto1299
+elseif(karma >= 10000)
+1293: local #0
+1294: 10000L
+1295: >=
+1296: if false goto 1299
+kmod := 11;
+1297: 11L
+1298: local1 := 
+return kmod;
+1299: local #1
+1300: return
+C:/pol2/scripts/include/attributes.inc, Line 460
+function GetMana(who)
+1301: pop param 'who'
+return(GetVital(who, "Mana")/ 100);
+1302: local #0
+1303: "Mana"
+1304: Func(2,10): GetVital
+1305: 100L
+1306: /
+1307: return
+C:\pol2\pkg\skills\inscription\inscription.src, Line 254
+function ListRootItemsInContainer(container)
+1308: pop param 'container'
+var ret := { };
+1309: decl local #1
+1310: array
+1311: :=
+1312: #
+foreach item in EnumerateItemsInContainer(container)
+1313: local #0
+1314: Func(2,27): EnumerateItemsInContainer
+1315: initforeach @1327
+if (item.container.serial == container.serial)
+1316: local #2
+1317: get member 'container'
+1318: get member 'serial'
+1319: local #0
+1320: get member 'serial'
+1321: ==
+1322: if false goto 1327
+ret.append(item);
+1323: local #1
+1324: local #2
+1325: Call Method append (1 params)
+1326: #
+1327: stepforeach @1316
+1328: leave block(3)
+return ret;
+1329: local #1
+1330: return
+C:\pol2\pkg\skills\inscription\inscription.src, Line 197
+function MakeAndProcessMenu(who, spellbook)
+1331: pop param 'spellbook'
+1332: pop param 'who'
+set_priority(1);
+1333: 1L
+1334: Func(5,2): set_priority
+1335: #
+var circles := { };
+1336: decl local #2
+1337: array
+1338: :=
+1339: #
+foreach spell in EnumerateItemsInContainer(spellbook)
+1340: local #0
+1341: Func(2,27): EnumerateItemsInContainer
+1342: initforeach @1361
+var elem := FindConfigElem(config_file, spell.objtype);
+1343: decl local #0
+1344: global #1
+1345: local #3
+1346: get member 'objtype'
+1347: Func(3,1): FindConfigElem
+1348: :=
+1349: #
+var thecircle := GetConfigInt(elem, "circle");
+1350: decl local #1
+1351: local #6
+1352: "circle"
+1353: Func(3,2): GetConfigInt
+1354: :=
+1355: #
+circles[thecircle] := 1;
+1356: local #2
+1357: local #7
+1358: 1L
+1359: [] := (1) #
+1360: leave block(2)
+1361: stepforeach @1343
+1362: leave block(3)
+var i;
+1363: decl local #3
+1364: #
+var tmenu := CreateMenu("Select a circle to inscribe");
+1365: decl local #4
+1366: "Select a circle to inscribe"
+1367: Func(2,28): CreateMenu
+1368: :=
+1369: #
+for (i := 1; i <= 8; i := i + 1)
+1370: local #3
+1371: 1L
+1372: :=
+1373: #
+1374: local #3
+1375: 8L
+1376: <=
+1377: if false goto 1403
+if (circles[i] == 1)
+1378: local #2
+1379: local #3
+1380: [] 1
+1381: 1L
+1382: ==
+1383: if false goto 1396
+AddMenuItem(tmenu, 0x20bf + i, "Circle " + CStr(i) + " spells");
+1384: local #4
+1385: 8383L
+1386: local #3
+1387: +
+1388: "Circle "
+1389: local #3
+1390: Func(0,5): CStr
+1391: +
+1392: " spells"
+1393: +
+1394: Func(2,29): AddMenuItem
+1395: #
+1396: local #3
+1397: local #3
+1398: 1L
+1399: +
+1400: :=
+1401: #
+1402: goto1374
+var firstchoice:= SelectMenuItem2(who, tmenu);
+1403: decl local #5
+1404: local #1
+1405: local #4
+1406: Func(2,30): SelectMenuItem2
+1407: :=
+1408: #
+if (!firstchoice.index)
+1409: local #5
+1410: get member 'index'
+1411: if true goto 1414
+return 0;
+1412: 0L
+1413: return
+var tmenu2 := CreateMenu("Select a spell to inscribe");
+1414: decl local #6
+1415: "Select a spell to inscribe"
+1416: Func(2,28): CreateMenu
+1417: :=
+1418: #
+foreach spell in EnumerateItemsInContainer(spellbook)
+1419: local #0
+1420: Func(2,27): EnumerateItemsInContainer
+1421: initforeach @1461
+var elem := FindConfigElem(config_file, spell.objtype);
+1422: decl local #0
+1423: global #1
+1424: local #7
+1425: get member 'objtype'
+1426: Func(3,1): FindConfigElem
+1427: :=
+1428: #
+var thecircle := GetConfigInt(elem, "circle");
+1429: decl local #1
+1430: local #10
+1431: "circle"
+1432: Func(3,2): GetConfigInt
+1433: :=
+1434: #
+if (thecircle == firstchoice.objtype - 0x20bf)
+1435: local #11
+1436: local #5
+1437: get member 'objtype'
+1438: 8383L
+1439: -
+1440: ==
+1441: if false goto 1460
+var spellname := GetConfigString(elem, "name");
+1442: decl local #0
+1443: local #10
+1444: "name"
+1445: Func(3,3): GetConfigString
+1446: :=
+1447: #
+var thetype := GetConfigInt(elem, "graphic");
+1448: decl local #1
+1449: local #10
+1450: "graphic"
+1451: Func(3,2): GetConfigInt
+1452: :=
+1453: #
+AddMenuItem(tmenu2, thetype, spellname);
+1454: local #6
+1455: local #13
+1456: local #12
+1457: Func(2,29): AddMenuItem
+1458: #
+1459: leave block(2)
+1460: leave block(2)
+1461: stepforeach @1422
+1462: leave block(3)
+var hischoice := SelectMenuItem2(who, tmenu2);
+1463: decl local #7
+1464: local #1
+1465: local #6
+1466: Func(2,30): SelectMenuItem2
+1467: :=
+1468: #
+set_priority(50);
+1469: 50L
+1470: Func(5,2): set_priority
+1471: #
+if (!hischoice.index)
+1472: local #7
+1473: get member 'index'
+1474: if true goto 1478
+return 0;
+1475: 0L
+1476: return
+1477: goto1481
+return hischoice.objtype;
+1478: local #7
+1479: get member 'objtype'
+1480: return
+1481: 0L
+1482: return
+C:/pol2/scripts/include/attributes.inc, Line 914
+function SetMana(who, amount)
+1483: pop param 'amount'
+1484: pop param 'who'
+SetVital(who, "Mana", cint(amount*100.0));
+1485: local #1
+1486: "Mana"
+1487: local #0
+1488: 100LF
+1489: *
+1490: Func(0,0): CInt
+1491: Func(2,14): SetVital
+1492: #
+1493: 0L
+1494: return
+C:/pol2/scripts/include/noto.inc, Line 164
+function SetNotoTitle(who, karma, fame)
+1495: pop param 'fame'
+1496: pop param 'karma'
+1497: pop param 'who'
+var kmod := GetKarmaLevel(karma);
+1498: decl local #3
+1499: local #1
+1500: makelocal
+1501: jmp userfunc @1182
+1502: :=
+1503: #
+var fmod := GetFameLevel(fame);
+1504: decl local #4
+1505: local #0
+1506: makelocal
+1507: jmp userfunc @1125
+1508: :=
+1509: #
+var newtitle := nototitles[ (kmod) ];
+1510: decl local #5
+1511: global #0
+1512: local #3
+1513: [] 1
+1514: :=
+1515: #
+newtitle := "The " + CStr(newtitle[fmod]) + " ";
+1516: "The "
+1517: local #5
+1518: local #4
+1519: [] 1
+1520: Func(0,5): CStr
+1521: +
+1522: " "
+1523: +
+1524: local5 := 
+if(newtitle["None"])
+1525: local #5
+1526: "None"
+1527: [] 1
+1528: if false goto 1531
+newtitle := "";
+1529: ""
+1530: local5 := 
+if(fmod == 5)
+1531: local #4
+1532: 5L
+1533: ==
+1534: if false goto 1549
+if(who.gender == 1)
+1535: local #2
+1536: get member 'gender'
+1537: 1L
+1538: ==
+1539: if false goto 1545
+newtitle := newtitle + "Lady ";
+1540: local #5
+1541: "Lady "
+1542: +
+1543: local5 := 
+1544: goto1549
+newtitle := newtitle + "Lord ";
+1545: local #5
+1546: "Lord "
+1547: +
+1548: local5 := 
+if(newtitle != who.title_prefix)
+1549: local #5
+1550: local #2
+1551: get member 'title_prefix'
+1552: <>
+1553: if false goto 1568
+who.title_prefix := newtitle;
+1554: local #2
+1555: local #5
+1556: set member 'title_prefix' #
+SendSysMessage(who, "you are now known as " + newtitle + who.name);
+1557: local #2
+1558: "you are now known as "
+1559: local #5
+1560: +
+1561: local #2
+1562: get member 'name'
+1563: +
+1564: 3L
+1565: 1000L
+1566: Func(2,15): SendSysMessage
+1567: #
+1568: 0L
+1569: return
+C:\pol2\pkg\skills\inscription\inscription.src, Line 235
+function usemana(who, circle)
+1570: pop param 'circle'
+1571: pop param 'who'
+var umana;
+1572: decl local #2
+1573: #
+case (circle)
+1574: local #0
+1575: casejmp
+	1: @1576
+	2: @1579
+	3: @1582
+	4: @1585
+	5: @1588
+	6: @1591
+	7: @1594
+	8: @1597
+	default: @1599
+umana :=   4;
+1576: 4L
+1577: local2 := 
+1578: goto1599
+umana :=   6;
+1579: 6L
+1580: local2 := 
+1581: goto1599
+umana :=   9;
+1582: 9L
+1583: local2 := 
+1584: goto1599
+umana :=  11;
+1585: 11L
+1586: local2 := 
+1587: goto1599
+umana :=  14;
+1588: 14L
+1589: local2 := 
+1590: goto1599
+umana :=  20;
+1591: 20L
+1592: local2 := 
+1593: goto1599
+umana :=  40;
+1594: 40L
+1595: local2 := 
+1596: goto1599
+umana :=  50;
+1597: 50L
+1598: local2 := 
+if(GetMana(who) >= umana)
+1599: local #1
+1600: makelocal
+1601: jmp userfunc @1301
+1602: local #2
+1603: >=
+1604: if false goto 1608
+return umana;
+1605: local #2
+1606: return
+1607: goto1610
+return 0;
+1608: 0L
+1609: return
+1610: 0L
+1611: return
+C:/pol2/scripts/include/attributes.inc, Line 250
+function GetAttributeIdBySkillId(skillid)
+1612: pop param 'skillid'
+case(skillid)
+1613: local #0
+1614: casejmp
+	0: @1615
+	1: @1618
+	2: @1621
+	3: @1624
+	4: @1627
+	5: @1630
+	6: @1633
+	7: @1636
+	8: @1639
+	9: @1642
+	10: @1645
+	11: @1648
+	12: @1651
+	13: @1654
+	14: @1657
+	15: @1660
+	16: @1663
+	17: @1666
+	18: @1669
+	19: @1672
+	20: @1675
+	21: @1678
+	22: @1681
+	23: @1684
+	24: @1687
+	25: @1690
+	26: @1693
+	27: @1696
+	28: @1699
+	29: @1702
+	30: @1705
+	31: @1708
+	32: @1711
+	33: @1714
+	34: @1717
+	35: @1720
+	36: @1723
+	37: @1726
+	38: @1729
+	39: @1732
+	40: @1735
+	41: @1738
+	42: @1741
+	43: @1744
+	44: @1747
+	45: @1750
+	46: @1753
+	47: @1756
+	48: @1759
+	default: @1761
+return ATTRIBUTEID_ALCHEMY;
+1615: "alchemy"
+1616: return
+1617: goto1761
+return ATTRIBUTEID_ANATOMY;
+1618: "anatomy"
+1619: return
+1620: goto1761
+return ATTRIBUTEID_ANIMALLORE;
+1621: "animallore"
+1622: return
+1623: goto1761
+return ATTRIBUTEID_ITEMID;
+1624: "itemid"
+1625: return
+1626: goto1761
+return ATTRIBUTEID_ARMSLORE;
+1627: "armslore"
+1628: return
+1629: goto1761
+return ATTRIBUTEID_PARRY;
+1630: "parry"
+1631: return
+1632: goto1761
+return ATTRIBUTEID_BEGGING;
+1633: "begging"
+1634: return
+1635: goto1761
+return ATTRIBUTEID_BLACKSMITHY;
+1636: "blacksmithy"
+1637: return
+1638: goto1761
+return ATTRIBUTEID_BOWCRAFT;
+1639: "bowcraft"
+1640: return
+1641: goto1761
+return ATTRIBUTEID_PEACEMAKING;
+1642: "peacemaking"
+1643: return
+1644: goto1761
+return ATTRIBUTEID_CAMPING;
+1645: "camping"
+1646: return
+1647: goto1761
+return ATTRIBUTEID_CARPENTRY;
+1648: "carpentry"
+1649: return
+1650: goto1761
+return ATTRIBUTEID_CARTOGRAPHY;
+1651: "cartography"
+1652: return
+1653: goto1761
+return ATTRIBUTEID_COOKING;
+1654: "cooking"
+1655: return
+1656: goto1761
+return ATTRIBUTEID_DETECTINGHIDDEN;
+1657: "detectinghidden"
+1658: return
+1659: goto1761
+return ATTRIBUTEID_ENTICEMENT;
+1660: "enticement"
+1661: return
+1662: goto1761
+return ATTRIBUTEID_EVALINT;
+1663: "evaluatingintelligence"
+1664: return
+1665: goto1761
+return ATTRIBUTEID_HEALING;
+1666: "healing"
+1667: return
+1668: goto1761
+return ATTRIBUTEID_FISHING;
+1669: "fishing"
+1670: return
+1671: goto1761
+return ATTRIBUTEID_FORENSICS;
+1672: "forensicevaluation"
+1673: return
+1674: goto1761
+return ATTRIBUTEID_HERDING;
+1675: "herding"
+1676: return
+1677: goto1761
+return ATTRIBUTEID_HIDING;
+1678: "hiding"
+1679: return
+1680: goto1761
+return ATTRIBUTEID_PROVOCATION;
+1681: "provocation"
+1682: return
+1683: goto1761
+return ATTRIBUTEID_INSCRIPTION;
+1684: "inscription"
+1685: return
+1686: goto1761
+return ATTRIBUTEID_LOCKPICKING;
+1687: "lockpicking"
+1688: return
+1689: goto1761
+return ATTRIBUTEID_MAGERY;
+1690: "magery"
+1691: return
+1692: goto1761
+return ATTRIBUTEID_MAGICRESISTANCE;
+1693: "magicresistance"
+1694: return
+1695: goto1761
+return ATTRIBUTEID_TACTICS;
+1696: "tactics"
+1697: return
+1698: goto1761
+return ATTRIBUTEID_SNOOPING;
+1699: "snooping"
+1700: return
+1701: goto1761
+return ATTRIBUTEID_MUSICIANSHIP;
+1702: "musicianship"
+1703: return
+1704: goto1761
+return ATTRIBUTEID_POISONING;
+1705: "poisoning"
+1706: return
+1707: goto1761
+return ATTRIBUTEID_ARCHERY;
+1708: "archery"
+1709: return
+1710: goto1761
+return ATTRIBUTEID_SPIRITSPEAK;
+1711: "spiritspeak"
+1712: return
+1713: goto1761
+return ATTRIBUTEID_STEALING;
+1714: "stealing"
+1715: return
+1716: goto1761
+return ATTRIBUTEID_TAILORING;
+1717: "tailoring"
+1718: return
+1719: goto1761
+return ATTRIBUTEID_TAMING;
+1720: "animaltaming"
+1721: return
+1722: goto1761
+return ATTRIBUTEID_TASTEID;
+1723: "tasteidentification"
+1724: return
+1725: goto1761
+return ATTRIBUTEID_TINKERING;
+1726: "tinkering"
+1727: return
+1728: goto1761
+return ATTRIBUTEID_TRACKING;
+1729: "tracking"
+1730: return
+1731: goto1761
+return ATTRIBUTEID_VETERINARY;
+1732: "veterinary"
+1733: return
+1734: goto1761
+return ATTRIBUTEID_SWORDSMANSHIP;
+1735: "swordsmanship"
+1736: return
+1737: goto1761
+return ATTRIBUTEID_MACEFIGHTING;
+1738: "macefighting"
+1739: return
+1740: goto1761
+return ATTRIBUTEID_FENCING;
+1741: "fencing"
+1742: return
+1743: goto1761
+return ATTRIBUTEID_WRESTLING;
+1744: "wrestling"
+1745: return
+1746: goto1761
+return ATTRIBUTEID_LUMBERJACKING;
+1747: "lumberjacking"
+1748: return
+1749: goto1761
+return ATTRIBUTEID_MINING;
+1750: "mining"
+1751: return
+1752: goto1761
+return ATTRIBUTEID_MEDITATION;
+1753: "meditation"
+1754: return
+1755: goto1761
+return ATTRIBUTEID_STEALTH;
+1756: "stealth"
+1757: return
+1758: goto1761
+return ATTRIBUTEID_REMOVETRAP;
+1759: "removetrap"
+1760: return
+var ret        := error;
+1761: decl local #1
+1762: error
+1763: :=
+1764: #
+ret.+errortext := "No equivalent attributeid found for skillid " + skillid;
+1765: local #1
+1766: "errortext"
+1767: .+
+1768: "No equivalent attributeid found for skillid "
+1769: local #0
+1770: +
+1771: := #
+return ret;
+1772: local #1
+1773: return

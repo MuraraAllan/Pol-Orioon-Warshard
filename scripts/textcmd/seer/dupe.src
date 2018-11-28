@@ -1,0 +1,36 @@
+use uo;
+use file;
+
+
+program textcmd_dupe( who )
+var log;
+  var items;
+  var newitem;
+  var copyitem;
+  
+    SendSysMessage( who, "O que voce deseja duplicar?",0x9,90 );
+
+    var what := Target( who, TGTOPT_NOCHECK_LOS );
+    var acc:=who.acct;
+    if (what.isA(POLCLASS_ITEM))
+      copyitem := CreateItemCopyAtLocation(who.x, who.y, who.z, what);
+     if(copyitem)
+
+     endif
+    SetObjProperty(copyitem, "D-" +acc.name, "Login: "+acc.name+", Char: " +who.name);
+      if (what.isA(POLCLASS_CONTAINER))
+        items := EnumerateItemsInContainer(what);
+        foreach item in items
+          newitem := CreateItemCopyAtLocation(who.x,who.y,who.z,item);
+          MoveItemToContainer(newitem, copyitem, item.x, item.y);
+	  SetObjProperty(newitem, "DC-" +acc.name, "Login: "+acc.name+", Char: " +who.name);
+        endforeach
+       
+	log:="Login: " +who.acct.name+ " Dupou: " +copyitem.desc+ "(Container) - serial: " +copyitem.serial+ " - Serial do Original: " +what.serial+ ""; 
+	LogToFile("log/.dupe.log", log ); 
+      else       
+	log:="Login: " +who.acct.name+ " Dupou: " +copyitem.desc+ " - serial: " +copyitem.serial+ ""; 
+	LogToFile("log/.dupe.log", log );
+      endif
+    endif
+endprogram

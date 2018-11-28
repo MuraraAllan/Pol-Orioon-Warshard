@@ -1,0 +1,44 @@
+use uo;
+use os;
+
+include "include/attributes";
+include "include/client";
+include ":poisonwatcher:poisons";
+
+program res(who)
+
+if(who.dead)
+Resurrect( who ); //// Ressucita o char
+DestroyItem(GetEquipmentByLayer(who, 22)); /// Destroi o item com o Layer 22, aqui no caso o robe.
+SetHp(who, GetMaxHp(who));
+SetMana(who, GetMaxMana(who));
+SetStamina(who, GetMaxStamina(who));
+Sendsysmessage(who, "Voce foi Ressucitado!", 0,24);
+return;
+endif
+
+Sendsysmessage(who, "Quem voce deseja ressucitar?", 0,205);
+var player:=target(who);
+
+if(!player)
+Sendsysmessage(who, "Cancelado!", 0,33);
+return;
+endif
+if(!player.dead)
+Sendsysmessage(who, "O Alvo ja esta vivo!", 0,33);
+return;
+endif
+
+if(player)
+Resurrect( player ); //// Ressucita o char
+DestroyItem(GetEquipmentByLayer(player, 22)); /// Destroi o item com o Layer 22, aqui no caso o robe.
+SetHp(player, GetMaxHp(player));
+SetMana(player, GetMaxMana(player));
+SetStamina(player, GetMaxStamina(player));
+Sendsysmessage(player, "Voce foi Ressucitado!", 0,205);
+Sendsysmessage(who, "Voce Ressucitou o player " +player.name, 0,205);
+return;
+endif
+
+
+endprogram

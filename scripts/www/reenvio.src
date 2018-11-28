@@ -1,0 +1,44 @@
+use http;
+use util;
+use uo;
+use os;
+use basic;
+use datafile;
+
+var login := QueryParam("login");
+var email := QueryParam("email");
+var senha;
+var IP    := QueryParam("IP");
+
+var existe := FindAccount(login);
+if (existe)
+   WriteHtml("1");
+   return 0;
+endif
+
+var dsAccountReference := OpenDataFile("Contas");
+if (!dsAccountReference)
+   dsAccountReference := CreateDataFile("Contas", DF_KEYTYPE_STRING);
+endif
+if (!dsAccountReference.FindElement(email) )
+   WriteHtml("1");
+   return 0;
+endif
+
+/*if(acctElem.GetProp("ReenvioClock") > ReadGameClock())
+   WriteHtml("2");
+   return 0;
+endif
+
+if(acctElem.GetProp("Login") != login)
+   WriteHtml("1");
+   return 0;
+endif
+
+acctElem.SetProp("ReenvioClock", ReadGameClock()+10800);*/
+
+
+WriteHtml("10 Login Senha");
+
+
+return 1; 
